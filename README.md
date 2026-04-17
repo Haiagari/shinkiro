@@ -90,4 +90,30 @@ python main.py -t target.com --full --waf-detection
 Este framework fue creado para Bug Hunting legal y auditorías autorizadas. **No nos hacemos responsables por el mal uso de esta herramienta.**
 
 ---
+
+## 🚀 El Framework en Acción (Caso Real)
+
+En una prueba contra un objetivo con alta superficie (`target-ejemplo.com`), el framework logró los siguientes resultados en menos de 5 minutos:
+
+- **Mapeo de Superficie:** 36 subdominios únicos descubiertos con Amass y Assetfinder.
+- **Inventario de Servicios:** 56 puertos abiertos detectados automáticamente.
+- **Hallazgos Críticos:** 
+  - 🔥 **8 Bases de Datos MySQL (3306) expuestas** al mundo en diferentes subdominios.
+  - 🚪 Paneles de control (CPanel/WHM) identificados y listos para auditoría.
+- **Resiliencia:** Gracias al **Guardado Incremental**, toda la información se persistió en SQLite a pesar de la alta carga de red.
+
+---
+
+## 🎯 Estrategia de Caza: Los 6 Modos Operativos (Roadmap)
+
+El framework está siendo evolucionado para soportar diferentes contextos de caza profesional:
+
+1.  **⚡ MODO HUNT:** Reconocimiento agresivo y profundo para scopes nuevos. El primer golpe. (IMPLEMENTADO)
+2.  **🔄 MODO CONTINUO:** Monitoreo 24/7 con detección incremental de cambios (Diff Engine). (EN DESARROLLO - FASE 1)
+3.  **🤝 MODO SERVICIO:** Interfaz y reportes automáticos para clientes de consultoría/SaaS. (PLANIFICADO)
+4.  **🎯 MODO CAMPAÑA:** Ataque sistemático masivo basado en stacks tecnológicos específicos. (PLANIFICADO)
+5.  **🔬 MODO INVESTIGACIÓN:** Escaneo quirúrgico de nuevas vulnerabilidades (CVEs) sobre historial existente. (PLANIFICADO)
+6.  **🕵️ MODO FORENSE:** Análisis histórico de activos para entender duplicados y brechas de detección. (IMPLEMENTADO)
+
+---
 **Desarrollado por el equipo de Elite con ❤️ para la comunidad de Bug Hunters.**

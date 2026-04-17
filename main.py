@@ -108,6 +108,8 @@ def main():
         if do_recon:
             log("Fase 1: Reconocimiento", "phase")
             context["phases"]["recon"] = run_recon(target, out_dir / "recon", args)
+            # Persistencia incremental
+            save_scan_to_db(context)
 
         # FASE 1.5 — DETECCIÓN DE WAF
         live_hosts = context["phases"].get("recon", {}).get("live_hosts", [])
@@ -125,15 +127,16 @@ def main():
         # FASE 2 — PORTS
         if do_ports:
             log("Fase 2: Puertos y Servicios", "phase")
-            # Obtenemos hosts de la fase anterior o usamos el target base
             hosts = context["phases"].get("recon", {}).get("live_hosts", [target])
             context["phases"]["ports"] = run_ports(hosts, out_dir / "ports", args, context)
+            save_scan_to_db(context)
 
         # FASE 3 — URLs
         if do_urls:
             log("Fase 3: URLs y Endpoints", "phase")
             hosts = context["phases"].get("recon", {}).get("live_hosts", [target])
             context["phases"]["urls"] = run_crawler(hosts, out_dir / "urls", args, context)
+            save_scan_to_db(context)
 
         # FASE — JS ANALYSIS (Sprint 2)
         log("Fase: Análisis de JavaScript", "phase")
@@ -148,6 +151,7 @@ def main():
             log("Fase 4: Vulnerabilidades", "phase")
             urls = context["phases"].get("urls", {}).get("all_urls", [f"https://{target}"])
             context["phases"]["vulns"] = run_vulns(urls, out_dir / "vulns", args, context)
+            save_scan_to_db(context)
 
         # FASE — INTELIGENCIA (Sprint 2)
         log("Fase: Análisis de Inteligencia", "phase")

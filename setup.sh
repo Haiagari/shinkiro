@@ -10,12 +10,6 @@ echo "================================================="
 # Crear directorio si no existe
 mkdir -p tools/go/bin
 
-# Verificar si ya están instaladas
-if [ -f "tools/go/bin/subfinder" ]; then
-    echo "✅ Las herramientas ya están instaladas"
-    exit 0
-fi
-
 echo "📦 Instalando herramientas de Go..."
 
 export GOPATH=$(pwd)/tools/go
@@ -30,6 +24,11 @@ TOOLS=(
     "github.com/projectdiscovery/naabu/v2/cmd/naabu"
     "github.com/ffuf/ffuf/v2"
     "github.com/projectdiscovery/nuclei/v3/cmd/nuclei"
+    "github.com/OWASP/Amass/v3/..."
+    "github.com/tomnomnom/assetfinder"
+    "github.com/projectdiscovery/katana/cmd/katana"
+    "github.com/lc/gau/v2/cmd/gau"
+    "github.com/tomnomnom/waybackurls"
 )
 
 echo "Instalando: ${#TOOLS[@]} herramientas..."
@@ -45,7 +44,7 @@ echo ""
 echo "Verificando instalación..."
 INSTALLED=0
 
-for bin in subfinder httpx dnsx naabu ffuf nuclei; do
+for bin in subfinder httpx dnsx naabu ffuf nuclei amass assetfinder katana gau waybackurls; do
     if [ -f "tools/go/bin/$bin" ]; then
         echo "  ✅ $bin"
         INSTALLED=$((INSTALLED+1))
@@ -56,13 +55,8 @@ done
 
 echo ""
 echo "================================================="
-if [ $INSTALLED -eq 6 ]; then
-    echo "✅ INSTALACIÓN COMPLETA ($INSTALLED/6 herramientas)"
-    echo ""
-    echo "Para usar el framework:"
-    echo "  export PATH=\$PWD/tools/go/bin:\$PATH"
-    echo "  python main.py -t target.com --full"
+if [ $INSTALLED -ge 11 ]; then
+    echo "✅ INSTALACIÓN COMPLETA ($INSTALLED herramientas)"
 else
-    echo "⚠️ Se instalaron $INSTALLED/6 herramientas"
-    echo "Revisa los errores arriba"
+    echo "⚠️ Se instalaron $INSTALLED herramientas"
 fi

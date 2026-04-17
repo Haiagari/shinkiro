@@ -116,7 +116,7 @@ def check_critical_findings(vulns: list, takeovers: list = [], secrets: list = [
     return critical
 
 
-def format_telegram_alert(target: str, critical: dict, diff: dict = None) -> str:
+def format_telegram_alert(target: str, critical: dict, diff: dict = None, context: dict = None) -> str:
     """
     Formatea mensaje para Telegram con emojis apropiados y datos de diff.
     """
@@ -135,14 +135,40 @@ def format_telegram_alert(target: str, critical: dict, diff: dict = None) -> str
     takeovers = critical.get("takeovers", [])
     secrets = critical.get("secrets", [])
     
-    if critical_vulns or takeovers or secrets:
-        count = len(critical_vulns) + len(takeovers) + len(secrets)
+    # NUEVO: Incluir hallazgos de Inteligencia (ej: puertos críticos)
+    intel_findings = []
+    if context:
+        intelligence = context.get("phases", {}).get("intelligence", {})
+        prio_targets = intelligence.get("priority_targets", [])
+        for target_info in prio_targets:
+            # Filtrar razones repetidas o mal formateadas
+            unique_reasons = []
+            for r in target_info.get("reasons", []):
+                clean_r = r.replace("🔍", "").strip().lstrip(":").strip()
+                if clean_r not in unique_reasons:
+                    unique_reasons.append(clean_r)
+            
+            if target_info.get("score", 0) >= 2.0:
+                for reason in unique_reasons:
+                    intel_findings.append(f"🎯 `{target_info['target']}`: {reason}")
+
+    if critical_vulns or takeovers or secrets or intel_findings:
+        count = len(critical_vulns) + len(takeovers) + len(secrets) + len(intel_findings)
         total_findings += count
-        lines.append(f"\n🔥 *CRÍTICOS* ({count})")
-        for t in takeovers[:2]: lines.append(f"  • `[Takeover]` {t['url']}")
-        for s in secrets[:2]:   lines.append(f"  • `[Secret]` {s['type']} en {s['source'].split('/')[-1]}")
-        for v in critical_vulns[:3]:
-            lines.append(f"  • {v.get('name', 'Unknown')[:40]}")
+        lines.append(f"\n🔥 *HALLAZGOS DE ALTO IMPACTO* ({count})")
+        
+        # Agrupar hallazgos para no repetir target
+        for f in intel_findings[:10]:
+            lines.append(f"  • {f}")
+        
+        for t in takeovers[:3]: 
+            lines.append(f"  • 🚩 `[Takeover]` {t['url']}")
+        
+        for s in secrets[:3]:   
+            lines.append(f"  • 🔑 `[Secret]` {s['type']} en {s['source'].split('/')[-1]}")
+        
+        for v in critical_vulns[:5]:
+            lines.append(f"  • 💀 {v.get('name', 'Unknown')[:40]}")
             if v.get('url'): lines.append(f"    └ {v['url']}")
 
     # 🟠 HIGH
@@ -171,9 +197,11 @@ def format_telegram_alert(target: str, critical: dict, diff: dict = None) -> str
         if new_subs or new_ports:
             lines.append("\n✨ *NUEVOS DESCUBRIMIENTOS*")
             if new_subs:
-                lines.append(f"  • Subdominios: `{len(new_subs)}` nuevos")
+                count = diff.get("total_new_subs", len(new_subs))
+                lines.append(f"  • Subdominios: `{count}` nuevos")
             if new_ports:
-                lines.append(f"  • Puertos: `{len(new_ports)}` abiertos")
+                count = diff.get("total_new_ports", len(new_ports))
+                lines.append(f"  • Puertos: `{count}` abiertos")
 
     # ══════════════════════════════════════════════════════════════════════════════
     # RESUMEN FINAL
@@ -241,8 +269,8 @@ def run_notifier(target: str, context: dict, config: dict):
     if total_relevant > 0:
         log(f"🚨 {total_relevant} hallazgos detectados!", "warn")
     
-    # Formatear mensaje incluyendo el DIFF
-    alert_msg = format_telegram_alert(target, critical, diff_data)
+    # Formatear mensaje incluyendo el DIFF y el Contexto (para inteligencia)
+    alert_msg = format_telegram_alert(target, critical, diff_data, context)
     
     # Lógica de envío inteligente:
     # 1. Si hay hallazgos relevantes -> Enviar siempre

@@ -103,120 +103,60 @@ def get_intelligence(db: Session = Depends(get_db_session)):
 @app.get("/timeline/{target}")
 def get_target_timeline(target: str, db: Session = Depends(get_db_session)):
     """
-    Retorna timeline de evolución de un target.
-    Muestra cambios entre scans a lo largo del tiempo.
+    Retorna timeline de evolución de un target basado en la DB.
     """
-    import json
-    from datetime import datetime
-    
     target_obj = db.query(Target).filter(Target.domain == target).first()
-    if not target_obj:
-        return {"error": "Target no encontrado"}
+    if not target_obj: return {"error": "Target no encontrado"}
     
-    # Buscar todos los scans de este target
-    scans = db.query(Scan).filter(Scan.target_id == target_obj.id).order_by(Scan.start_time.desc()).all()
+    scans = db.query(Scan).filter(Scan.target_id == target_obj.id).order_by(Scan.id.desc()).all()
     
     timeline = []
     for scan in scans:
-        # Cargar datos del scan desde el output directo
-        output_dir = Path("output") / target
-        if not output_dir.exists():
-            continue
-        
-        # Buscar directorio de este scan específico
-        scan_dirs = sorted(output_dir.glob("*"), key=lambda x: x.name, reverse=True)
-        
-        scan_data = {
+        timeline.append({
             "scan_id": scan.id,
-            "timestamp": scan.start_time.isoformat() if scan.start_time else None,
-            "subdomains": 0,
-            "hosts": 0,
-            "urls": 0,
-            "vulns": {"critical": 0, "high": 0, "medium": 0, "low": 0},
-            "changes": {},
-        }
-        
-        # Leer datos directamente de archivos
-        for sd in scan_dirs[:1]:  # Solo el más reciente
-            recon_dir = sd / "recon"
-            ports_dir = sd / "ports"
-            urls_dir = sd / "urls"
-            vulns_dir = sd / "vulns"
-            
-            if recon_dir.exists():
-                subs = recon_dir / "all_subdomains.txt"
-                if subs.exists():
-                    scan_data["subdomains"] = len(subs.read_text().splitlines())
-                hosts = recon_dir / "live_hosts.txt"
-                if hosts.exists():
-                    scan_data["hosts"] = len(hosts.read_text().splitlines())
-            
-            if urls_dir.exists():
-                urls = urls_dir / "all_urls.txt"
-                if urls.exists():
-                    scan_data["urls"] = len(urls.read_text().splitlines())
-            
-            if vulns_dir.exists():
-                # Leer findings
-                vuln_file = vulns_dir / "results.json"
-                if vuln_file.exists():
-                    data = json.loads(vuln_file.read_text())
-                    findings = data.get("findings", [])
-                    
-                    for sev in ["critical", "high", "medium", "low"]:
-                        scan_data["vulns"][sev] = len([f for f in findings if f.get("severity", "").lower() == sev])
-        
-        timeline.append(scan_data)
+            "timestamp": scan.timestamp,
+            "subdomains": db.query(Subdomain).filter(Subdomain.scan_id == scan.id).count(),
+            "vulns": {
+                "critical": db.query(Vulnerability).filter(Vulnerability.scan_id == scan.id, Vulnerability.severity == "critical").count(),
+                "high": db.query(Vulnerability).filter(Vulnerability.scan_id == scan.id, Vulnerability.severity == "high").count(),
+                "medium": db.query(Vulnerability).filter(Vulnerability.scan_id == scan.id, Vulnerability.severity == "medium").count(),
+            }
+        })
     
-    # Calcular cambios entre scans
-    changes = []
-    for i in range(1, len(timeline)):
-        prev = timeline[i-1]
-        curr = timeline[i]
-        
-        sub_change = curr["subdomains"] - prev.get("subdomains", 0)
-        vuln_change = sum(curr["vulns"].values()) - sum(prev.get("vulns", {}).values())
-        
-        if sub_change != 0 or vuln_change != 0:
-            changes.append({
-                "from": prev["timestamp"],
-                "to": curr["timestamp"],
-                "subdomains_diff": sub_change,
-                "vulns_diff": vuln_change,
-            })
+    return {"target": target, "total_scans": len(timeline), "timeline": timeline}
+
+@app.get("/assets/{target_id}")
+def get_assets(target_id: int, db: Session = Depends(get_db_session)):
+    """Retorna todos los subdominios de un target."""
+    # Buscar el último scan exitoso
+    latest_scan = db.query(Scan).filter(Scan.target_id == target_id).order_by(Scan.id.desc()).first()
+    if not latest_scan:
+        return []
+    
+    assets = db.query(Subdomain).filter(Subdomain.scan_id == latest_scan.id).all()
+    return assets
+
+@app.get("/finding/{finding_id}")
+def get_finding_detail(finding_id: int, db: Session = Depends(get_db_session)):
+    """Retorna el detalle completo de una vulnerabilidad."""
+    v = db.query(Vulnerability).filter(Vulnerability.id == finding_id).first()
+    if not v:
+        return {"error": "Finding not found"}
+    
+    # Enriquecer con info de remediación (simulado basado en tipo)
+    remediation = "Apply security patches and follow OWASP best practices."
+    if "sql" in v.type.lower(): remediation = "Use parameterized queries and ORMs. Sanitize all user inputs."
+    if "xss" in v.type.lower(): remediation = "Implement Content Security Policy (CSP) and encode output data."
     
     return {
-        "target": target,
-        "total_scans": len(timeline),
-        "timeline": timeline,
-        "changes": changes,
-        "current": timeline[0] if timeline else {},
+        "id": v.id,
+        "name": v.name,
+        "type": v.type,
+        "severity": v.severity,
+        "url": v.url,
+        "description": v.description or "No description provided.",
+        "remediation": remediation,
+        "vector": v.vector or "N/A",
+        "cve": v.cve or "N/A",
+        "timestamp": v.timestamp.isoformat() if v.timestamp else None
     }
-
-@app.get("/pocs")
-def get_pocs(db: Session = Depends(get_db_session)):
-    """
-    Retorna PoCs generados para las vulnerabilidades críticas.
-    """
-    from modules.ai_analyzer import generate_poc_for_finding
-    
-    vulns = db.query(Vulnerability).filter(
-        Vulnerability.severity.in_(["critical", "high"])
-    ).limit(10).all()
-    
-    pocs = []
-    for v in vulns:
-        poc_data = generate_poc_for_finding({
-            "type": v.name or v.vuln_type,
-            "url": v.url,
-            "name": v.name,
-        })
-        pocs.append({
-            "finding": v.name,
-            "url": v.url,
-            "type": poc_data.get("title", v.vuln_type),
-            "poc": poc_data.get("poc", ""),
-            "impact": poc_data.get("impact", ""),
-        })
-    
-    return pocs

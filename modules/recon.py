@@ -29,11 +29,12 @@ def _run_assetfinder(target: str, out_dir: Path) -> list:
 
 
 def _run_amass(target: str, out_dir: Path) -> list:
-    """Ejecuta amass (pasivo)."""
+    """Ejecuta amass (pasivo y rápido)."""
     am_out = out_dir / "amass.txt"
+    # Modo pasivo estricto, sin resolución DNS pesada, timeout de 2 minutos
     run_cmd(
-        f"amass enum -passive -d {target} -o {am_out} -timeout 3",
-        timeout=300
+        f"amass enum -passive -timeout 2 -d {target} -o {am_out}",
+        timeout=150
     )
     return read_lines(am_out)
 
@@ -125,14 +126,16 @@ def run_recon(target: str, out_dir: Path, args) -> dict:
     # ── Detección de hosts vivos con httpx ─────────────────────
     live_hosts = []
     if available["httpx"] and resolved_subs:
-        log("Detectando hosts vivos con httpx...", "info")
+        log("Detectando hosts vivos con httpx (Modo Resiliente)...", "info")
         resolved_file = out_dir / "resolved.txt"
         if not resolved_file.exists():
             write_lines(resolved_file, resolved_subs)
         live_out = out_dir / "live_hosts.txt"
+        
+        # Agregamos: -retries 2 y bajamos threads a 30 para no saturar la red
         run_cmd(
             f"httpx -l {resolved_file} -silent -status-code -title -tech-detect "
-            f"-o {live_out} -threads {args.threads} -timeout {args.timeout}",
+            f"-retries 2 -threads 30 -timeout 15 -o {live_out}",
             timeout=600
         )
         live_hosts_raw = read_lines(live_out)

@@ -152,6 +152,58 @@ def generate_report(target: str, results: dict, out_dir: Path, ts: str, context:
         "",
     ]
 
+    # ══════════════════════════════════════════════════════════════════════════════
+    # NUEVOS DESCUBRIMIENTOS (DIFF ENGINE)
+    # ══════════════════════════════════════════════════════════════════════════════
+    diff_data = results.get("diff", {})
+    if diff_data and not diff_data.get("is_first_run"):
+        new_subs = diff_data.get("new_subdomains", [])
+        new_ports = diff_data.get("new_ports", [])
+        
+        if new_subs or new_ports:
+            md.append("## ✨ Novedades desde el último scan")
+            if new_subs:
+                md.append("### 🌐 Subdominios nuevos")
+                for s in new_subs[:10]:
+                    domain = s.get("domain") if isinstance(s, dict) else s
+                    md.append(f"- `{domain}`")
+                if len(new_subs) > 10: md.append(f"*...y {len(new_subs)-10} más.*")
+            
+            if new_ports:
+                md.append("### 🚪 Puertos abiertos nuevos")
+                for p in new_ports[:10]:
+                    md.append(f"- `{p.get('host')}:{p.get('port')}` ({p.get('service') or 'unknown'})")
+            md.append("")
+
+    # ══════════════════════════════════════════════════════════════════════════════
+    # INTELIGENCIA Y PRIORIZACIÓN
+    # ══════════════════════════════════════════════════════════════════════════════
+    prio_targets = intel.get("priority_targets", [])
+    if prio_targets:
+        md.append("## 🔥 Objetivos de Alta Prioridad")
+        md.append("| Target | Score | Razones |")
+        md.append("|--------|-------|---------|")
+        for t in prio_targets[:5]:
+            reasons = ", ".join(t.get("reasons", []))
+            md.append(f"| `{t['target']}` | **{t['score']}** | {reasons} |")
+        md.append("")
+
+    # ══════════════════════════════════════════════════════════════════════════════
+    # INVENTARIO DE SERVICIOS (PUERTOS)
+    # ══════════════════════════════════════════════════════════════════════════════
+    open_ports = ports.get("open_ports", [])
+    if open_ports:
+        md.append("## 🛡️ Inventario de Puertos y Servicios")
+        md.append("| Host | Puerto | Protocolo | Servicio | Versión |")
+        md.append("|------|--------|-----------|----------|---------|")
+        for p in open_ports[:20]:
+            if isinstance(p, dict):
+                md.append(f"| {p.get('host')} | {p.get('port')} | {p.get('protocol')} | {p.get('service')} | {p.get('version')} |")
+            else:
+                md.append(f"| {target} | {p} | tcp | unknown | N/A |")
+        if len(open_ports) > 20: md.append(f"*...y {len(open_ports)-20} puertos más.*")
+        md.append("")
+
     # Hallazgos críticos primero
     for sev in ["critical", "high", "medium", "low"]:
         group = by_severity.get(sev, [])
