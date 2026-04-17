@@ -1,12 +1,86 @@
+# 🚀 Trayecto del Proyecto
 
-Lo que tendrías es una plataforma de reconocimiento continuo e inteligente, comparable a lo que usan equipos de seguridad ofensiva profesionales internamente. Herramientas comerciales como Shodan Monitor, Attack Surface Management de CrowdStrike, o Recon.dev hacen cosas similares y cobran entre $500 y $5,000 al mes por acceso.
-La diferencia con las herramientas existentes como reconftw o axiom es que las tuyas tendrían inteligencia real: los módulos se retroalimentan, el sistema aprende qué targets son más jugosos, y el análisis no para entre sesiones. Reconftw es un script que corre y termina. Lo tuyo sería un sistema vivo.
+## Visión Original
 
-Desde el ángulo de bug bounty puro te daría una ventaja competitiva seria. El mayor cuello de botella en bug bounty no es saber explotar vulnerabilidades, es llegar primero a superficie nueva antes que los otros hunters. Con el modo continuo y las diff alerts serías de los primeros en ver cuando un programa expande su scope, cuando aparece un subdominio nuevo, o cuando un endpoint que antes devolvía 404 empieza a responder. Esos son los momentos donde se encuentran los críticos.
+Crear una plataforma de reconocimiento continuo e inteligente, comparable a Shodan Monitor, Attack Surface Management de CrowdStrike, o Recon.dev.
 
-Desde el ángulo de carrera y negocio es donde se pone interesante:
-Podrías ofrecerlo como un servicio de Attack Surface Monitoring a empresas medianas que no pueden pagar Crowdstrike ni tienen equipo de seguridad interno. Les monitoreas su superficie de ataque continuamente y les mandas alertas. Eso es un negocio de servicios gestionados con ingresos recurrentes.
-También podrías convertirlo en un SaaS con panel web. La barrera para entrar a bug bounty es alta porque configurar toda la toolchain toma días. Si tú abstraes eso detrás de una interfaz donde alguien pone un dominio y recibe resultados, tienes algo que la gente pagaría. Hay hunters que pagarían $30-50 al mes por no tener que mantener su propia infra.
-O simplemente lo publicas en GitHub con buena documentación y construyes reputación en la comunidad de seguridad, lo cual abre puertas a trabajos, contratos y reconocimiento que valen más que cualquier bounty individual.
+La diferencia con herramientas existentes como reconftw o axiom: **inteligencia real** - los módulos se retroalimentan, el sistema aprende, y el análisis no para entre sesiones.
 
-El techo real es que con el módulo de IA generando reportes y el scoring priorizando automáticamente, podrías estar corriendo esto contra docenas de programas en paralelo con supervisión mínima. Básicamente un sistema semi-autónomo de hunting donde tú solo intervienes para verificar y reportar los hallazgos que el sistema ya pre-filtró y documentó.
+---
+
+## Evolución Real del Proyecto
+
+### Fase 1: Fundación
+- Estructura base del framework
+- Módulos individuales: recon, ports, crawler, vuln
+- Logging profesional
+- Persistencia en JSON
+
+### Fase 2: Inteligencia
+- Scoring CVSS automático
+- Correlación entre fases
+- Detección IDOR
+- Análisis JS (secretos + endpoints)
+
+### Fase 3: Automatización
+- Scheduler 24/7 con modos daemon/watch/diff
+- Motor de Diff para detectar cambios
+- Alertas Telegram inteligentes
+
+### Fase 4: Interfaces
+- API REST con FastAPI
+- Dashboard web con Tailwind CSS
+- Endpoints para scans y hallazgos
+
+### Fase 5: IA
+- Integración con Claude/Gemini
+- PoC automático
+- Generación de hipótesis
+
+### Fase 6: Enhancements
+- Fuzzing contextual
+- WAF Detection
+- Rate Limiting automático
+- Multi-platform reports
+
+### Fase 7: Setup
+- Scripts setup.sh y run.sh
+- Herramientas Go locales (382MB)
+- Documentación completa
+
+---
+
+## Lecciones Aprendidas
+
+1. **No reinventar la rueda** - Usar tools existentes (ProjectDiscovery) en vez de reescribir
+2. **Modoularidad** - Cada módulo independiente facilita debugging
+3. **Fallbacks** - Siempre tener alternativas cuando falta una tool
+4. **Entorno local** - Tools en carpeta local evita ensuciar sistema
+5. **Calidad > Cantidad** - Mejor un framework que funciona que 100 features rotas
+
+---
+
+## Estado Actual
+
+**✅ v1.0 COMPLETA**
+
+- 18 módulos Python
+- 6 herramientas Go preinstaladas
+- Scripts de setup automático
+- Listo para producción
+
+---
+
+## Siguientes Pasos (v2.0)
+
+- Docker-compose para ambiente completo
+- Tests automatizados
+- Dashboard con gráficos en tiempo real
+- Integración con más plataformas (Intigriti, YesWeHack)
+- Módulo de brute force automático
+
+---
+
+**Fecha de release:** 17/04/2026
+**Mantenedor:** SamBleed
+**Licencia:** MIT
