@@ -1,19 +1,78 @@
 """
 Módulo de Diferencias (Diff Engine)
 Compara los resultados actuales con la ejecución anterior para detectar cambios.
+Soporta两种 modos: JSON (legacy) y SQLite (nuevo con use_db=True).
 """
 
 import json
 from pathlib import Path
 from .utils import log, save_json, load_json
 
-def run_diff(target: str, out_dir: Path, context: dict = {}) -> dict:
+
+def run_diff(target: str, out_dir: Path, context: dict = {}, use_db: bool = False) -> dict:
     """
     Compara la sesión actual con la anterior más reciente.
+    
+    Args:
+        target: Dominio objetivo
+        out_dir: Directorio de salida para esta sesión
+        context: Contexto actual del scan
+        use_db: Si True, usa la DB SQLite para diffing (más preciso)
+    
+    Returns:
+        Dict con new_subdomains, new_ports, new_vulns, changed_js, is_first_run
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     log("Iniciando motor de diferencias (Diff Engine)...", "info")
 
+    # ══════════════════════════════════════════════════════════════════════════════
+    # MODO DB: Usar consultas SQL para diffing (recomendado)
+    # ══════════════════════════════════════════════════════════════════════════════
+    if use_db:
+        log("Usando Diff Engine basado en SQLite...", "info")
+        return _run_diff_db(target, out_dir, context)
+
+    # ══════════════════════════════════════════════════════════════════════════════
+    # MODO LEGACY: Usar archivos JSON
+    # ══════════════════════════════════════════════════════════════════════════════
+    log("Usando Diff Engine basado en archivos JSON...", "info")
+    return _run_diff_json(target, out_dir, context)
+
+
+def _run_diff_db(target: str, out_dir: Path, context: dict) -> dict:
+    """
+    Diff usando la base de datos SQLite (más preciso y rápido).
+    """
+    try:
+        from .database import SessionLocal
+        from .db_queries import get_scan_diff
+        
+        db = SessionLocal()
+        try:
+            diff_result = get_scan_diff(db, target)
+            
+            save_json(out_dir / "results.json", diff_result)
+            
+            # Loggear cambios relevantes
+            if diff_result.get("new_subdomains"):
+                log(f"NUEVOS SUBDOMINIOS: {len(diff_result['new_subdomains'])}", "warn")
+            if diff_result.get("new_ports"):
+                log(f"NUEVOS PUERTOS: {len(diff_result['new_ports'])}", "warn")
+            if diff_result.get("new_vulns"):
+                log(f"NUEVAS VULNERABILIDADES: {len(diff_result['new_vulns'])}", "error")
+            
+            return diff_result
+        finally:
+            db.close()
+    except Exception as e:
+        log(f"Error en diff DB: {e}", "error")
+        return {"new_subdomains": [], "new_ports": [], "new_vulns": [], "error": str(e)}
+
+
+def _run_diff_json(target: str, out_dir: Path, context: dict) -> dict:
+    """
+    Diff usando archivos JSON (legacy).
+    """
     # 1. Buscar la última sesión exitosa
     # Estructura: output/target/timestamp/recon/results.json
     base_dir = Path(context.get("out_dir", ".")).parent.parent # output/target/
@@ -70,7 +129,22 @@ def run_diff(target: str, out_dir: Path, context: dict = {}) -> dict:
 
     if new_subs: log(f"NUEVOS SUBDOMINIOS: {len(new_subs)}", "warn")
     if new_ports: log(f"NUEVOS PUERTOS: {len(new_ports)}", "warn")
-    if new_vulns: log(f"NUEVAS VULNERABILIDADES: {len(new_vulns)}", "error")
+    if new_vulns: log(f"NUEVAS VULNERABILIDADES: {new_vulns}", "error")
     if changed_js: log(f"ARCHIVOS JS CAMBIADOS: {len(changed_js)}", "warn")
 
     return results
+
+
+def run_diff_db_only(target: str) -> dict:
+    """
+    Función de conveniencia para obtener diff sin ejecutar todo el pipeline.
+    Útil para consultar desde la CLI o API.
+    """
+    from .database import SessionLocal
+    from .db_queries import get_scan_diff
+    
+    db = SessionLocal()
+    try:
+        return get_scan_diff(db, target)
+    finally:
+        db.close()

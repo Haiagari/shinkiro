@@ -7,6 +7,7 @@ Uso: python main.py -t target.com [--full | --recon | --ports | --urls | --vulns
 import argparse
 import sys
 import time
+import os
 from pathlib import Path
 from datetime import datetime
 
@@ -41,6 +42,7 @@ def parse_args():
     p.add_argument("--urls",   action="store_true", help="Solo descubrimiento de URLs")
     p.add_argument("--vulns",  action="store_true", help="Solo escaneo de vulnerabilidades")
     p.add_argument("--report", action="store_true", help="Generar reporte")
+    p.add_argument("--waf-detection", action="store_true", help="Detectar WAF")
     p.add_argument("--threads", type=int, default=50, help="Threads (default: 50)")
     p.add_argument("--timeout", type=int, default=10,  help="Timeout (default: 10)")
     return p.parse_args()
@@ -49,11 +51,18 @@ def main():
     args = parse_args()
     banner()
 
-    # Inicializar Base de Datos (Sprint 4)
-    init_db()
-
     # Cargar configuración
     config = load_config()
+
+    # Agregar tools al PATH de ejecución
+    tools_dir = config.get("tools_path", "tools/go/bin")
+    tools_absolute = str(Path(tools_dir).absolute())
+    if tools_absolute not in os.environ["PATH"]:
+        os.environ["PATH"] = f"{tools_absolute}:{os.environ['PATH']}"
+        log(f"Herramientas añadidas al PATH: {tools_absolute}", "info")
+    
+    # Inicializar Base de Datos (Sprint 4)
+    init_db()
     
     # SCOPE AUTOMÁTICO (Sprint 7): Si hay programa, descargar scope
     allowed_scope = []
@@ -144,9 +153,9 @@ def main():
         log("Fase: Análisis de Inteligencia", "phase")
         context["phases"]["intelligence"] = run_intelligence(target, out_dir / "intelligence", args, context)
 
-        # FASE — DIFF (Sprint 3)
+        # FASE — DIFF (Sprint 3) - Ahora con SQLite
         log("Fase: Motor de Diferencias", "phase")
-        context["phases"]["diff"] = run_diff(target, out_dir / "diff", context)
+        context["phases"]["diff"] = run_diff(target, out_dir / "diff", context, use_db=True)
 
         # FASE — EXPORT (Sprint 5)
         log("Fase: Exportación de Resultados", "phase")

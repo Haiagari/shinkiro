@@ -1,0 +1,32 @@
+id: debug-panels-detection
+
+info:
+  name: Exposed Debug & Profiler Panels
+  author: Antigravity
+  severity: high
+  description: Detects exposed debug toolbars and profilers that leak environment information.
+  tags: debug, info-leak, framework
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/_profiler/phpinfo"
+      - "{{BaseURL}}/_profiler/empty/search/results?limit=10"
+      - "{{BaseURL}}/__rack_smart_stack__"
+      - "{{BaseURL}}/django_debug_toolbar/"
+      - "{{BaseURL}}/rails/info/routes"
+      - "{{BaseURL}}/.well-known/security.txt"
+
+    matchers-condition: or
+    matchers:
+      - type: word
+        words:
+          - "Symfony Profiler"
+          - "Django Debug Toolbar"
+          - "Rails Info"
+          - "PHP Version"
+        condition: or
+
+      - type: status
+        status:
+          - 200

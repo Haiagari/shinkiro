@@ -1,7 +1,9 @@
 import json
 import re
 from pathlib import Path
-from .utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json
+from .utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json, get_stealth_headers, get_random_ua
+from .rate_limiter import wait_if_needed, record_request, can_request
+import time
 
 REQUIRED_TOOLS = ["nuclei", "dalfox", "sqlmap", "ghauri", "curl"]
 
@@ -98,23 +100,40 @@ def detect_idor_candidates(urls: list) -> list:
 def verify_idor(poc_url: str, original_url: str) -> dict:
     """
     Verifica si un IDOR es explotable (prueba básica).
+    Enhanced: OPSEC headers y RateLimiter.
     """
     import requests
+    import time
     
-    headers = {
-        "User-Agent": "BugBounty-Framework/1.0",
-    }
+    # 1. Esperar si el rate limit lo pide (OPSEC)
+    wait_if_needed()
+    
+    # 2. Usar headers de sigilo
+    headers = get_stealth_headers()
     
     try:
+        start = time.time()
         # Request original (para comparar)
         r1 = requests.get(original_url, headers=headers, timeout=10, verify=False)
         original_status = r1.status_code
         original_len = len(r1.text)
         
+        # Registrar en el rate limiter
+        ms = (time.time() - start) * 1000
+        record_request(ms, original_status)
+
+        # Volver a esperar para el segundo request
+        wait_if_needed()
+        
+        start = time.time()
         # Request PoC (con ID modificado)
         r2 = requests.get(poc_url, headers=headers, timeout=10, verify=False)
         poc_status = r2.status_code
         poc_len = len(r2.text)
+        
+        # Registrar en el rate limiter
+        ms = (time.time() - start) * 1000
+        record_request(ms, poc_status)
         
         # Verificar diferencias que indican IDOR
         if poc_status != original_status:
@@ -165,14 +184,18 @@ def run_vulns(urls: list, out_dir: Path, args, context: dict = {}) -> dict:
         log("Actualizando templates de nuclei...", "info")
         run_cmd("nuclei -update-templates -silent", timeout=60)
 
-        log("Escaneando con nuclei (severidad Media+)...", "info")
+        log("Escaneando con nuclei (severidad Media+ y Custom Templates)...", "info")
         nuclei_out = out_dir / "nuclei.json"
-        run_cmd(
+        custom_templates = Path(__file__).parent.parent / "custom_templates"
+        
+        # Comando de nuclei incluyendo templates personalizados
+        cmd = (
             f"nuclei -l {urls_file} -severity critical,high,medium "
+            f"-t {custom_templates} " # Incluir nuestros templates ninjas
             f"-o {nuclei_out} -json -silent -rate-limit 50 "
-            f"-timeout {args.timeout} -bulk-size {args.threads}",
-            timeout=1200
+            f"-timeout {args.timeout} -bulk-size {args.threads}"
         )
+        run_cmd(cmd, timeout=1200)
         nuclei_lines = read_lines(nuclei_out)
         for line in nuclei_lines:
             try:
@@ -227,8 +250,10 @@ def run_vulns(urls: list, out_dir: Path, args, context: dict = {}) -> dict:
     # Headers
     log("Revisando headers de seguridad...", "info")
     header_issues = []
+    ua = get_random_ua()
     for url in clean_urls[:15]:
-        _, resp = run_cmd(f"curl -sI --max-time {args.timeout} '{url}'", timeout=args.timeout+5)
+        wait_if_needed()
+        _, resp = run_cmd(f"curl -sI -A '{ua}' --max-time {args.timeout} '{url}'", timeout=args.timeout+5)
         missing = [h for h in SECURITY_HEADERS if h not in resp.lower()]
         if missing:
             header_issues.append({"url": url, "missing": missing})
@@ -239,7 +264,8 @@ def run_vulns(urls: list, out_dir: Path, args, context: dict = {}) -> dict:
     base_urls = dedupe([re.match(r"(https?://[^/]+)", u).group(1) for u in clean_urls if re.match(r"https?://[^/]+", u)])
     for base in base_urls[:5]:
         for path in EXPOSED_PATHS:
-            _, resp = run_cmd(f"curl -so /dev/null -w '%{{http_code}}' --max-time 5 '{base}{path}'", timeout=7)
+            wait_if_needed()
+            _, resp = run_cmd(f"curl -so /dev/null -A '{ua}' -w '%{{http_code}}' --max-time 5 '{base}{path}'", timeout=7)
             if resp and resp.strip() in ["200", "403"]: # 403 a veces indica que el archivo existe pero está protegido
                 exposed.append(f"{resp.strip()} → {base}{path}")
                 findings.append({"type": "exposed_file", "severity": "medium", "url": f"{base}{path}"})

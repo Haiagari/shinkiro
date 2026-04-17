@@ -1,0 +1,37 @@
+id: config-backups-detection
+
+info:
+  name: Backup Configuration Files Detection
+  author: Antigravity
+  severity: medium
+  description: Detects backup versions of sensitive configuration files that might be publicly accessible.
+  tags: config, backup, exposure
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/config.php.bak"
+      - "{{BaseURL}}/config.php.old"
+      - "{{BaseURL}}/config.php.save"
+      - "{{BaseURL}}/.config.php.swp"
+      - "{{BaseURL}}/.env.bak"
+      - "{{BaseURL}}/.env.old"
+      - "{{BaseURL}}/.env.local"
+      - "{{BaseURL}}/database.yml.bak"
+      - "{{BaseURL}}/settings.py.bak"
+      - "{{BaseURL}}/web.config.bak"
+
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 200
+
+      - type: word
+        words:
+          - "DB_PASSWORD"
+          - "DB_USER"
+          - "SECRET_KEY"
+          - "AWS_ACCESS_KEY"
+          - "password"
+        condition: or

@@ -95,6 +95,11 @@ def run_recon(target: str, out_dir: Path, args) -> dict:
 
     # ── Deduplicar ─────────────────────────────────────────────
     all_subs = dedupe([s.lower().strip() for s in all_subs if target in s])
+    
+    # Siempre incluimos el target base
+    if target not in all_subs:
+        all_subs.append(target)
+    
     merged_out = out_dir / "all_subdomains.txt"
     write_lines(merged_out, all_subs)
     log(f"Total subdominios únicos: {len(all_subs)}", "success")
@@ -109,7 +114,11 @@ def run_recon(target: str, out_dir: Path, args) -> dict:
             timeout=300
         )
         resolved_subs = read_lines(dns_out)
-        log(f"  Subdominios con DNS válido: {len(resolved_subs)}", "success")
+        if resolved_subs:
+            log(f"  Subdominios con DNS válido: {len(resolved_subs)}", "success")
+        else:
+            log("  dnsx no devolvió resultados. Usando lista original como fallback.", "warn")
+            resolved_subs = all_subs
     else:
         log("dnsx no disponible — usando todos los subdominios sin resolver", "warn")
 
@@ -126,7 +135,8 @@ def run_recon(target: str, out_dir: Path, args) -> dict:
             f"-o {live_out} -threads {args.threads} -timeout {args.timeout}",
             timeout=600
         )
-        live_hosts = read_lines(live_out)
+        live_hosts_raw = read_lines(live_out)
+        live_hosts = dedupe([l.split()[0] for l in live_hosts_raw if l.startswith("http")])
         log(f"  Hosts vivos: {len(live_hosts)}", "success")
     else:
         log("httpx no disponible — hosts vivos no verificados", "warn")

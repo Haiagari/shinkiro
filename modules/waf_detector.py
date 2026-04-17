@@ -5,7 +5,7 @@ Ajuste estrategias según el WAF detectado.
 
 import requests
 import re
-from .utils import log
+from .utils import log, get_stealth_headers
 
 # Headers que indican WAF
 WAF_HEADERS = {
@@ -20,111 +20,48 @@ WAF_HEADERS = {
 
 # Patrones en response que indican WAF
 WAF_SIGNATURES = [
-    # Cloudflare
     (r"cloudflare", "Cloudflare"),
     (r"cf-ray", "Cloudflare"),
     (r"__cfduid", "Cloudflare"),
-    (r"checking your browser before accessing", "Cloudflare"),
-    
-    # AWS WAF
     (r"aws-waf", "AWS WAF"),
-    (r"request blocked", "AWS WAF"),
-    (r"managed by AWS WAF", "AWS WAF"),
-    
-    # Akamai
     (r"akamai", "Akamai"),
-    (r"akamai ghost", "Akamai"),
-    
-    # Sucuri
     (r"sucuri", "Sucuri WAF"),
-    (r"website firewall", "Sucuri"),
-    
-    # Wordfence
-    (r"wordfence", "Wordfence"),
-    (r"blocked by wordfence", "Wordfence"),
-    
-    # ModSecurity
     (r"mod_security", "ModSecurity"),
-    (r"modsecurity", "ModSecurity"),
-    (r"not rejected", "ModSecurity"),
-    
-    # Imunify360
-    (r"imunify360", "Imunify360"),
-    (r"powered by imunify", "Imunify360"),
-    
-    # F5 ASM
     (r"big-ip", "F5 ASM"),
-    (r"asm request", "F5"),
-    
-    # Incapsula
     (r"incapsula", "Incapsula"),
-    (r"incid", "Incapsula"),
-    
-    # StackPath
-    (r"stackpath", "StackPath"),
-    
-    # Fastly
     (r"fastly", "Fastly"),
-    
-    # Azure WAF
-    (r"azure waf", "Azure WAF"),
-    (r"application gateway", "Azure WAF"),
-    
-    # DDoS-Guard
-    (r"ddos-guard", "DDoS-Guard"),
-    
-    # ReCaptcha responses
-    (r"recaptcha", "reCAPTCHA"),
-    (r"google.com/recaptcha", "reCAPTCHA"),
 ]
 
 # Estrategias por WAF
 WAF_STRATEGIES = {
-    "cloudflare": {
-        "slow": True,
-        "delay": 3,
-        "avoid_browser_check": True,
-        "use_proxies": True,
-    },
-    "aws_waf": {
-        "slow": True,
-        "rotate_ips": True,
-        "add_standard_headers": True,
-    },
-    "sucuri": {
-        "slow": False,
-        "avoid_common_paths": True,
-    },
-    "wordfence": {
-        "slow": False,
-        "user_agent": "Mozilla/5.0",
-    },
-    "default": {
-        "slow": False,
-        "delay": 1,
-    },
+    "cloudflare": {"slow": True, "delay": 3, "use_proxies": True},
+    "aws_waf": {"slow": True, "rotate_ips": True},
+    "default": {"slow": False, "delay": 1},
 }
 
 def detect_waf(url: str) -> dict:
     """
     Detecta si un sitio tiene WAF.
-    Retorna: tipo, nombre, nivel de protección.
+    Enhanced: Usa headers de sigilo para no ser bloqueado durante la detección.
     """
     log(f"Detectando WAF en: {url}", "info")
     
     waf_type = None
     waf_name = None
     protection_level = "none"
-    detected_by = None
     
     try:
-        r = requests.get(url, timeout=10, verify=False)
-        headers = r.headers
+        # Usar headers de sigilo
+        headers_stealth = get_stealth_headers()
+        r = requests.get(url, headers=headers_stealth, timeout=10, verify=False)
+        
+        resp_headers = r.headers
         text = r.text.lower()
+
         
         # Check headers
         for header_name, pattern in WAF_HEADERS.items():
-            value = headers.get(header_name, "")
+            value = resp_headers.get(header_name, "")
             if value:
                 detected_by = f"header: {header_name}"
                 for sig, name in WAF_SIGNATURES:

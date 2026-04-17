@@ -1,300 +1,93 @@
-# 🚀 BugBounty Automation Framework
+# 🚀 BugBounty Automation Framework v2.0
 
-**Framework profesional, modular e inteligente para Bug Bounty de nivel enterprise.**
+**Plataforma profesional, modular e inteligente para Reconocimiento y Escaneo de Vulnerabilidades.**
 
-> Ejecutás un comando, te vas a tomar un café, volvés y tenés el scan listo con PoCs generados, reportes para enviar y hallazgos listos para verificar en Burp.
+Este framework no es solo una colección de herramientas; es una **infraestructura de Bug Bounty** diseñada para automatizar la intuición del hunter y escalar operaciones sin ser detectado.
 
 ---
 
-## ✨ Características Principales
+## 🏛️ Los 4 Pilares Profesionales (Metodología de Elite)
+
+Hemos profesionalizado el framework bajo 4 pilares críticos para el éxito en programas modernos:
+
+### 1. 💾 Persistencia Inteligente (SQLite + SQLAlchemy)
+Se acabó el depender de archivos JSON volátiles. 
+- **Memoria Real:** Base de datos persistente que guarda cada host, puerto y hallazgo con timestamp.
+- **Motor de Diferencias (SQL-based):** Detecta automáticamente qué cambió entre scans. ¿Apareció un puerto nuevo? ¿Un subdominio nuevo? El framework lo sabe.
+- **Consultas Rápidas:** Índices optimizados para buscar vulnerabilidades críticas a través de miles de registros en milisegundos.
+
+### 2. 🔔 Notificaciones de Alta Señal (Telegram Smart Alerts)
+No queremos spam, queremos acción.
+- **Filtrado por Severidad:** Recibí alertas inmediatas en tu celular para hallazgos **CRITICAL**, **HIGH** y **MEDIUM**.
+- **Reportes de Novedades:** Resúmenes automáticos al finalizar cada scan detallando nuevos descubrimientos (Diff Engine).
+- **Conectividad Total:** Integración nativa con bots de Telegram.
+
+### 3. 🥷 OPSEC & Sigilo Avanzado (Ninja Mode)
+Entrá sin hacer ruido. Evitá los baneos de IP de los Firewalls corporativos.
+- **Rotación de Identidades:** Cambio dinámico de User-Agents reales (Chrome, Firefox, Safari) en cada request.
+- **Jitter Aleatorio:** Retrasos variables entre peticiones para imitar comportamiento humano.
+- **Kill-Switch de Emergencia:** Si detectamos un baneo masivo (múltiples 403/429), el framework frena en seco para proteger tu infraestructura.
+- **Detección de WAF Adaptativa:** Identifica Cloudflare, AWS WAF, Akamai, etc., y ajusta automáticamente la agresividad del scan.
+
+### 4. 🧠 Estrategia de Detección Propia (Custom Templates)
+No corras lo que corren todos.
+- **Custom Templates Directory:** Carpeta dedicada para tus propias firmas de Nuclei.
+- **Detección Diferencial:** Buscamos archivos de backup (.bak, .swp), paneles de debug expuestos y patrones de LFI/IDOR personalizados que las herramientas estándar ignoran.
+
+---
+
+## ✨ Características Técnicas
 
 | Módulo | Descripción |
 |:-------|:------------|
-| **🔍 Reconocimiento** | subfinder, amass, crt.sh, assetfinder en paralelo |
-| **🌐 Puertos** | naabu + detección de servicios con nmap |
-| **🕷️ Crawling** | waybackurls, gau, katana + fuzzing |
-| **🔥 Análisis JS** | Secretos (AWS Keys, Tokens), endpoints, cambios |
-| **💀 Vulnerabilidades** | Nuclei, Dalfox, Ghauri, headers, IDs detectables |
-| **🎯 IDOR Detection** | Auto-detección y verificación de IDs |
-| **🤖 IA + PoC Auto** | PoCs generados automáticamente (XSS, SQLi, IDOR, etc.) |
-| **🧠 Fuzzing Inteligente** | Wordlists según tecnología detectada |
-| **🛡️ WAF Detection** | Detecta Cloudflare, AWS WAF y ajusta estrategia |
-| **🔔 Alertas Inteligentes** | Solo crítico/alto - configurabe en `config.yaml` |
-| **📊 Dashboard** | Interfaz web + Timeline de evolución |
-| **📈 Timeline** | Historial de cambios entre scans |
-| **⏰ Scheduler 24/7** | Modo daemon, watch, diff automático |
-| **📦 Export Burp** | Formato SAR - import directo en Burp Suite |
-| **🌐 Auto-detectar H1** | Encuentra programas nuevos automáticamente |
-| **🌍 Multi-Platform** | Reports para H1, Bugcrowd, Immunefi, OpenBB |
-| **📡 Enrichment** | Shodan/Censys para enrichment de IPs |
-| **🎚️ Rate Limiter** | Auto-ajusta para no romper el target |
+| **🔍 Recon + Fallback** | Subfinder, crt.sh y fallback automático al target base si no hay subdominios. |
+| **🌐 Puertos & Services** | Naabu + Nmap con inyección automática en el PATH. |
+| **💀 Vulnerabilidades** | Nuclei con integración de Custom Templates + Dalfox + SQLmap/Ghauri. |
+| **🎯 Smart Fuzzing** | Wordlists contextuales según la tecnología detectada en el target. |
+| **📈 DB Queries** | 9 funciones de helper para extraer inteligencia de la base de datos. |
+| **📦 Multi-Platform** | Generación de reportes listos para HackerOne, Bugcrowd e Immunefi. |
 
 ---
 
 ## 🚀 Inicio Rápido
 
 ### 1. Instalación
-
 ```bash
+git clone https://github.com/SamBleed/bugbounty-framework
 cd bugbounty-framework
 pip install -r requirements.txt
+./setup.sh  # Descarga tools locales en tools/go/bin
 ```
 
-### 2. Instalar herramientas (opcional)
-
-```bash
-# Si clonaste el repo por primera vez, ejecutar setup
-./setup.sh
-```
-
-Esto baixa e instala automáticamente las tools en `tools/go/bin/`.
-
-### 3. Configurar (opcional pero recomendado)
-
-```bash
-# Editar config.yaml y agregar tus API keys
-nano config.yaml
-```
-
-### 4. Un Scan
-
-```bash
-# Usando el script run.sh ( automáticamente agrega las tools al PATH)
-./run.sh -t target.com --full
-
-# O manualmente:
-export PATH=$PWD/tools/go/bin:$PATH
-python main.py -t target.com --full
-```
-
-### 5. Dashboard
-
-```bash
-uvicorn api:app --reload --port 8000
-# Abrir http://localhost:8000
-```
-
----
-
-## 📋 Estructura
-
-```
-bugbounty-framework/
-├── main.py              # Orquestador principal
-├── api.py              # API REST + Dashboard
-├── scheduler.py        # Modo 24/7
-├── config.yaml         # Configuración global
-├── requirements.txt   # Dependencias
-│
-├── modules/
-│   ├── recon.py           # Recon + takeover Nuclei
-│   ├── ports.py           # Escaneo de puertos
-│   ├── crawler.py         # URLs + descarga JS
-│   ├── vuln.py            # Vulns + IDOR detection
-│   ├── js_analyzer.py     # Secretos en JS
-│   ├── fuzzer.py          # Fuzzing contextual
-│   ├── intelligence.py  # Scoring + CVSS
-│   ├── diff.py            # Detector de cambios
-│   ├── ai_analyzer.py     # PoC automático
-│   ├── notifier.py       # Alertas inteligentes
-│   ├── exporter.py       # Export Burp SAR
-│   ├── programs_scraper.py # H1 scope
-│   ├── enrichment.py      # Shodan/Censys
-│   ├── waf_detector.py   # WAF detection
-│   ├── rate_limiter.py  # Auto rate limit
-│   ├── platforms.py     # Multi-platform reports
-│   └── database.py       # SQLite
-│
-├── static/
-│   └── index.html        # Dashboard + Timeline
-│
-├── scopes/              # Scopes descargados
-└── output/             # Resultados
-    └── {target}/
-        └── {timestamp}/
-            ├── recon/
-            ├── ports/
-            ├── urls/
-            ├── vulns/
-            ├── intelligence/
-            ├── exporter/    # ← burp_findings.sar
-            └── reports/      # ← hackerone_*.md
-```
-
----
-
-## 💻 Comandos
-
-### Scan Básico
-```bash
-python main.py -t target.com --full
-```
-
-### Solo Recon
-```bash
-python main.py -t target.com --recon
-```
-
-### Con Programa H1
-```bash
-python main.py -t target.com -p program_name --full
-```
-
-### Scheduler 24/7
-```bash
-# Modo daemon (cada 6h)
-python scheduler.py --daemon --diff
-
-# Modo watch (observar un target)
-python scheduler.py --watch -t target.com
-
-# Buscar programas nuevos
-python scheduler.py --h1-new
-```
-
-### Dashboard
-```bash
-uvicorn api:app --port 8000
-# http://localhost:8000
-```
-
----
-
-## ⚙️ Configuración
-
-### config.yaml
-
+### 2. Configuración (Crucial)
+Edita `config.yaml` para habilitar el sigilo y las notificaciones:
 ```yaml
-# Rate Limiting
-auto_rate_limit:
-  enabled: true
-  max_requests_per_min: 200
-
-# Notificaciones (nivel mínimo)
-notifications:
-  alert_level: "medium"  # critical, high, medium, low, all
-
-# API Keys
-api_keys:
-  shodan: "TU_KEY"
-  virustotal: "TU_KEY"
-  censys_id: "TU_ID"
-  censys_secret: "TU_SECRET"
-
-# IA (opcional)
-ai:
-  gemini_api_key: "TU_KEY"
-  claude_api_key: "TU_KEY"
-
-# Notificaciones
 notifications:
   telegram_token: "TU_TOKEN"
-  telegram_chat_id: "TU_CHAT_ID"
+  telegram_chat_id: "TU_ID"
 ```
 
----
-
-## 🎯 Ejemplo de Uso (Tu Workflow)
-
+### 3. Ejecución
+El framework ahora gestiona automáticamente las herramientas de Go. No necesitas configurar el PATH manualmente.
 ```bash
-# 8:47am - Nuevo programa en H1
-python main.py -t pagorapido.com --full
-
-# El framework corre solo:
-# → Recon (subfinder + amass + crt.sh) en paralelo
-# → Detecta takeover con Nuclei
-# → Puertos + URLs
-# → Análisis JS (secretos + endpoints)
-# → Nuclei + Dalfox + IDOR detection
-# → Scoring CVSS automático
-# → Genera PoCs
-# → Reportes listos para H1/Bugcrowd
-
-# 9:10am - Volvés al dashboard
-# → Ver hallazgos priorizados (críticos primero)
-# → Click en "📋 Copiar" del PoC
-# → Importar a Burp: File → Import → burp_findings.sar
-
-# 10:20am - Reporte enviado
-# → output/target/*/reports/hackerone_1.md
-# → Listo para copy-paste a H1
+# Scan completo con detección de WAF y Sigilo
+python main.py -t target.com --full --waf-detection
 ```
 
 ---
 
-## 📊 Pipeline
-
-```
-┌────────────┐     ┌───────┐     ┌────────┐     ┌────────────┐
-│   RECON    │───▶│ PORTS │───▶│  URLs  │───▶│ JS ANALYZ  │
-│ (paralelo) │     │       │     │        │     │            │
-└────────────┘     └───────┘     └────────┘     └────────────┘
-     │                              │             │
-     ▼                              ▼             ▼
-┌──────────┐     ┌──────────┐   ┌──────────┐  ┌───────────┐
-│ WAF DET  │     │  VULNS   │   │ IDOR DET │  │  FUZZER   │
-│  (auto)  │     │ (Nuclei) │   │  (auto)  │  │ (context) │
-└──────────┘     └──────────┘   └──────────┘  └───────────┘
-     │                 │              │             │
-     ▼                 ▼              ▼             ▼
-┌───────────┐     ┌───────────┐ ┌────────────┐ ┌──────────┐
-│ INTELLIG  │───▶│  AI PoC   │ │  SCORING   │ │ REPORTS  │
-│(CVSS auto)│     │ (auto gen)│ │ (priority) │ │ (multi)  │
-└───────────┘     └───────────┘ └────────────┘ └──────────┘
-     │                 │                            │
-     ▼                 ▼                            ▼
-┌───────────┐    ┌──────��─────┐             ┌─────────────┐   
-│ NOTIFIER  │    │   EXPORTER    │             │  DASHBOARD  │
-│ (smart)   │    │  (Burp SAR )  │             │  (timeline) │
-└───────────┘    └───────────────┘             └─────────────┘
-```
+## 📋 Estructura del Proyecto
+- `main.py`: Orquestador con inyección dinámica de PATH.
+- `modules/database.py`: Gestión de SQLAlchemy y modelos.
+- `modules/db_queries.py`: Inteligencia y consultas sobre la DB.
+- `modules/rate_limiter.py`: El corazón del sigilo (Jitter + Kill-switch).
+- `custom_templates/`: Tu arsenal secreto de firmas Nuclei.
+- `output/`: Resultados estructurados por sesión.
 
 ---
 
-## 🛠️ Herramientas Requeridas
-
-El framework detecta automáticamente las herramientas instaladas.
-
-| Herramienta | Para |
-|------------|------|
-| subfinder | Subdominios |
-| httpx | Hosts vivos |
-| dnsx | Resolución DNS |
-| naabu | Puertos |
-| nuclei | Vulnerabilidades |
-| dalfox | XSS |
-| katana | Crawling |
-| ffuf | Fuzzing |
+## 🛡️ Uso Ético
+Este framework fue creado para Bug Hunting legal y auditorías autorizadas. **No nos hacemos responsables por el mal uso de esta herramienta.**
 
 ---
-
-## 📈 Estado
-
-**Versión 1.0 completada** con todas las mejoras implementadas:
-
-- ✅ Scheduler 24/7 (--daemon, --watch, --diff)
-- ✅ Export Burp SAR
-- ✅ Auto-detectar programas H1
-- ✅ Nuclei takeover templates
-- ✅ Rate limiting automático
-- ✅ Shodan/Censys enrichment
-- ✅ Reports multi-platform
-- ✅ Dashboard Timeline
-- ✅ Auto-wordlists
-- ✅ WAF detection
-
----
-
-## 🤝 Contribuir
-
-1. Fork
-2. Crear branch
-3. Commit
-4. Push
-5. Pull request
-
----
-
-**Licencia:** MIT
-
-**¿Preguntas?** Abrí un issue.
+**Desarrollado por el equipo de Elite con ❤️ para la comunidad de Bug Hunters.**
