@@ -1,0 +1,3 @@
+# Lista de dominios para monitoreo continuo
+# Agrega un dominio por línea
+# example.com

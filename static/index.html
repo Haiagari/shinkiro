@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBounty Framework - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .severity-critical { border-left: 4px solid #ef4444; }
+        .severity-high { border-left: 4px solid #f97316; }
+        .severity-medium { border-left: 4px solid #eab308; }
+        .pulse-critical { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+    <!-- Header -->
+    <nav class="bg-gray-800 p-4 border-b border-gray-700 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <h1 class="text-2xl font-bold text-cyan-400">🚀 BugBounty Framework</h1>
+                <span id="currentTarget" class="text-gray-400 text-sm"></span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div id="stats" class="text-sm flex space-x-6">
+                    <!-- Stats se cargan aquí -->
+                </div>
+                <button onclick="loadTimeline()" class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-sm">
+                    📈 Timeline
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Timeline Modal -->
+    <div id="timelineModal" class="hidden fixed inset-0 bg-black/80 z-50 overflow-y-auto">
+        <div class="bg-gray-800 p-6 rounded-lg max-w-4xl mx-auto my-8 border border-gray-700">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-cyan-400">📈 Evolución del Target</h2>
+                <button onclick="closeTimeline()" class="text-gray-400 hover:text-white">✕</button>
+            </div>
+            <div id="timelineContent" class="space-y-4">
+                <!-- Timeline se carga aquí -->
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto p-6">
+        
+        <!-- Alerts Banner - Solo críticos -->
+        <div id="criticalAlert" class="hidden bg-red-900/50 border border-red-600 p-4 rounded-lg mb-6 pulse-critical">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-red-400 font-bold text-lg">🚨 ALERTAS CRÍTICAS</span>
+                    <p id="criticalCount" class="text-red-300"></p>
+                </div>
+                <button onclick="loadCritical()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded font-bold">
+                    Ver Hallazgos
+                </button>
+            </div>
+        </div>
+
+        <!-- Grid Principal -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Columna Izquierda: Controls + Targets -->
+            <div class="space-y-6">
+                <!-- Nuevo Scan -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-300">⚡ Nuevo Scan</h2>
+                    <div class="space-y-3">
+                        <input type="text" id="targetInput" placeholder="dominio.com" 
+                            class="w-full bg-gray-700 border border-gray-600 rounded p-3 focus:outline-none focus:border-cyan-500">
+                        <div class="flex space-x-2">
+                            <button onclick="launchScan()" 
+                                class="flex-1 bg-cyan-600 hover:bg-cyan-500 px-4 py-3 rounded font-bold transition">
+                                🎯 Escanear
+                            </button>
+                            <button onclick="toggleScheduler()" 
+                                class="bg-purple-600 hover:bg-purple-500 px-4 py-3 rounded font-bold transition" title="Modo Continuo">
+                                🔄
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Targets Recientes -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-300">📡 Targets</h2>
+                    <ul id="targetList" class="space-y-2 max-h-64 overflow-y-auto">
+                        <!-- Targets se cargan aquí -->
+                    </ul>
+                </div>
+
+                <!-- Score Board -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-300">🎯 Top Objetivos</h2>
+                    <div id="topTargets" class="space-y-2">
+                        <!-- Top targets se cargan aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Hallazgos Priorizados -->
+            <div class="lg:col-span-3 space-y-6">
+                
+                <!-- Resumen -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 text-center">
+                        <div id="statCritical" class="text-3xl font-bold text-red-500">0</div>
+                        <div class="text-gray-400 text-sm">Críticos</div>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 text-center">
+                        <div id="statHigh" class="text-3xl font-bold text-orange-500">0</div>
+                        <div class="text-gray-400 text-sm">Altos</div>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 text-center">
+                        <div id="statMedium" class="text-3xl font-bold text-yellow-500">0</div>
+                        <div class="text-gray-400 text-sm">Medios</div>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 text-center">
+                        <div id="statUrls" class="text-3xl font-bold text-cyan-500">0</div>
+                        <div class="text-gray-400 text-sm">URLs</div>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 text-center">
+                        <div id="statHosts" class="text-3xl font-bold text-green-500">0</div>
+                        <div class="text-gray-400 text-sm">Hosts</div>
+                    </div>
+                </div>
+
+                <!-- Hallazgos -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-300">⚠️ Hallazgos Priorizados</h2>
+                        <select id="severityFilter" onchange="filterBySeverity()" class="bg-gray-700 border border-gray-600 rounded p-2 text-sm">
+                            <option value="critical">Críticos</option>
+                            <option value="high">Altos+</option>
+                            <option value="medium" selected>Medios+</option>
+                            <option value="low">Todos</option>
+                            <option value="all">Todos incl. Info</option>
+                        </select>
+                    </div>
+                    
+                    <div id="vulnList" class="space-y-3 max-h-[500px] overflow-y-auto">
+                        <!-- Vulns se cargan aquí -->
+                    </div>
+                </div>
+
+                <!-- PoCs Generados -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-300">💡 PoCs Listos</h2>
+                    <div id="pocList" class="space-y-3">
+                        <!-- PoCs se cargan aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = window.location.pathname.replace(/\/$/, '');
+        let currentFindings = [];
+        let currentPoCs = [];
+
+        async function loadStats() {
+            try {
+                const res = await fetch(`${API_URL}/stats`);
+                const data = await res.json();
+                
+                document.getElementById('stats').innerHTML = `
+                    <span class="text-green-400">✓ Targets: ${data.total_targets}</span>
+                    <span class="text-cyan-400">⚡ Scans: ${data.total_scans}</span>
+                    <span class="text-red-400">⚠️ Vulns: ${data.total_vulns}</span>
+                `;
+                
+                // Resumen
+                document.getElementById('statCritical').textContent = data.by_severity?.critical || 0;
+                document.getElementById('statHigh').textContent = data.by_severity?.high || 0;
+                document.getElementById('statMedium').textContent = data.by_severity?.medium || 0;
+                
+                // Banner crítico
+                const critical = data.by_severity?.critical || 0;
+                if (critical > 0) {
+                    document.getElementById('criticalAlert').classList.remove('hidden');
+                    document.getElementById('criticalCount').textContent = `${critical} vulnerabilidad(es) crítica(s) encontrada(s)`;
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        async function loadTargets() {
+            try {
+                const res = await fetch(`${API_URL}/targets`);
+                const targets = await res.json();
+                const list = document.getElementById('targetList');
+                
+                if (targets.length === 0) {
+                    list.innerHTML = '<li class="text-gray-500 text-sm">Sin targets ainda</li>';
+                    return;
+                }
+                
+                list.innerHTML = targets.slice(0, 10).map(t => `
+                    <li onclick="selectTarget('${t.domain}')" 
+                        class="cursor-pointer p-3 bg-gray-700 hover:bg-gray-600 rounded border border-gray-600 transition">
+                        <div class="font-mono text-sm text-cyan-400">${t.domain}</div>
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>${t.scans_count || 0} scans</span>
+                            <span>${new Date(t.last_scan).toLocaleDateString()}</span>
+                        </div>
+                    </li>
+                `).join('');
+            } catch(e) { console.error(e); }
+        }
+
+        async function loadFindings() {
+            try {
+                const res = await fetch(`${API_URL}/findings`);
+                const vulns = await res.json();
+                currentFindings = vulns;
+                
+                // Stats
+                const bySev = { critical: 0, high: 0, medium: 0, low: 0 };
+                vulns.forEach(v => {
+                    const s = v.severity?.toLowerCase() || 'unknown';
+                    if (s in bySev) bySev[s]++;
+                });
+                
+                document.getElementById('statCritical').textContent = bySev.critical;
+                document.getElementById('statHigh').textContent = bySev.high;
+                document.getElementById('statMedium').textContent = bySev.medium;
+                
+                renderFindings(vulns);
+            } catch(e) { console.error(e); }
+        }
+
+        function renderFindings(vulns) {
+            const list = document.getElementById('vulnList');
+            const filter = document.getElementById('severityFilter').value;
+            
+            let filtered = vulns;
+            if (filter === 'critical') filtered = vulns.filter(v => v.severity?.toLowerCase() === 'critical');
+            else if (filter === 'high') filtered = vulns.filter(v => ['critical', 'high'].includes(v.severity?.toLowerCase()));
+            
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="text-gray-500 text-center py-8">Sin vulnerabilidades aún</div>';
+                return;
+            }
+            
+            // Ordenar: críticos primero
+            const severityOrder = { critical: 0, high: 1, medium: 2, low: 3, info: 4, unknown: 5 };
+            filtered.sort((a, b) => severityOrder[a.severity?.toLowerCase()] - severityOrder[b.severity?.toLowerCase()]);
+            
+            list.innerHTML = filtered.slice(0, 20).map((v, i) => `
+                <div class="p-4 bg-gray-700 rounded-lg border severity-${v.severity?.toLowerCase()}">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 rounded text-xs font-bold ${getSeverityClass(v.severity)}">
+                                    ${v.severity?.toUpperCase() || 'UNKNOWN'}
+                                </span>
+                                <span class="font-semibold text-white">${escapeHtml(v.name || v.type)}</span>
+                            </div>
+                            <div class="mt-2 font-mono text-sm text-gray-400 break-all">${escapeHtml(v.url || '')}</div>
+                            ${v.cvss ? `<div class="mt-1 text-xs text-cyan-400">CVSS: ${v.cvss.base_score}/10</div>` : ''}
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <button onclick="copyUrl('${escapeHtml(v.url || '')}')" class="text-xs bg-gray-600 hover:bg-gray-500 px-2 py-1 rounded">
+                                📋 URL
+                            </button>
+                            <button onclick="copyPoC('${escapeHtml(v.poc || '')}')" class="text-xs bg-cyan-700 hover:bg-cyan-600 px-2 py-1 rounded">
+                                💡 PoC
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function loadTopTargets() {
+            try {
+                const res = await fetch(`${API_URL}/intelligence`);
+                const data = await res.json();
+                const list = document.getElementById('topTargets');
+                
+                if (!data.top_targets?.length) {
+                    list.innerHTML = '<div class="text-gray-500 text-sm">Sin datos de scoring</div>';
+                    return;
+                }
+                
+                list.innerHTML = data.top_targets.slice(0, 5).map((t, i) => `
+                    <div class="p-3 bg-gray-700 rounded border border-gray-600">
+                        <div class="flex justify-between">
+                            <span class="font-mono text-cyan-400">${i+1}. ${escapeHtml(t.host)}</span>
+                            <span class="font-bold ${t.score >= 5 ? 'text-red-400' : t.score >= 3 ? 'text-orange-400' : 'text-yellow-400'}">
+                                ${t.score}
+                            </span>
+                        </div>
+                        ${t.reasons?.length ? `<div class="text-xs text-gray-500 mt-1">${t.reasons[0]}</div>` : ''}
+                    </div>
+                `).join('');
+            } catch(e) { console.error(e); }
+        }
+
+        async function loadPoCs() {
+            try {
+                const res = await fetch(`${API_URL}/pocs`);
+                const pocs = await res.json();
+                currentPoCs = pocs;
+                renderPoCs(pocs);
+            } catch(e) { console.error(e); }
+        }
+
+        function renderPoCs(pocs) {
+            const list = document.getElementById('pocList');
+            if (!pocs?.length) {
+                list.innerHTML = '<div class="text-gray-500 text-center py-4">Sin PoCs generados</div>';
+                return;
+            }
+            
+            list.innerHTML = pocs.slice(0, 10).map(p => `
+                <div class="p-3 bg-gray-700 rounded border border-gray-600">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="font-semibold text-cyan-400">${escapeHtml(p.type || p.finding)}</span>
+                            <div class="text-xs text-gray-500 mt-1">${escapeHtml(p.impact || '')}</div>
+                        </div>
+                        <button onclick="copyPoC('${escapeHtml(p.poc || '')}')" class="text-xs bg-green-700 hover:bg-green-600 px-3 py-1 rounded">
+                            📋 Copiar
+                        </button>
+                    </div>
+                    <pre class="mt-2 text-xs text-gray-400 overflow-x-auto bg-gray-800 p-2 rounded">${escapeHtml(p.poc || '').substring(0, 200)}</pre>
+                </div>
+            `).join('');
+        }
+
+        function getSeverityClass(s) {
+            switch(s?.toLowerCase()) {
+                case 'critical': return 'bg-red-600 text-white';
+                case 'high': return 'bg-orange-600 text-white';
+                case 'medium': return 'bg-yellow-600 text-black';
+                default: return 'bg-gray-600 text-white';
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        async function launchScan() {
+            const domain = document.getElementById('targetInput').value;
+            if (!domain) return alert('Poné un dominio, che!');
+            
+            try {
+                const res = await fetch(`${API_URL}/scan/${domain}`, { method: 'POST' });
+                const data = await res.json();
+                
+                if (data.status === 'started') {
+                    alert(`🎯 Scan iniciado: ${domain}`);
+                    document.getElementById('currentTarget').textContent = `→ ${domain}`;
+                    setTimeout(loadFindings, 2000);
+                } else {
+                    alert(data.message || 'Error');
+                }
+            } catch(e) { alert('Error: ' + e.message); }
+        }
+
+        function filterBySeverity() {
+            renderFindings(currentFindings);
+        }
+
+        function selectTarget(domain) {
+            document.getElementById('targetInput').value = domain;
+            document.getElementById('currentTarget').textContent = `→ ${domain}`;
+        }
+
+        function toggleScheduler() {
+            alert('Modo continuo: implementando...');
+        }
+
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url);
+            alert('URL copiada!');
+        }
+
+        function copyPoC(poc) {
+            if (!poc) return alert('Sin PoC disponible');
+            navigator.clipboard.writeText(poc);
+            alert('PoC copiado!');
+        }
+
+        function loadCritical() {
+            document.getElementById('severityFilter').value = 'critical';
+            filterBySeverity();
+            window.scrollTo(0, document.getElementById('vulnList').offsetTop);
+        }
+
+        async function loadTimeline() {
+            const domain = document.getElementById('targetInput').value;
+            if (!domain) return alert('Seleccioná un target primero');
+            
+            try {
+                const res = await fetch(`${API_URL}/timeline/${domain}`);
+                const data = await res.json();
+                
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                const content = document.getElementById('timelineContent');
+                const tl = data.timeline || [];
+                
+                if (tl.length === 0) {
+                    content.innerHTML = '<div class="text-gray-500">Sin datos de timeline</div>';
+                    document.getElementById('timelineModal').classList.remove('hidden');
+                    return;
+                }
+                
+                // Render timeline
+                let html = `<div class="text-gray-400 text-sm mb-4">Total scans: ${data.total_scans}</div>`;
+                
+                tl.forEach((scan, i) => {
+                    const date = scan.timestamp ? new Date(scan.timestamp).toLocaleString() : 'N/A';
+                    const vulns = scan.vulns;
+                    
+                    html += `
+                        <div class="p-4 bg-gray-700 rounded border border-gray-600">
+                            <div class="flex justify-between items-center">
+                                <span class="text-cyan-400 font-mono">Scan ${i + 1}</span>
+                                <span class="text-gray-500 text-sm">${date}</span>
+                            </div>
+                            <div class="grid grid-cols-4 gap-4 mt-2 text-sm">
+                                <div>🌐 ${scan.subdomains || 0} subs</div>
+                                <div>🖥️ ${scan.hosts || 0} hosts</div>
+                                <div>🔗 ${scan.urls || 0} URLs</div>
+                                <div class="flex space-x-2">
+                                    <span class="text-red-500">${vulns.critical || 0}</span>/
+                                    <span class="text-orange-500">${vulns.high || 0}</span>/
+                                    <span class="text-yellow-500">${vulns.medium || 0}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // Cambios
+                if (data.changes && data.changes.length > 0) {
+                    html += '<div class="mt-4 text-yellow-400 font-bold"> Cambios detectados:</div>';
+                    data.changes.forEach(c => {
+                        html += `<div class="text-sm text-gray-400">${c.subdomains_diff > 0 ? '+' : ''}${c.subdomains_diff} subdomains, ${c.vulns_diff > 0 ? '+' : ''}${c.vulns_diff} vulns</div>`;
+                    });
+                }
+                
+                content.innerHTML = html;
+                document.getElementById('timelineModal').classList.remove('hidden');
+            } catch(e) {
+                console.error(e);
+                alert('Error cargando timeline');
+            }
+        }
+
+        function closeTimeline() {
+            document.getElementById('timelineModal').classList.add('hidden');
+        }
+
+        // Carga Inicial
+        loadStats();
+        loadTargets();
+        loadFindings();
+        loadTopTargets();
+        loadPoCs();
+        
+        // Auto-refresh
+        setInterval(loadStats, 15000);
+        setInterval(loadFindings, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+pyyaml>=6.0
+requests>=2.31
+colorama>=0.4.6
+sqlalchemy>=2.0.0
+fastapi>=0.100.0
+uvicorn>=0.22.0
