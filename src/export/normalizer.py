@@ -284,6 +284,21 @@ class NormalizedExporter:
         
         return "\n".join(md)
 
+    def save_learning_report(self) -> Path:
+        """Genera un reporte del estado de aprendizaje del sistema."""
+        from src.intelligence.learning_orchestrator import learning_orchestrator
+        
+        data = learning_orchestrator.get_full_feedback()
+        filename = f"learning_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        filepath = self.output_dir / "intelligence" / filename
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(filepath, 'w') as f:
+            json.dump(data, f, indent=2)
+            
+        logger.info(f"Learning report saved to {filepath}")
+        return filepath
+
 
 # Instancia global
 exporter = NormalizedExporter()

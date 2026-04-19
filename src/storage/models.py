@@ -251,3 +251,14 @@ class Finding(Base):
     
     # Relaciones
     vulnerability_id = Column(Integer, ForeignKey('vulnerabilities.id'), nullable=True)
+
+class WeightHistory(Base):
+    """Historial de pesos de scoring para visualización."""
+    __tablename__ = 'weight_history'
+    
+    id = Column(Integer, primary_key=True)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    reputation = Column(Float)
+    novelty = Column(Float)
+    diff = Column(Float)
+    decision_id = Column(String(100), nullable=True)

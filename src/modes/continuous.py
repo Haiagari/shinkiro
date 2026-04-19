@@ -26,89 +26,75 @@ class ContinuousMode(BaseMode):
 
     def execute(self) -> Dict[str, Any]:
         log.info(f"[CONTINUOUS] Starting monitoring cycle for {self.target}")
+        from src.intelligence.learning_orchestrator import learning_orchestrator
         
         intent = self.get_operational_intent()
-        intent["noise"] = "low" # Queremos pasar desapercibidos
+        intent["noise"] = "low"
         intent["speed"] = "slow"
         
-        # 1. Discovery Ligero (Pasivo)
-        # En continuo solo usamos proveedores pasivos o rápidos para detectar cambios
+        # 1. Discovery Ligero
         current_subdomains = set(tool_manager.run_capability("asset_discovery", self.target, **intent))
-        
-        # Necesitamos registrar este scan para poder hacer el diff
         scan_obj = self.db.create_scan(self.target, self.session_id, mode="continuous")
-        
-        # Guardamos subdominios encontrados para el diff
         for sub in current_subdomains:
             self.db.add_subdomain(scan_obj.id, sub)
         
-        # 2. Calcular DIFF REAL usando el DiffEngine robusto
+        # 2. Calcular DIFF
         diff_report = self.diff_engine.get_diff(self.target, scan_obj.id)
         
+        findings = []
         if diff_report.has_changes():
             log.warn(f"[CONTINUOUS] Changes detected: {diff_report.summary()}")
-            self.notifier.send_alert(
-                title=f"Delta detectado: {self.target}",
-                message=f"Cambios: {diff_report.summary()}"
+            
+            # REGISTRO DE DECISIÓN: Disparar escaneo por diferencia
+            decision_id = learning_orchestrator.record_decision(
+                session_id=self.session_id,
+                decision_type="trigger_scan_on_diff",
+                target=self.target,
+                reason="changes_detected_in_surface",
+                context=diff_report.to_dict()
             )
             
-            # 3. ACCIÓN BASADA EN EL DIFERENCIAL (Inteligencia Reactiva)
-            
-            # A. Nuevos Activos -> Escaneo Completo
+            # A. Nuevos Activos
             if diff_report.new_subdomains:
-                log.info(f"[CONTINUOUS] Reacting to NEW ASSETS: {diff_report.new_subdomains}")
-                self._scan_new_assets(diff_report.new_subdomains, intent)
+                new_findings = self._scan_new_assets(diff_report.new_subdomains, intent)
+                if new_findings: findings.extend(new_findings)
                 
-            # B. Cambios de Versión/Servicio -> Escaneo de Vulnerabilidades Específico
+            # B. Cambios de Versión
             if diff_report.changed_services:
-                log.info(f"[CONTINUOUS] Reacting to CHANGED SERVICES: {len(diff_report.changed_services)} changes")
                 for change in diff_report.changed_services:
                     host = change['host']
-                    old_v = change['old']['version']
-                    new_v = change['new']['version']
-                    log.info(f"[CONTINUOUS] Service updated on {host}: {old_v} -> {new_v}. Triggering targeted research.")
-                    # Lanzamos capacidad de escaneo de templates específica para el nuevo stack detectado
-                    tool_manager.run_capability("template_scan", host, **intent)
+                    res = tool_manager.run_capability("template_scan", host, **intent)
+                    if res: findings.extend(res)
 
-            # C. Puertos Cerrados -> Limpieza de Memoria (Opcional)
+            # C. Puertos Cerrados
             if diff_report.closed_ports:
                 for p in diff_report.closed_ports:
-                    log.info(f"[CONTINUOUS] Port {p['port']} closed on {p['host']}. Updating surface memory.")
-            
-            # D. Generar INTELLIGENCE BRIEF (Análisis + Recomendaciones)
-            from src.intelligence.brief import generate_intelligence
-            intelligence = generate_intelligence(
-                self.db_session, 
-                self.session_id, 
-                self.target,
-                diff_report.to_dict()
+                    log.info(f"[CONTINUOUS] Port {p['port']} closed on {p['host']}")
+
+            # EVALUACIÓN REFLEXIVA: ¿Sirvió de algo escanear el delta?
+            outcome = learning_orchestrator.evaluate_decision(
+                decision_id=decision_id,
+                findings=findings,
+                time_spent=60.0 # Estimado
             )
-            
-            # Loggear recomendaciones accionables
-            if intelligence.get("recommendations"):
-                log.warning("[CONTINUOUS] INTELLIGENCE BRIEF:")
-                for rec in intelligence.get("recommendations", []):
-                    log.info(f"  → {rec}")
-        else:
-            log.info("[CONTINUOUS] No changes detected in attack surface.")
+            learning_orchestrator.apply_feedback("trigger_scan_on_diff", outcome)
+            log.info(f"[CONTINUOUS] Learning: Delta scan outcome: {outcome['result']}")
 
         return {
             "status": "completed",
             "has_changes": diff_report.has_changes(),
-            "changes": diff_report.to_dict(),
-            "intelligence": generate_intelligence(
-                self.db_session,
-                self.session_id,
-                self.target,
-                diff_report.to_dict()
-            ) if diff_report.has_changes() else {}
+            "findings_found": len(findings),
+            "intelligence": learning_orchestrator.get_full_feedback()
         }
 
-    def _scan_new_assets(self, new_assets: List[str], intent: Dict[str, Any]):
+    def _scan_new_assets(self, new_assets: List[str], intent: Dict[str, Any]) -> List[Any]:
         log.info(f"[CONTINUOUS] Performing targeted scan on {len(new_assets)} new assets")
+        all_findings = []
         for asset in new_assets:
             tool_manager.run_capability("service_discovery", asset, **intent)
-            tool_manager.run_capability("template_scan", asset, **intent)
+            res = tool_manager.run_capability("template_scan", asset, **intent)
+            if res: all_findings.extend(res)
+        return all_findings
 
 def run_continuous(target: str, **options) -> Dict[str, Any]:
     return ContinuousMode(target, options).run()
