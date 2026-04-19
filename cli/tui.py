@@ -804,7 +804,7 @@ class ClaudeLikeTUI:
         ok_api = commands.api_alive()
         self._append_result(f"• API: {'OK' if ok_api else 'DOWN'}")
         self._append_result(
-            f"• DB: {'OK' if (commands.ROOT_DIR / 'runtime' / 'db' / 'bugbounty.db').exists() else 'MISSING'}"
+            f"• DB: {'OK' if (commands.ROOT_DIR / 'runtime' / 'db' / 'ozyrecon.db').exists() else 'MISSING'}"
         )
         self._append_result(
             f"• Runtime: {'OK' if (commands.ROOT_DIR / 'runtime' / 'scans').exists() else 'MISSING'}"

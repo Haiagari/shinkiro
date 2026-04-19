@@ -30,12 +30,23 @@ require_dir "$ROOT_DIR/ui"
 
 require_file "$ROOT_DIR/agent.py"
 
+require_dir "$ROOT_DIR/src"
+require_dir "$ROOT_DIR/src/core"
+require_dir "$ROOT_DIR/src/opsec"
+require_dir "$ROOT_DIR/src/discovery"
+require_dir "$ROOT_DIR/src/scanners"
+require_dir "$ROOT_DIR/src/storage"
+require_dir "$ROOT_DIR/src/intelligence"
+require_dir "$ROOT_DIR/src/notifications"
+require_dir "$ROOT_DIR/src/export"
+require_dir "$ROOT_DIR/src/modes"
+
 require_dir "$ROOT_DIR/runtime/db"
 require_dir "$ROOT_DIR/runtime/logs"
 require_dir "$ROOT_DIR/runtime/scans"
 require_dir "$ROOT_DIR/runtime/state"
 
-require_file "$ROOT_DIR/runtime/db/bugbounty.db"
+require_file "$ROOT_DIR/runtime/db/ozyrecon.db"
 require_file "$ROOT_DIR/runtime/logs/agent_reasoning.log"
 require_file "$ROOT_DIR/runtime/state/llm_usage.json"
 

@@ -1,5 +1,6 @@
 """
 Gestión de la Base de Datos (SQLite)
+OzyRecon - Legacy Module
 """
 
 from datetime import datetime
@@ -10,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from .models import Base, Target, Scan, Subdomain, Port, Vulnerability
 from .utils import load_json, save_json
 
-DB_PATH = Path(__file__).resolve().parents[2] / "runtime" / "db" / "bugbounty.db"
+DB_PATH = Path(__file__).resolve().parents[2] / "runtime" / "db" / "ozyrecon.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 DB_URL = f"sqlite:///{DB_PATH}"
 

@@ -13,7 +13,7 @@ from ui.renderer import console
 from ui.welcome import print_welcome
 
 
-HISTORY_FILE = Path.home() / ".bugbounty-cli" / "history"
+HISTORY_FILE = Path.home() / ".ozyrecon-cli" / "history"
 
 
 class AgentShell(cmd.Cmd):

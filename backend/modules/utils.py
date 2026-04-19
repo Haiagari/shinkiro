@@ -1,4 +1,4 @@
-"""Utilidades compartidas del framework"""
+"""Utilidades compartidas de OzyRecon"""
 
 import sys
 import subprocess
@@ -10,7 +10,7 @@ from pathlib import Path
 from datetime import datetime
 
 # Configuración de logging profesional
-logger = logging.getLogger("bugbounty")
+logger = logging.getLogger("ozyrecon")
 logger.setLevel(logging.DEBUG)
 
 # Handler para consola

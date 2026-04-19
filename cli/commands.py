@@ -550,7 +550,7 @@ def print_doctor() -> None:
 
     checks = [
         ("API", "OK" if api_alive() else "DOWN", API_BASE),
-        ("DB", "OK" if (ROOT_DIR / "runtime" / "db" / "bugbounty.db").exists() else "MISSING", str(ROOT_DIR / "runtime" / "db" / "bugbounty.db")),
+        ("DB", "OK" if (ROOT_DIR / "runtime" / "db" / "ozyrecon.db").exists() else "MISSING", str(ROOT_DIR / "runtime" / "db" / "ozyrecon.db")),
         ("Runtime", "OK" if (ROOT_DIR / "runtime" / "scans").exists() else "MISSING", str(ROOT_DIR / "runtime" / "scans")),
         ("Python", "OK" if shutil.which("python3") else "MISSING", "python3"),
     ]
