@@ -8,8 +8,7 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 from src.storage.database import SessionLocal
-from src.storage.models import Base
-from sqlalchemy import Column, Integer, String, DateTime, JSON, Text
+from sqlalchemy import Column, Integer, String, DateTime, JSON, Text, text
 from src.utils import get_logger
 
 logger = get_logger('decision_log')
@@ -35,12 +34,10 @@ class Decision:
     reason: str = ""
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
     
-    #-weight info (before decision)
     reputation_weight: float = 0.5
     novelty_weight: float = 0.3
     diff_weight: float = 0.2
     
-    # Outcome (added for Phase 2.1)
     result: Optional[str] = None
     value_score: float = 0.0
 
@@ -55,34 +52,34 @@ class DecisionRepository:
     
     def save(self, decision: Decision) -> Decision:
         """Guarda una decisión en la DB."""
-        # Create table if not exists with outcome columns
-        self.db.execute(
+        self.db.execute(text(
             "CREATE TABLE IF NOT EXISTS decisions ("
             "id TEXT PRIMARY KEY, session_id TEXT, decision_type TEXT, "
             "target TEXT, context JSON, reason TEXT, timestamp TEXT, "
             "reputation_weight REAL, novelty_weight REAL, diff_weight REAL, "
             "result TEXT, value_score REAL)"
-        )
+        ))
         
-        self.db.execute(
+        self.db.execute(text(
             """INSERT OR REPLACE INTO decisions 
             (id, session_id, decision_type, target, context, reason, timestamp, 
              reputation_weight, novelty_weight, diff_weight, result, value_score)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (
-                decision.id,
-                decision.session_id,
-                decision.decision_type,
-                decision.target,
-                str(decision.context),
-                decision.reason,
-                decision.timestamp,
-                decision.reputation_weight,
-                decision.novelty_weight,
-                decision.diff_weight,
-                decision.result,
-                decision.value_score
-            )
+            VALUES (:id, :session_id, :decision_type, :target, :context, :reason, :timestamp, 
+             :reputation_weight, :novelty_weight, :diff_weight, :result, :value_score)"""),
+            {
+                "id": decision.id,
+                "session_id": decision.session_id,
+                "decision_type": decision.decision_type,
+                "target": decision.target,
+                "context": str(decision.context),
+                "reason": decision.reason,
+                "timestamp": decision.timestamp,
+                "reputation_weight": decision.reputation_weight,
+                "novelty_weight": decision.novelty_weight,
+                "diff_weight": decision.diff_weight,
+                "result": decision.result,
+                "value_score": decision.value_score
+            }
         )
         self.db.commit()
         logger.info(f"Decision logged: {decision.decision_type} for {decision.target}")
@@ -90,17 +87,35 @@ class DecisionRepository:
     
     def update_outcome(self, decision_id: str, result: str, value_score: float):
         """Actualiza el resultado de una decisión ya registrada."""
-        self.db.execute(
-            "UPDATE decisions SET result = ?, value_score = ? WHERE id = ?",
-            (result, value_score, decision_id)
+        self.db.execute(text(
+            "UPDATE decisions SET result = :result, value_score = :value_score WHERE id = :id"),
+            {"result": result, "value_score": value_score, "id": decision_id}
         )
         self.db.commit()
 
     def get_by_session(self, session_id: str) -> List[Decision]:
-        # ... same logic but with result/value_score ...
-        result = self.db.execute(
-            "SELECT * FROM decisions WHERE session_id = ? ORDER BY timestamp",
-            (session_id,)
+        """Obtiene todas las decisiones de una sesión."""
+        result = self.db.execute(text(
+            "SELECT * FROM decisions WHERE session_id = :session_id ORDER BY timestamp"),
+            {"session_id": session_id}
+        ).fetchall()
+        
+        decisions = []
+        for row in result:
+            decisions.append(Decision(
+                id=row[0], session_id=row[1], decision_type=row[2],
+                target=row[3], context=eval(row[4]) if row[4] else {},
+                reason=row[5], timestamp=row[6],
+                reputation_weight=row[7], novelty_weight=row[8], diff_weight=row[9],
+                result=row[10], value_score=row[11]
+            ))
+        return decisions
+
+    def get_recent(self, limit: int = 50) -> List[Decision]:
+        """Obtiene las últimas N decisiones."""
+        result = self.db.execute(text(
+            "SELECT * FROM decisions ORDER BY timestamp DESC LIMIT :limit"),
+            {"limit": limit}
         ).fetchall()
         
         decisions = []
@@ -117,8 +132,9 @@ class DecisionRepository:
     def get_top_decisions(self, limit: int = 5, success: bool = True) -> List[Decision]:
         """Obtiene las mejores (o peores) decisiones."""
         order = "DESC" if success else "ASC"
-        result = self.db.execute(
-            f"SELECT * FROM decisions WHERE result IS NOT NULL ORDER BY value_score {order} LIMIT {limit}"
+        result = self.db.execute(text(
+            f"SELECT * FROM decisions WHERE result IS NOT NULL ORDER BY value_score {order} LIMIT :limit"),
+            {"limit": limit}
         ).fetchall()
         
         decisions = []
@@ -131,34 +147,12 @@ class DecisionRepository:
                 result=row[10], value_score=row[11]
             ))
         return decisions
-    
-    def get_recent(self, limit: int = 50) -> List[Decision]:
-        """Obtiene las últimas N decisiones."""
-        result = self.db.execute(
-            f"SELECT * FROM decisions ORDER BY timestamp DESC LIMIT {limit}"
-        ).fetchall()
-        
-        decisions = []
-        for row in result:
-            decisions.append(Decision(
-                id=row[0],
-                session_id=row[1],
-                decision_type=row[2],
-                target=row[3],
-                context=eval(row[4]) if row[4] else {},
-                reason=row[5],
-                timestamp=row[6],
-                reputation_weight=row[7],
-                novelty_weight=row[8],
-                diff_weight=row[9]
-            ))
-        return decisions
 
     def get_average_weights(self) -> Dict[str, float]:
         """Calcula el promedio de pesos usados."""
-        result = self.db.execute(
+        result = self.db.execute(text(
             "SELECT AVG(reputation_weight), AVG(novelty_weight), AVG(diff_weight) FROM decisions"
-        ).fetchone()
+        )).fetchone()
         
         return {
             "reputation": result[0] or 0.5,

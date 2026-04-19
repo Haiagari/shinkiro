@@ -28,7 +28,7 @@ from .learning_orchestrator import (
 )
 
 from .decision_log import (
-    DecisionLog,
+    DecisionRepository,
     DecisionType,
     Decision,
     log_decision,
@@ -79,7 +79,7 @@ __all__ = [
     'record_learned_decision',
     'evaluate_and_learn',
     # Decision Log
-    'DecisionLog',
+    'DecisionRepository',
     'DecisionType',
     'Decision',
     'log_decision',

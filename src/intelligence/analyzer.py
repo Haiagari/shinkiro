@@ -215,11 +215,16 @@ class NoveltyDetector:
         }
 
 
+class CorrelationEngine:
+    """Motor de correlación entre hallazgos."""
+    def correlate(self, context: Dict[str, Any]) -> List[Dict[str, Any]]:
+        return []
+
 # Instancias globales
 severity_analyzer = SeverityAnalyzer()
 deduplicator = Deduplicator()
 correlation_engine = CorrelationEngine()
-novelty_detector = NoveltyDetector()
+novelty_detector = NoveltyDetector(None)
 
 
 def analyze_severity(finding: Dict[str, Any]) -> SeverityResult:
