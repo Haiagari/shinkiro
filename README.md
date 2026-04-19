@@ -160,6 +160,17 @@ MIT License - Ver [LICENSE](LICENSE) para más detalles.
 
 ---
 
+## ✅ Identidad del Proyecto
+
+| Atributo | Valor |
+|----------|-------|
+| **Nombre** | OzyRecon |
+| **Repositorio** | github.com/SamBleed/OzyRecon |
+| **Tagline** | Local-first offensive reconnaissance and target intelligence platform |
+| **Versión** | v4.0.0 |
+
+---
+
 <p align="center">
   <sub>Construido con ❤️ para la comunidad de Bug Hunters</sub>
 </p>

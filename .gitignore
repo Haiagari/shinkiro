@@ -24,14 +24,18 @@ Thumbs.db
 # Base de datos
 *.db
 *.sqlite
+runtime/db/*.db
 
 # Output
 output/
 runtime/scans/
 runtime/logs/
 runtime/state/
+runtime/exports/
 scopes/
 *.log
+agent_reasoning.log
+llm_usage.json
 
 # Binarios de herramientas (muy grandes (~400MB), no incluir en git)
 # Ejecutar ./setup.sh para instalar
@@ -40,3 +44,13 @@ tools/go/pkg/
 
 # API keys (sensible)
 config/config.yaml
+
+# OzyRecon specific
+.ozyrecon-cli/
+l.txt
+interface_ui_bundle_fixed.zip
+
+# Legacy folders (deprecated - usar src/)
+backend/
+ui/
+tui.py
