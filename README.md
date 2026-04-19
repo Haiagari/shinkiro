@@ -4,7 +4,7 @@
 
 <br/>
 
-![Stars](https://img.shields.io/github/stars/SamBleed/OzyRecon?style=for-the-badge&color=00ff88&labelColor=0a0f1a)
+![Stars](https://img.shields.io/github/stars/SamBleed/bugbounty-framework?style=for-the-badge&color=00ff88&labelColor=0a0f1a)
 ![Version](https://img.shields.io/badge/version-v4.0.0-00d4ff?style=for-the-badge&labelColor=0a0f1a)
 ![Python](https://img.shields.io/badge/Python-3.10+-ffd700?style=for-the-badge&logo=python&logoColor=ffd700&labelColor=0a0f1a)
 ![License](https://img.shields.io/badge/License-MIT-a78bfa?style=for-the-badge&labelColor=0a0f1a)
