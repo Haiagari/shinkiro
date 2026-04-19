@@ -1,287 +1,161 @@
 """
-Módulo de Notificaciones Inteligentes
-Solo alerta cuando encuentra algo crítico o alto.
-Niveles:
-- CRITICAL: Alerta inmediata (takeover, IDOR, SQLi, RCE)
-- HIGH: Resumen al final del scan
-- MEDIUM: Solo si modo verboso está activo
+Notificaciones de OzyRecon
+Envía alertas via Telegram y otros canales.
 """
 
-from .utils import log, send_telegram, load_config
-from .utils import save_json
-
-#严重 - solo estos disparan alerta inmediata
-CRITICAL_PATTERNS = [
-    "takeover", "subdomain takeover", "nosuchbucket",
-    "idor", "broken authentication", "sql injection", "sqli",
-    "rce", "remote code execution", "command injection",
-    "xss", "cross-site scripting", "stored xss",
-    "csrf", "cross-site request forgery",
-    "path traversal", "lfi", "local file inclusion",
-    "jwt", "json web token", "weak crypto",
-    "hardcoded", "api key", "secret token",
-]
-
-#重要 pero no critico
-HIGH_PATTERNS = [
-    "information disclosure", "info leak",
-    "missing security header", "csp", "hsts",
-    "xxe", "xml external entity",
-    "deserialization",
-    "ssrf", "server-side request forgery",
-    "open redirect",
-]
-
-
-def analyze_severity(finding: dict) -> str:
-    """
-    Analiza un finding y devuelve su nivel de severidad.
-    """
-    severity = finding.get("severity", "").lower()
-    name = finding.get("name", "").lower()
-    raw = str(finding.get("raw", "")).lower()
-    finding_type = finding.get("type", "").lower()
-    
-    # Verificar severity de nucleI
-    if severity in ["critical"]:
-        return "CRITICAL"
-    if severity in ["high"]:
-        return "HIGH"
-    if severity in ["medium", "low"]:
-        return "MEDIUM"
-    
-    # Buscar patrones críticos
-    combined = f"{name} {raw} {finding_type}"
-    for pattern in CRITICAL_PATTERNS:
-        if pattern in combined:
-            return "CRITICAL"
-    
-    # Buscar patrones altos
-    for pattern in HIGH_PATTERNS:
-        if pattern in combined:
-            return "HIGH"
-    
-    return "MEDIUM"
-
-
-def check_critical_findings(vulns: list, takeovers: list = [], secrets: list = [], alert_level: str = "medium") -> dict:
-    """
-    Analiza TODOS los hallazgos y retorna según alert_level.
-    Niveles: critical, high, medium, low, all
-    """
-    # Mapear niveles a severidades incluidas
-    level_map = {
-        "critical": ["CRITICAL"],
-        "high": ["CRITICAL", "HIGH"],
-        "medium": ["CRITICAL", "HIGH", "MEDIUM"],
-        "low": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
-        "all": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO", "UNKNOWN"],
-    }
-    allowed = level_map.get(alert_level, ["CRITICAL", "HIGH", "MEDIUM"])
-    
-    critical = {
-        "takeovers": [],
-        "vulns": [],
-        "secrets": [],
-    }
-    
-    # Takeovers siempre son críticos
-    for t in takeovers:
-        critical["takeovers"].append({
-            "url": t,
-            "type": "Takeover",
-            "severity": "CRITICAL",
-        })
-    
-    # Vulnerabilidades - filtrar por alert_level
-    for v in vulns:
-        sev = analyze_severity(v)
-        if sev in allowed:
-            critical["vulns"].append({
-                "name": v.get("name", v.get("type", "Unknown")),
-                "url": v.get("url", ""),
-                "severity": sev,
-                "details": v,
-            })
-    
-    # Secrets en JS siempre críticos
-    for s in secrets:
-        critical["secrets"].append({
-            "type": s.get("type", "Unknown"),
-            "value": s.get("value", "")[:20] + "***",
-            "source": s.get("source", ""),
-            "severity": "CRITICAL",
-        })
-    
-    return critical
-
-
-def format_telegram_alert(target: str, critical: dict, diff: dict = None, context: dict = None) -> str:
-    """
-    Formatea mensaje para Telegram con emojis apropiados y datos de diff.
-    """
-    is_first = diff.get("is_first_run", False) if diff else False
-    
-    header = "🚀 *NUEVA SESIÓN INICIADA*" if is_first else f"🎯 *{target}* - *REPORTE DE SCAN*"
-    lines = [header]
-    
-    # ══════════════════════════════════════════════════════════════════════════════
-    # HALLAZGOS POR SEVERIDAD
-    # ══════════════════════════════════════════════════════════════════════════════
-    total_findings = 0
-    
-    # 🔴 CRITICAL
-    critical_vulns = [v for v in critical.get("vulns", []) if v["severity"] == "CRITICAL"]
-    takeovers = critical.get("takeovers", [])
-    secrets = critical.get("secrets", [])
-    
-    # NUEVO: Incluir hallazgos de Inteligencia (ej: puertos críticos)
-    intel_findings = []
-    if context:
-        intelligence = context.get("phases", {}).get("intelligence", {})
-        prio_targets = intelligence.get("priority_targets", [])
-        for target_info in prio_targets:
-            # Filtrar razones repetidas o mal formateadas
-            unique_reasons = []
-            for r in target_info.get("reasons", []):
-                clean_r = r.replace("🔍", "").strip().lstrip(":").strip()
-                if clean_r not in unique_reasons:
-                    unique_reasons.append(clean_r)
-            
-            if target_info.get("score", 0) >= 2.0:
-                for reason in unique_reasons:
-                    intel_findings.append(f"🎯 `{target_info['target']}`: {reason}")
-
-    if critical_vulns or takeovers or secrets or intel_findings:
-        count = len(critical_vulns) + len(takeovers) + len(secrets) + len(intel_findings)
-        total_findings += count
-        lines.append(f"\n🔥 *HALLAZGOS DE ALTO IMPACTO* ({count})")
-        
-        # Agrupar hallazgos para no repetir target
-        for f in intel_findings[:10]:
-            lines.append(f"  • {f}")
-        
-        for t in takeovers[:3]: 
-            lines.append(f"  • 🚩 `[Takeover]` {t['url']}")
-        
-        for s in secrets[:3]:   
-            lines.append(f"  • 🔑 `[Secret]` {s['type']} en {s['source'].split('/')[-1]}")
-        
-        for v in critical_vulns[:5]:
-            lines.append(f"  • 💀 {v.get('name', 'Unknown')[:40]}")
-            if v.get('url'): lines.append(f"    └ {v['url']}")
-
-    # 🟠 HIGH
-    high_vulns = [v for v in critical.get("vulns", []) if v["severity"] == "HIGH"]
-    if high_vulns:
-        total_findings += len(high_vulns)
-        lines.append(f"\n🟠 *HIGH* ({len(high_vulns)})")
-        for v in high_vulns[:5]:
-            lines.append(f"  • {v.get('name', 'Unknown')[:40]}")
-
-    # 🟡 MEDIUM
-    medium_vulns = [v for v in critical.get("vulns", []) if v["severity"] == "MEDIUM"]
-    if medium_vulns:
-        total_findings += len(medium_vulns)
-        lines.append(f"\n🟡 *MEDIUM* ({len(medium_vulns)})")
-        for v in medium_vulns[:5]:
-            lines.append(f"  • {v.get('name', 'Unknown')[:40]}")
-
-    # ══════════════════════════════════════════════════════════════════════════════
-    # DESCUBRIMIENTOS (DIFF ENGINE)
-    # ══════════════════════════════════════════════════════════════════════════════
-    if diff and not is_first:
-        new_subs = diff.get("new_subdomains", [])
-        new_ports = diff.get("new_ports", [])
-        
-        if new_subs or new_ports:
-            lines.append("\n✨ *NUEVOS DESCUBRIMIENTOS*")
-            if new_subs:
-                count = diff.get("total_new_subs", len(new_subs))
-                lines.append(f"  • Subdominios: `{count}` nuevos")
-            if new_ports:
-                count = diff.get("total_new_ports", len(new_ports))
-                lines.append(f"  • Puertos: `{count}` abiertos")
-
-    # ══════════════════════════════════════════════════════════════════════════════
-    # RESUMEN FINAL
-    # ══════════════════════════════════════════════════════════════════════════════
-    if total_findings == 0:
-        if is_first:
-            lines.append(f"\n✅ Primera ejecución completada.")
-            lines.append(f"Se establecieron las bases de datos para futuros diffs.")
-        else:
-            lines.append(f"\n✅ *Scan completado sin hallazgos relevantes*")
-    else:
-        lines.append(f"\n⚡ *Total hallazgos (Medium+): {total_findings}*")
-    
-    # Footer
-    lines.append(f"\n📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    
-    return "\n".join(lines)
-
-
+import requests
+from typing import Optional, Dict, Any
 from datetime import datetime
 
+from src.core.config import config
+from src.core.logging import get_logger
+from src.export.schema import ScanResult
 
-def send_immediate_alert(target: str, message: str, config: dict):
-    """
-    Envía alerta inmediata a Telegram.
-    """
-    token = config.get("notifications", {}).get("telegram_token")
-    chat_id = config.get("notifications", {}).get("telegram_chat_id")
-    
-    if not token or not chat_id:
-        log("Telegram no configurado - saltando alerta", "warn")
-        return
-    
-    from .utils import send_telegram
-    send_telegram(message, config)
-    log(f"🚨 Alerta enviada a Telegram: {message[:100]}...", "warn")
+logger = get_logger('notifier')
 
 
-def run_notifier(target: str, context: dict, config: dict):
+class Notifier:
     """
-    Analiza hallazgos y envía alertas.
-    Optimizado para Pilar #2: Notificaciones Inteligentes.
+    Sistema de notificaciones.
+    Envía alertas via Telegram principalmente.
     """
-    alert_level = config.get("notifications", {}).get("alert_level", "medium")
     
-    # Extraer findings
-    vulns = context.get("phases", {}).get("vulns", {}).get("findings", [])
-    recon = context.get("phases", {}).get("recon", {})
-    js_analysis = context.get("phases", {}).get("js_analysis", {})
-    diff_data = context.get("phases", {}).get("diff", {}) # Datos del Diff Engine
+    def __init__(self):
+        self.token = config.telegram_token
+        self.chat_id = config.telegram_chat_id
+        self.alert_level = config.alert_level
     
-    takeovers = recon.get("takeovers", [])
-    secrets = js_analysis.get("secrets", [])
+    def is_configured(self) -> bool:
+        """Verifica si Telegram está configurado."""
+        return bool(self.token and self.chat_id)
     
-    # Analizar severidad
-    critical = check_critical_findings(vulns, takeovers, secrets, alert_level)
+    def send_message(self, message: str, parse_mode: str = "Markdown") -> bool:
+        """
+        Envía un mensaje por Telegram.
+        
+        Args:
+            message: Mensaje a enviar
+            parse_mode: Modo de parseo (Markdown, HTML)
+        
+        Returns:
+            True si se envió correctamente
+        """
+        if not self.is_configured():
+            logger.warning("Telegram not configured, skipping notification")
+            return False
+        
+        url = f"https://api.telegram.org/bot{self.token}/sendMessage"
+        
+        data = {
+            "chat_id": self.chat_id,
+            "text": message,
+            "parse_mode": parse_mode,
+            "disable_web_page_preview": True
+        }
+        
+        try:
+            response = requests.post(url, json=data, timeout=10)
+            response.raise_for_status()
+            logger.info("Notification sent successfully")
+            return True
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to send notification: {e}")
+            return False
     
-    total_relevant = sum([
-        len(critical.get("takeovers", [])),
-        len(critical.get("vulns", [])), # Ahora incluye todos los permitidos por alert_level
-        len(critical.get("secrets", [])),
-    ])
+    def send_alert(self, title: str, message: str, severity: str = "info") -> bool:
+        """
+        Envía una alerta.
+        
+        Args:
+            title: Título de la alerta
+            message: Cuerpo del mensaje
+            severity: critical, high, medium, low, info
+        
+        Returns:
+            True si se envió
+        """
+        # Filtrar por nivel de alerta
+        levels = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
+        current_level = levels.get(self.alert_level, 4)
+        alert_level = levels.get(severity, 4)
+        
+        if alert_level > current_level:
+            logger.debug(f"Alert level {severity} filtered out (config: {self.alert_level})")
+            return False
+        
+        # Emoji según severidad
+        icons = {
+            "critical": "🔴",
+            "high": "🟠",
+            "medium": "🟡",
+            "low": "🟢",
+            "info": "🔵"
+        }
+        
+        icon = icons.get(severity, "⚪")
+        
+        text = f"{icon} *OzyRecon Alert*\n"
+        text += f"*{title}*\n\n"
+        text += f"{message}"
+        
+        return self.send_message(text)
+    
+    def send_scan_summary(self, target: str, result: ScanResult) -> bool:
+        """Envía un resumen del scan."""
+        stats = result.stats
+        findings = result.findings
+        
+        # Contar por severidad
+        critical = len([f for f in findings if f.severity == "critical"])
+        high = len([f for f in findings if f.severity == "high"])
+        medium = len([f for f in findings if f.severity == "medium"])
+        
+        message = f"*Scan completado: {target}*\n\n"
+        message += f"*Estadísticas:*\n"
+        message += f"• Subdominios: {stats.get('subdomains_found', 0)}\n"
+        message += f"• Hosts vivos: {stats.get('hosts_alive', 0)}\n"
+        message += f"• Puertos: {stats.get('ports_found', 0)}\n"
+        message += f"• Hallazgos: {stats.get('findings', 0)}\n\n"
+        
+        if critical > 0 or high > 0:
+            message += f"*Hallazgos críticos:* {critical}\n"
+            message += f"*Hallazgos altos:* {high}\n"
+        elif medium > 0:
+            message += f"*Hallazgos medios:* {medium}\n"
+        
+        severity = "critical" if critical > 0 else "high" if high > 0 else "medium" if medium > 0 else "info"
+        
+        return self.send_alert(f"Scan completado: {target}", message, severity)
+    
+    def send_finding(self, target: str, finding: Dict[str, Any]) -> bool:
+        """Envía notificación de un finding."""
+        severity = finding.get("severity", "info")
+        
+        message = f"*Nuevo hallazgo en {target}*\n\n"
+        message += f"• **{finding.get('name', 'Unknown')}**\n"
+        message += f"Severidad: {severity.upper()}\n"
+        
+        if finding.get("url"):
+            message += f"URL: {finding['url']}\n"
+        
+        if finding.get("description"):
+            desc = finding["description"][:200]
+            message += f"Descripción: {desc}...\n"
+        
+        return self.send_alert(f"Nuevo finding: {finding.get('name')}", message, severity)
+    
+    def send_error(self, target: str, error: str) -> bool:
+        """Envía notificación de error."""
+        message = f"*Error en scan de {target}*\n\n"
+        message += f"```\n{error}\n```"
+        
+        return self.send_alert("Error de scan", message, "high")
 
-    # LOG en consola
-    if total_relevant > 0:
-        log(f"🚨 {total_relevant} hallazgos detectados!", "warn")
-    
-    # Formatear mensaje incluyendo el DIFF y el Contexto (para inteligencia)
-    alert_msg = format_telegram_alert(target, critical, diff_data, context)
-    
-    # Lógica de envío inteligente:
-    # 1. Si hay hallazgos relevantes -> Enviar siempre
-    # 2. Si hay descubrimientos nuevos -> Enviar siempre
-    # 3. Si no hay nada -> Enviar solo si "always_notify" es True en config
-    
-    has_discoveries = diff_data.get("new_subdomains") or diff_data.get("new_ports")
-    always_notify = config.get("notifications", {}).get("always_notify", True)
-    
-    if total_relevant > 0 or has_discoveries or always_notify:
-        send_immediate_alert(target, alert_msg, config)
-        log(f"Reporte enviado a Telegram", "success")
-    
-    return critical
+
+# Instancia global
+notifier = Notifier()
+
+
+def send_notification(title: str, message: str, severity: str = "info") -> bool:
+    """Función de conveniencia."""
+    return notifier.send_alert(title, message, severity)
