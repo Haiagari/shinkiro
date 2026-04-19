@@ -7,7 +7,7 @@ import json
 import csv
 from datetime import datetime
 from pathlib import Path
-from .utils import log
+from src.utils import log
 
 def generate_burp_scope(targets: list, out_file: Path):
     """

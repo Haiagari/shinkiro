@@ -7,7 +7,7 @@ Módulo de Inteligencia y Correlación
 """
 
 from pathlib import Path
-from .utils import log, save_json, load_json
+from src.utils import log, save_json, load_json
 from .ai_analyzer import run_ai_analysis
 
 # Mapeo CVSS: vulnerabilidades known a scores

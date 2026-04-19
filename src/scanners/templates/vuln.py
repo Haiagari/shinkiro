@@ -1,7 +1,7 @@
 import json
 import re
 from pathlib import Path
-from .utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json, get_stealth_headers, get_random_ua, load_config
+from src.utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json, get_stealth_headers, get_random_ua, load_config
 from .rate_limiter import wait_if_needed, record_request, can_request
 import time
 

@@ -6,7 +6,7 @@ Paralelismo real con ThreadPoolExecutor
 
 import concurrent.futures
 from pathlib import Path
-from .utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools
+from src.utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools
 
 REQUIRED_TOOLS = ["subfinder", "amass", "assetfinder", "dnsx", "httpx"]
 

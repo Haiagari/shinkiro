@@ -8,7 +8,7 @@ import json
 import requests
 from datetime import datetime, timedelta
 from pathlib import Path
-from .utils import log, save_json, load_config
+from src.utils import log, save_json, load_config
 from .database import get_db, SessionLocal, Target
 
 def get_hackerone_scope(program_slug: str) -> dict:

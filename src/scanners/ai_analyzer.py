@@ -4,7 +4,7 @@ Usa LLMs (Claude, Gemini) para analizar hallazgos, generar PoCs e hipótesis.
 """
 
 import requests
-from .utils import log, logger
+from src.utils import log, logger
 
 class AIAnalyzer:
     def __init__(self, config: dict):

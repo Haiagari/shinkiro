@@ -5,7 +5,7 @@ Ajuste estrategias según el WAF detectado.
 
 import requests
 import re
-from .utils import log, get_stealth_headers
+from src.utils import log, get_stealth_headers
 
 # Headers que indican WAF
 WAF_HEADERS = {
@@ -44,7 +44,7 @@ def detect_waf(url: str) -> dict:
     Detecta si un sitio tiene WAF.
     Enhanced: Usa headers de sigilo para no ser bloqueado durante la detección.
     """
-    log(f"Detectando WAF en: {url}", "info")
+    log.info(f"Detectando WAF en: {url}")
     
     waf_type = None
     waf_name = None
@@ -98,7 +98,7 @@ def detect_waf(url: str) -> dict:
                 protection_level = "low"
         
     except Exception as e:
-        log(f"Error detectando WAF: {e}", "error")
+        log.error(f"Error detectando WAF: {e}")
     
     result = {
         "detected": bool(waf_name),
@@ -109,9 +109,9 @@ def detect_waf(url: str) -> dict:
     }
     
     if waf_name:
-        log(f"  ✓ WAF detectado: {waf_name} ({protection_level})", "warn")
+        log.warning(f"  WAF detectado: {waf_name} ({protection_level})")
     else:
-        log(f"  ✓ Sin WAF detectado", "success")
+        log.info(f"  Sin WAF detectado")
     
     return result
 
@@ -163,3 +163,25 @@ def run_waf_detection(urls: list, out_dir=None) -> dict:
             results[base] = waf
     
     return results
+
+
+class WAFDetector:
+    """Clase wrapper para detección de WAFs."""
+    
+    def __init__(self):
+        self.headers = WAF_HEADERS
+        self.signatures = WAF_SIGNATURES
+        self.strategies = WAF_STRATEGIES
+    
+    def detect(self, url: str) -> dict:
+        return detect_waf(url)
+    
+    def detect_batch(self, urls: list) -> dict:
+        return detect_batch(urls)
+    
+    def get_strategy(self, waf_type: str) -> dict:
+        return self.strategies.get(waf_type, self.strategies["default"])
+
+
+# Instancia global
+waf_detector = WAFDetector()

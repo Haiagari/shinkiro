@@ -5,9 +5,11 @@ Ajusta la velocidad automáticamente para no romper el target.
 
 import time
 from threading import Lock
-from .utils import log
+from src.utils import log, get_logger
 
 import random
+
+logger = log
 
 class RateLimiter:
     """
@@ -35,7 +37,7 @@ class RateLimiter:
         self.current_rpm = self.max_rpm
         self.lock = Lock()
         
-        log(f"RateLimiter: max {self.max_rpm} req/min | Jitter activado", "info")
+        log.info(f"RateLimiter: max {self.max_rpm} req/min | Jitter activado")
     
     def can_request(self) -> bool:
         if self.is_banned:
@@ -87,14 +89,14 @@ class RateLimiter:
         old_rpm = self.current_rpm
         self.current_rpm = max(5, int(self.current_rpm * 0.5))
         if old_rpm != self.current_rpm:
-            log(f"⚠️ OPSEC: {reason} - bajando a {self.current_rpm} RPM", "warn")
+            log.warning(f"OPSEC: {reason} - bajando a {self.current_rpm} RPM")
     
     def _panic_kill_switch(self):
         """Freno de mano total para evitar que sigan quemando la IP."""
         if not self.is_banned:
             self.is_banned = True
-            log("🛑 !!! KILL-SWITCH ACTIVADO !!! BAN DETECTADO 🛑", "critical")
-            log("Pausando escaneo para proteger la IP/Reputación.", "critical")
+            log.critical("!!! KILL-SWITCH ACTIVADO !!! BAN DETECTADO")
+            log.critical("Pausando escaneo para proteger la IP/Reputación.")
     
     def get_headers(self) -> dict:
         """Headers para debugging."""
@@ -128,3 +130,7 @@ def record_request(response_time_ms: float = 0, status_code: int = 200):
     """Registrar resultado."""
     if _limiter:
         _limiter.record_request(response_time_ms, status_code)
+
+
+# Instancia global
+rate_limiter = RateLimiter()

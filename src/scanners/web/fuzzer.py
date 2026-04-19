@@ -5,7 +5,7 @@ Genera y ejecuta ataques basados en la tecnología detectada.
 
 import os
 from pathlib import Path
-from .utils import log, run_cmd, read_lines, save_json, check_tools
+from src.utils import log, run_cmd, read_lines, save_json, check_tools
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 WORDLIST_DIR = ROOT_DIR / "resources" / "wordlists"

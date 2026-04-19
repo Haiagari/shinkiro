@@ -1,6 +1,6 @@
 from pathlib import Path
 from urllib.parse import urlparse
-from .utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json
+from src.utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 

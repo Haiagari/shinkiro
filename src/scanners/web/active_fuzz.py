@@ -4,7 +4,7 @@ Descubrimiento de superficie no indexada mediante fuzzing activo.
 """
 
 from pathlib import Path
-from .utils import log, run_cmd, load_config
+from src.utils import log, run_cmd, load_config
 from .rate_limiter import wait_if_needed
 
 ROOT_DIR = Path(__file__).resolve().parents[2]

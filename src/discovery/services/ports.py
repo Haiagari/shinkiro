@@ -1,5 +1,5 @@
 from pathlib import Path
-from .utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json
+from src.utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json
 
 REQUIRED_TOOLS = ["naabu", "nmap", "masscan"]
 

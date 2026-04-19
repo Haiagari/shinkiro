@@ -5,7 +5,7 @@ Obtiene info adicional: puertos, tecnologías, vulnerabilidades.
 
 import requests
 from pathlib import Path
-from .utils import log, load_config, save_json
+from src.utils import log, load_config, save_json
 
 # API Keys desde config
 def get_api_keys() -> dict:
@@ -130,7 +130,7 @@ def enrich_hosts(hosts: list, config: dict = None) -> dict:
     """
     Enriquece una lista de hosts con datos de Shodan/Censys.
     """
-    from .utils import save_json
+    from src.utils import save_json
     
     cfg = config or {}
     results = {
