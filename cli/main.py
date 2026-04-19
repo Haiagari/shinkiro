@@ -11,14 +11,41 @@ from .tui import run_tui
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="agent",
-        description="BugBounty Framework CLI",
+        prog="ozy",
+        description="OzyRecon CLI - Offensive Reconnaissance Platform",
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
     sub = parser.add_subparsers(dest="command")
 
-    scan = sub.add_parser("scan", help="Lanza un scan real")
+    # Modos operativos
+    hunt = sub.add_parser("hunt", help="Modo HUNT - Caza agresiva en targets nuevos")
+    hunt.add_argument("-t", "--target", required=True, help="Dominio objetivo")
+    hunt.add_argument("--threads", type=int, default=50)
+    hunt.add_argument("--rate-limit", type=int, default=200)
+    hunt.add_argument("--dry-run", action="store_true")
+
+    continuous = sub.add_parser("continuous", help="Modo CONTINUO - Monitoreo 24/7")
+    continuous.add_argument("-t", "--target", required=True)
+    continuous.add_argument("--interval", type=int, default=3600)
+
+    campaign = sub.add_parser("campaign", help="Modo CAMPAÑA - Escalado de patrones")
+    campaign.add_argument("-p", "--pattern", required=True, help="CVE-ID o template")
+    campaign.add_argument("-t", "--targets", nargs="+", help="Lista de targets")
+
+    research = sub.add_parser("research", help="Modo INVESTIGACIÓN - Búsqueda de CVEs")
+    research.add_argument("-t", "--target", required=True)
+    research.add_argument("--cve", help="CVE específico")
+
+    forensic = sub.add_parser("forensic", help="Modo FORENSE - Análisis post-mortem")
+    forensic.add_argument("-t", "--target", required=True)
+
+    servicio = sub.add_parser("servicio", help="Modo SERVICIO - Reportes ejecutivos")
+    servicio.add_argument("-t", "--target", required=True)
+    servicio.add_argument("--client", help="Nombre del cliente")
+
+    # Comandos Legacy
+    scan = sub.add_parser("scan", help="Lanza un scan (compatibilidad)")
     scan.add_argument("target", help="Dominio objetivo")
     scan.add_argument("--full", action="store_true")
     scan.add_argument("--recon", action="store_true")
