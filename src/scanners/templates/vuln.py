@@ -10,8 +10,8 @@ from src.utils import log, dedupe, write_lines, save_json, get_random_ua
 from src.core.tool_manager import tool_manager
 
 # Asegurar registro de proveedores
-import src.scanners.wrappers.nuclei
-import src.scanners.wrappers.vuln_tools
+import src.core.providers.nuclei
+import src.core.providers.vuln_tools
 
 def run_vulns(urls: list, out_dir: Path, args, context: dict = {}) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)

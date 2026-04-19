@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from src.core.config import config
 from src.core.logging import get_logger
 from src.core.errors import ToolNotFoundError, ToolExecutionError
-from src.core.tool_manager import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider, tool_manager
 
 logger = get_logger('nmap')
 

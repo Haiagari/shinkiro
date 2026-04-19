@@ -5,7 +5,7 @@ Proveedores para Escaneo de Vulnerabilidades
 import subprocess
 from pathlib import Path
 from typing import List, Dict, Any
-from src.core.tool_manager import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider, tool_manager
 from src.utils import read_lines
 
 class FuzzingProvider(BaseProvider):

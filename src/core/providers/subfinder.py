@@ -5,7 +5,7 @@ Subfinder Provider para Asset Discovery
 import subprocess
 from pathlib import Path
 from typing import List
-from src.core.tool_manager import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider, tool_manager
 from src.utils import log
 
 class SubfinderProvider(BaseProvider):

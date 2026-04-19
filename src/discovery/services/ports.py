@@ -7,8 +7,8 @@ from src.utils import log, dedupe, write_lines, save_json
 from src.core.tool_manager import tool_manager
 
 # Asegurar registro de proveedores
-import src.scanners.wrappers.naabu
-import src.scanners.wrappers.nmap
+import src.core.providers.naabu
+import src.core.providers.nmap
 
 TOP_PORTS = "80,443,8080,8443,8000,8888,3000,4000,5000,7000,9000,9090,9200,6379,27017,3306,5432,21,22,25,53,110,143,993,995"
 

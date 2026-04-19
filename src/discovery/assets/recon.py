@@ -7,8 +7,8 @@ from src.utils import log, dedupe, write_lines
 from src.core.tool_manager import tool_manager
 
 # Importar proveedores para asegurar registro
-import src.scanners.wrappers.subfinder
-import src.scanners.wrappers.discovery_tools
+import src.core.providers.subfinder
+import src.core.providers.discovery_tools
 
 def run_recon(target: str, out_dir: Path, args) -> dict:
     """

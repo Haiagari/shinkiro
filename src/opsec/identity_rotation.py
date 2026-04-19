@@ -69,9 +69,9 @@ class IdentityRotation:
         self.rotation_count += 1
         return ua
     
-    def get_ua_for_tool(self, tool: str) -> str:
-        """Obtiene User-Agent apropiado para una herramienta específica."""
-        if tool in ['subfinder', 'httpx', 'nuclei', 'naabu']:
+    def get_ua_for_traffic_type(self, for_recon: bool = False) -> str:
+        """Obtiene User-Agent apropiado según el tipo de tráfico."""
+        if for_recon:
             return random.choice(RECON_USER_AGENTS)
         return self.get_random_ua()
 

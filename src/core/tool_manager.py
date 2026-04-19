@@ -3,46 +3,11 @@ OzyRecon Tool Manager & Capabilities system
 Abstrae la ejecución de herramientas en capacidades lógicas.
 """
 
-import abc
-import subprocess
-from typing import List, Dict, Any, Optional, Type
-from pathlib import Path
+from typing import List, Dict, Any, Optional
 from src.core.logging import get_logger
-from src.core.errors import ToolNotFoundError, ToolExecutionError
+from src.core.providers.base import BaseProvider
 
 logger = get_logger('tool_manager')
-
-class Capability(abc.ABC):
-    """Clase base para una capacidad del sistema."""
-    
-    @abc.abstractmethod
-    def run(self, target: Any, **kwargs) -> Any:
-        pass
-
-class BaseProvider(abc.ABC):
-    """Clase base para un proveedor de herramientas (herramienta concreta)."""
-    
-    def __init__(self, name: str, binary: str):
-        self.name = name
-        self.binary = binary
-        self.path = self._find_binary()
-
-    def _find_binary(self) -> str:
-        import shutil
-        path = shutil.which(self.binary)
-        if not path:
-            # Check local tools path
-            local_path = Path("tools/go/bin") / self.binary
-            if local_path.exists():
-                return str(local_path.absolute())
-        return path if path else ""
-
-    def is_available(self) -> bool:
-        return bool(self.path)
-
-    @abc.abstractmethod
-    def execute(self, target: Any, **kwargs) -> Any:
-        pass
 
 class ToolManager:
     """Gestiona proveedores y resuelve capacidades."""
@@ -58,7 +23,10 @@ class ToolManager:
                 "service_discovery": [],
                 "template_scan": [],
                 "web_fuzzing": [],
-                "port_scan": []
+                "port_scan": [],
+                "dns_resolution": [],
+                "live_detection": [],
+                "db_probe": []
             }
         return cls._instance
 
@@ -97,7 +65,6 @@ class ToolManager:
                     continue
         
         return results if all_providers else None
-
 
 # Instancia global
 tool_manager = ToolManager()
