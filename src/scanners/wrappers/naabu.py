@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from src.core.config import config
 from src.core.logging import get_logger
 from src.core.errors import ToolNotFoundError, ToolExecutionError
+from src.core.tool_manager import BaseProvider, tool_manager
 
 logger = get_logger('naabu')
 
@@ -27,58 +28,32 @@ class PortResult:
     version: str = ""
 
 
-class NaabuWrapper:
-    """Wrapper para Naabu."""
+class NaabuProvider(BaseProvider):
+    """Proveedor Naabu para la capacidad port_scan."""
     
-    def __init__(self, binary_path: Optional[str] = None):
-        self.binary_path = binary_path or self._find_binary()
+    def __init__(self):
+        super().__init__("naabu", "naabu")
         self.config = config
-    
-    def _find_binary(self) -> str:
-        """Busca el binario de Naabu."""
-        possible_paths = [
-            Path("tools/go/bin/naabu"),
-            Path.home() / "go" / "bin" / "naabu",
-            Path("/usr/local/bin/naabu"),
-            Path("/usr/bin/naabu"),
-        ]
-        
-        for path in possible_paths:
-            if path.exists():
-                return str(path)
-        
-        # Intentar usar PATH
-        try:
-            result = subprocess.run(["which", "naabu"], capture_output=True, text=True)
-            if result.returncode == 0:
-                return result.stdout.strip()
-        except Exception:
-            pass
-        
-        raise ToolNotFoundError("Naabu not found. Install with: go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest")
+
+    def execute(self, host: str, **kwargs) -> List[PortResult]:
+        return self.scan(host, **kwargs)
     
     def scan(self, host: str, ports: Optional[str] = None, rate: int = 100) -> List[PortResult]:
         """
         Escanea puertos en un host.
-        
-        Args:
-            host: Host objetivo
-            ports: Puertos a escanear (ej: "80,443,8080" o "top-100")
-            rate: Rate de requests por segundo
-        
-        Returns:
-            Lista de PortResult
         """
-        cmd = [self.binary_path, "-host", host, "-json"]
+        if not self.is_available():
+            return []
+
+        cmd = [self.path, "-host", host, "-json"]
         
         if ports:
             cmd.extend(["-ports", ports])
         
         cmd.extend(["-rate", str(rate)])
         
-        # Agregar rate limiting desde config
         if self.config.auto_rate_limit_enabled:
-            cmd.extend([""-c", str(self.config.max_requests_per_min)])
+            cmd.extend(["-c", str(self.config.max_requests_per_min)])
         
         logger.info(f"Running naabu: {' '.join(cmd)}")
         
@@ -90,24 +65,19 @@ class NaabuWrapper:
                 timeout=300
             )
             
-            if result.returncode not in [0, 1]:  # 0 = success, 1 = no results
+            if result.returncode not in [0, 1]:
                 raise ToolExecutionError(f"Naabu error: {result.stderr}")
             
             return self._parse_output(result.stdout)
             
-        except subprocess.TimeoutExpired:
-            raise ToolExecutionError("Naabu timeout")
         except Exception as e:
-            raise ToolExecutionError(f"Naabu execution failed: {e}")
+            logger.error(f"Naabu failed: {e}")
+            return []
     
     def _parse_output(self, output: str) -> List[PortResult]:
-        """Parsea el output JSON de Naabu."""
         results = []
-        
         for line in output.strip().split('\n'):
-            if not line:
-                continue
-            
+            if not line: continue
             try:
                 data = json.loads(line)
                 results.append(PortResult(
@@ -118,20 +88,10 @@ class NaabuWrapper:
                     service=data.get('service', ''),
                     version=data.get('version', '')
                 ))
-            except json.JSONDecodeError:
-                continue
-        
+            except Exception: continue
         return results
-    
-    def scan_top_ports(self, host: str, top: int = 100) -> List[PortResult]:
-        """Escanea los top puertos más comunes."""
-        return self.scan(host, ports=f"top-{top}")
-    
-    def scan_critical(self, host: str) -> List[PortResult]:
-        """Escanea puertos críticos comunes."""
-        critical_ports = "21,22,23,25,53,80,110,111,135,139,143,443,445,993,995,1723,3306,3389,5900,8080,8443"
-        return self.scan(host, ports=critical_ports)
 
-
-# Instancia global
-naabu = NaabuWrapper()
+# Register
+naabu = NaabuProvider()
+tool_manager.register_provider("port_scan", naabu)
+tool_manager.register_provider("service_discovery", naabu)
