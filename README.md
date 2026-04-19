@@ -6,16 +6,17 @@
 
 <br/>
 
-![Stars](https://img.shields.io/github/stars/SamBleed/bugbounty-framework?style=for-the-badge&color=00ff88&labelColor=0a0f1a)
+![Stars](https://img.shields.io/github/stars/SamBleed/OzyRecon?style=for-the-badge&color=00ff88&labelColor=0a0f1a)
 ![Version](https://img.shields.io/badge/version-v4.0.0-00d4ff?style=for-the-badge&labelColor=0a0f1a)
 ![Python](https://img.shields.io/badge/Python-3.10+-ffd700?style=for-the-badge&logo=python&logoColor=ffd700&labelColor=0a0f1a)
 ![Status](https://img.shields.io/badge/Fase-2_Reflexiva-ff00ff?style=for-the-badge&labelColor=0a0f1a)
+![OPSEC](https://img.shields.io/badge/OPSEC-Grade%20A-00ff88?style=for-the-badge&labelColor=0a0f1a)
 
 <br/>
 
 **OzyRecon es una plataforma de reconocimiento ofensivo stateful, OPSEC-aware y self-improving, diseñada para convertir señales técnicas en inteligencia accionable y mejorar su criterio con cada ciclo operativo.**
 
-[🚀 Inicio rápido](#-inicio-rápido) · [📖 Documentación](#-documentación) · [🎯 Modos](#-modos-operativos) · [⚙️ Configuración](#️-configuración)
+[🚀 Inicio rápido](#-inicio-rápido) · [🏗️ Arquitectura](#-arquitectura-reflexiva) · [🎯 Modos](#-modos-operativos) · [📊 Dashboard](#-intelligencedashboard)
 
 </div>
 
@@ -23,67 +24,81 @@
 
 ## 🚀 ¿Qué es OzyRecon?
 
-OzyRecon no es un simple wrapper de herramientas. Es un sistema de inteligencia ofensiva con **aprendizaje adaptativo** y **evaluación reflexiva**. A diferencia de otros frameworks, OzyRecon:
+OzyRecon no es un simple wrapper de herramientas. Es un sistema de **inteligencia ofensiva** con aprendizaje adaptativo y evaluación reflexiva. A diferencia de otros frameworks, OzyRecon no solo ejecuta, sino que **aprende de sus propios aciertos y errores en tiempo real**.
 
-1. **Recuerda**: Mantiene memoria histórica de activos, reputación y WAFs.
-2. **Decide**: Prioriza objetivos y ajusta su estrategia de sigilo automáticamente.
-3. **Reacciona**: Dispara acciones dirigidas basadas en cambios detectados.
-4. **APRENDE**: Evalúa sus propias decisiones y ajusta su criterio para futuras sesiones.
+### 🧠 El Salto Cognitivo
+- **Recuerda**: Mantiene memoria histórica de activos, reputación de hosts y protecciones detectadas.
+- **Decide**: Prioriza objetivos basándose en probabilidad de éxito histórica.
+- **Reacciona**: Dispara investigaciones automáticas ante cambios de versión o nuevos activos.
+- **Reflexiona**: Evalúa el resultado de cada decisión y recalibra su modelo de scoring (Feedback Loop).
 
 ---
 
-## 🧩 Arquitectura Cognitiva (Fase 2)
+## 🏗️ Arquitectura Reflexiva (Fase 2)
 
-OzyRecon implementa un ciclo de aprendizaje reflexivo completo:
+OzyRecon implementa un ciclo de aprendizaje cerrado (Closed-Loop Learning):
 
-- **DecisionLog**: Registro estructurado de cada acción con su contexto y motivo.
-- **OutcomeEvaluator**: Clasificación automática de resultados (Success/Neutral/Failure).
-- **FeedbackEngine**: Ajuste dinámico de pesos de scoring basado en aciertos históricos.
-- **FalsePositiveMemory**: Identificación y omisión proactiva de patrones ruidosos.
+1. **DecisionLog**: Cada acción (priorizar host, disparar scan) se registra con su contexto y motivo.
+2. **OutcomeEvaluator**: Clasifica los resultados (CRITICAL, SUCCESS, NEUTRAL, FAILURE) según el valor encontrado.
+3. **FeedbackEngine**: Ajusta dinámicamente los pesos de scoring (`reputation`, `novelty`, `diff`) para optimizar futuros scans.
+4. **FalsePositiveMemory**: Aprende a identificar y omitir patrones ruidosos para reducir el tiempo de escaneo.
 
 ---
 
 ## 🎯 Modos Operativos
 
-| Modo | Intención | Discovery | Acción Diferencial |
-|------|-----------|-----------|--------------------|
-| 🏹 `HUNT` | Exhaustiva | All Providers | Establece línea base |
-| 🔄 `CONTINUO` | Reactiva | Pasivo/Delta | Escanea solo novedades |
-| 🔍 `RESEARCH` | Quirúrgica | Memoria | Dirigido por Tech/CVE |
-| 📢 `CAMPAÑA` | Escala | Histórico | Aplica patrones masivos |
-| 🔬 `FORENSE` | Análisis | DB | Historial de patrones |
-| 📋 `SERVICIO` | Reporte | DB | Microservicio/API |
+| Modo | Intención Operativa | Acción Diferencial |
+|------|--------------------|--------------------|
+| 🏹 `HUNT` | **Exhaustiva** | Establece línea base profunda |
+| 🔄 `CONTINUO` | **Diferencial** | Reacciona al delta (solo novedades) |
+| 🔍 `RESEARCH` | **Quirúrgica** | Dirigido por Tech Stack / CVE |
+| 📢 `CAMPAÑA` | **Escala** | Aplica patrones masivos en todo el scope |
+| 🔬 `FORENSE` | **Histórica** | Análisis de regresión y brechas |
+| 📋 `SERVICIO` | **Reporte** | OzyRecon como microservicio / API |
 
 ---
 
-## ✨ Características Pro
+## 📊 IntelligenceDashboard
 
-### 🧠 Inteligencia Adaptativa
-El **PriorityEngine** utiliza la reputación histórica y señales de novedad para ordenar la cola de escaneo, maximizando el "Value per Scan".
+OzyRecon ofrece transparencia total sobre su proceso de aprendizaje. El dashboard permite auditar la efectividad del agente:
 
-### 🥷 OPSEC de Grado Militar
-El **OPSECManager** detecta protecciones (WAF) antes del scan y ajusta el **Rate Limiter adaptativo** en tiempo real ante señales de baneo (403/429).
+```bash
+ozy dashboard
+```
 
-### 📊 Inteligencia Accionable
-Genera un **IntelligenceBrief** que resume no solo lo encontrado, sino el incremento de superficie, cambios críticos y recomendaciones tácticas.
+### Métricas de Élite:
+- **Decision Accuracy Rate**: % de decisiones que produjeron hallazgos valiosos.
+- **Signal-to-Noise Ratio**: Relación entre vulnerabilidades reales y ruido técnico.
+- **Weight Evolution**: Trazabilidad de cómo el sistema ajustó sus criterios de prioridad.
+- **Top Decisiones**: Explicabilidad de los mayores aciertos y fracasos operativos.
+
+---
+
+## 🥷 OPSEC de Grado Militar
+
+- **WAF Detection**: Pre-flight check para detectar protecciones y ajustar agresividad.
+- **Adaptive Rate Limiting**: Reducción automática de RPM ante respuestas 403/429.
+- **Kill-Switch**: Freno de mano automático si la reputación de la IP está en riesgo.
+- **Native Jitter**: Retrasos aleatorios inteligentes para evadir detección de patrones.
 
 ---
 
 ## 🚀 Inicio Rápido
 
 ```bash
-# Clonar repositorio
+# 1. Clonar e instalar
 git clone https://github.com/SamBleed/OzyRecon.git
 cd OzyRecon
-
-# Instalar plataforma
 make install
 
-# Lanzar modo HUNT (Caza agresiva)
-python3 src/cli/main.py hunt -t target.com
+# 2. Configurar (config/config.yaml)
+# Añade tus API keys de Shodan, Gemini/Claude, etc.
 
-# Lanzar modo CONTINUOUS (Monitoreo diferencial)
-python3 src/cli/main.py continuous -t target.com
+# 3. Lanzar primer HUNT (Línea de base)
+ozy hunt -t example.com
+
+# 4. Iniciar monitoreo inteligente
+ozy continuous -t example.com
 ```
 
 ---
@@ -94,47 +109,14 @@ python3 src/cli/main.py continuous -t target.com
 OzyRecon/
 ├── src/
 │   ├── core/           # Capabilities & Providers
-│   ├── modes/          # Operational Intent
+│   ├── modes/          # Operational Intent (Hunt, Continuous...)
 │   ├── storage/        # Persistence & DiffEngine
-│   ├── intelligence/   # Learning & Decisions
-│   ├── opsec/          # Adaptive Stealth
-│   └── export/         # Normalized Output
+│   ├── intelligence/   # Learning, Decisions & Dashboard
+│   ├── opsec/          # Adaptive Stealth Layer
+│   └── export/         # Normalized ScanResult Output
 ```
 
 ---
 
-## 📊 Demo (Fase 2)
-
-```
-$ ozy hunt -t target.com
-
-[*] OzyRecon v4.0 — APRENDIZAJE REFLEXIVO
-[*] OPSEC: WAF detectado (Cloudflare) → Strategy: STEALTH
-──────────────────────────────────────────────────────
-[+] Priority Engine: Priorizando 'api.target.com' (Reputación: 8.5)
-[+] Discovery: 2 nuevos subdominios detectados
-──────────────────────────────────────────────────────
-[!] INTELLIGENCE BRIEF:
-    → Superficie incrementada un 4.2%
-    → Nuevo endpoint crítico: 'admin.dev.target.com'
-    → Patrón detectado: 3x XSS en mismo controlador
-──────────────────────────────────────────────────────
-[+] Feedback: Decisión exitosa. Ajustando pesos de reputación (+0.1)
-[+] Sesión guardada → memory.db
-```
-
----
-
-## 🛡️ Uso Ético
-
-> **IMPORTANTE:** Esta herramienta fue creada para Bug Hunting legal y auditorías autorizadas únicamente.
-
-- ✅ Usar solo en programas donde tengas permiso explícito
-- ✅ Respetar rate limits — no saturar objetivos
-- ✅ Verificar hallazgos manualmente antes de reportar
-- ✅ Seguir los disclosure guidelines de cada programa
-- ❌ No usar en targets sin autorización escrita
-
----
-
-**OzyRecon: Intelligence, not just results.** 🚀
+**OzyRecon: Intelligence, not just results.** 🚀  
+*Construido para investigadores que valoran el tiempo y la precisión.*
