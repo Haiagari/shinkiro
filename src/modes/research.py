@@ -1,114 +1,61 @@
 """
-Modo INVESTIGACIÓN - Búsqueda de CVEs
-Busca vulnerabilidades específicas en superficie conocida.
+Modo INVESTIGACIÓN - Búsqueda Dirigida
 """
 
-import uuid
-from typing import Optional, Dict, Any, List
+from typing import List, Dict, Any, Optional
+from src.modes.base import BaseMode
+from src.core.tool_manager import tool_manager
+from src.utils import log
 
-from src.core.config import config
-from src.core.logging import get_logger
-from src.core.context import ScanContext, set_context
-from src.storage.database import SessionLocal, init_db
-from src.storage.queries import DBQueries
-
-logger = get_logger('mode_research')
-
-
-class ResearchMode:
+class ResearchMode(BaseMode):
     """
-    Modo INVESTIGACIÓN - Búsqueda de CVEs
-    
-    Objetivo: Buscar CVEs específicos en tecnologías detectadas.
-    
-    Flujo:
-    1. Obtener tech stack del target
-    2. Buscar CVEs relacionados
-    3. Ejecutar escaneos específicos
+    Modo INVESTIGACIÓN - Búsqueda de CVEs/Tech específicos
+    Inputs: target, cve_id (opcional)
+    Precondiciones: Superficie conocida en DB.
+    Decisiones: Filtra templates por tecnología o ID.
     """
     
-    def __init__(self, target: str, cve_id: Optional[str] = None, options: Optional[Dict[str, Any]] = None):
-        self.target = target
-        self.cve_id = cve_id  # CVE específico o None para todos
-        self.options = options or {}
-        self.session_id = str(uuid.uuid4())
+    def __init__(self, target: str, cve_id: Optional[str] = None, options: Dict[str, Any] = None):
+        super().__init__(target, "research", options)
+        self.cve_id = cve_id
+
+    def validate_preconditions(self):
+        assets = self.db.get_live_subdomains(self.target)
+        if not assets:
+            raise ValueError(f"No surface known for {self.target}. Run HUNT first.")
+
+    def execute(self) -> Dict[str, Any]:
+        log.info(f"[RESEARCH] Investigating {self.target} (CVE: {self.cve_id or 'All'})")
         
-        self.context = ScanContext(
-            session_id=self.session_id,
-            target=target,
-            mode="research"
-        )
-        set_context(self.context)
+        intent = self.get_operational_intent()
+        intent["depth"] = "deep" # En investigación queremos ir al fondo
         
-        self.db = None
-    
-    def run(self) -> Dict[str, Any]:
-        """Ejecuta la investigación."""
-        logger.info(f"[RESEARCH] Starting research on {self.target}")
-        self.context.mark_running()
+        # 1. Obtener superficie de la DB
+        known_assets = [s.domain for s in self.db.get_live_subdomains(self.target)]
         
-        try:
-            init_db()
-            db_session = SessionLocal()
-            self.db = DBQueries(db_session)
-            
-            # Obtener tecnologías del target
-            target = self.db.get_target(self.target)
-            if not target:
-                return {'status': 'error', 'message': 'Target not found'}
-            
-            technologies = target.technologies or []
-            logger.info(f"[RESEARCH] Technologies: {technologies}")
-            
-            # Buscar CVEs relacionados
-            cves = self._search_cves(technologies)
-            logger.info(f"[RESEARCH] Found {len(cves)} potential CVEs")
-            
-            # Escuchar CVEs específicos
-            if self.cve_id:
-                findings = self._check_cve(self.cve_id)
+        # 2. Determinar tags de escaneo
+        tags = []
+        if self.cve_id:
+            tags = [self.cve_id]
+        else:
+            # Recuperar tech stack de la memoria
+            memory = self.db.get_agent_memory(self.target, "tech_stack")
+            if memory:
+                tags = memory.value
+                log.info(f"[RESEARCH] Using tech stack from memory: {tags}")
             else:
-                findings = self._check_cves(cves)
-            
-            self.context.mark_completed()
-            
-            return {
-                'session_id': self.session_id,
-                'target': self.target,
-                'technologies': technologies,
-                'cves_found': len(cves),
-                'findings': findings
-            }
-            
-        except Exception as e:
-            logger.exception(f"[RESEARCH] Error: {e}")
-            self.context.mark_failed(str(e))
-            return {'status': 'failed', 'error': str(e)}
-    
-    def _search_cves(self, technologies: List[str]) -> List[Dict[str, Any]]:
-        """Busca CVEs relacionados con las tecnologías."""
-        # TODO: Integrar con API de CVE (cve.circl.lu, NVD, etc.)
-        # Por ahora retorna lista vacía
-        logger.info(f"[RESEARCH] Searching CVEs for: {technologies}")
-        return []
-    
-    def _check_cve(self, cve_id: str) -> List[Dict[str, Any]]:
-        """Verifica un CVE específico."""
-        # TODO: Implementar escaneo del CVE
-        logger.info(f"[RESEARCH] Checking CVE: {cve_id}")
-        return []
-    
-    def _check_cves(self, cves: List[Dict]) -> List[Dict[str, Any]]:
-        """Verifica múltiples CVEs."""
-        findings = []
-        for cve in cves:
-            result = self._check_cve(cve.get('id'))
-            if result:
-                findings.extend(result)
-        return findings
-
+                log.info("[RESEARCH] No tech stack found. Running broad tech-discovery scan.")
+                # Aquí podríamos lanzar un fingerprinting primero
+        
+        # 3. Ejecutar escaneo dirigido
+        findings = tool_manager.run_capability("template_scan", known_assets, tags=tags, **intent)
+        
+        return {
+            "status": "completed",
+            "findings_count": len(findings) if findings else 0,
+            "targets_scanned": len(known_assets),
+            "tags_used": tags
+        }
 
 def run_research(target: str, cve_id: Optional[str] = None, **options) -> Dict[str, Any]:
-    """Función de conveniencia para modo Research."""
-    mode = ResearchMode(target, cve_id, options)
-    return mode.run()
+    return ResearchMode(target, cve_id, options).run()

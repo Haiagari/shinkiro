@@ -19,9 +19,17 @@ class SubfinderProvider(BaseProvider):
         output_file = Path("runtime/temp") / f"subfinder_{target}.txt"
         output_file.parent.mkdir(parents=True, exist_ok=True)
         
-        threads = kwargs.get("threads", 50)
+        # Mapeo de intención operativa a ejecución técnica
+        speed = kwargs.get("speed", "normal")
+        threads = 50
+        if speed == "fast": threads = 100
+        elif speed == "slow": threads = 20
         
         cmd = [self.path, "-d", target, "-silent", "-all", "-o", str(output_file), "-t", str(threads)]
+        
+        # Si la intención es ruido bajo, evitamos el flag "-all" que puede ser más ruidoso
+        if kwargs.get("noise") == "low":
+            cmd.remove("-all")
         
         try:
             subprocess.run(cmd, check=True, capture_output=True)

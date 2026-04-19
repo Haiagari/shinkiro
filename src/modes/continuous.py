@@ -1,112 +1,114 @@
 """
-Modo CONTINUO - Monitoreo Continuo
-Ejecuta escaneos periódicos y alerta sobre cambios.
+Modo CONTINUO - Monitoreo Diferencial
 """
 
-import uuid
-from datetime import datetime
-from typing import Optional, Dict, Any, List
+from typing import List, Dict, Any
+from src.modes.base import BaseMode
+from src.core.tool_manager import tool_manager
+from src.utils import log
 
-from src.core.config import config
-from src.core.logging import get_logger
-from src.core.context import ScanContext, set_context
-from src.storage.database import SessionLocal, init_db
-from src.storage.queries import DBQueries
-from src.storage.diff import DiffEngine
-from src.export.normalizer import NormalizedExporter
-from src.notifications.notifier import Notifier
-from src.opsec.kill_switch import check_kill
-
-logger = get_logger('mode_continuous')
-
-
-class ContinuousMode:
+class ContinuousMode(BaseMode):
     """
     Modo CONTINUO - Monitoreo 24/7
-    
-    Objetivo: Detectar cambios en targets ya conocidos.
-    
-    Flujo:
-    1. Obtener último snapshot
-    2. Ejecutar escaneo ligero
-    3. Comparar con snapshot anterior
-    4. Alertar solo si hay cambios (nuevos subdominios, puertos, hallazgos)
+    Inputs: target (ya conocido)
+    Precondiciones: Debe existir un scan previo exitoso.
+    Decisiones: Solo actúa sobre el delta (novedades).
     """
     
-    def __init__(self, target: str, options: Optional[Dict[str, Any]] = None):
-        self.target = target
-        self.options = options or {}
-        self.session_id = str(uuid.uuid4())
-        
-        # Configuración
-        self.interval = self.options.get('interval', 3600)  # 1 hora por defecto
-        self.alert_on_change = self.options.get('alert_on_change', True)
-        
-        self.context = ScanContext(
-            session_id=self.session_id,
-            target=target,
-            mode="continuous"
-        )
-        set_context(self.context)
-        
-        self.db = None
-        self.diff_engine = None
-        self.notifier = None
-    
-    def run(self) -> Dict[str, Any]:
-        """Ejecuta un ciclo de monitoreo."""
-        logger.info(f"[CONTINUOUS] Starting monitoring on {self.target}")
-        self.context.mark_running()
-        
-        try:
-            init_db()
-            db_session = SessionLocal()
-            self.db = DBQueries(db_session)
-            self.diff_engine = DiffEngine(db_session)
-            self.notifier = Notifier()
-            
-            # Obtener último scan para comparar
-            previous_scans = self.db.get_scans_for_target(self.target, limit=1)
-            previous_scan = previous_scans[0] if previous_scans else None
-            
-            # Ejecutar escaneo ligero
-            logger.info("[CONTINUOUS] Running lightweight scan")
-            scan = self._lightweight_scan(db_session)
-            
-            # Comparar con scan anterior
-            if previous_scan:
-                logger.info("[CONTINUOUS] Computing diff with previous scan")
-                diff = self.diff_engine.compute_diff(scan.id, previous_scan.id)
-                
-                # Alertar si hay cambios significativos
-                if diff.has_changes() and self.alert_on_change:
-                    self.notifier.send_alert(
-                        title=f"Cambios detectados en {self.target}",
-                        message=f"Nuevos hallazgos: {diff.summary()}"
-                    )
-            
-            self.context.mark_completed()
-            return {
-                'session_id': self.session_id,
-                'target': self.target,
-                'status': 'completed',
-                'has_changes': diff.has_changes() if previous_scan else True
-            }
-            
-        except Exception as e:
-            logger.exception(f"[CONTINUOUS] Error: {e}")
-            self.context.mark_failed(str(e))
-            return {'status': 'failed', 'error': str(e)}
-    
-    def _lightweight_scan(self, db_session) -> Any:
-        """Escaneo ligero para monitoreo."""
-        # Solo subdomains y puertos básicos
-        # TODO: Implementar
-        logger.info("[CONTINUOUS] Lightweight scan not yet implemented")
-        return None
+    def __init__(self, target: str, options: Dict[str, Any] = None):
+        super().__init__(target, "continuous", options)
 
+    def validate_preconditions(self):
+        # Necesitamos saber si ya conocemos este target
+        target_obj = self.db.get_target(self.target)
+        if not target_obj:
+            raise ValueError(f"Target {self.target} unknown. Run HUNT first to establish baseline.")
+
+    def execute(self) -> Dict[str, Any]:
+        log.info(f"[CONTINUOUS] Starting monitoring cycle for {self.target}")
+        
+        intent = self.get_operational_intent()
+        intent["noise"] = "low" # Queremos pasar desapercibidos
+        intent["speed"] = "slow"
+        
+        # 1. Discovery Ligero (Pasivo)
+        # En continuo solo usamos proveedores pasivos o rápidos para detectar cambios
+        current_subdomains = set(tool_manager.run_capability("asset_discovery", self.target, **intent))
+        
+        # Necesitamos registrar este scan para poder hacer el diff
+        scan_obj = self.db.create_scan(self.target, self.session_id, mode="continuous")
+        
+        # Guardamos subdominios encontrados para el diff
+        for sub in current_subdomains:
+            self.db.add_subdomain(scan_obj.id, sub)
+        
+        # 2. Calcular DIFF REAL usando el DiffEngine robusto
+        diff_report = self.diff_engine.get_diff(self.target, scan_obj.id)
+        
+        if diff_report.has_changes():
+            log.warn(f"[CONTINUOUS] Changes detected: {diff_report.summary()}")
+            self.notifier.send_alert(
+                title=f"Delta detectado: {self.target}",
+                message=f"Cambios: {diff_report.summary()}"
+            )
+            
+            # 3. ACCIÓN BASADA EN EL DIFERENCIAL (Inteligencia Reactiva)
+            
+            # A. Nuevos Activos -> Escaneo Completo
+            if diff_report.new_subdomains:
+                log.info(f"[CONTINUOUS] Reacting to NEW ASSETS: {diff_report.new_subdomains}")
+                self._scan_new_assets(diff_report.new_subdomains, intent)
+                
+            # B. Cambios de Versión/Servicio -> Escaneo de Vulnerabilidades Específico
+            if diff_report.changed_services:
+                log.info(f"[CONTINUOUS] Reacting to CHANGED SERVICES: {len(diff_report.changed_services)} changes")
+                for change in diff_report.changed_services:
+                    host = change['host']
+                    old_v = change['old']['version']
+                    new_v = change['new']['version']
+                    log.info(f"[CONTINUOUS] Service updated on {host}: {old_v} -> {new_v}. Triggering targeted research.")
+                    # Lanzamos capacidad de escaneo de templates específica para el nuevo stack detectado
+                    tool_manager.run_capability("template_scan", host, **intent)
+
+            # C. Puertos Cerrados -> Limpieza de Memoria (Opcional)
+            if diff_report.closed_ports:
+                for p in diff_report.closed_ports:
+                    log.info(f"[CONTINUOUS] Port {p['port']} closed on {p['host']}. Updating surface memory.")
+            
+            # D. Generar INTELLIGENCE BRIEF (Análisis + Recomendaciones)
+            from src.intelligence.brief import generate_intelligence
+            intelligence = generate_intelligence(
+                self.db_session, 
+                self.session_id, 
+                self.target,
+                diff_report.to_dict()
+            )
+            
+            # Loggear recomendaciones accionables
+            if intelligence.get("recommendations"):
+                log.warning("[CONTINUOUS] INTELLIGENCE BRIEF:")
+                for rec in intelligence.get("recommendations", []):
+                    log.info(f"  → {rec}")
+        else:
+            log.info("[CONTINUOUS] No changes detected in attack surface.")
+
+        return {
+            "status": "completed",
+            "has_changes": diff_report.has_changes(),
+            "changes": diff_report.to_dict(),
+            "intelligence": generate_intelligence(
+                self.db_session,
+                self.session_id,
+                self.target,
+                diff_report.to_dict()
+            ) if diff_report.has_changes() else {}
+        }
+
+    def _scan_new_assets(self, new_assets: List[str], intent: Dict[str, Any]):
+        log.info(f"[CONTINUOUS] Performing targeted scan on {len(new_assets)} new assets")
+        for asset in new_assets:
+            tool_manager.run_capability("service_discovery", asset, **intent)
+            tool_manager.run_capability("template_scan", asset, **intent)
 
 def run_continuous(target: str, **options) -> Dict[str, Any]:
-    """Función de conveniencia para modo Continuous."""
-    mode = ContinuousMode(target, options)
-    return mode.run()
+    return ContinuousMode(target, options).run()

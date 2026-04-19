@@ -117,109 +117,61 @@ class SeverityAnalyzer:
 
 
 class Deduplicator:
-    """Deduplica hallazgos similares."""
+    """Deduplica hallazgos similares cruzando con la base de datos."""
     
-    def __init__(self):
-        self.fingerprint_cache = defaultdict(list)
+    def __init__(self, db_session=None):
+        self.db = db_session
     
     def fingerprint(self, finding: Dict[str, Any]) -> str:
-        """
-        Genera un fingerprint único para un finding.
-        
-        Usa: tipo + host + path + param
-        """
+        """Genera un hash único basado en la identidad del hallazgo."""
+        import hashlib
         parts = [
             finding.get('type', ''),
             finding.get('host', ''),
-            finding.get('url', ''),
             finding.get('path', ''),
-            finding.get('param', '')
+            finding.get('param', ''),
+            finding.get('name', '')
         ]
-        return '|'.join(str(p) for p in parts if p)
+        raw = '|'.join(str(p).lower() for p in parts if p)
+        return hashlib.md5(raw.encode()).hexdigest()
     
-    def deduplicate(self, findings: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """
-        Elimina hallazgos duplicados.
-        
-        Mantiene el primero encontrado y marca los demás.
-        """
-        seen = set()
-        unique = []
-        duplicates = []
-        
-        for f in findings:
-            fp = self.fingerprint(f)
-            
-            if fp in seen:
-                duplicates.append(f)
-                # Incrementar contador si existe
-                if 'seen_count' in f:
-                    f['seen_count'] += 1
-            else:
-                seen.add(fp)
-                f['is_duplicate'] = False
-                unique.append(f)
-        
-        if duplicates:
-            logger.info(f"Deduplicated {len(duplicates)} findings")
-        
-        return unique
-    
-    def group_by_type(self, findings: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
-        """Agrupa hallazgos por tipo."""
-        grouped = defaultdict(list)
-        for f in findings:
-            vtype = f.get('type', 'other')
-            grouped[vtype].append(f)
-        return dict(grouped)
-
-
-class CorrelationEngine:
-    """Encuentra correlaciones entre hallazgos."""
-    
-    def find_correlations(self, findings: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """
-        Encuentra hallazgos que pueden estar relacionados.
-        
-        Returns:
-            Lista de correlaciones encontradas
-        """
-        correlations = []
-        
-        # Por ejemplo: XSS + CSRF en el mismo host
-        hosts = defaultdict(list)
-        for f in findings:
-            host = f.get('host', f.get('url', ''))
-            hosts[host].append(f)
-        
-        for host, host_findings in hosts.items():
-            types = [f.get('type') for f in host_findings]
-            
-            # XSS + CSRF correlation
-            if 'xss' in types and 'csrf' in types:
-                correlations.append({
-                    'type': 'xss_csrf_combo',
-                    'host': host,
-                    'severity': 'high',
-                    'description': f'XSS and CSRF found on {host}',
-                    'findings': [f for f in host_findings if f.get('type') in ['xss', 'csrf']]
-                })
-        
-        return correlations
-
+    def is_known(self, target: str, fingerprint: str) -> bool:
+        """Verifica si el hallazgo ya existía en la DB para este target."""
+        if not self.db: return False
+        from src.storage.models import Finding
+        return self.db.query(Finding).filter(
+            Finding.target == target,
+            Finding.evidence == fingerprint # Usamos evidence o una columna dedicada para el hash
+        ).first() is not None
 
 class NoveltyDetector:
-    """Detecta hallazgos nuevos o cambios significativos."""
+    """Detecta novedades basándose en el historial de la DB."""
     
-    def __init__(self):
-        self.previous_findings = {}
+    def __init__(self, db_session):
+        self.db = db_session
     
-    def set_previous(self, target: str, findings: List[Dict[str, Any]]):
-        """Establece los hallazgos anteriores para comparación."""
-        # Crear set de fingerprints previos
-        self.previous_findings[target] = {
-            self._fingerprint(f): f for f in findings
-        }
+    def analyze_novelty(self, target: str, findings: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+        """Clasifica hallazgos en NUEVOS o RECURRENTES."""
+        from src.storage.models import Finding
+        
+        results = {'new': [], 'recurrent': []}
+        
+        # Obtener fingerprints conocidos de la DB
+        known_findings = self.db.query(Finding.evidence).filter(Finding.target == target).all()
+        known_hashes = {f[0] for f in known_findings}
+        
+        dedup = Deduplicator()
+        for f in findings:
+            f_hash = dedup.fingerprint(f)
+            if f_hash in known_hashes:
+                f['is_new'] = False
+                results['recurrent'].append(f)
+            else:
+                f['is_new'] = True
+                results['new'].append(f)
+        
+        return results
+
     
     def _fingerprint(self, finding: Dict[str, Any]) -> str:
         """Fingerprint para detección de noveldad."""

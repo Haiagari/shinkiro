@@ -20,8 +20,18 @@ class NucleiProvider(BaseProvider):
         output_file = Path("runtime/temp") / f"nuclei_results.json"
         output_file.parent.mkdir(parents=True, exist_ok=True)
         
+        # Mapeo de intención operativa
+        speed = kwargs.get("speed", "normal")
+        noise = kwargs.get("noise", "medium")
+        depth = kwargs.get("depth", "standard")
+        
+        rate_limit = 50
+        if speed == "fast": rate_limit = 150
+        elif speed == "slow": rate_limit = 10
+        
         severity = kwargs.get("severity", "critical,high,medium")
-        rate_limit = kwargs.get("rate_limit", 50)
+        if noise == "low":
+            severity = "critical,high"
         
         cmd = [
             self.path, 
@@ -29,8 +39,18 @@ class NucleiProvider(BaseProvider):
             "-severity", severity, 
             "-o", str(output_file), 
             "-json", "-silent", 
-            "-rate-limit", str(rate_limit)
+            "-rate-limit", str(rate_limit),
+            "-bulk-size", str(rate_limit // 5)
         ]
+        
+        # Tags específicos del modo RESEARCH
+        tags = kwargs.get("tags", [])
+        if tags:
+            cmd.extend(["-tags", ",".join(tags)])
+        
+        # Si depth es deep, incluimos templates que podrían ser lentos o pesados
+        if depth == "deep":
+            cmd.append("-as") # Automatic Scan
         
         # Opcionales
         if kwargs.get("update", False):

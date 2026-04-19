@@ -288,13 +288,46 @@ class DBQueries:
             'last_scan': scans[0].start_time.isoformat() if scans else None
         }
     
-    def get_recent_findings(self, days: int = 7, severity: Optional[str] = None) -> List[Finding]:
-        """Obtiene hallazgos recientes."""
-        since = datetime.utcnow() - timedelta(days=days)
+    def add_finding_intelligent(self, target: str, session_id: str, vuln_data: Dict[str, Any]) -> Finding:
+        """
+        Agrega un hallazgo usando inteligencia para deduplicar y trackear historial.
+        """
+        from src.intelligence.analyzer import Deduplicator
+        dedup = Deduplicator(self.db)
+        fingerprint = dedup.fingerprint(vuln_data)
         
-        query = self.db.query(Finding).filter(Finding.first_seen >= since)
+        # Buscar si ya existe
+        existing = self.db.query(Finding).filter(
+            Finding.target == target,
+            Finding.evidence == fingerprint
+        ).first()
         
-        if severity:
-            query = query.filter(Finding.severity == severity)
-        
-        return query.order_by(Finding.first_seen.desc()).all()
+        if existing:
+            existing.seen_count += 1
+            existing.last_seen = datetime.utcnow()
+            existing.session_id = session_id
+            self.db.commit()
+            return existing
+        else:
+            # Es un hallazgo NUEVO
+            finding = Finding(
+                target=target,
+                session_id=session_id,
+                name=vuln_data.get('name', 'Unknown'),
+                type=vuln_data.get('type'),
+                severity=vuln_data.get('severity', 'info'),
+                host=vuln_data.get('host'),
+                url=vuln_data.get('url'),
+                path=vuln_data.get('path'),
+                param=vuln_data.get('param'),
+                description=vuln_data.get('description'),
+                evidence=fingerprint, # Guardamos el hash aquí
+                status="new",
+                first_seen=datetime.utcnow(),
+                last_seen=datetime.utcnow(),
+                seen_count=1
+            )
+            self.db.add(finding)
+            self.db.commit()
+            self.db.refresh(finding)
+            return finding
