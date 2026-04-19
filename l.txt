@@ -1,0 +1,609 @@
+Perfecto. Ahora hacemos lo mismo para el **repositorio 2**, que sería tu actual **bugbounty-framework**, y que en la visión nueva yo renombraría como **OzyRecon**.
+
+Voy a darte lo mismo que con OzyAudit:
+
+* estado actual
+* transformación que tendrá
+* redundancia/ruido a quitar
+* rol exacto
+* funcionamiento
+* nueva estructura recomendada del repo
+
+Todo basado en lo que mostraste del proyecto: persistencia SQLite/SQLAlchemy, diff engine, alertas Telegram, OPSEC, custom templates, recon, puertos, vuln scanning y roadmap por modos. 
+
+---
+
+# Proyecto 2: bugbounty-framework → **OzyRecon**
+
+## 1. Estado actual
+
+Este proyecto ya **no es un script simple**.
+Por lo que muestras, ya tiene rasgos de plataforma seria:
+
+* persistencia real en SQLite + SQLAlchemy
+* diff engine para detectar cambios entre scans
+* alertas inteligentes por Telegram
+* lógica OPSEC/Ninja mode
+* detección de WAF
+* recon y fallback
+* puertos y servicios
+* scanning de vulnerabilidades
+* smart fuzzing
+* reportes multi-plataforma
+* modos operativos definidos en roadmap 
+
+## Lo bueno de su estado actual
+
+Lo más valioso hoy es esto:
+
+### A. Ya tiene **memoria**
+
+No solo lanza herramientas: guarda estado e historial.
+
+### B. Ya tiene **noción de cambio**
+
+Eso del diff engine es muy potente y poca gente lo tiene bien pensado.
+
+### C. Ya tiene **intención operativa**
+
+No solo “escanea”, sino que piensa en:
+
+* OPSEC
+* ban avoidance
+* kill-switch
+* WAF awareness
+
+### D. Ya tiene **visión de producto**
+
+Tu roadmap de modos (`HUNT`, `CONTINUO`, `SERVICIO`, `CAMPAÑA`, `INVESTIGACIÓN`, `FORENSE`) demuestra que no es una colección de comandos, sino una plataforma en evolución. 
+
+## El problema actual
+
+Aunque es potente, hoy sigue teniendo identidad de “framework de bug bounty” más que de **producto ofensivo bien modularizado**.
+
+Yo veo tres riesgos típicos aquí:
+
+* mezcla entre ejecución, estrategia, almacenamiento y salida
+* dependencia mental de herramientas concretas
+* outputs probablemente heterogéneos o difíciles de unificar
+
+---
+
+# 2. Transformación que tendrá
+
+La transformación que yo haría es esta:
+
+> **dejar de ser un framework de automatización ofensiva y convertirse en una plataforma de discovery y offensive reconnaissance llamada OzyRecon**
+
+## Nueva definición
+
+**OzyRecon = motor ofensivo de descubrimiento, inventario y recolección de señales de ataque**
+
+No sería la pieza que decide el score final.
+No sería el dashboard global.
+No sería el control plane.
+
+Sería la pieza especializada en:
+
+* descubrir superficie
+* detectar cambios
+* recolectar findings
+* operar con sigilo
+* dejar resultados consistentes para análisis posterior
+
+En resumen:
+
+> **OzyRecon encuentra y organiza. OzyAudit interpreta.**
+
+---
+
+# 3. Qué redundancia le quitaría
+
+Aquí está el trabajo fino.
+
+## A. Sacaría ruido de “todo en uno”
+
+Si hoy el proyecto intenta hacer demasiadas cosas en el mismo flujo, yo separaría:
+
+* adquisición de datos
+* almacenamiento
+* normalización
+* notificación
+* reporting
+
+Porque discovery y reporting no son lo mismo.
+
+## B. Sacaría la dependencia fuerte del nombre de cada herramienta
+
+Tu proyecto hoy menciona:
+
+* Subfinder
+* crt.sh
+* Naabu
+* Nmap
+* Nuclei
+* Dalfox
+* SQLMap/Ghauri 
+
+Eso está bien, pero internamente no debería pensarse así:
+
+* “corro Nuclei”
+* “corro Naabu”
+
+Debería pensarse como:
+
+* `asset discovery`
+* `service discovery`
+* `template-based vuln detection`
+* `web fuzzing`
+* `db exploitation candidates`
+
+La diferencia es brutal, porque te permite cambiar herramientas sin romper el modelo mental.
+
+## C. Sacaría reporting “demasiado pegado” al scan
+
+Hoy parece que:
+
+* escanea
+* guarda
+* alerta
+* reporta
+
+Eso está bien, pero si OzyAudit será tu motor de evaluación, OzyRecon no necesita ser el gran sistema de scoring/reporting final.
+
+OzyRecon debe producir:
+
+* resultados ricos
+* sesiones
+* eventos
+* evidencias
+
+Y dejar a OzyAudit interpretar la salud/riesgo superior.
+
+## D. Sacaría acoplamiento excesivo entre OPSEC y lógica principal
+
+OPSEC es clave, pero yo lo encapsularía como capa propia:
+
+* rate limiting
+* jitter
+* kill-switch
+* identity rotation
+* WAF-aware throttle
+
+No como lógica repartida por todo el proyecto.
+
+---
+
+# 4. Rol exacto que tendrá
+
+## Rol principal
+
+**OzyRecon = motor ofensivo de descubrimiento, enumeración y observación de cambios**
+
+## Qué significa eso
+
+Su función será:
+
+* encontrar activos
+* mapear superficie
+* detectar cambios
+* persistir sesiones
+* alertar novedades
+* recolectar evidencias
+* exportar resultados normalizados
+
+## Qué NO será
+
+No será:
+
+* el motor de scoring final
+* el sistema de policy enforcement
+* el dashboard global de todo el ecosistema
+* la capa de auditoría ejecutiva
+
+Eso es importante.
+Así evitamos que se convierta en otro “monstruo multipropósito”.
+
+---
+
+# 5. Cómo funcionará
+
+## Modo 1: Discovery inicial
+
+Entrada:
+
+* target o scope
+
+Proceso:
+
+1. descubrir subdominios/activos
+2. identificar puertos/servicios
+3. lanzar detección base
+4. guardar snapshot
+
+Salida:
+
+* inventario inicial
+* findings
+* sesión persistida
+
+## Modo 2: Monitoreo continuo
+
+Entrada:
+
+* target ya conocido
+
+Proceso:
+
+1. re-scan controlado
+2. comparar con snapshot previo
+3. detectar delta
+4. disparar alertas
+
+Salida:
+
+* “qué apareció”
+* “qué desapareció”
+* “qué cambió”
+
+## Modo 3: Investigación dirigida
+
+Entrada:
+
+* target + hipótesis (por stack, por CVE, por template pack)
+
+Proceso:
+
+1. filtrar herramientas/rutas relevantes
+2. escanear quirúrgicamente
+3. guardar evidencias
+4. producir findings enfocados
+
+Salida:
+
+* findings especializados
+* evidencia clara
+* export útil para OzyAudit
+
+## Modo 4: Export
+
+Entrada:
+
+* sesión o target
+
+Proceso:
+
+1. tomar resultados crudos
+2. normalizarlos
+3. exportarlos
+
+Salida:
+
+* JSON común
+* evidencia
+* findings legibles por OzyAudit/OzyCore
+
+---
+
+# 6. Qué nombre y rol usaría
+
+Yo lo renombraría a:
+
+## Nombre recomendado
+
+**OzyRecon**
+
+### Tagline
+
+**Local-first offensive reconnaissance and target intelligence platform**
+
+Eso le da identidad profesional y lo separa del tono de “framework de bug bounty”.
+
+---
+
+# 7. Nueva estructura recomendada del repo
+
+Esta sería mi estructura objetivo para este proyecto:
+
+```text
+OzyRecon/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── pyproject.toml / requirements.txt
+├── Makefile
+├── config.yaml
+│
+├── docs/
+│   ├── architecture.md
+│   ├── opsec.md
+│   ├── modes.md
+│   ├── storage.md
+│   └── roadmap.md
+│
+├── examples/
+│   ├── hunt/
+│   ├── continuous/
+│   ├── campaign/
+│   └── research/
+│
+├── custom_templates/
+├── wordlists/
+├── tools/
+│
+├── output/                     # ignorado / temporal según estrategia
+│
+├── src/
+│   ├── cli/
+│   │   ├── main.py
+│   │   ├── args.py
+│   │   └── commands/
+│   │       ├── hunt.py
+│   │       ├── continuous.py
+│   │       ├── campaign.py
+│   │       ├── research.py
+│   │       ├── forensic.py
+│   │       └── export.py
+│   │
+│   ├── core/
+│   │   ├── logging.py
+│   │   ├── config.py
+│   │   ├── errors.py
+│   │   └── context.py
+│   │
+│   ├── opsec/
+│   │   ├── rate_limiter.py
+│   │   ├── identity_rotation.py
+│   │   ├── jitter.py
+│   │   ├── waf_detection.py
+│   │   └── kill_switch.py
+│   │
+│   ├── discovery/
+│   │   ├── assets/
+│   │   │   ├── subdomains.py
+│   │   │   ├── fallback.py
+│   │   │   └── resolvers.py
+│   │   ├── services/
+│   │   │   ├── ports.py
+│   │   │   ├── fingerprint.py
+│   │   │   └── technologies.py
+│   │   └── targets/
+│   │       ├── scope.py
+│   │       └── target_profile.py
+│   │
+│   ├── scanners/
+│   │   ├── templates/
+│   │   │   ├── nuclei_runner.py
+│   │   │   └── custom_template_loader.py
+│   │   ├── web/
+│   │   │   ├── dalfox_runner.py
+│   │   │   ├── fuzzing.py
+│   │   │   └── contextual_wordlists.py
+│   │   ├── db/
+│   │   │   ├── sqlmap_runner.py
+│   │   │   └── ghauri_runner.py
+│   │   └── wrappers/
+│   │       ├── naabu.py
+│   │       ├── nmap.py
+│   │       └── http_clients.py
+│   │
+│   ├── storage/
+│   │   ├── models.py
+│   │   ├── session_store.py
+│   │   ├── findings_store.py
+│   │   ├── diff_engine.py
+│   │   └── queries.py
+│   │
+│   ├── intelligence/
+│   │   ├── severity.py
+│   │   ├── correlation.py
+│   │   ├── deduplication.py
+│   │   └── novelty.py
+│   │
+│   ├── notifications/
+│   │   ├── telegram.py
+│   │   └── summaries.py
+│   │
+│   ├── export/
+│   │   ├── normalized/
+│   │   │   ├── findings_exporter.py
+│   │   │   ├── session_exporter.py
+│   │   │   └── target_exporter.py
+│   │   ├── hackerone.py
+│   │   ├── bugcrowd.py
+│   │   └── immunefi.py
+│   │
+│   └── modes/
+│       ├── hunt.py
+│       ├── continuous.py
+│       ├── campaign.py
+│       ├── research.py
+│       └── forensic.py
+│
+└── tests/
+    ├── unit/
+    ├── integration/
+    └── fixtures/
+```
+
+---
+
+# 8. Qué ganamos con esta estructura
+
+## A. Claridad de producto
+
+Se ve inmediatamente qué es:
+
+* discovery
+* scanning
+* storage
+* opsec
+* modes
+* export
+
+## B. Menos acoplamiento
+
+Cada responsabilidad vive en su sitio.
+
+## C. Mejor integración
+
+La carpeta `export/normalized/` es clave para que OzyAudit y OzyCore puedan leer resultados sin dolor.
+
+## D. Más fácil de evolucionar
+
+Tus “6 modos operativos” dejan de ser ideas del README y pasan a ser primera clase dentro del repo. 
+
+---
+
+# 9. Qué carpetas o ideas actuales conservaría
+
+## Conservaría
+
+* `custom_templates/`
+* `wordlists/`
+* `tools/`
+* la idea de `output/`
+* la persistencia SQLite/SQLAlchemy
+* diff engine
+* Telegram alerts
+* Ninja Mode / OPSEC
+* los modos del roadmap
+
+Todo eso tiene muchísimo valor. 
+
+## Reubicaría
+
+* `modules/` probablemente está demasiado genérica como carpeta
+* yo la descompondría en:
+
+  * `storage/`
+  * `discovery/`
+  * `scanners/`
+  * `notifications/`
+  * `opsec/`
+  * `intelligence/`
+
+Porque `modules/` suele volverse cajón desastre.
+
+---
+
+# 10. Qué capacidades nuevas añadiría
+
+## A. Export normalizado
+
+Esto es lo más importante para el ecosistema.
+
+Ejemplo de salida común:
+
+```json
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "target": "example.com",
+  "session_id": "abc123",
+  "assets": [],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "evidence": []
+}
+```
+
+Con eso OzyAudit podrá interpretar el resultado sin depender del detalle de cada herramienta.
+
+## B. Severity + deduplication central
+
+No dejaría la severidad repartida por módulos.
+La pondría en `intelligence/`.
+
+## C. Session model serio
+
+Haría que cada ejecución tenga:
+
+* session_id
+* timestamp
+* mode
+* target
+* diff_from_previous
+* summary
+
+Eso te da trazabilidad fuerte.
+
+## D. Compare mode interno
+
+No solo diff de activos, sino:
+
+* findings nuevos
+* findings resueltos
+* exposición creciente/disminuyendo
+
+---
+
+# 11. Resumen ejecutivo del cambio
+
+## Antes
+
+bugbounty-framework = infraestructura ofensiva modular con almacenamiento, alertas, OPSEC y scanning.
+
+## Después
+
+**OzyRecon = plataforma profesional de discovery, recon e inteligencia ofensiva**, especializada en:
+
+* target discovery
+* asset intelligence
+* session persistence
+* diff and novelty detection
+* OPSEC-aware execution
+* normalized export for the rest of the ecosystem
+
+---
+
+# 12. Qué te recomiendo hacer primero en este repo
+
+Si quieres dejarlo como yo lo recomiendo, haría este orden:
+
+## Etapa 1
+
+Renombre conceptual:
+
+* `bugbounty-framework` → **OzyRecon**
+
+## Etapa 2
+
+Refactor de estructura:
+
+* sacar `modules/`
+* crear:
+
+  * `discovery/`
+  * `scanners/`
+  * `storage/`
+  * `notifications/`
+  * `opsec/`
+  * `export/`
+
+## Etapa 3
+
+Implementar `export/normalized/`
+
+## Etapa 4
+
+Convertir los “modos operativos” del README en código real dentro de `modes/`
+
+## Etapa 5
+
+Conectar esa salida con OzyAudit vía adapter
+
+---
+
+# 13. Mi criterio profesional final para este repo
+
+El papel correcto de este proyecto no es “hacer de todo”.
+
+Su papel es:
+
+> **encontrar, persistir, diferenciar y exportar inteligencia ofensiva de objetivos**
+
+Ese es el rol exacto y correcto.
+
+---
