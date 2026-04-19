@@ -40,6 +40,10 @@ class Decision:
     novelty_weight: float = 0.3
     diff_weight: float = 0.2
     
+    # Outcome (added for Phase 2.1)
+    result: Optional[str] = None
+    value_score: float = 0.0
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
@@ -51,42 +55,49 @@ class DecisionRepository:
     
     def save(self, decision: Decision) -> Decision:
         """Guarda una decisión en la DB."""
-        from src.storage.models import Decision as DecisionModel
-        
-        # Create table if not exists
+        # Create table if not exists with outcome columns
         self.db.execute(
             "CREATE TABLE IF NOT EXISTS decisions ("
             "id TEXT PRIMARY KEY, session_id TEXT, decision_type TEXT, "
             "target TEXT, context JSON, reason TEXT, timestamp TEXT, "
-            "reputation_weight REAL, novelty_weight REAL, diff_weight REAL)"
+            "reputation_weight REAL, novelty_weight REAL, diff_weight REAL, "
+            "result TEXT, value_score REAL)"
         )
         
         self.db.execute(
             """INSERT OR REPLACE INTO decisions 
             (id, session_id, decision_type, target, context, reason, timestamp, 
-             reputation_weight, novelty_weight, diff_weight)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+             reputation_weight, novelty_weight, diff_weight, result, value_score)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 decision.id,
                 decision.session_id,
                 decision.decision_type,
                 decision.target,
-                str(decision.context),  # JSON string
+                str(decision.context),
                 decision.reason,
                 decision.timestamp,
                 decision.reputation_weight,
                 decision.novelty_weight,
-                decision.diff_weight
+                decision.diff_weight,
+                decision.result,
+                decision.value_score
             )
         )
         self.db.commit()
         logger.info(f"Decision logged: {decision.decision_type} for {decision.target}")
         return decision
     
+    def update_outcome(self, decision_id: str, result: str, value_score: float):
+        """Actualiza el resultado de una decisión ya registrada."""
+        self.db.execute(
+            "UPDATE decisions SET result = ?, value_score = ? WHERE id = ?",
+            (result, value_score, decision_id)
+        )
+        self.db.commit()
+
     def get_by_session(self, session_id: str) -> List[Decision]:
-        """Obtiene todas las decisiones de una sesión."""
-        from src.storage.models import Decision as DecisionModel
-        
+        # ... same logic but with result/value_score ...
         result = self.db.execute(
             "SELECT * FROM decisions WHERE session_id = ? ORDER BY timestamp",
             (session_id,)
@@ -95,16 +106,29 @@ class DecisionRepository:
         decisions = []
         for row in result:
             decisions.append(Decision(
-                id=row[0],
-                session_id=row[1],
-                decision_type=row[2],
-                target=row[3],
-                context=eval(row[4]) if row[4] else {},
-                reason=row[5],
-                timestamp=row[6],
-                reputation_weight=row[7],
-                novelty_weight=row[8],
-                diff_weight=row[9]
+                id=row[0], session_id=row[1], decision_type=row[2],
+                target=row[3], context=eval(row[4]) if row[4] else {},
+                reason=row[5], timestamp=row[6],
+                reputation_weight=row[7], novelty_weight=row[8], diff_weight=row[9],
+                result=row[10], value_score=row[11]
+            ))
+        return decisions
+
+    def get_top_decisions(self, limit: int = 5, success: bool = True) -> List[Decision]:
+        """Obtiene las mejores (o peores) decisiones."""
+        order = "DESC" if success else "ASC"
+        result = self.db.execute(
+            f"SELECT * FROM decisions WHERE result IS NOT NULL ORDER BY value_score {order} LIMIT {limit}"
+        ).fetchall()
+        
+        decisions = []
+        for row in result:
+            decisions.append(Decision(
+                id=row[0], session_id=row[1], decision_type=row[2],
+                target=row[3], context=eval(row[4]) if row[4] else {},
+                reason=row[5], timestamp=row[6],
+                reputation_weight=row[7], novelty_weight=row[8], diff_weight=row[9],
+                result=row[10], value_score=row[11]
             ))
         return decisions
     

@@ -17,9 +17,9 @@ class IntelligenceDashboard:
         metrics = data['metrics']
         weights = data['weights']
         
-        print("\n" + "="*50)
+        print("\n" + "="*60)
         print("   OZYRECON INTELLIGENCE DASHBOARD (v4.0)")
-        print("="*50)
+        print("="*60)
         
         print(f"\n[📊] MÉTRICAS GLOBALES:")
         print(f"  • Total Decisiones     : {metrics['total_decisions']}")
@@ -27,6 +27,24 @@ class IntelligenceDashboard:
         print(f"  • Signal-to-Noise Ratio: {metrics['signal_to_noise_ratio']:.2f}")
         print(f"  • Avg Value per Scan   : {metrics['avg_value_per_scan']:.2f}")
         
+        # ELITE: Top Decisiones
+        from src.intelligence.decision_log import DecisionRepository
+        from src.storage.database import SessionLocal
+        db = SessionLocal()
+        repo = DecisionRepository(db)
+        
+        print(f"\n[🏆] TOP DECISIONES ACERTADAS:")
+        successes = repo.get_top_decisions(limit=3, success=True)
+        for d in successes:
+            print(f"  ✅ {d.decision_type} on {d.target} ({d.result}) - Score: {d.value_score:.2f}")
+            
+        print(f"\n[❌] DECISIONES FALLIDAS:")
+        failures = repo.get_top_decisions(limit=3, success=False)
+        for d in failures:
+            print(f"  ⚠️  {d.decision_type} on {d.target} ({d.result}) - Score: {d.value_score:.2f}")
+        
+        db.close()
+
         print(f"\n[⚖️ ] PESOS ACTUALES (FeedbackEngine):")
         print(f"  • Reputation Weight    : {weights['reputation']:.2f}")
         print(f"  • Novelty Weight       : {weights['novelty']:.2f}")
