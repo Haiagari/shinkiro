@@ -1,5 +1,6 @@
 """
 Gestión de la Base de Datos (SQLite)
+OzyRecon - Storage Layer
 """
 
 from datetime import datetime
@@ -7,10 +8,12 @@ from pathlib import Path
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import Base, Target, Scan, Subdomain, Port, Vulnerability
-from .utils import load_json, save_json
 
-DB_PATH = Path(__file__).resolve().parents[2] / "runtime" / "db" / "bugbounty.db"
+# Importar modelos desde el módulo original
+from backend.modules.models import Base, Target, Scan, Subdomain, Port, Vulnerability
+from backend.modules.utils import load_json, save_json
+
+DB_PATH = Path(__file__).resolve().parents[3] / "runtime" / "db" / "ozyrecon.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 DB_URL = f"sqlite:///{DB_PATH}"
 
