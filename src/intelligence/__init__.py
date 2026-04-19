@@ -3,6 +3,7 @@ OzyRecon Intelligence Module
 Análisis de severidad, deduplicación, correlación y detección de novedades.
 """
 
+# Fase 1: Inteligencia adaptativa
 from .analyzer import (
     SeverityAnalyzer,
     SeverityResult,
@@ -17,7 +18,43 @@ from .analyzer import (
     deduplicate_findings,
 )
 
+# Fase 2: Aprendizaje reflexivo
+from .learning_orchestrator import (
+    LearningOrchestrator,
+    LearningMetrics,
+    learning_orchestrator,
+    record_learned_decision,
+    evaluate_and_learn,
+)
+
+from .decision_log import (
+    DecisionLog,
+    DecisionType,
+    Decision,
+    log_decision,
+)
+
+from .outcome_evaluator import (
+    OutcomeEvaluator,
+    OutcomeType,
+    DecisionOutcome,
+    outcome_evaluator,
+)
+
+from .feedback_engine import (
+    FeedbackEngine,
+    ScoringWeights,
+    feedback_engine,
+)
+
+from .false_positive_memory import (
+    FalsePositiveMemory,
+    FalsePositivePattern,
+    false_positive_memory,
+)
+
 __all__ = [
+    # ===== FASE 1: Inteligencia Adaptativa =====
     # Severity
     'SeverityAnalyzer',
     'SeverityResult',
@@ -33,4 +70,30 @@ __all__ = [
     # Novelty
     'NoveltyDetector',
     'novelty_detector',
+    
+    # ===== FASE 2: Aprendizaje Reflexivo =====
+    # Orchestrator
+    'LearningOrchestrator',
+    'LearningMetrics',
+    'learning_orchestrator',
+    'record_learned_decision',
+    'evaluate_and_learn',
+    # Decision Log
+    'DecisionLog',
+    'DecisionType',
+    'Decision',
+    'log_decision',
+    # Outcome Evaluator
+    'OutcomeEvaluator',
+    'OutcomeType',
+    'DecisionOutcome',
+    'outcome_evaluator',
+    # Feedback Engine
+    'FeedbackEngine',
+    'ScoringWeights',
+    'feedback_engine',
+    # False Positive Memory
+    'FalsePositiveMemory',
+    'FalsePositivePattern',
+    'false_positive_memory',
 ]
