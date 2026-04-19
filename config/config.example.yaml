@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────
+# BugBounty Framework — Configuración de Ejemplo
+# Renombrar a config/config.yaml y completar con tus datos
+# ─────────────────────────────────────────────
+
+# Ajustes globales de performance
+threads: 50
+timeout: 10       # segundos por request
+rate_limit: 50    # requests/seg para nuclei
+
+# Path local de herramientas
+tools_path: "tools/go/bin"
+
+# Rate Limiting Automático (Pilar #3)
+auto_rate_limit:
+  enabled: true
+  max_requests_per_min: 200
+  check_interval: 10
+  error_threshold: 10
+  ban_threshold: 50
+  slow_mode_threshold: 1000
+
+# API Keys para Recon (Subfinder)
+api_keys:
+  shodan:        ""
+  virustotal:    ""
+  censys_id:     ""
+  censys_secret: ""
+  securitytrails: ""
+  github:        ""
+
+# Notificaciones (Pilar #2)
+notifications:
+  telegram_token: "TU_TOKEN_DE_BOT"
+  telegram_chat_id: "TU_CHAT_ID"
+  alert_level: "medium" # critical, high, medium, low, all
+  always_notify: true
+
+# IA Avanzada (Opcional)
+ai:
+  gemini_api_key: ""
+  claude_api_key: ""

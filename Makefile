@@ -1,4 +1,4 @@
-.PHONY: install wordlists tools check clean help
+.PHONY: install wordlists tools check check-layout clean help
 
 PYTHON := python3
 PIP    := pip3
@@ -11,12 +11,14 @@ help:
 	@echo "  make tools      Instalar herramientas Go (requiere Go instalado)"
 	@echo "  make wordlists  Descargar wordlists de SecLists"
 	@echo "  make check      Verificar herramientas instaladas"
-	@echo "  make clean      Limpiar output/"
+	@echo "  make check-layout  Verificar la estructura del repo"
+	@echo "  make clean      Limpiar runtime/scans/"
+	@echo "  make prune      Podar runtime/scans/ (mantiene las 5 ultimas)"
 	@echo ""
 	@echo "  Uso rápido:"
-	@echo "  python main.py -t target.com --full"
-	@echo "  python main.py -t target.com --recon"
-	@echo "  python main.py -t target.com --vulns"
+	@echo "  python3 backend/main.py -t target.com --full"
+	@echo "  python3 backend/main.py -t target.com --recon"
+	@echo "  python3 backend/main.py -t target.com --vulns"
 	@echo ""
 
 install:
@@ -45,17 +47,17 @@ tools:
 
 wordlists:
 	@echo "[*] Descargando wordlists de SecLists..."
-	@mkdir -p wordlists
+	@mkdir -p resources/wordlists
 	curl -sL "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/common.txt" \
-		-o wordlists/common.txt
+		-o resources/wordlists/common.txt
 	curl -sL "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-5000.txt" \
-		-o wordlists/subdomains.txt
+		-o resources/wordlists/subdomains.txt
 	curl -sL "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/burp-parameter-names.txt" \
-		-o wordlists/params.txt
+		-o resources/wordlists/params.txt
 	curl -sL "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/LFI/LFI-Jhaddix.txt" \
-		-o wordlists/lfi.txt
-	@echo "[+] Wordlists descargadas en wordlists/"
-	@wc -l wordlists/*.txt
+		-o resources/wordlists/lfi.txt
+	@echo "[+] Wordlists descargadas en resources/wordlists/"
+	@wc -l resources/wordlists/*.txt
 
 check:
 	@echo ""
@@ -70,7 +72,13 @@ check:
 	done
 	@echo ""
 
+check-layout:
+	@./scripts/check_layout.sh
+
 clean:
-	@echo "[*] Limpiando output/..."
-	@find output/ -type f -not -name ".gitkeep" -delete 2>/dev/null; true
+	@echo "[*] Limpiando runtime/scans/..."
+	@find runtime/scans/ -type f -not -name ".gitkeep" -delete 2>/dev/null; true
 	@echo "[+] Listo."
+
+prune:
+	@./scripts/prune_scans.sh 5

@@ -1,119 +1,135 @@
-# 🚀 BugBounty Automation Framework v2.0
+# 🚀 BugBounty Automation Framework v2.3 (Validated Edition)
 
-**Plataforma profesional, modular e inteligente para Reconocimiento y Escaneo de Vulnerabilidades.**
+**Plataforma de elite con Agentes IA, Memoria Táctica y Protocolo de Validación Real.**
 
-Este framework no es solo una colección de herramientas; es una **infraestructura de Bug Bounty** diseñada para automatizar la intuición del hunter y escalar operaciones sin ser detectado.
-
----
-
-## 🏛️ Los 4 Pilares Profesionales (Metodología de Elite)
-
-Hemos profesionalizado el framework bajo 4 pilares críticos para el éxito en programas modernos:
-
-### 1. 💾 Persistencia Inteligente (SQLite + SQLAlchemy)
-Se acabó el depender de archivos JSON volátiles. 
-- **Memoria Real:** Base de datos persistente que guarda cada host, puerto y hallazgo con timestamp.
-- **Motor de Diferencias (SQL-based):** Detecta automáticamente qué cambió entre scans. ¿Apareció un puerto nuevo? ¿Un subdominio nuevo? El framework lo sabe.
-- **Consultas Rápidas:** Índices optimizados para buscar vulnerabilidades críticas a través de miles de registros en milisegundos.
-
-### 2. 🔔 Notificaciones de Alta Señal (Telegram Smart Alerts)
-No queremos spam, queremos acción.
-- **Filtrado por Severidad:** Recibí alertas inmediatas en tu celular para hallazgos **CRITICAL**, **HIGH** y **MEDIUM**.
-- **Reportes de Novedades:** Resúmenes automáticos al finalizar cada scan detallando nuevos descubrimientos (Diff Engine).
-- **Conectividad Total:** Integración nativa con bots de Telegram.
-
-### 3. 🥷 OPSEC & Sigilo Avanzado (Ninja Mode)
-Entrá sin hacer ruido. Evitá los baneos de IP de los Firewalls corporativos.
-- **Rotación de Identidades:** Cambio dinámico de User-Agents reales (Chrome, Firefox, Safari) en cada request.
-- **Jitter Aleatorio:** Retrasos variables entre peticiones para imitar comportamiento humano.
-- **Kill-Switch de Emergencia:** Si detectamos un baneo masivo (múltiples 403/429), el framework frena en seco para proteger tu infraestructura.
-- **Detección de WAF Adaptativa:** Identifica Cloudflare, AWS WAF, Akamai, etc., y ajusta automáticamente la agresividad del scan.
-
-### 4. 🧠 Estrategia de Detección Propia (Custom Templates)
-No corras lo que corren todos.
-- **Custom Templates Directory:** Carpeta dedicada para tus propias firmas de Nuclei.
-- **Detección Diferencial:** Buscamos archivos de backup (.bak, .swp), paneles de debug expuestos y patrones de LFI/IDOR personalizados que las herramientas estándar ignoran.
+Este framework ha superado la etapa de laboratorio. Ahora es un sistema de caza profesional diseñado para operar con sigilo, aprender de cada sesión y proporcionar recomendaciones tácticas basadas en datos reales.
 
 ---
 
-## ✨ Características Técnicas
+## 🏛️ Los 6 Pilares de Elite (Arquitectura Pro)
 
-| Módulo | Descripción |
-|:-------|:------------|
-| **🔍 Recon + Fallback** | Subfinder, crt.sh y fallback automático al target base si no hay subdominios. |
-| **🌐 Puertos & Services** | Naabu + Nmap con inyección automática en el PATH. |
-| **💀 Vulnerabilidades** | Nuclei con integración de Custom Templates + Dalfox + SQLmap/Ghauri. |
-| **🎯 Smart Fuzzing** | Wordlists contextuales según la tecnología detectada en el target. |
-| **📈 DB Queries** | 9 funciones de helper para extraer inteligencia de la base de datos. |
-| **📦 Multi-Platform** | Generación de reportes listos para HackerOne, Bugcrowd e Immunefi. |
+1.  **🧠 Capa Agentica (IA):** Orquestador inteligente que razona cada paso del ataque.
+2.  **💾 Memoria Táctica (AgentMemory):** El sistema recuerda sus razonamientos previos, heredando conocimiento entre sesiones.
+3.  **🛡️ Resiliencia Total (Deterministic Fallback):** Motor de reglas senior que toma el mando si las APIs de IA fallan. El bot nunca se detiene.
+4.  **📊 Auditoría Táctica (Structured Logging):** Registro detallado en `agent_reasoning.log` del *por qué* de cada decisión.
+5.  **🥷 OPSEC de Grado Militar:** Jitter aleatorio, rotación de User-Agents y Kill-Switch automático.
+6.  **📈 Aprendizaje Estadístico:** Motor de scoring que optimiza el escaneo según el éxito histórico (via `config/scoring.yaml`).
+
+---
+
+## 🕹️ Modos Operativos Principales
+
+| Modo | Objetivo |
+|:-----|:---------|
+| **🎯 HUNT** | Caza agresiva en targets nuevos para llegar primero al lead. |
+| **👁️ CONTINUO** | Centinela 24/7. El Agente analiza deltas antes de alertar. |
+| **💼 SERVICIO** | Traduce hallazgos técnicos a reportes ejecutivos para clientes. |
+| **📊 CAMPAÑA** | Escala patrones específicos sobre toda la base de datos histórica. |
+| **🔬 INVESTIGACIÓN**| Búsqueda quirúrgica de CVEs en superficie conocida. |
+| **🕵️ FORENSE** | Análisis post-mortem de brechas de detección y auto-ajuste de scoring. |
+
+---
+
+## 🛡️ Protocolo de Ejecución Ética (Run Real)
+
+Para garantizar la seguridad y reputación del hunter, seguimos este flujo en cada run nuevo:
+
+1.  **Validación Manual de Reglas:** Leer los términos del programa en H1/Bugcrowd.
+2.  **Foundation Check:** Correr fases manuales primero (`--recon`, `--ports`, `--urls`).
+3.  **Delegación IA:** Lanzar el Agente (`--agent hunt`) solo cuando los datos base son sólidos.
+4.  **Observación vs Caza:** El primer run es para validar el sistema. **No reportar inmediatamente**.
+5.  **Verificación Manual:** Todo hallazgo de la IA debe ser validado en Burp Suite antes de cualquier acción.
 
 ---
 
 ## 🚀 Inicio Rápido
 
-### 1. Instalación
 ```bash
-git clone https://github.com/SamBleed/bugbounty-framework
-cd bugbounty-framework
-pip install -r requirements.txt
-./setup.sh  # Descarga tools locales en tools/go/bin
+# 1. Configurar APIs y presupuesto en `config/config.yaml`
+# 2. Validar foundation
+python3 backend/main.py -t target.com --recon
+# 3. Lanzar Agente con Memoria Táctica
+python3 backend/main.py -t target.com --agent hunt
 ```
-
-### 2. Configuración (Crucial)
-Edita `config.yaml` para habilitar el sigilo y las notificaciones:
-```yaml
-notifications:
-  telegram_token: "TU_TOKEN"
-  telegram_chat_id: "TU_ID"
-```
-
-### 3. Ejecución
-El framework ahora gestiona automáticamente las herramientas de Go. No necesitas configurar el PATH manualmente.
-```bash
-# Scan completo con detección de WAF y Sigilo
-python main.py -t target.com --full --waf-detection
-```
-
----
-
-## 📋 Estructura del Proyecto
-- `main.py`: Orquestador con inyección dinámica de PATH.
-- `modules/database.py`: Gestión de SQLAlchemy y modelos.
-- `modules/db_queries.py`: Inteligencia y consultas sobre la DB.
-- `modules/rate_limiter.py`: El corazón del sigilo (Jitter + Kill-switch).
-- `custom_templates/`: Tu arsenal secreto de firmas Nuclei.
-- `output/`: Resultados estructurados por sesión.
 
 ---
 
 ## 🛡️ Uso Ético
-Este framework fue creado para Bug Hunting legal y auditorías autorizadas. **No nos hacemos responsables por el mal uso de esta herramienta.**
+Este framework fue creado para Bug Hunting legal y auditorías autorizadas. El autor no se hace responsable por el mal uso de esta herramienta. **Caza con responsabilidad.**
+
+---
+---
+
+## ✅ Run Real Completado (2026-04-17)
+
+Primer scan real ejecutado contra target real:
+
+| Métrica | Valor |
+|---------|-------|
+| Target | fya57cefop.edu.pe |
+| Subdominios | 22 |
+| Hosts vivos | 8 |
+| Puertos | 77 |
+| Findings | 2 |
+
+### Findings reportados
+- 🔴 **MySQL 3306 Expuesto a Internet** (CVSS 9.8) - CRÍTICO
+- 🟡 **cPanel Accesible desde Internet** (CVSS 5.3) - MEDIO
 
 ---
 
-## 🚀 El Framework en Acción (Caso Real)
+## 🗂️ Estructura
 
-En una prueba contra un objetivo con alta superficie (`target-ejemplo.com`), el framework logró los siguientes resultados en menos de 5 minutos:
+- `backend/`: API, orquestador y scheduler.
+- `config/`: configuración, targets y scoring.
+- `cli/`: CLI interactiva estilo command center.
+- `docs/`: documentación de proyecto.
+- `resources/`: templates y wordlists reutilizables.
+- `runtime/`: datos generados en ejecución.
+- `scripts/`: utilidades operativas.
+- `tests/`: checks y pruebas.
+- `ui/`: componentes visuales de terminal.
 
-- **Mapeo de Superficie:** 36 subdominios únicos descubiertos con Amass y Assetfinder.
-- **Inventario de Servicios:** 56 puertos abiertos detectados automáticamente.
-- **Hallazgos Críticos:** 
-  - 🔥 **8 Bases de Datos MySQL (3306) expuestas** al mundo en diferentes subdominios.
-  - 🚪 Paneles de control (CPanel/WHM) identificados y listos para auditoría.
-- **Resiliencia:** Gracias al **Guardado Incremental**, toda la información se persistió en SQLite a pesar de la alta carga de red.
+## ⌨️ CLI / TUI
+
+Lanzar la interfaz interactiva tipo command center:
+
+```bash
+python3 agent.py
+```
+
+Comandos útiles:
+
+```bash
+python3 agent.py scan target.com --full
+python3 agent.py status
+python3 agent.py overview
+python3 agent.py targets
+python3 agent.py focus target.com
+python3 agent.py diff target.com
+python3 agent.py export target.com --format md
+python3 agent.py inspect target.com
+python3 agent.py watch target.com
+python3 agent.py history
+python3 agent.py doctor
+```
+
+## 🧹 Limpieza
+
+Si el historial crece demasiado:
+
+```bash
+./scripts/prune_scans.sh 5
+```
+
+Eso conserva las últimas 5 ejecuciones por target dentro de `runtime/scans/`.
+
+Para validar que el layout del repo siga sano:
+
+```bash
+make check-layout
+```
 
 ---
 
-## 🎯 Estrategia de Caza: Los 6 Modos Operativos (Roadmap)
-
-El framework está siendo evolucionado para soportar diferentes contextos de caza profesional:
-
-1.  **⚡ MODO HUNT:** Reconocimiento agresivo y profundo para scopes nuevos. El primer golpe. (IMPLEMENTADO)
-2.  **🔄 MODO CONTINUO:** Monitoreo 24/7 con detección incremental de cambios (Diff Engine). (EN DESARROLLO - FASE 1)
-3.  **🤝 MODO SERVICIO:** Interfaz y reportes automáticos para clientes de consultoría/SaaS. (PLANIFICADO)
-4.  **🎯 MODO CAMPAÑA:** Ataque sistemático masivo basado en stacks tecnológicos específicos. (PLANIFICADO)
-5.  **🔬 MODO INVESTIGACIÓN:** Escaneo quirúrgico de nuevas vulnerabilidades (CVEs) sobre historial existente. (PLANIFICADO)
-6.  **🕵️ MODO FORENSE:** Análisis histórico de activos para entender duplicados y brechas de detección. (IMPLEMENTADO)
-
----
 **Desarrollado por el equipo de Elite con ❤️ para la comunidad de Bug Hunters.**

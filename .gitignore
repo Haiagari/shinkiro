@@ -27,6 +27,9 @@ Thumbs.db
 
 # Output
 output/
+runtime/scans/
+runtime/logs/
+runtime/state/
 scopes/
 *.log
 
@@ -36,4 +39,4 @@ tools/go/bin/
 tools/go/pkg/
 
 # API keys (sensible)
-config.yaml
+config/config.yaml

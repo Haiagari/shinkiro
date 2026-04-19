@@ -4,3 +4,9 @@ colorama>=0.4.6
 sqlalchemy>=2.0.0
 fastapi>=0.100.0
 uvicorn>=0.22.0
+beautifulsoup4
+rich
+httpx
+aiohttp
+python-telegram-bot
+prompt_toolkit>=3.0.0

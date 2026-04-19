@@ -1,0 +1,7 @@
+confidence: 0.85
+generated_at: '2026-04-17T15:07:28.535093'
+generated_by: aprendizaje_mode
+weights:
+  Laravel:
+    dalfox: 0.4
+    nuclei: 0.9
