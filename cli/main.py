@@ -96,6 +96,7 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--format", choices=["json", "md"], default="json")
     export.add_argument("-o", "--output")
 
+    sub.add_parser("dashboard", help="Ver dashboard de inteligencia reflexiva")
     sub.add_parser("doctor", help="Diagnóstico del entorno")
     sub.add_parser("shell", help="Abrir la shell interactiva")
 
@@ -174,6 +175,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "export":
         commands.export_summary(args.target, fmt=args.format, output=args.output)
+        return 0
+
+    if args.command == "dashboard":
+        commands.print_dashboard()
         return 0
 
     if args.command == "doctor":

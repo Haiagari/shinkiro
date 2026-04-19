@@ -567,6 +567,12 @@ def print_doctor() -> None:
     )
 
 
+def print_dashboard() -> None:
+    """Muestra el dashboard de inteligencia reflexiva."""
+    from src.intelligence.dashboard import show_dashboard
+    show_dashboard()
+
+
 def build_export_payload(target: str | None = None) -> dict | None:
     target_clean = resolve_target(target)
     payload = api_json(f"/dashboard-state?target={quote(target_clean)}" if target_clean else "/dashboard-state")
