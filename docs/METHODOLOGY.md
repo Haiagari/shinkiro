@@ -1,6 +1,6 @@
-# Metodología de Operación y Validación (v1.0)
+# Metodología de Operación y Validación (v3.0)
 
-Este documento define el estándar de trabajo para el uso del framework en entornos reales. El objetivo es maximizar el ROI del hunter minimizando el ruido y los riesgos legales.
+Este documento define el estándar de trabajo para el uso de OzyRecon en entornos reales. El objetivo es maximizar el ROI del hunter minimizando el ruido y los riesgos legales.
 
 ## 1. El Ciclo de Vida de una Cacería
 1.  **Reconocimiento Base (Manual/Scripts)**: Obtener el baseline de activos.
