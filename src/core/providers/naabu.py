@@ -38,7 +38,7 @@ class NaabuProvider(BaseProvider):
     def execute(self, host: str, **kwargs) -> List[PortResult]:
         return self.scan(host, **kwargs)
     
-    def scan(self, host: str, ports: Optional[str] = None, rate: int = 100) -> List[PortResult]:
+    def scan(self, host: str, ports: Optional[str] = None, rate: int = 100, **kwargs) -> List[PortResult]:
         """
         Escanea puertos en un host.
         """

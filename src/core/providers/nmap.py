@@ -40,7 +40,7 @@ class NmapProvider(BaseProvider):
     
     def scan(self, host: str, ports: Optional[str] = None, 
              service_detection: bool = True, os_detection: bool = False,
-             scripts: Optional[str] = None) -> List[ServiceInfo]:
+             scripts: Optional[str] = None, **kwargs) -> List[ServiceInfo]:
         """
         Escanea un host con Nmap.
         """
