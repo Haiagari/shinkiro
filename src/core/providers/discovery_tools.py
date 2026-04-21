@@ -5,7 +5,7 @@ Proveedores adicionales para Discovery
 import subprocess
 from pathlib import Path
 from typing import List
-from src.core.providers.base import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider
 from src.utils import run_cmd, read_lines, write_lines
 
 class GenericDiscoveryProvider(BaseProvider):
@@ -31,20 +31,3 @@ class GenericDiscoveryProvider(BaseProvider):
             return read_lines(out_file)
         except:
             return []
-
-# Registrar proveedores
-tool_manager.register_provider("asset_discovery", GenericDiscoveryProvider(
-    "assetfinder", "assetfinder", "{bin} --subs-only {target} > {out}"
-))
-
-tool_manager.register_provider("asset_discovery", GenericDiscoveryProvider(
-    "amass", "amass", "{bin} enum -passive -timeout 2 -d {target} -o {out}"
-))
-
-tool_manager.register_provider("dns_resolution", GenericDiscoveryProvider(
-    "dnsx", "dnsx", "{bin} -l {target} -silent -o {out} -t {threads}"
-))
-
-tool_manager.register_provider("live_detection", GenericDiscoveryProvider(
-    "httpx", "httpx", "{bin} -l {target} -silent -status-code -title -tech-detect -o {out} -threads {threads}"
-))

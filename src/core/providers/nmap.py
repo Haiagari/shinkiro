@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from src.core.config import config
 from src.core.logging import get_logger
 from src.core.errors import ToolNotFoundError, ToolExecutionError
-from src.core.providers.base import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider
 
 logger = get_logger('nmap')
 
@@ -97,7 +97,3 @@ class NmapProvider(BaseProvider):
                 ))
                 current_port = None
         return results
-
-# Register
-nmap = NmapProvider()
-tool_manager.register_provider("service_discovery", nmap)

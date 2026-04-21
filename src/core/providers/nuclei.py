@@ -6,7 +6,7 @@ import subprocess
 import json
 from pathlib import Path
 from typing import List, Dict, Any
-from src.core.providers.base import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider
 from src.utils import log
 
 class NucleiProvider(BaseProvider):
@@ -69,6 +69,3 @@ class NucleiProvider(BaseProvider):
             log.error(f"Nuclei execution failed: {e}")
             
         return []
-
-# Register
-tool_manager.register_provider("template_scan", NucleiProvider())

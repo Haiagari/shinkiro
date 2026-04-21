@@ -1,0 +1,7 @@
+fya57cefop.edu.pe (FQDN) --> mx_record --> aspmx.l.google.com (FQDN)
+www.fya57cefop.edu.pe (FQDN) --> cname_record --> fya57cefop.edu.pe (FQDN)
+fya57cefop.edu.pe (FQDN) --> a_record --> 50.31.188.7 (IPAddress)
+cpcontacts.fya57cefop.edu.pe (FQDN) --> a_record --> 50.31.188.7 (IPAddress)
+cpanel.fya57cefop.edu.pe (FQDN) --> a_record --> 50.31.188.7 (IPAddress)
+fya57cefop.edu.pe (FQDN) --> ns_record --> ns4415.banahosting.com (FQDN)
+fya57cefop.edu.pe (FQDN) --> ns_record --> ns4416.banahosting.com (FQDN)

@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from src.core.config import config
 from src.core.logging import get_logger
 from src.core.errors import ToolNotFoundError, ToolExecutionError
-from src.core.providers.base import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider
 
 logger = get_logger('naabu')
 
@@ -90,8 +90,3 @@ class NaabuProvider(BaseProvider):
                 ))
             except Exception: continue
         return results
-
-# Register
-naabu = NaabuProvider()
-tool_manager.register_provider("port_scan", naabu)
-tool_manager.register_provider("service_discovery", naabu)

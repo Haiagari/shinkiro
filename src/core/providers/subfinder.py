@@ -5,7 +5,7 @@ Subfinder Provider para Asset Discovery
 import subprocess
 from pathlib import Path
 from typing import List
-from src.core.providers.base import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider
 from src.utils import log
 
 class SubfinderProvider(BaseProvider):
@@ -40,6 +40,3 @@ class SubfinderProvider(BaseProvider):
             log.error(f"Subfinder execution failed: {e}")
             
         return []
-
-# Register
-tool_manager.register_provider("asset_discovery", SubfinderProvider())

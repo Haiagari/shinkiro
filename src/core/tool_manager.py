@@ -34,6 +34,11 @@ class ToolManager:
         """Registra un proveedor para una capacidad específica."""
         if capability not in self._capabilities:
             self._capabilities[capability] = []
+        # Evitar duplicados (no registrar dos veces el mismo provider)
+        for existing in self._capabilities[capability]:
+            if existing.name == provider.name:
+                logger.debug(f"Provider {provider.name} already registered for {capability}, skipping")
+                return
         self._capabilities[capability].append(provider)
         logger.debug(f"Provider {provider.name} registered for {capability}")
 

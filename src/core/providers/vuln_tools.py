@@ -5,7 +5,7 @@ Proveedores para Escaneo de Vulnerabilidades
 import subprocess
 from pathlib import Path
 from typing import List, Dict, Any
-from src.core.providers.base import BaseProvider, tool_manager
+from src.core.providers.base import BaseProvider
 from src.utils import read_lines
 
 class FuzzingProvider(BaseProvider):
@@ -48,8 +48,3 @@ class DBProbeProvider(BaseProvider):
         except:
             pass
         return []
-
-# Registrar
-tool_manager.register_provider("web_fuzzing", FuzzingProvider("dalfox", "dalfox"))
-tool_manager.register_provider("db_probe", DBProbeProvider("ghauri", "ghauri"))
-tool_manager.register_provider("db_probe", DBProbeProvider("sqlmap", "sqlmap"))
