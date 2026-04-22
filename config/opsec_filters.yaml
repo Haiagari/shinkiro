@@ -22,3 +22,4 @@ allowed_files:
   - 'README.md'
   - 'DISCLAIMER.md'
   - 'docs/architecture.md'
+  - 'docs/opsec.md'

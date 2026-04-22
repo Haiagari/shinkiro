@@ -6,8 +6,37 @@
 2. **Rotar identidades frecuentemente**
 3. **Respetar rate limits**
 4. **Tener kill switch siempre disponible**
+5. **Prevenir fugas de información del target en repositorios (Leak Prevention)**
 
 ## Componentes OPSEC
+
+### 🛡️ OPSEC Guard (Leak Prevention)
+Un sistema de prevención de fugas de datos que actúa como un guardián antes de subir código al repositorio.
+
+- **Pre-commit Hook**: Escanea el área de preparación de Git en busca de dominios, IPs o secretos.
+- **Filtros Dinámicos**: Configurable vía `config/opsec_filters.yaml`.
+- **Uso**: El sistema bloquea automáticamente el commit si detecta patrones prohibidos.
+
+```bash
+# Ejemplo de alerta si intentas subir un target real:
+❌ OPSEC ALERT: Pattern '.edu.pe' found in 'assets/targets.txt'
+🛑 COMMIT RECHAZADO: Se detectó información sensible.
+```
+
+### 👤 Data Anonymization
+Módulo de utilidades para enmascarar información sensible en reportes o logs compartidos.
+
+```python
+from src.utils import anonymize_target
+
+# Para dominios
+print(anonymize_target("target.edu.pe")) 
+# Output: target-xxx.edu.pe
+
+# Para IPs
+print(anonymize_target("192.168.0.38"))
+# Output: 192.168.x.x
+```
 
 ### Rate Limiter
 Control automático de tasa de requests.

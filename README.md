@@ -22,6 +22,7 @@
 - **Human-in-the-loop control**: Mandatory manual authorization for sensitive probes.
 - **Evidence with cryptographic integrity**: SHA256-signed proof vault for technical audit.
 - **Risk-based prioritization**: Focus on business impact rather than technical noise.
+- **OPSEC Guard**: Pre-commit hooks and dynamic filters to prevent sensitive data leaks.
 
 ---
 
@@ -99,6 +100,7 @@ ozy report
 - **Zero Impact**: No destructive payloads.
 - **Surgical Probes**: We confirm exposure; we don't exploit it.
 - **Audit Focused**: Designed for verifiable proof for remediation teams.
+- **Privacy First**: Built-in anonymization and pre-commit guards to protect researcher and target identity.
 
 ---
 
