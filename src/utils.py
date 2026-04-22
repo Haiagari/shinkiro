@@ -149,3 +149,12 @@ def get_random_ua() -> str:
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0",
     ]
     return random.choice(uas)
+
+
+def anonymize_target(target: str) -> str:
+    """Oculta la identidad de un target para logs o docs públicos."""
+    if not target: return "hidden-target"
+    parts = target.split('.')
+    if len(parts) > 2:
+        return f"target-xxx.{'.'.join(parts[-2:])}"
+    return f"target-xxx.{parts[-1]}"
