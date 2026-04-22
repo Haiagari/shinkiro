@@ -23,6 +23,8 @@
 - **Risk-based prioritization**: Focus on business impact, not just CVSS.
 - **DevSecOps-ready**: Designed to integrate into CI/CD pipelines and security workflows.
 
+*Seamlessly integrates into CI/CD pipelines for continuous security validation.*
+
 ---
 
 ### 🎯 Value Proposition
@@ -35,7 +37,7 @@
 ### 🔄 The Validation Pipeline
 OzyRecon follows a rigorous workflow to ensure surgical precision:
 
-**Discovery** → **Hypothesis** → **Approval (Gate)** → **Validation** → **Evidence** → **Report**
+**Discovery** → **Hypothesis** → **Approval (Human Gate)** → **Validation** → **Evidence** → **Report**
 
 ---
 
@@ -52,6 +54,7 @@ OzyRecon follows a rigorous workflow to ensure surgical precision:
   "finding": "Exposed admin endpoint",
   "severity": "HIGH",
   "confidence": 0.92,
+  "confidence_reason": "Multiple signals matched known pattern",
   "evidence_id": "ev_8a2f1c9",
   "integrity_hash": "sha256:7f83b1...",
   "recommendation": "Restrict access via authentication"
@@ -115,10 +118,10 @@ OzyRecon/
 │   ├── evidence/       # Evidence vault & integrity
 │   ├── workflow/       # State machine orchestration
 │   ├── reporting/      # Narrative report generation
-│   └── intelligence/   # Correlation & hypothesis engine
+│   └── intelligence/   # Hypothesis generation & correlation
 ```
 
 ---
 
 **OzyRecon: Controlled Intelligence, Verifiable Evidence.** 🚀  
-*Built for security professionals who value precision over noise.*
+*Built for security teams that demand verifiable, decision-grade intelligence.*
