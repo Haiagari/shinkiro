@@ -28,10 +28,13 @@ runtime/db/*.db
 
 # Output
 output/
+runtime/
 runtime/scans/
 runtime/logs/
 runtime/state/
 runtime/exports/
+runtime/temp/
+runtime/db/*.db
 scopes/
 *.log
 agent_reasoning.log
