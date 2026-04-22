@@ -18,6 +18,7 @@ from src.export.normalizer import NormalizedExporter
 logger = get_logger('mode_service')
 
 
+from src.modes.base import BaseMode
 from src.core.logging import get_logger
 from src.export.normalizer import exporter
 

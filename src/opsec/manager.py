@@ -70,6 +70,11 @@ class OPSECManager:
         """
         return not check_kill()
     
+    def apply_jitter(self):
+        """Aplica una demora aleatoria para evasión."""
+        from src.opsec.jitter import default_jitter
+        default_jitter.sleep()
+    
     def get_operational_params(self) -> Dict[str, Any]:
         """
         Retorna los parámetros operativos ajustados por OPSEC.

@@ -16,6 +16,7 @@ from src.export.normalizer import NormalizedExporter
 logger = get_logger('mode_campaign')
 
 
+from src.modes.base import BaseMode
 from src.core.logging import get_logger
 from src.core.tool_manager import tool_manager
 from pathlib import Path

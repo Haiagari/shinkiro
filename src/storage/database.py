@@ -9,10 +9,13 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# Importar modelos locales
-from .models import Base, Target, Scan, Subdomain, Port, Vulnerability, Finding, AgentMemory, AgentLock, Session, WeightHistory
+# Importar utilidades
+from src.utils import log, save_json, load_json
 
-DB_PATH = Path(__file__).resolve().parents[3] / "runtime" / "db" / "ozyrecon.db"
+# Importar modelos locales
+from .models import Base, Target, Scan, Subdomain, Port, Vulnerability, Finding, AgentMemory, AgentLock, Session, WeightHistory, Hypothesis, Evidence, WorkflowStep
+
+DB_PATH = Path(__file__).resolve().parents[2] / "runtime" / "db" / "ozyrecon.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 DB_URL = f"sqlite:///{DB_PATH}"
 

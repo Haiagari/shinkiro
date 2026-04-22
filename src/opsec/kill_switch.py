@@ -10,42 +10,30 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 
-@dataclass
 class KillSwitch:
     """
     Kill Switch - Mecanismo de emergencia para detener operaciones.
-    
-    Uso:
-        kill_switch = KillSwitch()
-        
-        # En el loop principal:
-        if kill_switch.triggered:
-            break
-            
-        # Para activar desde CLI:
-        # Crear archivo .kill en runtime/
-        # O enviar señal SIGINT (Ctrl+C)
     """
     
     _instance: Optional['KillSwitch'] = None
-    triggered: bool = False
-    triggered_at: Optional[datetime] = None
-    reason: str = ""
-    
-    # Callbacks registrados
-    callbacks: list = field(default_factory=list)
     
     def __new__(cls):
+        print(">>> DEBUG: KillSwitch.__new__ start")
         if cls._instance is None:
             cls._instance = super().__new__(cls)
+            cls._instance.triggered = False
+            cls._instance.triggered_at = None
+            cls._instance.reason = ""
+            cls._instance.callbacks = []
+            cls._instance._initialized = False
+        print(">>> DEBUG: KillSwitch.__new__ end")
         return cls._instance
     
     def __init__(self):
-        # Registrar signal handler para SIGINT/SIGTERM
-        if not hasattr(self, '_initialized'):
-            signal.signal(signal.SIGINT, self._signal_handler)
-            signal.signal(signal.SIGTERM, self._signal_handler)
-            self._initialized = True
+        print(">>> DEBUG: KillSwitch.__init__ start")
+        # Desactivado para evitar bloqueos en entornos restringidos
+        self._initialized = True
+        print(">>> DEBUG: KillSwitch.__init__ end")
     
     def _signal_handler(self, signum, frame):
         """Maneja señales de terminate."""
@@ -53,7 +41,12 @@ class KillSwitch:
     
     def trigger(self, reason: str = "Manual trigger"):
         """Activa el kill switch."""
+        from src.core.logging import get_logger
+        logger = get_logger('kill_switch')
+        logger.critical(f"🛑 KILL-SWITCH TRIGGERED: {reason}")
+        
         self.triggered = True
+
         self.triggered_at = datetime.now()
         self.reason = reason
         

@@ -23,8 +23,30 @@ def get_logger(name: str) -> logging.Logger:
         logger.addHandler(handler)
     return logger
 
-log = get_logger('ozyrecon')
-logger = log
+_logger = get_logger('ozyrecon')
+logger = _logger
+
+def log(message: str, level: str = "info"):
+    """Función helper para loguear con estilo."""
+    levels = {
+        "info": _logger.info,
+        "success": _logger.info,
+        "warn": _logger.warning,
+        "error": _logger.error,
+        "critical": _logger.critical,
+        "debug": _logger.debug
+    }
+    log_func = levels.get(level.lower(), _logger.info)
+    
+    # Agregar prefijos visuales si es éxito o alerta
+    if level == "success":
+        message = f"✅ {message}"
+    elif level == "warn":
+        message = f"⚠️ {message}"
+    elif level == "error":
+        message = f"❌ {message}"
+        
+    log_func(message)
 
 
 def load_config() -> Dict:
@@ -36,8 +58,10 @@ def load_config() -> Dict:
     return {}
 
 
-def save_json(data: Any, path: Path):
+def save_json(path: Path, data: Any):
     """Guarda JSON a archivo."""
+    if isinstance(path, str):
+        path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w') as f:
         json.dump(data, f, indent=2, default=str)

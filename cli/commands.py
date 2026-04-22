@@ -24,10 +24,11 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from backend.modules.database import SessionLocal, init_db
-from backend.modules.db_queries import get_latest_scan, get_scan_history, get_scan_diff, get_target_stats
-from backend.modules.models import Scan, Target, Vulnerability, Subdomain, Port, AgentMemory
-from backend.modules.utils import load_json
+from src.storage.database import SessionLocal, init_db
+from src.storage.models import Scan, Target, Vulnerability, Subdomain, Port, AgentMemory, Hypothesis, Evidence, WorkflowStep
+from src.storage.db_queries import get_latest_scan, get_scan_history, get_scan_diff, get_target_stats
+from src.core.logging import get_logger
+from src.utils import load_json
 from ui.renderer import console
 
 # ══════════════════════════════════════════════════════════════════════════════

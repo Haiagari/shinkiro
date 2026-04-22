@@ -128,8 +128,15 @@ def score_target(target_info: dict, open_ports: list = [], findings: list = []) 
     reasons = []
     
     # Puertos críticos
-    for port in open_ports:
-        port_num = int(port.split(":")[-1] if ":" in port else port)
+    for port_entry in open_ports:
+        # Soporte para objetos PortResult (v5.0) y strings (legacy)
+        if hasattr(port_entry, 'port'):
+            port_num = port_entry.port
+        elif isinstance(port_entry, str):
+            port_num = int(port_entry.split(":")[-1]) if ":" in port_entry else (int(port_entry) if port_entry.isdigit() else 0)
+        else:
+            continue
+
         if port_num in CRITICAL_PORTS:
             score += 1.0
             reasons.append(f"Puerto crítico: {port_num}")
@@ -176,14 +183,23 @@ def correlate_findings(context: dict) -> dict:
     
     api_hosts = []
     for port_entry in open_ports:
-        host = port_entry.split(":")[0] if ":" in port_entry else port_entry
-        if ":3000" in port_entry or ":5000" in port_entry:
+        # Soporte para objetos PortResult (v5.0) y strings (legacy)
+        if hasattr(port_entry, 'host'):
+            host = port_entry.host
+            port_num = port_entry.port
+        elif isinstance(port_entry, str):
+            host = port_entry.split(":")[0] if ":" in port_entry else port_entry
+            port_num = int(port_entry.split(":")[-1]) if ":" in port_entry else 0
+        else:
+            continue
+
+        if port_num in [3000, 5000]:
             # Buscar URLs que pertenezcan a este host
             for url in all_urls:
-                if host.split(":")[0] in url:
+                if host in url:
                     api_hosts.append({
                         "host": host,
-                        "urls": [url for url in all_urls if host.split(":")[0] in url],
+                        "urls": [url for url in all_urls if host in url],
                     })
     
     if api_hosts:
