@@ -49,10 +49,10 @@ La diferencia con herramientas existentes como reconftw o axiom: **inteligencia 
 - Documentación completa
 
 ### Fase 8: Offensive Validation (v5.7)
-- **Knowledge Graph**: Correlación visual de entidades con Cytoscape.js.
-- **Visual Evidence**: Screenshots automáticos de hallazgos confirmados usando Playwright.
-- **Advanced Auth**: Validador especializado en credenciales por defecto para paneles expuestos.
-- **Human-in-the-loop**: Consolidación del Human Gate via Web Dashboard.
+- **Knowledge Graph**: Decision-making tool to visualize correlations and risk context.
+- **Visual Evidence**: Screenshots for proof of exposure without impact.
+- **Auth Exposure**: Non-intrusive validation of credential leaks.
+- **Human-in-the-loop**: Consolidation of the Human Gate via Web Dashboard.
 
 ---
 

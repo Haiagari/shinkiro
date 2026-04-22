@@ -13,17 +13,12 @@ High-performance discovery engine including Asset Enumeration, Service Fingerpri
 Critical decision points where the system proposes hypotheses and the operator authorizes execution.
 
 ### 10. Validation Layer
-Surgical probe execution engine. Focuses on confirmation rather than exploitation.
-- `web.py`, `http.py`, `cms.py`, `auth.py`: Specialized validators.
-
-### 11. Evidence Engine
-Integrity-aware data vault. SHA256-signed proof.
-
-### 12. Workflow State Machine
-Manages the complete lifecycle of technical signals.
+Surgical probe execution engine. Focuses on confirmation and exposure validation rather than exploitation.
+- `web.py`, `http.py`, `cms.py`, `auth.py`: Specialized validators for non-intrusive checks.
 
 ### 13. Knowledge Graph Representation (New v5.7)
-Correlation of all attack surface entities (Target -> Subdomain -> Port -> Hypothesis) into a unified visual graph using Cytoscape.js.
+Visualizes relationships between attack surface entities (Target -> Subdomain -> Port -> Hypothesis) to enhance decision-making and context awareness.
+
 
 ### 14. Visual Evidence Engine (New v5.7)
 Automated visual proof capture using Playwright for confirmed HTTP findings.

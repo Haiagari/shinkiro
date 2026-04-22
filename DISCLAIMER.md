@@ -2,7 +2,8 @@
 
 ## Legal and Ethical Use Only
 
-OzyRecon is a powerful platform designed for **Offensive Reconnaissance and Intelligence Gathering**. It is intended for use by security professionals, penetration testers, and researchers ONLY in environments where they have **explicit, written authorization** to perform such activities.
+OzyRecon is a powerful platform designed for **Offensive Reconnaissance and Intelligence Gathering**. It is designed for validation and intelligence, not exploitation. It is intended for use by security professionals, penetration testers, and researchers ONLY in environments where they have **explicit, written authorization** to perform such activities.
+
 
 ### 1. Authorization
 You must obtain proper authorization before scanning any network or system. Unauthorized scanning, probing, or attacking of networks is illegal and unethical.

@@ -17,21 +17,19 @@
 ---
 
 ### 🚀 Quick Highlights
-- **DevSecOps-ready**: Seamlessly integrates into CI/CD pipelines for continuous security validation.
-- **Knowledge Graph (v5.7)**: Real-time attack surface visualization using Cytoscape.js.
-- **Visual Evidence (v5.7)**: Automated screenshots of confirmed findings using Playwright.
-- **Advanced Auth Validation (v5.7)**: Stealthy default credential testing for exposed panels.
-- **Hypothesis-driven validation**: Moves beyond linear scanning with correlation-based logic.
-- **Human-in-the-loop control**: Mandatory manual authorization for sensitive probes.
-- **Evidence with cryptographic integrity**: SHA256-signed proof vault for technical audit.
-- **OPSEC Guard**: Pre-commit hooks and dynamic filters to prevent sensitive data leaks.
+- **Assisted Offensive Validation**: Moves beyond linear scanning with correlation-based logic.
+- **Knowledge Graph (v5.7)**: Visualizes relationships between targets and findings to enhance decision-making.
+- **Authentication Exposure Validation**: Non-intrusive checks for potential credential leaks (v5.7).
+- **Visual Evidence Engine**: Automated proof capture (screenshots) with cryptographic integrity (v5.7).
+- **Human-in-the-loop Control**: Mandatory manual authorization for all sensitive probes.
+- **OPSEC Guard**: Built-in protection to prevent sensitive data leaks during the research process.
 
 ---
 
 ### 🎯 Value Proposition
-**Traditional scanners generate noise.** Most tools deliver a list of unverified vulnerabilities that waste engineering time. 
+**Traditional scanners generate noise.** Most tools deliver unverified vulnerabilities that waste engineering time. 
 
-**OzyRecon delivers confidence.** It is designed to reduce false positives and deliver high-confidence, validated findings backed by technical evidence.
+**OzyRecon delivers intelligence.** It is a platform designed to reduce false positives and provide decision-grade, validated findings backed by technical and visual evidence.
 
 ---
 
