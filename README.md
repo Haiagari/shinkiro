@@ -17,20 +17,18 @@
 ---
 
 ### 🚀 Quick Highlights
-- **Hypothesis-driven validation**: Moves beyond linear scanning.
-- **Human-in-the-loop control**: Manual authorization for sensitive probes.
-- **Evidence with cryptographic integrity**: SHA256-signed proof vault.
-- **Risk-based prioritization**: Focus on business impact, not just CVSS.
-- **DevSecOps-ready**: Designed to integrate into CI/CD pipelines and security workflows.
-
-*Seamlessly integrates into CI/CD pipelines for continuous security validation.*
+- **DevSecOps-ready**: Seamlessly integrates into CI/CD pipelines for continuous security validation.
+- **Hypothesis-driven validation**: Moves beyond linear scanning with correlation-based logic.
+- **Human-in-the-loop control**: Mandatory manual authorization for sensitive probes.
+- **Evidence with cryptographic integrity**: SHA256-signed proof vault for technical audit.
+- **Risk-based prioritization**: Focus on business impact rather than technical noise.
 
 ---
 
 ### 🎯 Value Proposition
 **Traditional scanners generate noise.** Most tools deliver a list of unverified vulnerabilities that waste engineering time. 
 
-**OzyRecon delivers confidence.** It focuses on validated, high-confidence findings backed by technical evidence.
+**OzyRecon delivers confidence.** It is designed to reduce false positives and deliver high-confidence, validated findings backed by technical evidence.
 
 ---
 
@@ -54,7 +52,7 @@ OzyRecon follows a rigorous workflow to ensure surgical precision:
   "finding": "Exposed admin endpoint",
   "severity": "HIGH",
   "confidence": 0.92,
-  "confidence_reason": "Multiple signals matched known pattern",
+  "confidence_reason": "Correlation of multiple independent signals matched a known exposure pattern",
   "evidence_id": "ev_8a2f1c9",
   "integrity_hash": "sha256:7f83b1...",
   "recommendation": "Restrict access via authentication"
