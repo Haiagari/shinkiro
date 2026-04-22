@@ -1,6 +1,7 @@
 # 🧠 OzyRecon v5.0 — Security Validation Platform
+**From Recon to Verified Security Intelligence**
 
-**OzyRecon transforms offensive reconnaissance into auditable, decision-grade security intelligence.**
+> **"OzyRecon reduces false positives and provides decision-grade security intelligence."**
 
 <div align="center">
 
@@ -15,38 +16,60 @@
 
 ---
 
+### 🚀 Quick Highlights
+- **Hypothesis-driven validation**: Moves beyond linear scanning.
+- **Human-in-the-loop control**: Manual authorization for sensitive probes.
+- **Evidence with cryptographic integrity**: SHA256-signed proof vault.
+- **Risk-based prioritization**: Focus on business impact, not just CVSS.
+- **DevSecOps-ready**: Designed to integrate into CI/CD pipelines and security workflows.
+
+---
+
 ### 🎯 Value Proposition
 **Traditional scanners generate noise.** Most tools deliver a list of unverified vulnerabilities that waste engineering time. 
 
-**OzyRecon delivers confidence.** It focuses on validated, high-confidence findings backed by technical evidence, designed for modern AppSec and DevSecOps workflows.
+**OzyRecon delivers confidence.** It focuses on validated, high-confidence findings backed by technical evidence.
 
 ---
 
 ### 🔄 The Validation Pipeline
 OzyRecon follows a rigorous workflow to ensure surgical precision:
 
-**Discovery** → **Hypothesis** → **Approval (Human Gate)** → **Validation** → **Evidence** → **Report**
+**Discovery** → **Hypothesis** → **Approval (Gate)** → **Validation** → **Evidence** → **Report**
 
 ---
 
 ### 🔴🟡🟢 Risk Classification
-Every validated finding is categorized by its actual business impact:
 - **🔴 HIGH**: Direct impact (Data exposure, RCE, Critical misconfiguration).
-- **🟡 MEDIUM**: Conditional impact (Requires specific conditions or user interaction).
+- **🟡 MEDIUM**: Conditional impact (Requires interaction or specific pre-conditions).
 - **🟢 LOW**: Informational (Hardening opportunities, best practices).
+
+---
+
+### 🔬 Example Validated Finding
+```json
+{
+  "finding": "Exposed admin endpoint",
+  "severity": "HIGH",
+  "confidence": 0.92,
+  "evidence_id": "ev_8a2f1c9",
+  "integrity_hash": "sha256:7f83b1...",
+  "recommendation": "Restrict access via authentication"
+}
+```
 
 ---
 
 ### ⚙️ Core Capabilities
 
 #### 1. Assisted Offensive Validation
-Move beyond automated scanning. OzyRecon correlates technical signals to generate attack hypotheses that require human authorization before execution, ensuring zero accidental impact.
+Move beyond automated scanning. OzyRecon correlates technical signals to generate attack hypotheses that require human authorization before execution.
 
 #### 2. Evidence Engine (Audit-Ready)
-Full traceability for every action. The system collects raw responses, headers, and metadata, securing each piece of evidence with a SHA256 integrity hash for formal reporting.
+Full traceability for every action. The system collects raw metadata, securing each piece of evidence with a SHA256 integrity hash for formal reporting.
 
 #### 3. Adaptive Intelligence Layer
-An evolving brain that learns from your decisions. It uses dynamic scoring (Reputation, Novelty, Drift) to prioritize targets and reduces false positives by learning from user feedback.
+An evolving brain that learns from your decisions. It uses dynamic scoring (Reputation, Novelty, Drift) to prioritize targets.
 
 ---
 
@@ -72,10 +95,9 @@ ozy report
 ---
 
 ### 🛡️ Core Philosophy: NO EXPLOITATION
-OzyRecon is built for security engineering, not for intrusion:
-- **Zero Impact**: No destructive payloads or intrusive exploitation.
+- **Zero Impact**: No destructive payloads.
 - **Surgical Probes**: We confirm exposure; we don't exploit it.
-- **Audit Focused**: Designed to provide verifiable proof for remediation teams.
+- **Audit Focused**: Designed for verifiable proof for remediation teams.
 
 ---
 
