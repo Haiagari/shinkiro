@@ -46,7 +46,7 @@ CVSS_MAPPINGS = {
 }
 
 # Puertos críticos que aumentan score
-CRITICAL_PORTS = [3000, 5000, 6379, 27017, 3306, 5432, 9200, 11211]
+CRITICAL_PORTS = [3000, 5000, 5678, 6379, 27017, 3306, 5432, 9200, 11211]
 
 
 def calculate_cvss(vulnerability: str, context: dict = {}) -> dict:
@@ -236,10 +236,25 @@ def correlate_findings(context: dict) -> dict:
             "details": diff["new_ports"],
         })
     
+    # 5. INTEGRACIÓN v5.2: Detección de Infraestructura Crítica (DBs, Caches, Automation)
+    db_ports = [p for p in open_ports if (hasattr(p, 'port') and p.port in [5432, 6379, 3306, 27017, 5678])]
+    if db_ports:
+        # Serializamos los objetos PortResult a dicts para que sean JSON serializable
+        db_details = [
+            {"host": p.host, "port": p.port, "service": p.service} if hasattr(p, 'host') else p 
+            for p in db_ports
+        ]
+        correlations.append({
+            "type": "INTERNAL_DB_EXPOSURE",
+            "description": f"{len(db_ports)} servicios de datos expuestos",
+            "details": db_details
+        })
+    
     return {
         "correlations": correlations,
         "api_hosts_count": len(api_hosts),
         "idor_candidates_count": len(idor_urls),
+        "db_exposure_count": len(db_ports)
     }
 
 
@@ -273,6 +288,30 @@ def generate_hypotheses(correlations: dict, target: str) -> list:
                     "cvss": calculate_cvss("idor"),
                     "verification": "Probar endpoints /api/v1/users, /api/v1/profile sin token",
                 })
+        
+        elif corr_type == "INTERNAL_DB_EXPOSURE":
+            for port_obj in corr.get("details", []):
+                # Extraer solo el número de puerto (v5.2 fix)
+                p_num = port_obj.get('port') if isinstance(port_obj, dict) else (port_obj.port if hasattr(port_obj, 'port') else port_obj)
+                
+                if p_num == 5678:
+                    hypotheses.append({
+                        "type": "AUTOMATION_PANEL",
+                        "url": f"http://{target}:{p_num}",
+                        "description": f"Panel de automatización (n8n) expuesto en puerto {p_num}. Acceso no autorizado podría permitir ejecución de flujos de trabajo críticos.",
+                        "severity": "CRITICAL",
+                        "cvss": 9.8,
+                        "verification": "Verificar si el panel requiere autenticación o permite acceso directo."
+                    })
+                else:
+                    hypotheses.append({
+                        "type": "EXPOSED_DATABASE",
+                        "url": f"{target}:{p_num}",
+                        "description": f"Servicio de datos expuesto en puerto {p_num}. Posible falta de autenticación o acceso desde red no autorizada.",
+                        "severity": "CRITICAL" if p_num != 6379 else "HIGH",
+                        "cvss": 9.5 if p_num != 6379 else 8.0,
+                        "verification": f"Intentar conexión básica (nmap --script redis-info o pg_isready) para confirmar exposición."
+                    })
         
         elif corr_type == "JS_VULN_LINK":
             hypotheses.append({
@@ -382,6 +421,14 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
         
         for h_data in hypotheses:
             h_id = f"hyp_{uuid.uuid4().hex[:8]}"
+            
+            # Cálculo robusto de confianza (v5.2 fix)
+            cvss_data = h_data.get("cvss", 0.0)
+            if isinstance(cvss_data, dict):
+                confidence = cvss_data.get("base_score", 0.0) / 10.0
+            else:
+                confidence = float(cvss_data) / 10.0
+
             new_hypo = Hypothesis(
                 id=h_id,
                 target_id=t_id,
@@ -389,7 +436,7 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
                 description=h_data.get("description"),
                 url=h_data.get("url"),
                 severity=h_data.get("severity"),
-                confidence=h_data.get("cvss", {}).get("base_score", 0.0) / 10.0,
+                confidence=confidence,
                 status=WorkflowState.PENDING_APPROVAL,
                 signals={"correlations": results.get("correlations")},
                 validation_method=h_data.get("verification")

@@ -102,7 +102,20 @@ class ReportEngine:
             else:
                 md.append("Informational: Monitor detected surfaces for upcoming changes.")
             
-            md.append("\n---\n")
+            # Strategic Recommendations (v5.4 update)
+            from src.intelligence.recommendations import generate_arch_recommendations
+            from src.storage.models import Port
+            
+            # Obtener puertos de la DB para las recomendaciones
+            all_ports = db.query(Port).filter(Port.scan_id == hypos[0].scan_id).all() if hypos else []
+            rec_context = {"phases": {"recon": {}, "ports": {"open_ports": all_ports}}}
+            recommendations = generate_arch_recommendations(target, rec_context)
+            
+            if recommendations:
+                md.append("### 💡 Strategic Recommendations")
+                for r in recommendations:
+                    md.append(f"- **[{r['priority']}] {r['title']}**: {r['description']}")
+                md.append("\n---\n")
             
             for h in hypos:
                 md.append(self.generate_markdown_finding(h.id))

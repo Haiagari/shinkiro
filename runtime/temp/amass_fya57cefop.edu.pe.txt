@@ -1,0 +1,5 @@
+fya57cefop.edu.pe (FQDN) --> ns_record --> ns4415.banahosting.com (FQDN)
+fya57cefop.edu.pe (FQDN) --> ns_record --> ns4416.banahosting.com (FQDN)
+fya57cefop.edu.pe (FQDN) --> node --> www.fya57cefop.edu.pe (FQDN)
+www.fya57cefop.edu.pe (FQDN) --> cname_record --> fya57cefop.edu.pe (FQDN)
+mail.fya57cefop.edu.pe (FQDN) --> cname_record --> fya57cefop.edu.pe (FQDN)

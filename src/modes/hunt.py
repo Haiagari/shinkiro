@@ -27,11 +27,11 @@ class HuntMode(BaseMode):
     def execute(self) -> Dict[str, Any]:
         logger.info(f"[HUNT v5.0] Starting intelligent hunt on {self.target}")
         
-        # Reset Kill-Switch
+        # 1. Reset Kill-Switch for a fresh run
         from src.opsec.kill_switch import kill_switch
         kill_switch.reset()
         
-        # 0. OPSEC Check
+        # 2. OPSEC Check
         from src.opsec.manager import OPSECManager
         opsec = OPSECManager(self.target, self.db_session)
         opsec.pre_flight_check()
@@ -39,7 +39,7 @@ class HuntMode(BaseMode):
         intent = self.get_operational_intent()
         intent.update(opsec.get_operational_params())
 
-        # 1. Asset Discovery
+        # 3. Asset Discovery
         logger.info("[HUNT] Phase 1: Asset Discovery")
         subdomains = tool_manager.run_capability(
             "asset_discovery", 
@@ -52,23 +52,21 @@ class HuntMode(BaseMode):
         self.context.subdomains_found = len(subdomains)
         logger.info(f"[HUNT] Found {len(subdomains)} subdomains")
 
-        # 2. Ports & Services (Línea base rápida para inteligencia)
-        # Nota: En v5.0 esto alimenta las hipótesis
+        # 4. Rapid Service Discovery (Feeding the Intelligence engine)
         logger.info("[HUNT] Phase 2: Rapid Service Discovery")
         services = []
-        # Escaneamos solo el target principal y un par de subs críticos para no demorar el demo
-        targets_to_scan = [self.target] + subdomains[:3] 
+        # Focus on top candidates to ensure performance
+        targets_to_scan = [self.target] + subdomains[:5] 
         for host in targets_to_scan:
             res = tool_manager.run_capability("port_scan", host, opsec_manager=opsec, **intent)
             if res:
-                logger.info(f"  • Found {len(res)} ports on {host}")
+                logger.info(f"  • Found {len(res)} open ports on {host}")
                 services.extend(res)
 
-        # 3. Intelligence Correlation & Hypothesis Generation
+        # 5. Intelligence Correlation & Hypothesis Generation
         logger.info("[HUNT] Phase 3: Intelligence & Hypothesis Generation")
         out_dir = Path(self.options.get("output") or f"runtime/scans/{self.target}/{self.session_id}")
         
-        # Preparamos el contexto para el motor de inteligencia
         intel_context = {
             "config": self.options,
             "phases": {
@@ -77,25 +75,34 @@ class HuntMode(BaseMode):
                 "vulns": {"findings": []}
             }
         }
-
-        }
         
-        print(">>> DEBUG: Calling run_intelligence")
-        try:
-            intel_results = run_intelligence(self.target, out_dir, self.options, context=intel_context)
-            print(">>> DEBUG: run_intelligence finished")
-        except Exception as e:
-            print(f">>> DEBUG: run_intelligence crashed: {str(e)}")
-            import traceback
-            traceback.print_exc()
-            intel_results = {"hypotheses": []}
+        # run_intelligence will handle internal persistence to Hypothesis table
+        intel_results = run_intelligence(self.target, out_dir, self.options, context=intel_context)
 
-        print(">>> DEBUG: Finishing execute")
+        # 6. Final Persistence (Scan & Findings tables)
+        self.context.mark_completed()
+        db_context = {
+            "target": self.target,
+            "start_time": self.context.started_at.isoformat(),
+            "out_dir": str(out_dir),
+            "scan_status": {"status": "completed", "phase": "intelligence_ready", "progress": 100},
+            "phases": intel_context["phases"]
+        }
+        save_scan_to_db(db_context)
+
+        logger.info(f"[HUNT] Discovery and Intelligence phase completed.")
+        logger.info(f"Generated {len(intel_results.get('hypotheses', []))} hypotheses. Run 'ozy gate list' to review.")
+
+        # Cleanup if temporary session (v5.4)
+        if self.options.get("temp"):
+            logger.warning(f"[HUNT] Cleaning up temporary session data for {self.session_id}...")
+            workflow_engine.cleanup_session(self.session_id)
+
         return {
             "status": "completed",
             "session_id": self.session_id,
-            "hypotheses_count": len(intel_results.get("hypotheses", [])),
-            "subdomains": 0
+            "subdomains": len(subdomains),
+            "hypotheses": len(intel_results.get("hypotheses", []))
         }
 
 def run_hunt(target: str, **options) -> Dict[str, Any]:

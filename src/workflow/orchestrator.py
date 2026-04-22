@@ -12,6 +12,8 @@ from src.core.logging import get_logger
 
 # Importación dinámica de validadores para evitar ciclos
 from src.validation.http import HTTPValidator
+from src.validation.infra import InfraValidator
+from src.validation.automation import AutomationValidator
 
 logger = get_logger('workflow_orchestrator')
 
@@ -19,8 +21,9 @@ class WorkflowOrchestrator:
     def __init__(self):
         self.validators = {
             "HTTP": HTTPValidator(),
+            "INFRA": InfraValidator(),
+            "AUTOMATION": AutomationValidator(),
             # "AUTH": AuthValidator(), # v5.1
-            # "CMS": CMSValidator(),   # v5.1
         }
 
     def process_approved(self):
@@ -44,8 +47,14 @@ class WorkflowOrchestrator:
         # Mover a estado VALIDATING
         workflow_engine.transition_hypothesis(hypo.id, WorkflowState.VALIDATING, notes="Starting automated validation")
 
-        # Elegir validador (por ahora usamos HTTP para casi todo en v5.0)
-        validator = self.validators.get("HTTP") # Default
+        # Selección inteligente de validador (v5.2-v5.4 update)
+        v_type = "HTTP"
+        if hypo.type == "EXPOSED_DATABASE":
+            v_type = "INFRA"
+        elif hypo.type == "AUTOMATION_PANEL":
+            v_type = "AUTOMATION"
+            
+        validator = self.validators.get(v_type, self.validators["HTTP"])
         
         # Convertir modelo a dict para el validador
         hypo_dict = {

@@ -23,11 +23,13 @@ def build_parser() -> argparse.ArgumentParser:
     hunt.add_argument("-t", "--target", required=True, help="Dominio objetivo")
     hunt.add_argument("--threads", type=int, default=50)
     hunt.add_argument("--rate-limit", type=int, default=200)
+    hunt.add_argument("--temp", action="store_true", help="Sesión temporal (limpiar al finalizar)")
     hunt.add_argument("--dry-run", action="store_true")
 
     continuous = sub.add_parser("continuous", help="Modo CONTINUO - Monitoreo 24/7")
     continuous.add_argument("-t", "--target", required=True)
     continuous.add_argument("--interval", type=int, default=3600)
+    continuous.add_argument("--temp", action="store_true", help="Sesión temporal")
 
     campaign = sub.add_parser("campaign", help="Modo CAMPAÑA - Escalado de patrones")
     campaign.add_argument("-p", "--pattern", required=True, help="CVE-ID o template")

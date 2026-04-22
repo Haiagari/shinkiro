@@ -106,6 +106,11 @@ class ContinuousMode(BaseMode):
         result_obj = exporter.export_scan(self.session_id, self.target, mode="continuous", include_diff=True)
         export_path = exporter.save_json(result_obj)
         
+        # Cleanup if temporary session (v5.4)
+        if self.options.get("temp"):
+            from src.workflow.engine import workflow_engine
+            workflow_engine.cleanup_session(self.session_id)
+
         return {
             "status": "completed",
             "session_id": self.session_id,

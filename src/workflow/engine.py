@@ -74,5 +74,31 @@ class WorkflowEngine:
         finally:
             db.close()
 
+    def cleanup_session(self, session_id: str):
+        """Elimina todos los registros de una sesión temporal."""
+        db = SessionLocal()
+        try:
+            # 1. Obtener IDs de hipótesis para borrar evidencia asociada
+            hypos = db.query(Hypothesis).filter(Hypothesis.scan_id == session_id).all()
+            hypo_ids = [h.id for h in hypos]
+            
+            if hypo_ids:
+                db.query(Evidence).filter(Evidence.hypothesis_id.in_(hypo_ids)).delete(synchronize_session=False)
+                db.query(WorkflowStep).filter(WorkflowStep.hypothesis_id.in_(hypo_ids)).delete(synchronize_session=False)
+                db.query(Hypothesis).filter(Hypothesis.id.in_(hypo_ids)).delete(synchronize_session=False)
+            
+            # 2. Borrar historial general de la sesión
+            db.query(WorkflowStep).filter(WorkflowStep.notes.like(f"%session {session_id}%")).delete(synchronize_session=False)
+            
+            db.commit()
+            logger.info(f"Cleanup completed for session: {session_id}")
+            return True
+        except Exception as e:
+            db.rollback()
+            logger.error(f"Error during session cleanup: {str(e)}")
+            return False
+        finally:
+            db.close()
+
 # Instancia global
 workflow_engine = WorkflowEngine()
