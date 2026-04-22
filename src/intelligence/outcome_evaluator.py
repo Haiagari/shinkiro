@@ -7,6 +7,10 @@ from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 
+from src.core.logging import get_logger
+
+logger = get_logger('outcome_evaluator')
+
 class OutcomeType:
     SUCCESS = "success"           # Encontró algo valioso
     NEUTRAL = "neutral"         # Nada, pero no malgastó tiempo

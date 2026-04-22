@@ -14,6 +14,8 @@ from src.core.providers import (
     FuzzingProvider,
     DBProbeProvider,
 )
+from src.core.providers.shodan_provider import ShodanProvider
+from src.core.providers.censys_provider import CensysProvider
 
 # Asset Discovery
 tool_manager.register_provider("asset_discovery", SubfinderProvider())
@@ -25,6 +27,9 @@ tool_manager.register_provider("asset_discovery", GenericDiscoveryProvider(
 ))
 
 # Port & Service Discovery
+tool_manager.register_provider("port_scan", ShodanProvider())
+tool_manager.register_provider("service_discovery", CensysProvider())
+
 naabu = NaabuProvider()
 tool_manager.register_provider("port_scan", naabu)
 tool_manager.register_provider("service_discovery", naabu)

@@ -113,6 +113,18 @@ class Config:
         return self.get('api_keys.virustotal')
     
     @property
+    def censys_id(self) -> Optional[str]:
+        return self.get('api_keys.censys_id')
+    
+    @property
+    def censys_secret(self) -> Optional[str]:
+        return self.get('api_keys.censys_secret')
+    
+    @property
+    def ozyrecon_api_key(self) -> str:
+        return self.get('api_keys.ozyrecon_api_key', 'ozy-secret-key')
+    
+    @property
     def alert_level(self) -> str:
         return self.get('notifications.alert_level', 'medium')
     

@@ -5,7 +5,9 @@ Modo CONTINUO - Monitoreo Diferencial
 from typing import List, Dict, Any
 from src.modes.base import BaseMode
 from src.core.tool_manager import tool_manager
-from src.utils import log
+from src.core.logging import get_logger
+
+logger = get_logger('mode.continuous')
 
 class ContinuousMode(BaseMode):
     """
@@ -19,82 +21,99 @@ class ContinuousMode(BaseMode):
         super().__init__(target, "continuous", options)
 
     def validate_preconditions(self):
-        # Necesitamos saber si ya conocemos este target
         target_obj = self.db.get_target(self.target)
         if not target_obj:
-            raise ValueError(f"Target {self.target} unknown. Run HUNT first to establish baseline.")
+            logger.warning(f"Target {self.target} unknown. Establishing baseline first.")
+            # Si no existe, podríamos disparar un HUNT, pero por ahora lanzamos error
+            raise ValueError(f"Target {self.target} unknown. Run HUNT first.")
 
     def execute(self) -> Dict[str, Any]:
-        log.info(f"[CONTINUOUS] Starting monitoring cycle for {self.target}")
+        logger.info(f"[CONTINUOUS] Starting monitoring cycle for {self.target}")
         from src.intelligence.learning_orchestrator import learning_orchestrator
+        from src.storage.database import save_scan_to_db
         
         intent = self.get_operational_intent()
         intent["noise"] = "low"
         intent["speed"] = "slow"
         
-        # 1. Discovery Ligero
-        current_subdomains = set(tool_manager.run_capability("asset_discovery", self.target, **intent))
-        scan_obj = self.db.create_scan(self.target, self.session_id, mode="continuous")
-        for sub in current_subdomains:
-            self.db.add_subdomain(scan_obj.id, sub)
+        # 1. Discovery Ligero (Pasivo + Rápido)
+        logger.info("[CONTINUOUS] Phase 1: Light Asset Discovery")
+        current_subdomains = tool_manager.run_capability("asset_discovery", self.target, **intent)
+        current_subdomains = list(set(current_subdomains)) if current_subdomains else []
         
+        # Guardamos scan inicial para poder comparar
+        db_context = {
+            "target": self.target,
+            "start_time": self.context.start_time.isoformat(),
+            "out_dir": f"runtime/scans/{self.target}/{self.session_id}",
+            "scan_status": {"status": "running", "phase": "discovery", "progress": 30},
+            "phases": {
+                "recon": {"all_subdomains": current_subdomains, "live_hosts": []},
+                "ports": {"open_ports": []},
+                "vulns": {"findings": []}
+            }
+        }
+        save_scan_to_db(db_context)
+        
+        # Obtenemos el ID del scan recién creado para el DiffEngine
+        target_obj = self.db.get_target(self.target)
+        scan_id = self.db.query(self.db.models.Scan.id).filter(
+            self.db.models.Scan.session_id == self.session_id
+        ).first()[0]
+
         # 2. Calcular DIFF
-        diff_report = self.diff_engine.get_diff(self.target, scan_obj.id)
+        diff_report = self.diff_engine.get_diff(self.target, scan_id)
         
-        findings = []
+        all_findings = []
+        all_services = []
+
         if diff_report.has_changes():
-            log.warn(f"[CONTINUOUS] Changes detected: {diff_report.summary()}")
+            logger.warning(f"[CONTINUOUS] Changes detected: {diff_report.summary()}")
             
-            # REGISTRO DE DECISIÓN: Disparar escaneo por diferencia
-            decision_id = learning_orchestrator.record_decision(
-                session_id=self.session_id,
-                decision_type="trigger_scan_on_diff",
-                target=self.target,
-                reason="changes_detected_in_surface",
-                context=diff_report.to_dict()
-            )
+            # --- NOTIFICACIÓN TELEGRAM ---
+            from src.notifications.telegram import notifier
+            notifier.notify_diff(self.target, diff_report)
             
-            # A. Nuevos Activos
+            # A. Nuevos Activos -> Escaneo Completo solo a estos
             if diff_report.new_subdomains:
-                new_findings = self._scan_new_assets(diff_report.new_subdomains, intent)
-                if new_findings: findings.extend(new_findings)
-                
-            # B. Cambios de Versión
+                logger.info(f"[CONTINUOUS] Targeted scan on {len(diff_report.new_subdomains)} new subdomains")
+                for sub in diff_report.new_subdomains:
+                    # Puertos
+                    p_res = tool_manager.run_capability("port_scan", sub, **intent)
+                    if p_res: all_services.extend(p_res)
+                    # Vulns
+                    v_res = tool_manager.run_capability("template_scan", sub, **intent)
+                    if v_res: all_findings.extend(v_res)
+            
+            # B. Cambios de Versión -> Re-scan de vulns
             if diff_report.changed_services:
+                logger.info(f"[CONTINUOUS] Re-scanning {len(diff_report.changed_services)} services with version changes")
                 for change in diff_report.changed_services:
-                    host = change['host']
-                    res = tool_manager.run_capability("template_scan", host, **intent)
-                    if res: findings.extend(res)
+                    v_res = tool_manager.run_capability("template_scan", change['host'], **intent)
+                    if v_res: all_findings.extend(v_res)
 
-            # C. Puertos Cerrados
-            if diff_report.closed_ports:
-                for p in diff_report.closed_ports:
-                    log.info(f"[CONTINUOUS] Port {p['port']} closed on {p['host']}")
+            # Sincronizamos con DB los resultados finales del delta
+            db_context["scan_status"] = {"status": "completed", "phase": "finalized", "progress": 100}
+            db_context["phases"]["ports"]["open_ports"] = all_services
+            db_context["phases"]["vulns"]["findings"] = all_findings
+            save_scan_to_db(db_context)
 
-            # EVALUACIÓN REFLEXIVA: ¿Sirvió de algo escanear el delta?
-            outcome = learning_orchestrator.evaluate_decision(
-                decision_id=decision_id,
-                findings=findings,
-                time_spent=60.0 # Estimado
-            )
-            learning_orchestrator.apply_feedback("trigger_scan_on_diff", outcome)
-            log.info(f"[CONTINUOUS] Learning: Delta scan outcome: {outcome['result']}")
+        else:
+            logger.info("[CONTINUOUS] No changes detected. Target surface is stable.")
 
+        # --- EXPORT NORMALIZADO ---
+        from src.export.normalizer import exporter
+        result_obj = exporter.export_scan(self.session_id, self.target, mode="continuous", include_diff=True)
+        export_path = exporter.save_json(result_obj)
+        
         return {
             "status": "completed",
+            "session_id": self.session_id,
             "has_changes": diff_report.has_changes(),
-            "findings_found": len(findings),
-            "intelligence": learning_orchestrator.get_full_feedback()
+            "findings_found": len(all_findings),
+            "export_path": str(export_path)
         }
 
-    def _scan_new_assets(self, new_assets: List[str], intent: Dict[str, Any]) -> List[Any]:
-        log.info(f"[CONTINUOUS] Performing targeted scan on {len(new_assets)} new assets")
-        all_findings = []
-        for asset in new_assets:
-            tool_manager.run_capability("service_discovery", asset, **intent)
-            res = tool_manager.run_capability("template_scan", asset, **intent)
-            if res: all_findings.extend(res)
-        return all_findings
 
 def run_continuous(target: str, **options) -> Dict[str, Any]:
     return ContinuousMode(target, options).run()

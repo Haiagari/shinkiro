@@ -1,0 +1,21 @@
+"""
+Estados del Workflow OzyRecon v5.0
+"""
+
+class WorkflowState:
+    DISCOVERED = "discovered"
+    ENUMERATED = "enumerated"
+    ANALYZED = "analyzed"
+    HYPOTHESIZED = "hypothesized"
+    PENDING_APPROVAL = "pending_approval"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    VALIDATING = "validating"
+    VALIDATED = "validated"
+    REPORTED = "reported"
+    ARCHIVED = "archived"
+
+class Actor:
+    SYSTEM = "system"
+    USER = "user"
+    AI = "ai"

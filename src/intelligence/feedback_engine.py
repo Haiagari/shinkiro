@@ -8,6 +8,10 @@ from typing import Dict, Any, Optional
 import json
 from pathlib import Path
 
+from src.core.logging import get_logger
+
+logger = get_logger('feedback_engine')
+
 @dataclass
 class ScoringWeights:
     """
@@ -126,12 +130,14 @@ class FeedbackEngine:
         confidence: float = 1.0
     ):
         """
-        Ajusta basado en outcome directo.
+        Ajusta basado en outcome directo con logs de aprendizaje.
         """
         rate = (
             self.FAST_LEARNING if confidence > 0.8 
             else self.SLOW_LEARNING
         )
+        
+        logger.info(f"Learning from {decision_type}: success={was_successful}, confidence={confidence:.2f}")
         
         if was_successful:
             self.adjust_on_success(decision_type, rate)

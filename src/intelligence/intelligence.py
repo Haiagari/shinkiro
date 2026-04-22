@@ -349,4 +349,45 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
     if hypotheses:
         log(f"💡 Hipótesis principal: {hypotheses[0].get('description', '')[:60]}", "info")
     
+    # ══════════════════════════════════════════════════════════════════════════════
+    # INTEGRACIÓN v5.0: Persistencia de Hipótesis y Workflow
+    # ══════════════════════════════════════════════════════════════════════════════
+    from src.storage.database import SessionLocal
+    from src.storage.models import Hypothesis, Target
+    from src.workflow.engine import workflow_engine
+    from src.workflow.states import WorkflowState
+    import uuid
+
+    db = SessionLocal()
+    try:
+        # Obtener target_id
+        target_obj = db.query(Target).filter(Target.domain == target).first()
+        t_id = target_obj.id if target_obj else None
+        
+        for h_data in hypotheses:
+            h_id = f"hyp_{uuid.uuid4().hex[:8]}"
+            new_hypo = Hypothesis(
+                id=h_id,
+                target_id=t_id,
+                type=h_data.get("type"),
+                description=h_data.get("description"),
+                url=h_data.get("url"),
+                severity=h_data.get("severity"),
+                confidence=h_data.get("cvss", {}).get("base_score", 0.0) / 10.0,
+                status=WorkflowState.PENDING_APPROVAL,
+                signals={"correlations": results.get("correlations")},
+                validation_method=h_data.get("verification")
+            )
+            db.add(new_hypo)
+            # Registrar en el workflow
+            workflow_engine.add_step(t_id, WorkflowState.HYPOTHESIZED, notes=f"Hypothesis {h_id} generated")
+        
+        db.commit()
+        log(f"✅ {len(hypotheses)} hipótesis persistidas para revisión humana.", "success")
+    except Exception as e:
+        db.rollback()
+        log(f"❌ Error persistiendo hipótesis: {str(e)}", "error")
+    finally:
+        db.close()
+
     return results

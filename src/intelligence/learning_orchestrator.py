@@ -41,17 +41,25 @@ class LearningOrchestrator:
     """
     
     def __init__(self):
-        # Usamos una sesión temporal para el log en init
-        db = SessionLocal()
-        self.decision_log = DecisionRepository(db)
+        # Diferimos la creación del repositorio para evitar problemas con SessionLocal en el init
+        self._decision_repo = None
         self.outcome_eval = outcome_evaluator
         self.feedback = feedback_engine
         self.fp_memory = false_positive_memory
         
         self.metrics = LearningMetrics()
+
+    @property
+    def decision_log(self):
+        if self._decision_repo is None:
+            self._db = SessionLocal()
+            self._decision_repo = DecisionRepository(self._db)
+        return self._decision_repo
     
     def record_decision(self, session_id, decision_type, target, reason, context, current_weights=None) -> str:
-        decision = log_decision(session_id, decision_type, target, reason, context, current_weights)
+        # Usamos los pesos actuales del feedback engine si no se pasan
+        weights = current_weights or self.feedback.get_adjusted_weights()
+        decision = log_decision(session_id, decision_type, target, reason, context, weights)
         self.metrics.total_decisions += 1
         return decision.id
     
@@ -73,6 +81,12 @@ class LearningOrchestrator:
     def apply_feedback(self, decision_type: str, outcome_dict: Dict[str, Any]):
         result = outcome_dict.get("result")
         value_score = outcome_dict.get("value_score", 0.0)
+        
+        # Log del aprendizaje
+        from src.core.logging import get_logger
+        l_logger = get_logger("learning")
+        l_logger.info(f"Applying feedback for {decision_type}. Result: {result}, Value: {value_score}")
+
         if result in ["success", "critical"]:
             self.feedback.adjust_from_outcome(decision_type, True, value_score)
         elif result == "failure":

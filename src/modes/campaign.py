@@ -16,32 +16,59 @@ from src.export.normalizer import NormalizedExporter
 logger = get_logger('mode_campaign')
 
 
-from typing import Optional, Dict, Any, List
-from src.modes.base import BaseMode
-from src.utils import log
+from src.core.logging import get_logger
+from src.core.tool_manager import tool_manager
+from pathlib import Path
+
+logger = get_logger('mode.campaign')
 
 class CampaignMode(BaseMode):
     """
-    Modo CAMPAÑA - Escalado de Patrones
-    Objetivo: Aplicar un patrón específico sobre múltiples targets.
+    Modo CAMPAÑA - Escalado de Patrones Masivo
+    Inputs: pattern (CVE/Tag), targets (lista de dominios)
     """
     
-    def __init__(self, target: str, pattern: str = "", options: Optional[Dict[str, Any]] = None):
-        super().__init__(target, "campaign", options)
+    def __init__(self, targets: List[str], pattern: str, options: Optional[Dict[str, Any]] = None):
+        # Usamos el primer target como referencia para el BaseMode, pero manejamos múltiples
+        super().__init__(targets[0] if targets else "multi-target", "campaign", options)
+        self.targets = targets
         self.pattern = pattern
-        self.results = []
     
     def validate_preconditions(self):
         if not self.pattern:
-            raise ValueError("Pattern (CVE, tag, etc.) is required for CAMPAIGN mode")
+            raise ValueError("Pattern (CVE ID or Nuclei Tag) is required for CAMPAIGN mode")
+        if not self.targets:
+            raise ValueError("At least one target is required for CAMPAIGN mode")
 
     def execute(self) -> Dict[str, Any]:
-        log.info(f"[CAMPAIGN] Starting campaign for pattern: {self.pattern}")
-        # Lógica de campaña masiva
+        logger.info(f"[CAMPAIGN] Starting pattern escalation: {self.pattern} on {len(self.targets)} targets")
+        
+        intent = self.get_operational_intent()
+        intent["tags"] = [self.pattern]
+        intent["speed"] = "fast"
+        
+        # 1. Preparar lista de targets
+        temp_file = Path("runtime/temp") / f"campaign_{self.session_id}_targets.txt"
+        temp_file.parent.mkdir(parents=True, exist_ok=True)
+        temp_file.write_text("\n".join(self.targets))
+        
+        # 2. Ejecutar escaneo masivo con Nuclei
+        logger.info(f"[CAMPAIGN] Running mass scan across targets...")
+        findings = tool_manager.run_capability("template_scan", str(temp_file), **intent)
+        
+        # 3. Notificar hallazgos críticos de inmediato
+        if findings:
+            from src.notifications.telegram import notifier
+            critical_count = sum(1 for f in findings if f.get('info', {}).get('severity', '').lower() in ['critical', 'high'])
+            if critical_count > 0:
+                notifier.send_message(f"🔥 *CAMPAIGN ALERT*\nPattern: `{self.pattern}`\nFindings: `{len(findings)}` total\nCritical/High: `{critical_count}`")
+
         return {
-            'session_id': self.session_id,
-            'pattern': self.pattern,
-            'status': 'completed'
+            "status": "completed",
+            "session_id": self.session_id,
+            "pattern": self.pattern,
+            "targets_count": len(self.targets),
+            "findings_found": len(findings) if findings else 0
         }
 
 def run_campaign(target: str, pattern: str = "", **options) -> Dict[str, Any]:

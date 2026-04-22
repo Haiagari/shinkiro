@@ -5,7 +5,9 @@ Modo INVESTIGACIÓN - Búsqueda Dirigida
 from typing import List, Dict, Any, Optional
 from src.modes.base import BaseMode
 from src.core.tool_manager import tool_manager
-from src.utils import log
+from src.core.logging import get_logger
+
+logger = get_logger('mode.research')
 
 class ResearchMode(BaseMode):
     """
@@ -20,35 +22,43 @@ class ResearchMode(BaseMode):
         self.cve_id = cve_id
 
     def validate_preconditions(self):
-        assets = self.db.get_live_subdomains(self.target)
-        if not assets:
+        # Usamos DBQueries para chequear superficie
+        from src.storage.queries import DBQueries
+        db = DBQueries(self.db_session)
+        target_obj = db.get_target(self.target)
+        if not target_obj:
             raise ValueError(f"No surface known for {self.target}. Run HUNT first.")
 
     def execute(self) -> Dict[str, Any]:
-        log.info(f"[RESEARCH] Investigating {self.target} (CVE: {self.cve_id or 'All'})")
+        logger.info(f"[RESEARCH] Investigating {self.target} (CVE: {self.cve_id or 'All'})")
         
         intent = self.get_operational_intent()
-        intent["depth"] = "deep" # En investigación queremos ir al fondo
+        intent["depth"] = "deep"
         
-        # 1. Obtener superficie de la DB
-        known_assets = [s.domain for s in self.db.get_live_subdomains(self.target)]
+        # 1. Obtener superficie de la DB usando la sesión actual
+        from src.storage.models import Subdomain
+        known_assets = [s.domain for s in self.db_session.query(Subdomain).filter(
+            Subdomain.is_live == 1
+        ).all()]
         
+        if not known_assets:
+            logger.warning(f"[RESEARCH] No live assets found for {self.target}")
+            return {"status": "completed", "findings_count": 0}
+
         # 2. Determinar tags de escaneo
         tags = []
         if self.cve_id:
             tags = [self.cve_id]
-        else:
-            # Recuperar tech stack de la memoria
-            memory = self.db.get_agent_memory(self.target, "tech_stack")
-            if memory:
-                tags = memory.value
-                log.info(f"[RESEARCH] Using tech stack from memory: {tags}")
-            else:
-                log.info("[RESEARCH] No tech stack found. Running broad tech-discovery scan.")
-                # Aquí podríamos lanzar un fingerprinting primero
         
-        # 3. Ejecutar escaneo dirigido
-        findings = tool_manager.run_capability("template_scan", known_assets, tags=tags, **intent)
+        # 3. Preparar archivo de targets para Nuclei
+        from pathlib import Path
+        temp_file = Path("runtime/temp") / f"research_{self.target}_targets.txt"
+        temp_file.parent.mkdir(parents=True, exist_ok=True)
+        temp_file.write_text("\n".join(known_assets))
+
+        # 4. Ejecutar escaneo dirigido
+        logger.info(f"[RESEARCH] Running targeted scan on {len(known_assets)} hosts")
+        findings = tool_manager.run_capability("template_scan", str(temp_file), tags=tags, **intent)
         
         return {
             "status": "completed",

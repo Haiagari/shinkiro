@@ -88,6 +88,10 @@ def build_parser() -> argparse.ArgumentParser:
     focus = sub.add_parser("focus", help="Fijar target activo")
     focus.add_argument("target", nargs="?", default=None)
 
+    fp = sub.add_parser("fp", help="Marcar hallazgo como Falso Positivo")
+    fp.add_argument("template", help="ID del template o patrón")
+    fp.add_argument("--tool", default="nuclei", help="Herramienta que lo generó")
+
     diff = sub.add_parser("diff", help="Comparar el último scan con el anterior")
     diff.add_argument("target", nargs="?", default=None)
 
@@ -96,9 +100,25 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--format", choices=["json", "md"], default="json")
     export.add_argument("-o", "--output")
 
+    gate = sub.add_parser("gate", help="Human Gate - Gestión de hipótesis y validación")
+    gate.add_argument("action", choices=["list", "approve", "reject"], help="Acción a realizar")
+    gate.add_argument("--id", help="ID de la hipótesis")
+    gate.add_argument("--reason", help="Razón de la aprobación/rechazo")
+
+    sub.add_parser("validate", help="Ejecutar validaciones de hipótesis aprobadas")
+
     sub.add_parser("dashboard", help="Ver dashboard de inteligencia reflexiva")
+    sub.add_parser("intel", help="Ver estado actual de la inteligencia del sistema")
     sub.add_parser("doctor", help="Diagnóstico del entorno")
     sub.add_parser("shell", help="Abrir la shell interactiva")
+    
+    serve = sub.add_parser("serve", help="Arrancar API de control de enjambre")
+    serve.add_argument("--port", type=int, default=8000)
+    serve.add_argument("--host", default="0.0.0.0")
+
+    sync = sub.add_parser("sync", help="Gestión de sincronización de inteligencia")
+    sync.add_argument("action", choices=["export", "import"])
+    sync.add_argument("--file", help="Archivo para importar")
 
     return parser
 
@@ -119,6 +139,45 @@ def main(argv: list[str] | None = None) -> int:
         recent = commands.recent_runs(3)
         run_tui(user, commands.API_BASE, commands.api_alive(), recent=recent)
         return 0
+
+    if args.command == "hunt":
+        from src.modes.hunt import HuntMode
+        opts = {"threads": args.threads, "rate_limit": args.rate_limit}
+        mode = HuntMode(args.target, opts)
+        result = mode.run()
+        return 0 if result.get("status") == "completed" else 1
+
+    if args.command == "continuous":
+        from src.modes.continuous import ContinuousMode
+        mode = ContinuousMode(args.target, {"interval": args.interval})
+        result = mode.run()
+        return 0 if result.get("status") == "completed" else 1
+
+    if args.command == "research":
+        from src.modes.research import ResearchMode
+        mode = ResearchMode(args.target, cve_id=args.cve)
+        result = mode.run()
+        return 0 if result.get("status") == "completed" else 1
+
+    if args.command == "campaign":
+        from src.modes.campaign import CampaignMode
+        # targets puede venir de la lista -t o de un archivo
+        targets = args.targets if args.targets else []
+        mode = CampaignMode(targets, pattern=args.pattern)
+        result = mode.run()
+        return 0 if result.get("status") == "completed" else 1
+
+    if args.command == "forensic":
+        from src.modes.forensic import ForensicMode
+        mode = ForensicMode(args.target)
+        result = mode.run()
+        return 0 if result.get("status") == "completed" else 1
+
+    if args.command == "servicio":
+        from src.modes.servicio import ServiceMode
+        mode = ServiceMode(args.target, {"client": args.client})
+        result = mode.run()
+        return 0 if result.get("status") == "completed" else 1
 
     if args.command == "scan":
         opts = commands.build_scan_options(
@@ -169,6 +228,12 @@ def main(argv: list[str] | None = None) -> int:
         commands.focus_target(args.target)
         return 0
 
+    if args.command == "fp":
+        from src.intelligence.false_positive_memory import false_positive_memory
+        false_positive_memory.register_false_positive("template", args.template, args.tool)
+        print(f"✅ Patrón '{args.template}' registrado en la memoria de Falsos Positivos.")
+        return 0
+
     if args.command == "diff":
         commands.print_diff(args.target)
         return 0
@@ -177,12 +242,76 @@ def main(argv: list[str] | None = None) -> int:
         commands.export_summary(args.target, fmt=args.format, output=args.output)
         return 0
 
+    if args.command == "gate":
+        if args.action == "list":
+            commands.print_gate_list()
+        elif args.action == "approve":
+            if not args.id:
+                print("❌ Error: Debes especificar el ID de la hipótesis con --id")
+                return 1
+            if commands.approve_hypothesis(args.id, args.reason):
+                print(f"✅ Hipótesis {args.id} aprobada para validación.")
+            else:
+                print(f"❌ Error al aprobar la hipótesis.")
+        elif args.action == "reject":
+            if not args.id:
+                print("❌ Error: Debes especificar el ID de la hipótesis con --id")
+                return 1
+            if commands.reject_hypothesis(args.id, args.reason):
+                print(f"✅ Hipótesis {args.id} rechazada.")
+            else:
+                print(f"❌ Error al rechazar la hipótesis.")
+        return 0
+
+    if args.command == "validate":
+        commands.run_validation()
+        return 0
+
     if args.command == "dashboard":
         commands.print_dashboard()
         return 0
 
+    if args.command == "intel":
+        from src.intelligence.learning_orchestrator import learning_orchestrator
+        intel = learning_orchestrator.get_full_feedback()
+        print("\n🧠 OzyRecon Intelligence Status")
+        print("==============================")
+        print(f"Total Decisions: {intel['metrics']['total_decisions']}")
+        print(f"Accuracy Rate:   {intel['metrics']['decision_accuracy_rate']:.1%}")
+        print(f"Signal/Noise:    {intel['metrics']['signal_to_noise_ratio']:.1%}")
+        
+        print("\n⚖️ Current Weights")
+        for k, v in intel['weights'].items():
+            print(f"- {k:20}: {v:.2f}")
+            
+        print("\n💡 Insights")
+        for insight in intel['feedback_insights']['insights']:
+            print(f"• {insight}")
+        return 0
+
     if args.command == "doctor":
         commands.print_doctor()
+        return 0
+
+    if args.command == "serve":
+        from src.core.api import start_api
+        start_api(host=args.host, port=args.port)
+        return 0
+
+    if args.command == "sync":
+        from src.intelligence.sync_manager import sync_manager
+        from pathlib import Path
+        if args.action == "export":
+            path = sync_manager.export_brain()
+            print(f"🧠 Cerebro exportado correctamente a: {path}")
+        elif args.action == "import":
+            if not args.file:
+                print("❌ Error: Debes especificar el archivo con --file")
+                return 1
+            if sync_manager.import_brain(Path(args.file)):
+                print(f"🧠 Inteligencia importada y mezclada correctamente.")
+            else:
+                print("❌ Error al importar la inteligencia.")
         return 0
 
     parser.print_help()

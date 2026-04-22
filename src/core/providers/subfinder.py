@@ -6,7 +6,9 @@ import subprocess
 from pathlib import Path
 from typing import List
 from src.core.providers.base import BaseProvider
-from src.utils import log
+from src.core.logging import get_logger
+
+logger = get_logger('provider.subfinder')
 
 class SubfinderProvider(BaseProvider):
     def __init__(self):
@@ -14,6 +16,7 @@ class SubfinderProvider(BaseProvider):
 
     def execute(self, target: str, **kwargs) -> List[str]:
         if not self.is_available():
+            logger.error("Subfinder binary not found")
             return []
         
         output_file = Path("runtime/temp") / f"subfinder_{target}.txt"
@@ -21,22 +24,26 @@ class SubfinderProvider(BaseProvider):
         
         # Mapeo de intención operativa a ejecución técnica
         speed = kwargs.get("speed", "normal")
-        threads = 50
-        if speed == "fast": threads = 100
-        elif speed == "slow": threads = 20
+        threads = kwargs.get("threads", 50)
+        
+        if speed == "fast": threads = max(threads, 100)
+        elif speed == "slow": threads = min(threads, 20)
         
         cmd = [self.path, "-d", target, "-silent", "-all", "-o", str(output_file), "-t", str(threads)]
         
-        # Si la intención es ruido bajo, evitamos el flag "-all" que puede ser más ruidoso
+        # Si la intención es ruido bajo, evitamos el flag "-all"
         if kwargs.get("noise") == "low":
-            cmd.remove("-all")
+            if "-all" in cmd: cmd.remove("-all")
         
+        logger.info(f"Running subfinder on {target}")
         try:
             subprocess.run(cmd, check=True, capture_output=True)
             if output_file.exists():
                 with open(output_file) as f:
-                    return [line.strip() for line in f if line.strip()]
+                    results = [line.strip() for line in f if line.strip()]
+                    logger.debug(f"Subfinder found {len(results)} subdomains")
+                    return results
         except Exception as e:
-            log.error(f"Subfinder execution failed: {e}")
+            logger.error(f"Subfinder execution failed: {e}")
             
         return []

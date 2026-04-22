@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OzyRecon v4.0 - War Room</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body { background-color: #050a10; color: #e2e8f0; }
+        .cyber-border { border: 1px solid #00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.2); }
+        .neon-text { color: #00ff88; text-shadow: 0 0 5px rgba(0, 255, 136, 0.5); }
+    </style>
+</head>
+<body x-data="dashboard()">
+    <nav class="p-6 border-b border-gray-800 bg-[#0a0f1a]">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold neon-text">OZYRECON <span class="text-xs text-gray-500">v4.0 SWARM</span></h1>
+            <div class="flex gap-4">
+                <span class="px-3 py-1 bg-green-900 text-green-400 rounded-full text-xs">NODE ONLINE</span>
+                <span class="text-gray-400 text-sm" x-text="new Date().toLocaleTimeString()"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Panel de Inteligencia -->
+        <div class="md:col-span-1 space-y-6">
+            <section class="p-6 bg-[#0d1526] rounded-xl cyber-border">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    🧠 Inteligencia
+                </h2>
+                <div class="space-y-4">
+                    <template x-for="(weight, key) in intel.weights" :key="key">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="capitalize" x-text="key.replace('_', ' ')"></span>
+                                <span x-text="(weight * 100).toFixed(0) + '%'"></span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-1.5">
+                                <div class="bg-[#00ff88] h-1.5 rounded-full" :style="'width: ' + (weight * 100) + '%'"></div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- SECCIÓN DE ENJAMBRE (NUEVA) -->
+            <section class="p-6 bg-[#0d1526] rounded-xl border border-gray-800">
+                <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    🐝 Swarm Infrastructure
+                </h2>
+                <div class="space-y-3">
+                    <template x-for="node in nodes" :key="node.url">
+                        <div class="p-3 bg-[#0a0f1a] rounded-lg border border-gray-800">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-bold" x-text="node.name"></span>
+                                <span class="text-[10px] px-2 py-0.5 rounded" 
+                                      :class="node.status === 'online' ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'"
+                                      x-text="node.status.toUpperCase()"></span>
+                            </div>
+                            <p class="text-[10px] text-gray-500 font-mono" x-text="node.url"></p>
+                        </div>
+                    </template>
+                    <div x-if="nodes.length === 0" class="text-xs text-gray-600 text-center py-4">
+                        No hay nodos registrados.
+                    </div>
+                </div>
+            </section>
+
+            <section class="p-6 bg-[#0d1526] rounded-xl border border-gray-800">
+                <h2 class="text-lg font-bold mb-4">Métricas de Aprendizaje</h2>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="p-3 bg-[#0a0f1a] rounded-lg">
+                        <p class="text-xs text-gray-500">Precisión</p>
+                        <p class="text-xl font-bold neon-text" x-text="(intel.metrics.decision_accuracy_rate * 100).toFixed(1) + '%'"></p>
+                    </div>
+                    <div class="p-3 bg-[#0a0f1a] rounded-lg">
+                        <p class="text-xs text-gray-500">Decisiones</p>
+                        <p class="text-xl font-bold" x-text="intel.metrics.total_decisions"></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Panel de Targets -->
+        <div class="md:col-span-2 space-y-6">
+            <section class="p-6 bg-[#0d1526] rounded-xl border border-gray-800">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold">Objetivos Monitoreados</h2>
+                    <button @click="loadData()" class="text-xs text-[#00ff88] hover:underline">Actualizar</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-xs text-gray-500 uppercase border-b border-gray-800">
+                                <th class="pb-3">Dominio</th>
+                                <th class="pb-3">Visto por última vez</th>
+                                <th class="pb-3">Estado</th>
+                                <th class="pb-3 text-right">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <template x-for="target in targets" :key="target.id">
+                                <tr class="border-b border-gray-800 hover:bg-[#0a0f1a]">
+                                    <td class="py-4 font-mono" x-text="target.domain"></td>
+                                    <td class="py-4 text-gray-400" x-text="new Date(target.added_at).toLocaleDateString()"></td>
+                                    <td class="py-4">
+                                        <span class="px-2 py-0.5 bg-blue-900 text-blue-300 rounded text-[10px]">MONITOREANDO</span>
+                                    </td>
+                                    <td class="py-4 text-right">
+                                        <button class="text-xs bg-gray-800 px-3 py-1 rounded hover:bg-gray-700">Ver Reporte</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function dashboard() {
+            return {
+                intel: { weights: {}, metrics: {} },
+                targets: [],
+                nodes: [],
+                async loadData() {
+                    try {
+                        const intelRes = await fetch('/intelligence/status');
+                        this.intel = await intelRes.json();
+                        const targetRes = await fetch('/targets');
+                        this.targets = await targetRes.json();
+                        const nodesRes = await fetch('/swarm/nodes');
+                        this.nodes = await nodesRes.json();
+                    } catch (e) {
+                        console.error("Error cargando data:", e);
+                    }
+                },
+                init() {
+                    this.loadData();
+                    setInterval(() => this.loadData(), 30000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -30,14 +30,59 @@ from backend.modules.models import Scan, Target, Vulnerability, Subdomain, Port,
 from backend.modules.utils import load_json
 from ui.renderer import console
 
+# ══════════════════════════════════════════════════════════════════════════════
+# HUMAN GATE v5.0
+# ══════════════════════════════════════════════════════════════════════════════
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
-API_BASE = os.getenv("BBUG_API_URL", "http://localhost:5000").rstrip("/")
-CLI_STATE_FILE = ROOT_DIR / "runtime" / "state" / "agent_cli_state.json"
-TERMINAL_STATUSES = {"completed", "error", "failed", "cancelled", "canceled", "idle"}
+def print_gate_list():
+    """Muestra la lista de hipótesis pendientes de aprobación."""
+    from src.gate.manager import gate_manager
+    pending = gate_manager.list_pending()
+    
+    if not pending:
+        console.print(Panel("No hay hipótesis pendientes de revisión.", title="Human Gate", border_style="green"))
+        return
+
+    table = Table(title="Human Gate - Hipótesis Pendientes", box=SIMPLE_HEAVY, show_lines=True, expand=True)
+    table.add_column("ID", style="accent", no_wrap=True)
+    table.add_column("Target", style="white")
+    table.add_column("Tipo", style="cyan")
+    table.add_column("Confianza", justify="right")
+    table.add_column("Riesgo", style="yellow")
+    table.add_column("Descripción", style="muted")
+
+    for h in pending:
+        table.add_row(
+            h["id"],
+            str(h["target"]),
+            h["type"],
+            f"{h['confidence']:.1%}",
+            h["risk"].upper(),
+            h["description"]
+        )
+    
+    console.print(table)
+    console.print("\n[info]Usa: gate approve --id <id> para autorizar la validación.[/info]")
+
+def approve_hypothesis(hypo_id: str, reason: str = None) -> bool:
+    from src.gate.manager import gate_manager
+    return gate_manager.approve(hypo_id, reason)
+
+def reject_hypothesis(hypo_id: str, reason: str = None) -> bool:
+    from src.gate.manager import gate_manager
+    return gate_manager.reject(hypo_id, reason)
+
+def run_validation():
+    """Ejecuta el orquestador de validación."""
+    from src.workflow.orchestrator import orchestrator
+    console.print(Panel("Iniciando orquestador de validación v5.0...", title="Validation Engine", border_style="accent"))
+    orchestrator.process_approved()
+    console.print("[success]Proceso de validación finalizado.[/success]")
+    console.print("[info]Usa 'ozy report' para ver los resultados validados.[/info]")
 
 
 def is_terminal_status(status: str | None) -> bool:
+
     return (status or "idle").strip().lower() in TERMINAL_STATUSES
 
 
@@ -120,33 +165,27 @@ def resolve_target(target: str | None) -> str | None:
 
 
 def build_scan_command(target: str, opts: ScanOptions) -> list[str]:
-    cmd = [sys.executable, str(ROOT_DIR / "backend" / "main.py"), "-t", normalize_target(target)]
-    if opts.output:
-        cmd += ["-o", opts.output]
-    if opts.program:
-        cmd += ["-p", opts.program]
+    """
+    Construye el comando para ejecutar el motor de OzyRecon.
+    Ahora apunta directamente al agente que orquesta la arquitectura de src/.
+    """
+    # El agente principal que ahora usa los modos de src/
+    cmd = [sys.executable, str(ROOT_DIR / "agent.py"), "-t", normalize_target(target)]
+    
+    # Mapeo de opciones de CLI a argumentos del agente
     if opts.full:
-        cmd.append("--full")
-    if opts.recon:
-        cmd.append("--recon")
-    if opts.ports:
-        cmd.append("--ports")
-    if opts.urls:
-        cmd.append("--urls")
-    if opts.vulns:
-        cmd.append("--vulns")
-    if opts.report:
-        cmd.append("--report")
-    if opts.waf_detection:
-        cmd.append("--waf-detection")
-    if opts.active_fuzz:
-        cmd.append("--active-fuzz")
-    if opts.agent:
-        cmd += ["--agent", opts.agent]
+        cmd.append("--mode")
+        cmd.append("hunt")
+    elif opts.recon:
+        cmd.append("--mode")
+        cmd.append("research") # O un modo específico de discovery
+    
+    # Si el usuario especificó un modo directamente en la CLI (nuevo sistema)
+    # Esto se manejaría en el parser superior, pero aquí aseguramos la compatibilidad
+    
     if opts.threads:
         cmd += ["--threads", str(opts.threads)]
-    if opts.timeout:
-        cmd += ["--timeout", str(opts.timeout)]
+    
     return cmd
 
 
@@ -507,29 +546,49 @@ def print_history(target: str | None = None, limit: int = 10) -> None:
 
 
 def print_report(target: str | None = None) -> None:
-    payload = get_latest_status(resolve_target(target))
+    target_clean = resolve_target(target)
+    payload = get_latest_status(target_clean)
     if not payload:
         console.print(Panel("Sin datos para reportar.", title="Report", border_style="red"))
         return
+    
+    # ══════════════════════════════════════════════════════════════════════════════
+    # INTEGRACIÓN v5.0: Reporte de Validaciones
+    # ══════════════════════════════════════════════════════════════════════════════
+    from src.storage.database import SessionLocal
+    from src.storage.models import Hypothesis
+    
+    db = SessionLocal()
+    validated_hypos = []
+    try:
+        validated_hypos = db.query(Hypothesis).filter(Hypothesis.status == "validated").all()
+    finally:
+        db.close()
+
     counts = payload.get("counts", {})
+    body = [
+        f"[bold]Target:[/] {payload.get('target', 'n/a')}",
+        f"[bold]Estado:[/] {payload.get('status', 'n/a')}",
+        f"[bold]Subdominios:[/] {counts.get('subdomains', 0)}",
+        f"[bold]Hosts vivos:[/] {counts.get('live_hosts', 0)}",
+        f"[bold]Puertos:[/] {counts.get('ports', 0)}",
+        f"[bold]Vulns (Scanner):[/] {counts.get('vulns', 0)}",
+    ]
+
+    if validated_hypos:
+        body.append(f"\n[bold green]🔥 Validaciones v5.0 Confirmadas: {len(validated_hypos)}[/bold green]")
+        for h in validated_hypos[:5]:
+            body.append(f"  • [accent]{h.type.upper()}[/] -> {h.url or h.description[:40]}")
+
     panel = Panel(
-        "\n".join(
-            [
-                f"[bold]Target:[/] {payload.get('target', 'n/a')}",
-                f"[bold]Estado:[/] {payload.get('status', 'n/a')}",
-                f"[bold]Fase:[/] {payload.get('phase', 'n/a')}",
-                f"[bold]Progreso:[/] {payload.get('progress', 0)}%",
-                f"[bold]Subdominios:[/] {counts.get('subdomains', 0)}",
-                f"[bold]Hosts vivos:[/] {counts.get('live_hosts', 0)}",
-                f"[bold]Puertos:[/] {counts.get('ports', 0)}",
-                f"[bold]Vulns:[/] {counts.get('vulns', 0)}",
-                f"[bold]Ruta:[/] {payload.get('out_dir') or 'n/a'}",
-            ]
-        ),
-        title="Último reporte",
+        "\n".join(body),
+        title="Último reporte - OzyRecon v5.0 Ready",
         border_style="cyan",
     )
     console.print(panel)
+    
+    if validated_hypos:
+        console.print("[info]Tip: Usa 'export --format md' para generar el reporte completo con evidencia.[/info]")
 
 
 def print_doctor() -> None:

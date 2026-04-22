@@ -6,7 +6,9 @@ import subprocess
 from pathlib import Path
 from typing import List
 from src.core.providers.base import BaseProvider
-from src.utils import run_cmd, read_lines, write_lines
+from src.core.logging import get_logger
+
+logger = get_logger('provider.generic')
 
 class GenericDiscoveryProvider(BaseProvider):
     def __init__(self, name: str, binary: str, cmd_template: str):
@@ -14,7 +16,9 @@ class GenericDiscoveryProvider(BaseProvider):
         self.cmd_template = cmd_template
 
     def execute(self, target: str, **kwargs) -> List[str]:
-        if not self.is_available(): return []
+        if not self.is_available():
+            logger.error(f"Provider {self.name} binary not found: {self.binary}")
+            return []
         
         out_file = Path("runtime/temp") / f"{self.name}_{target}.txt"
         out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -26,8 +30,15 @@ class GenericDiscoveryProvider(BaseProvider):
             threads=kwargs.get("threads", 50)
         )
         
+        logger.info(f"Running {self.name} on {target}")
         try:
             subprocess.run(cmd, shell=True, check=True, capture_output=True)
-            return read_lines(out_file)
-        except:
-            return []
+            if out_file.exists():
+                with open(out_file) as f:
+                    results = [line.strip() for line in f if line.strip()]
+                    logger.debug(f"{self.name} found {len(results)} results")
+                    return results
+        except Exception as e:
+            logger.error(f"Execution of {self.name} failed: {e}")
+            
+        return []

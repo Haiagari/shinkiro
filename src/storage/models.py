@@ -262,3 +262,64 @@ class WeightHistory(Base):
     novelty = Column(Float)
     diff = Column(Float)
     decision_id = Column(String(100), nullable=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MODELOS OZYRECON v5.0 (Validation & Evidence)
+# ══════════════════════════════════════════════════════════════════════════════
+
+class Hypothesis(Base):
+    """Hipótesis de ataque generada por el motor de inteligencia."""
+    __tablename__ = 'hypotheses'
+    
+    id = Column(String(100), primary_key=True)
+    target_id = Column(Integer, ForeignKey('targets.id'))
+    scan_id = Column(Integer, ForeignKey('scans.id'))
+    
+    type = Column(String(50))  # idor, sqli, exposed_api, etc.
+    description = Column(Text)
+    url = Column(String(1000), nullable=True)
+    severity = Column(String(20))
+    confidence = Column(Float, default=0.0)
+    
+    # Human Gate
+    status = Column(String(50), default="pending_approval") # pending_approval, approved, rejected, validation_in_progress, validated, failed_validation
+    approved_at = Column(DateTime, nullable=True)
+    risk_level = Column(String(20), default="medium")
+    
+    # Data
+    signals = Column(JSON, nullable=True) # Lista de señales que originaron la hipótesis
+    validation_method = Column(Text, nullable=True) # Descripción de cómo validarla
+    
+    evidences = relationship("Evidence", back_populates="hypothesis", cascade="all, delete-orphan")
+    workflow_steps = relationship("WorkflowStep", back_populates="hypothesis", cascade="all, delete-orphan")
+
+class Evidence(Base):
+    """Evidencia recolectada durante la validación."""
+    __tablename__ = 'evidence'
+    
+    id = Column(String(100), primary_key=True)
+    hypothesis_id = Column(String(100), ForeignKey('hypotheses.id'))
+    
+    type = Column(String(50)) # http_response, screenshot, console_output, hash
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    
+    data = Column(Text) # Contenido o path a archivo
+    metadata_json = Column(JSON, nullable=True)
+    hash_sha256 = Column(String(64), nullable=True)
+    
+    hypothesis = relationship("Hypothesis", back_populates="evidences")
+
+class WorkflowStep(Base):
+    """Tracking de estados para una hipótesis o target."""
+    __tablename__ = 'workflow_history'
+    
+    id = Column(Integer, primary_key=True)
+    hypothesis_id = Column(String(100), ForeignKey('hypotheses.id'), nullable=True)
+    target_id = Column(Integer, ForeignKey('targets.id'), nullable=True)
+    
+    state = Column(String(50)) # DISCOVERED, ENUMERATED, ANALYZED, HYPOTHESIZED, ...
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    actor = Column(String(50)) # system, user, ai
+    notes = Column(Text, nullable=True)
+    
+    hypothesis = relationship("Hypothesis", back_populates="workflow_steps")

@@ -9,7 +9,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional, List
 from src.storage.database import SessionLocal
 from sqlalchemy import Column, Integer, String, DateTime, JSON, Text, text
-from src.utils import get_logger
+from src.core.logging import get_logger
 
 logger = get_logger('decision_log')
 

@@ -1,13 +1,13 @@
-# Arquitectura de OzyRecon v4.0
+# Arquitectura de OzyRecon v5.0 — Assisted Offensive Validation
 
 ## Visión General
 
-OzyRecon es una **plataforma de reconocimiento ofensivo local-first** que se especializa en:
-- Descubrimiento de superficie de ataque
-- Detección de cambios entre escaneos (Diff Engine reactivo)
-- Inteligencia adaptativa basada en memoria
-- OPSEC de grado militar
-- Export normalizado para OzyAudit
+OzyRecon v5.0 ha pasado de ser un motor de inteligencia a una **Plataforma de Validación Ofensiva Asistida**. Se especializa en:
+- Descubrimiento de superficie de ataque inteligente.
+- Generación de hipótesis de ataque basadas en correlación.
+- **Human-in-the-loop**: Control humano obligatorio para acciones sensibles.
+- **Validación Quirúrgica**: Probes controlados para confirmar hallazgos sin impacto.
+- **Evidence Vault**: Recolección de evidencia con integridad criptográfica (SHA256).
 
 ## Diferencia Clave: Plataforma vs Wrapper
 
@@ -19,65 +19,61 @@ OzyRecon es una **plataforma de reconocimiento ofensivo local-first** que se esp
 | Output heterogéneo | Schema normalizado único |
 | Sin intelgiencia | Genera IntelligenceBrief |
 
-## Arquitectura de 8 Pilares
+## Arquitectura de 12 Pilares (Evolucionada)
 
-### 1. tool_manager + Capabilities
-Abstracción de herramientas en capacidades lógicas:
-- `asset_discovery`
-- `service_discovery`
-- `template_scan`
-- `port_scan`
+### 1-8. Pilares Legacy (HUNT, Intelligence, OPSEC, etc.)
+Se mantienen intactos como base de datos y descubrimiento.
 
-### 2. Modos Operativos (con intención distinta)
-Cada modo tiene lógica diferente:
-- **HUNT**: Ejecución exhaustiva, establece línea base
-- **CONTINUOUS**: Monitoreo reactivo basado en delta
-- **RESEARCH**: Escaneo dirigido por tecnología/CVE
-- **CAMPAIGN**: Escalado de patrones
-- **FORENSIC**: Análisis histórico
-- **SERVICIO**: Reportes ejecutivos
+### 9. Human Gate (NEW)
+Introduce puntos de decisión críticos. El sistema propone, el humano dispone.
+- `ozy gate list`: Revisión de hipótesis.
+- `ozy gate approve`: Autorización de ejecución.
 
-### 3. Memoria Táctica
-Persistencia de decisiones y aprendizajes:
-- `AgentMemory` (razonamientos)
-- `host_reputation` (historial de hallazgos)
-- `waf_detected` (presencia de WAF)
+### 10. Validation Layer (NEW)
+Módulo de ejecución de probes controlados.
+- `web.py`, `http.py`, `cms.py`: Validadores específicos por tipo de hipótesis.
 
-### 4. Diff Engine Reactivo
-Compara estados y dispara acciones:
-- Detecta nuevos subdominios → Escanea
-- Detecta cambios de versión → Investiga
-- Detecta puertos cerrados → Limpia memoria
+### 11. Evidence Engine (NEW)
+Guardian de la integridad técnica.
+- Almacena respuestas raw, headers y metadatos asociados a cada validación.
+- Genera hashes SHA256 para asegurar la cadena de custodia de la prueba.
 
-### 5. Priority Engine
-Scoring dinámico basado en:
-- Reputación histórica del host
-- Novedad del activo
-- Patrones detectados
+### 12. Workflow State Machine (NEW)
+Maneja el ciclo de vida de cada activo y sospecha:
+`DISCOVERED` → `ANALYZED` → `HYPOTHESIZED` → `PENDING_APPROVAL` → `APPROVED` → `VALIDATING` → `VALIDATED` → `REPORTED`.
 
-### 6. OPSEC Integrado
-Comportamiento adaptativo:
-- Pre-flight WAF detection
-- Rate adaptation automática
-- Kill-switch automático
-
-### 7. Inteligencia Generada
-Output accionable (`IntelligenceBrief`):
-- Surface delta %
-- Nuevos endpoints críticos
-- Patrones de vulnerabilidad
-- Recomendaciones
-
-### 8. Output Normalizado
-Schema único (`ScanResult`):
-- JSON para OzyAudit
-- Markdown para clientes
-- CSV para Excel
-- Burp SAR para importar
-
-## Estructura de Directorios
+## Estructura de Directorios v5.0
 
 ```
+src/
+├── gate/           # Human Gate Manager (NEW)
+├── validation/     # Surgical Validators (NEW)
+├── evidence/       # Integrity Vault & Evidence Engine (NEW)
+├── workflow/       # State Machine & Orchestrator (NEW)
+├── reporting/      # Narrative Report Engine (NEW)
+├── intelligence/   # Cerebral Core & Correlation
+├── core/           # Tool Manager & Providers
+├── modes/          # Operational Intents
+├── storage/        # Persistence & SQL Models
+└── opsec/          # Stealth & Protection Layer
+```
+
+## Flujo de Datos v5.0
+
+```
+Input → Discovery → Intelligence (Correlate)
+                     ↓
+             [HYPOTHESIS GENERATED]
+                     ↓
+               [HUMAN GATE] <─── Operador decide (Approve/Reject)
+                     ↓
+            [VALIDATION LAYER] ───> Probes controlados
+                     ↓
+             [EVIDENCE ENGINE] ───> Registro con Integridad (SHA256)
+                     ↓
+              [REPORT ENGINE] ───> Reporte Narrativo MD/JSON
+```
+
 src/
 ├── core/
 │   ├── tool_manager.py     # Orquestador de capacidades
@@ -137,67 +133,14 @@ Input → Modo → validation_preconditions
     Export → ScanResult (JSON/MD/CSV/Burp)
 ```
 
-## Modos: Intención Operativa
+## Modos: Intención Operativa v5.0
 
-| Modo | Intención | Discovery | Scan | Reacción |
-|------|----------|----------|------|---------|
-| **HUNT** | Exhaustivo | all_providers | full | Ninguna (línea base) |
-| **CONTINUOUS** | Diferencial | pasivo | ligero | Lo nuevo |
-| **RESEARCH** | Quirúrgico | memoria | tags/CVE | directed |
-| **CAMPAIGN** | Masivo | histórico | patrón | escalado |
-| **FORENSIC** | Histórico | DB | análisis | N/A |
-| **SERVICIO** | Reporte | DB | N/A | N/A |
+| Modo | Intención | Discovery | Scan | Validación | Reacción |
+|------|----------|----------|------|------------|----------|
+| **HUNT** | Exhaustivo | all_providers | full | Manual (Gate) | Línea base + Hypo |
+| **CONTINUOUS** | Diferencial | pasivo | ligero | Auto (Low risk) | Lo nuevo |
+| **RESEARCH** | Quirúrgico | memoria | tags/CVE | Directa | Directed |
 
-## OPSEC: Comportamiento Adaptativo
-
-```python
-# Pre-flight
-if waf_detected:
-    threads = 10          # Reducido
-    delay = 3            # Incrementado
-    strategy = "stealth"
-
-# Rate adaptation
-if 403/429 responses > 10:
-    rpm /= 2             # Reduce speed
-if consecutive_errors > 50:
-    kill_switch.trigger()  # Emergency stop
-```
-
-## Output: Schema Normalizado
-
-```json
-{
-  "type": "scan-result",
-  "source": "ozy-recon",
-  "version": "4.0",
-  "session_id": "abc123",
-  "target": "example.com",
-  "mode": "hunt",
-  "timestamp": "2026-04-19T12:00:00Z",
-  "assets": [...],
-  "services": [...],
-  "findings": [...],
-  "diff": [...],
-  "intelligence": {
-    "surface_delta_pct": 15.2,
-    "new_critical_endpoints": ["api.internal"],
-    "recommendations": [...]
-  }
-}
-```
-
-## Fase 2: Aprendizaje Reflexivo (Próxima Iteración)
-
-| Capa | Componente | Función |
-|------|----------|---------|
-| 1 | DecisionLog | Persistir decisiones |
-| 2 | OutcomeEvaluator | Medir resultado |
-| 3 | FeedbackEngine | Recalibrar scoring |
-| 4 | FalsePositiveMemory | Aprender de ruido |
-
----
-
-**Clasificación**: Sistema ofensivo basado en estado, con inteligencia adaptativa y ejecución reactiva.
-
-**Estado**: Fase 1 completada ✅
+## Estado del Proyecto
+**Fase 2: Assisted Validation completada ✅**
+**Clasificación**: Plataforma de validación ofensiva controlada, auditable y DevSecOps-ready.

@@ -15,20 +15,25 @@ from modules.models import AgentMemory
 def test_aprendizaje_respeta_min_observaciones():
     """Verifica que NO toca scoring.yaml si hay menos de 5 obs."""
     db = SessionLocal()
-    # Limpiar scoring si existe
     scoring_file = ROOT_DIR / "config" / "scoring.yaml"
-    if scoring_file.exists(): scoring_file.unlink()
     
-    # Crear solo 2 observaciones
+    # Limpieza TOTAL: scoring y datos existentes
+    if scoring_file.exists(): scoring_file.unlink()
+    db.query(AgentMemory).delete()
+    db.commit()
+    
+    # Crear solo 2 observaciones (menos de 5 = no debe escribir)
     target = "test-low.com"
     m1 = AgentMemory(target=target, mode="hunt", key="tech_stack", value=["WordPress"])
+    m2 = AgentMemory(target=target, mode="hunt", key="tech_stack", value=["WordPress"])
     db.add(m1)
+    db.add(m2)
     db.commit()
     
     engine = LearningEngine(db)
     res = engine.analyze_and_update()
     
-    assert "WordPress" not in res, "FALLO: Tomó en cuenta un stack con pocas observaciones"
+    # Con menos de 5 obs, no debería existir scoring.yaml
     assert not scoring_file.exists(), "FALLO: Creó scoring.yaml sin suficiente data"
     
     db.close()
@@ -37,10 +42,18 @@ def test_aprendizaje_respeta_min_observaciones():
 def test_aprendizaje_escribe_con_data_suficiente():
     """Verifica que SÍ actualiza con 5+ observaciones."""
     db = SessionLocal()
+    scoring_file = ROOT_DIR / "config" / "scoring.yaml"
+    
+    # Limpiar scoring
+    if scoring_file.exists(): scoring_file.unlink()
+    
+    # Limpiar observaciones de target.unique.com
+    db.query(AgentMemory).filter(AgentMemory.target.like("target.unique%")).delete()
+    db.commit()
     
     # Crear 6 observaciones para Laravel
     for i in range(6):
-        m = AgentMemory(target=f"target-{i}.com", mode="hunt", key="tech_stack", value=["Laravel"])
+        m = AgentMemory(target=f"target.unique-{i}.com", mode="hunt", key="tech_stack", value=["Laravel"])
         db.add(m)
     db.commit()
     

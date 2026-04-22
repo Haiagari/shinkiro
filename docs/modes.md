@@ -1,150 +1,55 @@
-# Modos Operativos de OzyRecon
+# Modos Operativos de OzyRecon v5.0
 
 ## Overview
 
-OzyRecon tiene 6 modos operativos que cubren diferentes escenarios de reconocimiento ofensivo.
+OzyRecon v5.0 introduce el concepto de **Assisted Validation** en sus modos operativos, transformando el output técnico en inteligencia accionable y verificada.
 
-## Modo HUNT
+## Modo HUNT (Evolucionado)
 
-**Objetivo**: Caza agresiva en targets nuevos para llegar primero al lead.
+**Objetivo**: Establecer una línea base inteligente y generar hipótesis de ataque para validación manual.
 
 ### Uso
 ```bash
-python3 src/cli/main.py hunt -t target.com
-python3 src/cli/main.py hunt -t target.com --threads 100 --dry-run
+python3 -m ozy hunt -t target.com
 ```
 
-### Flujo
-1. Descubrimiento de subdominios
-2. Detección de hosts vivos
-3. Escaneo de puertos
-4. Fingerprinting
-5. Detección de vulnerabilidades
+### Flujo v5.0
+1. **Asset Discovery**: Enumeración total de subdominios y activos.
+2. **Intelligence Correlation**: Cruce de puertos, servicios y tech stack.
+3. **Hypothesis Generation**: El sistema propone vectores de ataque basados en la correlación.
+4. **Human Gate**: Las hipótesis quedan en estado `PENDING_APPROVAL` esperando acción humana (`ozy gate`).
+5. **Assisted Validation**: Solo las hipótesis aprobadas son validadas por el orquestador (`ozy validate`).
 
 ### Cuándo usarlo
-- Target nuevo sin historial
-- Programas de bug bounty recién publicados
-- Para encontrar bugs de día cero
+- Target nuevo sin historial.
+- Auditorías donde se requiere control total sobre el ruido generado.
+- Escenarios de "Red Teaming" asistido.
 
 ---
 
 ## Modo CONTINUO
 
-**Objetivo**: Monitoreo 24/7 con detección de cambios.
+**Objetivo**: Monitoreo 24/7 con detección de cambios y auto-validación de bajo riesgo.
 
 ### Uso
 ```bash
-python3 src/cli/main.py continuous -t target.com
-python3 src/cli/main.py continuous -t target.com --interval 7200
+python3 -m ozy continuous -t target.com
 ```
 
-### Flujo
-1. Escaneo ligero periódico
-2. Comparación con snapshot anterior
-3. Detección de deltas
-4. Alertas solo si hay cambios
-
-### Cuándo usarlo
-- Targets en programas activos
-- Monitoreo de programas de largo plazo
-- Detección de cambios en infraestructura
+### Flujo v5.0
+1. Escaneo diferencial periódico.
+2. Detección de nuevos activos o cambios en servicios.
+3. Auto-validación de hipótesis de bajo riesgo (ej: versiones expuestas).
+4. Escalamiento al Human Gate para cambios críticos.
 
 ---
 
-## Modo CAMPAÑA
+## Resumen de Capacidades v5.0
 
-**Objetivo**: Escalar un patrón específico sobre múltiples targets.
-
-### Uso
-```bash
-python3 src/cli/main.py campaign -p CVE-2024-1234 -t target1.com target2.com
-python3 src/cli/main.py campaign -p xss
-```
-
-### Flujo
-1. Recibir patrón (CVE, template, tipo)
-2. Aplicar sobre lista de targets
-3. Recolectar resultados
-
-### Cuándo usarlo
-- Buscar una vulnerabilidad específica
-- Aplicar nuevo template de Nuclei
-- Auditoría masiva
-
----
-
-## Modo INVESTIGACIÓN
-
-**Objetivo**: Búsqueda quirúrgica de CVEs en superficie conocida.
-
-### Uso
-```bash
-python3 src/cli/main.py research -t target.com
-python3 src/cli/main.py research -t target.com --cve CVE-2024-1234
-```
-
-### Flujo
-1. Obtener tech stack del target
-2. Buscar CVEs relacionados
-3. Verificar vulnerabilidad específica
-
-### Cuándo usarlo
-- Después de detectar tecnologías
-- Para verificar CVEs específicos
-- Investigación de amenazas
-
----
-
-## Modo FORENSE
-
-**Objetivo**: Análisis post-mortem de brechas de detección.
-
-### Uso
-```bash
-python3 src/cli/main.py forensic -t target.com
-```
-
-### Flujo
-1. Analizar historial de scans
-2. Identificar patrones fallidos
-3. Detectar brechas
-4. Proponer ajustes de scoring
-
-### Cuándo usarlo
-- Después de falsos negativos
-- Para mejorar configuración
-- Análisis de cobertura
-
----
-
-## Modo SERVICIO
-
-**Objetivo**: Generar reportes ejecutivos para clientes.
-
-### Uso
-```bash
-python3 src/cli/main.py servicio -t target.com --client "Empresa X"
-```
-
-### Flujo
-1. Recolectar todos los hallazgos
-2. Generar resumen ejecutivo
-3. Crear reporte en Markdown/PDF
-
-### Cuándo usarlo
-- Entregas a clientes
-- Reportes formales
-- Documentación de auditorías
-
----
-
-## Resumen
-
-| Modo | Target | Frecuencia | Output |
-|------|--------|------------|--------|
-| HUNT | Nuevo | Una vez | Hallazgos |
-| CONTINUO | Existente | Periódico | Deltas + alertas |
-| CAMPAÑA | Múltiples | Bajo demanda | Hallazgos |
-| INVESTIGACIÓN | Conocido | Bajo demanda | CVEs |
-| FORENSE | Histórico | Ocasional | Recomendaciones |
-| SERVICIO | Cliente | Por entrega | Reporte |
+| Modo | Objetivo Primario | Validación | Control |
+|------|-------------------|------------|---------|
+| **HUNT** | Inteligencia Base | Manual (Gate) | Total |
+| **CONTINUOUS** | Delta & Drift | Híbrida | Automático/Manual |
+| **RESEARCH** | CVE & Explotación | Directa | Quirúrgico |
+| **CAMPAIGN** | Patrones Masivos | Basada en Reglas | Centralizado |
+| **SERVICIO** | Compliance & Reporte | Evidencia | Auditoría |

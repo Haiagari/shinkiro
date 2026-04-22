@@ -7,7 +7,9 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any
 from src.core.providers.base import BaseProvider
-from src.utils import log
+from src.core.logging import get_logger
+
+logger = get_logger('provider.nuclei')
 
 class NucleiProvider(BaseProvider):
     def __init__(self):
@@ -15,6 +17,7 @@ class NucleiProvider(BaseProvider):
 
     def execute(self, target_list_file: str, **kwargs) -> List[Dict[str, Any]]:
         if not self.is_available():
+            logger.error("Nuclei binary not found")
             return []
         
         output_file = Path("runtime/temp") / f"nuclei_results.json"
@@ -25,9 +28,9 @@ class NucleiProvider(BaseProvider):
         noise = kwargs.get("noise", "medium")
         depth = kwargs.get("depth", "standard")
         
-        rate_limit = 50
-        if speed == "fast": rate_limit = 150
-        elif speed == "slow": rate_limit = 10
+        rate_limit = kwargs.get("rate_limit", 50)
+        if speed == "fast": rate_limit = max(rate_limit, 150)
+        elif speed == "slow": rate_limit = min(rate_limit, 10)
         
         severity = kwargs.get("severity", "critical,high,medium")
         if noise == "low":
@@ -40,8 +43,15 @@ class NucleiProvider(BaseProvider):
             "-o", str(output_file), 
             "-json", "-silent", 
             "-rate-limit", str(rate_limit),
-            "-bulk-size", str(rate_limit // 5)
+            "-bulk-size", str(max(1, rate_limit // 5))
         ]
+        
+        # --- FILTRADO DE FALSOS POSITIVOS ---
+        from src.intelligence.false_positive_memory import false_positive_memory
+        avoid_templates = false_positive_memory.get_avoid_list(tool="nuclei")
+        if avoid_templates:
+            logger.info(f"Filtering {len(avoid_templates)} known false positive templates")
+            cmd.extend(["-exclude-templates", ",".join(avoid_templates)])
         
         # Tags específicos del modo RESEARCH
         tags = kwargs.get("tags", [])
@@ -53,9 +63,11 @@ class NucleiProvider(BaseProvider):
             cmd.append("-as") # Automatic Scan
         
         # Opcionales
-        if kwargs.get("update", False):
+        if kwargs.get("update_templates", False):
+            logger.info("Updating nuclei templates...")
             subprocess.run([self.path, "-update-templates", "-silent"])
 
+        logger.info(f"Running nuclei on {target_list_file}")
         try:
             subprocess.run(cmd, check=True, capture_output=True)
             results = []
@@ -63,9 +75,12 @@ class NucleiProvider(BaseProvider):
                 with open(output_file) as f:
                     for line in f:
                         if line.strip():
-                            results.append(json.loads(line))
+                            try:
+                                results.append(json.loads(line))
+                            except: continue
+            logger.debug(f"Nuclei found {len(results)} potential findings")
             return results
         except Exception as e:
-            log.error(f"Nuclei execution failed: {e}")
+            logger.error(f"Nuclei execution failed: {e}")
             
         return []
