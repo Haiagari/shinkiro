@@ -48,6 +48,12 @@ La diferencia con herramientas existentes como reconftw o axiom: **inteligencia 
 - Herramientas Go locales (382MB)
 - Documentación completa
 
+### Fase 8: Offensive Validation (v5.7)
+- **Knowledge Graph**: Correlación visual de entidades con Cytoscape.js.
+- **Visual Evidence**: Screenshots automáticos de hallazgos confirmados usando Playwright.
+- **Advanced Auth**: Validador especializado en credenciales por defecto para paneles expuestos.
+- **Human-in-the-loop**: Consolidación del Human Gate via Web Dashboard.
+
 ---
 
 ## Lecciones Aprendidas
@@ -62,16 +68,17 @@ La diferencia con herramientas existentes como reconftw o axiom: **inteligencia 
 
 ## Estado Actual
 
-**✅ v1.0 COMPLETA**
+**✅ v5.7 COMPLETA**
 
-- 18 módulos Python
+- 22 módulos Python (incluyendo validadores especializados)
 - 6 herramientas Go preinstaladas
-- Scripts de setup automático
-- Listo para producción
+- Motor de Inteligencia & Human Gate Dashboard
+- Visual Evidence Engine
+- Listo para operaciones de alto nivel
 
 ---
 
-## Siguientes Pasos (v2.0)
+## Siguientes Pasos (v6.0)
 
 - Docker-compose para ambiente completo
 - Tests automatizados

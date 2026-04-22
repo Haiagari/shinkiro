@@ -1,41 +1,43 @@
-# OzyRecon v5.0 Architecture — Assisted Offensive Validation
+# OzyRecon v5.7 Architecture — Assisted Offensive Validation
 
 ## Overview
 
-OzyRecon v5.0 is a **Security Validation Platform** designed to transform offensive reconnaissance into auditable, high-confidence intelligence. It moves beyond simple wrappers by implementing a stateful, decision-aware architecture aligned with modern DevSecOps standards.
+OzyRecon v5.7 is a **Security Validation Platform** designed to transform offensive reconnaissance into auditable, high-confidence intelligence.
 
-## Key Differentiation: Platform vs. Scanner
-
-| Feature | Traditional Scanner | OzyRecon (Platform) |
-|---------|---------------------|----------------------|
-| Approach | Automated discovery | Assisted Validation |
-| Output | Unverified noise | Evidence-backed findings |
-| Logic | Fixed pipeline | Adaptive State Machine |
-| Control | None (Autopwn style)| Human Gate (Authorized) |
-| Audit | Fragmented logs | Integrity-hashed Evidence |
-
-## The 12 Pillars of OzyRecon
+## The 14 Pillars of OzyRecon
 
 ### 1-8. Core Discovery Layer (Legacy)
 High-performance discovery engine including Asset Enumeration, Service Fingerprinting, and Stealth Protection (OPSEC).
 
-### 9. Human Gate (New)
+### 9. Human Gate
 Critical decision points where the system proposes hypotheses and the operator authorizes execution.
-- `ozy gate list`: Hypothesis review.
-- `ozy gate approve`: Action authorization.
 
-### 10. Validation Layer (New)
+### 10. Validation Layer
 Surgical probe execution engine. Focuses on confirmation rather than exploitation.
-- `web.py`, `http.py`, `cms.py`: Specialized validators for different signal types.
+- `web.py`, `http.py`, `cms.py`, `auth.py`: Specialized validators.
 
-### 11. Evidence Engine (New)
-Integrity-aware data vault.
-- Stores raw metadata, headers, and responses.
-- Generates SHA256 hashes to ensure chain of custody for every finding.
+### 11. Evidence Engine
+Integrity-aware data vault. SHA256-signed proof.
 
-### 12. Workflow State Machine (New)
-Manages the complete lifecycle of technical signals:
-`DISCOVERED` → `ANALYZED` → `HYPOTHESIZED` → `PENDING_APPROVAL` → `APPROVED` → `VALIDATING` → `VALIDATED` → `REPORTED`.
+### 12. Workflow State Machine
+Manages the complete lifecycle of technical signals.
+
+### 13. Knowledge Graph Representation (New v5.7)
+Correlation of all attack surface entities (Target -> Subdomain -> Port -> Hypothesis) into a unified visual graph using Cytoscape.js.
+
+### 14. Visual Evidence Engine (New v5.7)
+Automated visual proof capture using Playwright for confirmed HTTP findings.
+
+---
+
+## Technical Flow: Visual Evidence (v5.7)
+
+1.  **Detection**: `HTTPValidator` confirms a sensitive finding (e.g., exposed .env).
+2.  **Trigger**: If status is `confirmed`, the validator calls `src.utils.visual.capture_screenshot()`.
+3.  **Headless Execution**: Playwright launches a headless Chromium instance, navigates to the target URL, and renders the page.
+4.  **Capture**: A high-resolution PNG is saved in `runtime/evidence/screenshots/`.
+5.  **Integrity**: The path is returned to the validator, which adds it to the evidence list.
+6.  **Persistence**: `EvidenceEngine` records the path and calculates a SHA256 of the image file (metadata).
 
 ---
 
@@ -48,12 +50,15 @@ Target → Discovery → Intelligence (Correlation)
                      ↓
                [HUMAN GATE] <─── Operator Authorization
                      ↓
-            [VALIDATION LAYER] ───> Surgical Probes
+             [VALIDATION LAYER] ───> Surgical Probes & Auth Spraying
                      ↓
-             [EVIDENCE ENGINE] ───> Secure Evidence Vault
+              [VISUAL EVIDENCE] ───> Automated Screenshots
                      ↓
-              [REPORT ENGINE] ───> Executive Narrative (MD/JSON)
+              [EVIDENCE ENGINE] ───> Secure Evidence Vault
+                     ↓
+               [REPORT ENGINE] ───> Executive Narrative (MD/JSON)
 ```
+
 
 ## Project Status
 **Phase 2: Assisted Validation — COMPLETED ✅**

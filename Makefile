@@ -24,6 +24,9 @@ help:
 install:
 	@echo "[*] Instalando dependencias Python..."
 	$(PIP) install -r requirements.txt
+	@echo "[*] Instalando Playwright y navegadores (v5.7)..."
+	$(PIP) install playwright
+	python3 -m playwright install chromium
 	@echo "[+] Listo."
 
 tools:

@@ -88,7 +88,7 @@ def run_cmd(cmd: List[str], timeout: int = 30, capture: bool = True) -> subproce
         )
         return result
     except subprocess.TimeoutExpired:
-        log.error(f"Timeout executing: {' '.join(cmd)}")
+        _logger.error(f"Timeout executing: {' '.join(cmd)}")
         raise
 
 
@@ -167,3 +167,4 @@ def anonymize_target(target: str) -> str:
     if len(parts) > 2:
         return f"target-xxx.{'.'.join(parts[-2:])}"
     return f"target-xxx.{parts[-1]}"
+

@@ -6,8 +6,9 @@ Follow these steps to set up your OzyRecon environment correctly.
 
 ### System Tools
 - **Python:** 3.10 or higher.
-- **Go (Golang):** 1.20 or higher (needed for asset discovery tools).
-- **Make:** To run automated installation scripts.
+- **Go (Golang):** 1.20 or higher.
+- **Node.js:** (Optional) for some advanced UI plugins.
+- **Playwright Dependencies:** Some Linux distros require extra libraries for headless Chromium (e.g., `libgbm`, `libnss3`).
 
 ### External Toolset
 OzyRecon relies on the ProjectDiscovery ecosystem. Ensure you have the following tools installed and available in your PATH:
@@ -34,6 +35,7 @@ make install
 This command will:
 1. Create a `.venv` (if using the provided Makefile).
 2. Install Python packages: `fastapi`, `uvicorn`, `sqlalchemy`, `pydantic`, `pyyaml`, `requests`.
+3. **Set up Playwright (v5.7):** Installs the headless browser engine needed for visual evidence.
 
 ---
 

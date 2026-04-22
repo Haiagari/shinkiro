@@ -50,11 +50,17 @@ def check_file(filepath, patterns, allowed_files):
     try:
         content = subprocess.run(['git', 'show', f':{filepath}'], capture_output=True, text=True).stdout
         for pattern in patterns:
-            match = re.search(pattern, content, re.IGNORECASE)
-            if match:
-                print(f"❌ OPSEC ALERT: Pattern '{pattern}' found in '{filepath}' (Value: {match.group()})")
+            matches = re.finditer(pattern, content, re.IGNORECASE)
+            for match in matches:
+                val = match.group()
+                # --- EXCEPCIONES PARA INFRAESTRUCTURA LOCAL ---
+                if val in ['0.0.0.0', '127.0.0.1', '8.8.8.8', '1.1.1.1']:
+                    continue
+                
+                print(f"❌ OPSEC ALERT: Pattern '{pattern}' found in '{filepath}' (Value: {val})")
                 return True
     except Exception:
+
         pass
     return False
 

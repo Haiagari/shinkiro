@@ -2,6 +2,13 @@
 
 Estas son las mejoras que se implementaron en el proyecto:
 
+## v5.7 - Offensive Validation Update
+
+1. ✅ **Knowledge Graph** - Representación visual de la superficie de ataque con Cytoscape.js.
+2. ✅ **Default Auth Spraying** - Validador de credenciales por defecto (`auth.py`).
+3. ✅ **Visual Evidence** - Captura de screenshots automática con Playwright.
+4. ✅ **Human Gate Dashboard** - Interfaz web para gestión de aprobaciones.
+
 ## v1.0 - Release Inicial
 
 ### Alta Prioridad
@@ -29,25 +36,15 @@ Estas son las mejoras que se implementaron en el proyecto:
 
 ---
 
-# 📋 Mejoras Pendientes (v2.0)
+# 📋 Mejoras Pendientes (v6.0)
 
 1. Motor de correlación avanzado (hallazgos se retroalimentan)
-2. Brute force de credenciales por defecto
-3. Integración con más plataformas de Bug Bounty
-4. Dashboard más completo con gráficos
-5. Tests automatizados
-6. Docker-compose para ambiente completo
+2. Integración con más plataformas de Bug Bounty
+3. Tests automatizados
+4. Docker-compose para ambiente completo
 
 ---
 
-# 🎯 Cómo Contribuir
+**Estado del Proyecto:** ✅ COMPLETO v5.7
+**Fecha:** 22/04/2026
 
-1. Fork del repo
-2. Crear feature branch
-3. Commit con mensajes claros
-4. Pull Request
-
----
-
-**Estado del Proyecto:** ✅ COMPLETO v1.0
-**Fecha:** 17/04/2026

@@ -14,6 +14,7 @@ from src.core.logging import get_logger
 from src.validation.http import HTTPValidator
 from src.validation.infra import InfraValidator
 from src.validation.automation import AutomationValidator
+from src.validation.auth import AuthValidator
 
 logger = get_logger('workflow_orchestrator')
 
@@ -23,8 +24,9 @@ class WorkflowOrchestrator:
             "HTTP": HTTPValidator(),
             "INFRA": InfraValidator(),
             "AUTOMATION": AutomationValidator(),
-            # "AUTH": AuthValidator(), # v5.1
+            "AUTH": AuthValidator(),
         }
+
 
     def process_approved(self):
         """Busca y procesa hipótesis aprobadas."""
@@ -53,8 +55,11 @@ class WorkflowOrchestrator:
             v_type = "INFRA"
         elif hypo.type == "AUTOMATION_PANEL":
             v_type = "AUTOMATION"
+        elif hypo.type == "DEFAULT_AUTH":
+            v_type = "AUTH"
             
         validator = self.validators.get(v_type, self.validators["HTTP"])
+
         
         # Convertir modelo a dict para el validador
         hypo_dict = {

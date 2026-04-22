@@ -102,10 +102,17 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--format", choices=["json", "md"], default="json")
     export.add_argument("-o", "--output")
 
+    serve = sub.add_parser("serve", help="Levantar servidor de API y Command Center")
+    serve.add_argument("--host", default="0.0.0.0")
+    serve.add_argument("--port", type=int, default=8000)
+
     gate = sub.add_parser("gate", help="Human Gate - Gestión de hipótesis y validación")
     gate.add_argument("action", choices=["list", "approve", "reject"], help="Acción a realizar")
     gate.add_argument("--id", help="ID de la hipótesis")
     gate.add_argument("--reason", help="Razón de la aprobación/rechazo")
+
+    explain = sub.add_parser("explain", help="Explicar el razonamiento de una hipótesis")
+    explain.add_argument("id", help="ID de la hipótesis")
 
     sub.add_parser("validate", help="Ejecutar validaciones de hipótesis aprobadas")
 
@@ -113,10 +120,6 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("intel", help="Ver estado actual de la inteligencia del sistema")
     sub.add_parser("doctor", help="Diagnóstico del entorno")
     sub.add_parser("shell", help="Abrir la shell interactiva")
-    
-    serve = sub.add_parser("serve", help="Arrancar API de control de enjambre")
-    serve.add_argument("--port", type=int, default=8000)
-    serve.add_argument("--host", default="0.0.0.0")
 
     sync = sub.add_parser("sync", help="Gestión de sincronización de inteligencia")
     sync.add_argument("action", choices=["export", "import"])
@@ -244,6 +247,10 @@ def main(argv: list[str] | None = None) -> int:
         commands.export_summary(args.target, fmt=args.format, output=args.output)
         return 0
 
+    if args.command == "serve":
+        commands.run_server(args.host, args.port)
+        return 0
+
     if args.command == "gate":
         if args.action == "list":
             commands.print_gate_list()
@@ -263,6 +270,10 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"✅ Hipótesis {args.id} rechazada.")
             else:
                 print(f"❌ Error al rechazar la hipótesis.")
+        return 0
+
+    if args.command == "explain":
+        commands.explain_hypothesis(args.id)
         return 0
 
     if args.command == "validate":
@@ -293,11 +304,6 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "doctor":
         commands.print_doctor()
-        return 0
-
-    if args.command == "serve":
-        from src.core.api import start_api
-        start_api(host=args.host, port=args.port)
         return 0
 
     if args.command == "sync":

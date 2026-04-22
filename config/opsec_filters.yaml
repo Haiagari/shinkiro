@@ -12,10 +12,11 @@ blocked_patterns:
   - 'bancomeco'
   - 'entidad-privada'
 
-  # Secretos y credenciales (mejorados)
-  - 'api_key\s*[:=]\s*.*'
-  - 'db_password\s*[:=]\s*.*'
-  - 'token\s*[:=]\s*.*'
+  # Secretos y credenciales (mejorados para evitar falsos positivos en código)
+  - 'api_key\s*[:=]\s*["''][a-zA-Z0-9\-_]{16,}["'']'
+  - 'db_password\s*[:=]\s*["''][a-zA-Z0-9\-_]{8,}["'']'
+  - 'token\s*[:=]\s*["''][a-zA-Z0-9\-_]{16,}["'']'
+
 
 # Archivos que están permitidos aunque contengan patrones (ej: documentación pública)
 allowed_files:

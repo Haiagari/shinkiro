@@ -13,6 +13,20 @@
 ### 🛡️ OPSEC Guard (Leak Prevention)
 Un sistema de prevención de fugas de datos que actúa como un guardián antes de subir código al repositorio.
 
+#### Workflow de Protección
+```mermaid
+graph TD
+    A[git add .] --> B[git commit]
+    B --> C{Pre-commit Hook}
+    C -->|Scan Staging| D{Matches Patterns?}
+    D -->|Yes| E{Is Allowed File?}
+    E -->|No| F[🛑 COMMIT REJECTED]
+    E -->|Yes| G[✅ COMMIT SUCCESS]
+    D -->|No| G
+    F --> H[Manual Sanitization]
+    H --> A
+```
+
 - **Pre-commit Hook**: Escanea el área de preparación de Git en busca de dominios, IPs o secretos.
 - **Filtros Dinámicos**: Configurable vía `config/opsec_filters.yaml`.
 - **Uso**: El sistema bloquea automáticamente el commit si detecta patrones prohibidos.

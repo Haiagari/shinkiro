@@ -1,4 +1,4 @@
-# 🧠 OzyRecon v5.0 — Security Validation Platform
+# 🧠 OzyRecon v5.7 — Security Validation Platform
 **From Recon to Verified Security Intelligence**
 
 > **"OzyRecon reduces false positives and provides decision-grade security intelligence."**
@@ -10,7 +10,7 @@
 <br/>
 
 ![Stars](https://img.shields.io/github/stars/SamBleed/OzyRecon?style=for-the-badge&color=00ff88&labelColor=0a0f1a)
-![Version](https://img.shields.io/badge/version-v5.0.0-00d4ff?style=for-the-badge&labelColor=0a0f1a)
+![Version](https://img.shields.io/badge/version-v5.7.0-00d4ff?style=for-the-badge&labelColor=0a0f1a)
 ![Python](https://img.shields.io/badge/Python-3.10+-ffd700?style=for-the-badge&logo=python&logoColor=ffd700&labelColor=0a0f1a)
 </div>
 
@@ -18,10 +18,12 @@
 
 ### 🚀 Quick Highlights
 - **DevSecOps-ready**: Seamlessly integrates into CI/CD pipelines for continuous security validation.
+- **Knowledge Graph (v5.7)**: Real-time attack surface visualization using Cytoscape.js.
+- **Visual Evidence (v5.7)**: Automated screenshots of confirmed findings using Playwright.
+- **Advanced Auth Validation (v5.7)**: Stealthy default credential testing for exposed panels.
 - **Hypothesis-driven validation**: Moves beyond linear scanning with correlation-based logic.
 - **Human-in-the-loop control**: Mandatory manual authorization for sensitive probes.
 - **Evidence with cryptographic integrity**: SHA256-signed proof vault for technical audit.
-- **Risk-based prioritization**: Focus on business impact rather than technical noise.
 - **OPSEC Guard**: Pre-commit hooks and dynamic filters to prevent sensitive data leaks.
 
 ---

@@ -14,8 +14,13 @@ from src.intelligence.learning_orchestrator import learning_orchestrator
 from src.intelligence.sync_manager import sync_manager
 from src.core.tool_manager import tool_manager
 from src.core.config import config
+from src.storage.models import Hypothesis, Evidence, Target, Port, Subdomain
+from src.workflow.states import WorkflowState, Actor
 
-app = FastAPI(title="OzyRecon API", version="4.0")
+from src.gate.manager import gate_manager
+
+app = FastAPI(title="OzyRecon API", version="5.7")
+
 
 # --- SEGURIDAD: Validación de API Key ---
 API_KEY = config.ozyrecon_api_key
@@ -60,6 +65,46 @@ def get_intel_status():
     """Retorna el estado mental actual del nodo."""
     return learning_orchestrator.get_full_feedback()
 
+# ══════════════════════════════════════════════════════════════════════════════
+# HUMAN GATE & VALIDATION ENDPOINTS v5.6
+# ══════════════════════════════════════════════════════════════════════════════
+
+@app.get("/gate/pending")
+def get_pending_hypotheses():
+    """Retorna las hipótesis esperando aprobación."""
+    return gate_manager.list_pending()
+
+@app.post("/gate/approve/{hyp_id}")
+def approve_hypothesis(hyp_id: str, reason: Optional[str] = "Approved via Web Dashboard"):
+    """Aprueba una hipótesis para validación."""
+    success = gate_manager.approve(hyp_id, notes=reason)
+    if not success:
+        raise HTTPException(status_code=404, detail="Hypothesis not found")
+    return {"status": "approved", "id": hyp_id}
+
+@app.post("/gate/reject/{hyp_id}")
+def reject_hypothesis(hyp_id: str, reason: Optional[str] = "Rejected via Web Dashboard"):
+    """Rechaza una hipótesis."""
+    success = gate_manager.reject(hyp_id, reason=reason)
+    if not success:
+        raise HTTPException(status_code=404, detail="Hypothesis not found")
+    return {"status": "rejected", "id": hyp_id}
+
+@app.get("/evidence/{hyp_id}")
+def get_evidence(hyp_id: str):
+    """Obtiene evidencia técnica para una hipótesis."""
+    from src.evidence.engine import evidence_engine
+    evs = evidence_engine.get_evidence_for_hypothesis(hyp_id)
+    return [
+        {
+            "id": e.id,
+            "type": e.type,
+            "data": e.data,
+            "timestamp": e.timestamp.isoformat(),
+            "hash": e.hash_sha256
+        } for e in evs
+    ]
+
 @app.get("/intelligence/export")
 def export_intel():
     """Exporta el cerebro para sincronización."""
@@ -93,7 +138,67 @@ def get_latest_scan(domain: str):
     finally:
         db.close()
 
+@app.get("/intelligence/graph")
+def get_knowledge_graph():
+    """
+    Genera la estructura de nodos y aristas para el Knowledge Graph (v5.7).
+    Formato compatible con Cytoscape.js.
+    """
+    db = SessionLocal()
+    try:
+        nodes = []
+        edges = []
+        processed_targets = set()
+        
+        # 1. Obtener Targets
+        targets = db.query(Target).all()
+        for t in targets:
+            nodes.append({
+                "data": {"id": f"t_{t.id}", "label": t.domain, "type": "target", "color": "#3b82f6"}
+            })
+            
+            # 2. Obtener Scans para este target
+            for s in t.scans:
+                # 3. Obtener Subdominios
+                for sub in s.subdomains:
+                    sub_id = f"sub_{sub.id}"
+                    nodes.append({
+                        "data": {"id": sub_id, "label": sub.domain, "type": "subdomain", "color": "#10b981"}
+                    })
+                    edges.append({"data": {"source": f"t_{t.id}", "target": sub_id, "label": "has_subdomain"}})
+                    
+                    # 4. Obtener Puertos
+                    # (Buscamos por host coincidente con el subdominio en el mismo scan)
+                    ports = db.query(Port).filter(Port.scan_id == s.id, Port.host == sub.domain).all()
+                    for p in ports:
+                        port_id = f"p_{p.id}"
+                        nodes.append({
+                            "data": {"id": port_id, "label": f"{p.port}/{p.protocol}", "type": "port", "color": "#f59e0b"}
+                        })
+                        edges.append({"data": {"source": sub_id, "target": port_id, "label": "open_port"}})
+                        
+                        # 5. Obtener Hipótesis vinculadas al scan y puerto (via URL o host)
+                        hyps = db.query(Hypothesis).filter(Hypothesis.scan_id == s.id).all()
+                        for h in hyps:
+                            # Link simple por host en la URL
+                            if sub.domain in (h.url or ""):
+                                hyp_node_id = f"h_{h.id}"
+                                nodes.append({
+                                    "data": {
+                                        "id": hyp_node_id, 
+                                        "label": h.type, 
+                                        "type": "hypothesis", 
+                                        "color": "#ef4444" if h.severity == "critical" else "#f97316"
+                                    }
+                                })
+                                edges.append({"data": {"source": port_id, "target": hyp_node_id, "label": "triggers"}})
+
+        return {"nodes": nodes, "edges": edges}
+    finally:
+        db.close()
+
 def start_api(host: str = "0.0.0.0", port: int = 8000):
+
     """Arranca el servidor de la API."""
     import uvicorn
     uvicorn.run(app, host=host, port=port)

@@ -81,6 +81,63 @@ def reject_hypothesis(hypo_id: str, reason: str = None) -> bool:
     from src.gate.manager import gate_manager
     return gate_manager.reject(hypo_id, reason)
 
+def explain_hypothesis(hypo_id: str):
+    """Explica el razonamiento detrás de una hipótesis."""
+    from src.storage.database import SessionLocal
+    from src.storage.models import Hypothesis
+    
+    db = SessionLocal()
+    try:
+        hypo = db.query(Hypothesis).filter(Hypothesis.id == hypo_id).first()
+        if not hypo:
+            console.print(f"[red]❌ Hipótesis {hypo_id} no encontrada.[/red]")
+            return
+
+        console.print(Panel(f"Razonamiento para [accent]{hypo.type.upper()}[/accent]", title=f"Explain: {hypo_id}", border_style="cyan"))
+        
+        # 1. Descripción base
+        console.print(f"\n[bold]💡 Conclusión del sistema:[/]\n{hypo.description}")
+        
+        # 2. Señales (Evidence signals)
+        if hypo.signals:
+            console.print("\n[bold]📡 Señales Técnicas Detectadas:[/]")
+            corrs = hypo.signals.get("correlations", {}).get("correlations", [])
+            for c in corrs:
+                console.print(f"  • [cyan]{c['type']}[/cyan]: {c['description']}")
+                if 'details' in c:
+                    # Mostrar detalles resumidos
+                    for d in c['details'][:2]:
+                        detail_str = str(d)[:100] + "..." if len(str(d)) > 100 else str(d)
+                        console.print(f"    └ [muted]{detail_str}[/muted]")
+        
+        # 3. Confianza
+        console.print(f"\n[bold]🎯 Nivel de Confianza:[/][accent] {hypo.confidence * 100:.1f}%[/accent]")
+        
+        # 4. Correlación Histórica (v5.6 update)
+        history_count = db.query(Hypothesis).filter(
+            Hypothesis.type == hypo.type,
+            Hypothesis.target_id != hypo.target_id
+        ).count()
+        
+        if history_count > 0:
+            console.print(f"\n[bold]📜 Correlación Histórica:[/]")
+            console.print(f"  • Este patrón [cyan]{hypo.type}[/cyan] fue detectado en otros [bold]{history_count}[/] targets anteriormente.")
+            console.print(f"  └ [info]Sugerencia: Es un patrón recurrente en la infraestructura analizada.[/info]")
+        else:
+            console.print(f"\n[bold]📜 Correlación Histórica:[/]")
+            console.print(f"  • Este es un patrón [cyan]nuevo[/cyan] o único para este target.")
+
+        console.print(f"\n[muted]Basado en el score CVSS ponderado y la calidad de las señales detectadas.[/muted]")
+
+    finally:
+        db.close()
+
+def run_server(host: str, port: int):
+    """Lanza el servidor de API y Dashboard."""
+    from src.core.api import start_api
+    console.print(Panel(f"Iniciando Command Center en [accent]http://{host}:{port}/dashboard[/accent]", title="OzyRecon API", border_style="green"))
+    start_api(host, port)
+
 def run_validation():
     """Ejecuta el orquestador de validación."""
     from src.workflow.orchestrator import orchestrator
