@@ -51,13 +51,21 @@ def print_gate_list():
     table.add_column("Riesgo", style="yellow")
     table.add_column("Descripción", style="muted")
 
+    # Mapeo de labels visuales
+    risk_labels = {
+        "high": "🔴 HIGH",
+        "medium": "🟡 MEDIUM",
+        "low": "🟢 LOW"
+    }
+
     for h in pending:
+        risk_label = risk_labels.get(h["risk"].lower(), h["risk"].upper())
         table.add_row(
             h["id"],
             str(h["target"]),
             h["type"],
             f"{h['confidence']:.1%}",
-            h["risk"].upper(),
+            risk_label,
             h["description"]
         )
     

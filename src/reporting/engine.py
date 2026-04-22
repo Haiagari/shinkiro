@@ -27,11 +27,19 @@ class ReportEngine:
 
             evidences = db.query(Evidence).filter(Evidence.hypothesis_id == hypothesis_id).all()
             
+            # Mapeo de labels visuales
+            risk_labels = {
+                "HIGH": "🔴 HIGH",
+                "MEDIUM": "🟡 MEDIUM",
+                "LOW": "🟢 LOW"
+            }
+            risk_label = risk_labels.get(hypo.impact_priority.upper(), hypo.impact_priority)
+
             md = []
             md.append(f"## Finding: {hypo.type.upper()}")
             md.append(f"- **Status**: {hypo.status.upper()}")
             md.append(f"- **Severity**: {hypo.severity}")
-            md.append(f"- **Impact Priority**: {hypo.impact_priority}")
+            md.append(f"- **Impact Priority**: {risk_label}")
             md.append(f"- **Confidence**: {hypo.confidence * 100:.0f}%")
             md.append(f"- **Target**: {hypo.url or 'N/A'}")
             

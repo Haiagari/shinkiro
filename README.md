@@ -1,5 +1,7 @@
 # 🧠 OzyRecon v5.0 — Security Validation Platform
 
+> **"OzyRecon reduces false positives and provides decision-grade security intelligence."**
+
 <div align="center">
 
 ![OzyRecon Banner](./assets/banner.svg)
@@ -13,16 +15,57 @@
 
 # OzyRecon v5.0
 
-OzyRecon es una **Plataforma de Validación de Seguridad (Security Validation Platform)** diseñada para transformar el reconocimiento ofensivo en inteligencia accionable, auditable y basada en evidencias. A diferencia de las herramientas de explotación, OzyRecon se centra en la **precisión de la validación** y la **integridad de la prueba**.
+OzyRecon es una **Plataforma de Validación de Seguridad (Security Validation Platform)** para ecosistemas DevSecOps y AppSec. Su misión no es solo "encontrar cosas", sino **validar riesgos de seguridad con evidencia auditada**, transformando el ruido técnico en inteligencia accionable para la toma de decisiones.
 
-## 🛡️ Core Philosophy: NO EXPLOITATION
+## 🔄 The Validation Pipeline
 
-OzyRecon v5.0 se posiciona como una herramienta de ingeniería de seguridad, no como un script de hacking:
-- **Zero Impact**: No ejecuta payloads destructivos ni intrusivos.
-- **Surgical Validation**: Confirma exposiciones reales sin comprometer la disponibilidad del servicio.
-- **Audit Ready**: Cada acción está documentada, aprobada por un humano y respaldada por evidencia técnica innegable.
+OzyRecon sigue un workflow riguroso para asegurar precisión quirúrgica:
+
+**Discovery** → **Hypothesis** → **Approval (Human Gate)** → **Validation** → **Evidence** → **Report**
+
+---
 
 ## 📑 Core Capabilities v5.0
+
+### 1. Risk Classification Layer (New)
+Cada hipótesis y hallazgo validado se clasifica según su impacto real de negocio:
+- **🔴 HIGH**: Impacto directo (Exposición de datos, RCE, Crit-Vuln confirmada).
+- **🟡 MEDIUM**: Impacto condicional (Requiere interacción o pre-condiciones).
+- **🟢 LOW**: Informativo (Buenas prácticas, endurecimiento de superficie).
+
+### 2. Assisted Offensive Validation
+- **Zero Exploitation**: Validación sin intrusión ni payloads destructivos.
+- **Human Gate**: Intervención manual obligatoria para autorizar probes (`ozy gate`).
+- **Evidence Vault**: Cada validación incluye pruebas con integridad criptográfica (SHA256).
+
+---
+
+## 💻 Professional CLI Experience
+
+```bash
+# 1. Start an intelligent hunt
+ozy hunt -t target.com
+
+# 2. Review generated hypotheses
+ozy gate list
+
+# 3. Approve critical points
+ozy gate approve --id hyp_8a2f --reason "Critical API endpoint"
+
+# 4. Execute validation orchestrator
+ozy validate
+
+# 5. Generate executive report
+ozy report
+```
+
+---
+
+## 🛡️ Core Philosophy: NO EXPLOITATION
+OzyRecon se posiciona como una herramienta de ingeniería de seguridad:
+- **Surgical Validation**: Confirmamos la exposición, no la explotamos.
+- **Audit Ready**: Trazabilidad total de cada acción y decisión.
+- **Industry First**: Diseñado para escalar en equipos de AppSec profesionales.
 
 **⚠️ WARNING: Use this tool only on systems you are authorized to test. Read the [DISCLAIMER.md](DISCLAIMER.md) before proceeding.**
 
