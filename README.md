@@ -1,4 +1,4 @@
-# 🧠 OzyRecon v5.0 — Offensive Intelligence & Validation Platform
+# 🧠 OzyRecon v5.0 — Security Validation Platform
 
 <div align="center">
 
@@ -13,7 +13,16 @@
 
 # OzyRecon v5.0
 
-OzyRecon ha evolucionado de un motor de inteligencia a una **Plataforma de Validación Ofensiva Asistida**. Esta versión introduce control humano granular, validación quirúrgica de hipótesis y recolección de evidencia con integridad criptográfica, alineándose con estándares modernos de DevSecOps.
+OzyRecon es una **Plataforma de Validación de Seguridad (Security Validation Platform)** diseñada para transformar el reconocimiento ofensivo en inteligencia accionable, auditable y basada en evidencias. A diferencia de las herramientas de explotación, OzyRecon se centra en la **precisión de la validación** y la **integridad de la prueba**.
+
+## 🛡️ Core Philosophy: NO EXPLOITATION
+
+OzyRecon v5.0 se posiciona como una herramienta de ingeniería de seguridad, no como un script de hacking:
+- **Zero Impact**: No ejecuta payloads destructivos ni intrusivos.
+- **Surgical Validation**: Confirma exposiciones reales sin comprometer la disponibilidad del servicio.
+- **Audit Ready**: Cada acción está documentada, aprobada por un humano y respaldada por evidencia técnica innegable.
+
+## 📑 Core Capabilities v5.0
 
 **⚠️ WARNING: Use this tool only on systems you are authorized to test. Read the [DISCLAIMER.md](DISCLAIMER.md) before proceeding.**
 

@@ -31,9 +31,13 @@ class ReportEngine:
             md.append(f"## Finding: {hypo.type.upper()}")
             md.append(f"- **Status**: {hypo.status.upper()}")
             md.append(f"- **Severity**: {hypo.severity}")
+            md.append(f"- **Impact Priority**: {hypo.impact_priority}")
             md.append(f"- **Confidence**: {hypo.confidence * 100:.0f}%")
             md.append(f"- **Target**: {hypo.url or 'N/A'}")
             
+            md.append("\n### 💥 Impact Context")
+            md.append(hypo.impact_context or "Requires further manual analysis for business impact.")
+
             md.append("\n### 🧠 Hypothesis")
             md.append(hypo.description)
             
@@ -76,6 +80,21 @@ class ReportEngine:
             md.append(f"- **Target**: {target}")
             md.append(f"- **Date**: {datetime.now().isoformat()}")
             md.append("\n---")
+            
+            # Executive Summary (v5.1 update)
+            md.append("## 📊 Executive Summary")
+            md.append(f"During the current session, the OzyRecon Security Validation Platform has analyzed the target and identified {len(hypos)} confirmed exposures.")
+            md.append("\n### Key Risk Indicators")
+            high_impact = sum(1 for h in hypos if h.impact_priority == "HIGH")
+            md.append(f"- **High Impact Findings**: {high_impact}")
+            md.append(f"- **Validation Yield**: {len(hypos) / max(1, len(hypos)) * 100:.1f}%")
+            md.append("\n### Strategic Recommendation")
+            if high_impact > 0:
+                md.append("CRITICAL: Immediate attention required for high-impact validated findings.")
+            else:
+                md.append("Informational: Monitor detected surfaces for upcoming changes.")
+            
+            md.append("\n---\n")
             
             for h in hypos:
                 md.append(self.generate_markdown_finding(h.id))

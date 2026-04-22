@@ -286,6 +286,10 @@ class Hypothesis(Base):
     approved_at = Column(DateTime, nullable=True)
     risk_level = Column(String(20), default="medium")
     
+    # Impact Prioritization (v5.1 update)
+    impact_context = Column(Text, nullable=True) # Explicación del impacto real
+    impact_priority = Column(String(20), default="MEDIUM") # HIGH (directo), MEDIUM (condicional), LOW (info)
+    
     # Data
     signals = Column(JSON, nullable=True) # Lista de señales que originaron la hipótesis
     validation_method = Column(Text, nullable=True) # Descripción de cómo validarla

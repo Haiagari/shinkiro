@@ -27,6 +27,14 @@ class ValidationResult:
         }
 
 class BaseValidator(ABC):
+    """
+    Base Validator - Interfaz para validación de hipótesis v5.0.
+    
+    FILOSOFÍA DE DISEÑO:
+    - NO EXPLOITATION: No se ejecutan payloads destructivos.
+    - NO INTRUSION: No se busca acceso persistente.
+    - CONTROLLED PROBING: Solo confirmación de exposición/misconfiguración.
+    """
     @abstractmethod
     def validate(self, hypothesis: Dict[str, Any]) -> ValidationResult:
         pass
