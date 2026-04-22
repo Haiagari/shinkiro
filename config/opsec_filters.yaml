@@ -1,0 +1,24 @@
+# Filtros OPSEC para OzyRecon
+# Añade aquí patrones que NO deben subirse al repositorio
+
+blocked_patterns:
+  # Dominios geográficos sensibles
+  - '\.edu\.pe'
+  - '\.gob\.pe'
+  - '\.edu\.cl'
+  - '\.gov'
+  
+  # Palabras clave de clientes (ejemplos)
+  - 'bancomeco'
+  - 'entidad-privada'
+
+  # Secretos y credenciales (mejorados)
+  - 'api_key\s*[:=]\s*.*'
+  - 'db_password\s*[:=]\s*.*'
+  - 'token\s*[:=]\s*.*'
+
+# Archivos que están permitidos aunque contengan patrones (ej: documentación pública)
+allowed_files:
+  - 'README.md'
+  - 'DISCLAIMER.md'
+  - 'docs/architecture.md'

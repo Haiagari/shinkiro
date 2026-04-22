@@ -7,6 +7,7 @@ import subprocess
 import logging
 import json
 import yaml
+import re
 from pathlib import Path
 from typing import List, Any, Dict
 
@@ -152,8 +153,16 @@ def get_random_ua() -> str:
 
 
 def anonymize_target(target: str) -> str:
-    """Oculta la identidad de un target para logs o docs públicos."""
+    """Oculta la identidad de un target (Dominio o IP) para logs o docs públicos."""
     if not target: return "hidden-target"
+    
+    # Caso 1: Es una IPv4
+    ip_pattern = r'^(\d{1,3}\.\d{1,3})\.(\d{1,3}\.\d{1,3})$'
+    ip_match = re.match(ip_pattern, target)
+    if ip_match:
+        return f"{ip_match.group(1)}.x.x"
+        
+    # Caso 2: Es un dominio
     parts = target.split('.')
     if len(parts) > 2:
         return f"target-xxx.{'.'.join(parts[-2:])}"
