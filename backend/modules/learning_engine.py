@@ -4,7 +4,7 @@ Calcula efectividad de herramientas por stack tecnológico.
 Restricciones: Lock en DB + Min Observations (5).
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, Optional
 from sqlalchemy.orm import Session
 from .models import AgentLock, Vulnerability, AgentMemory
@@ -19,7 +19,7 @@ class LearningEngine:
 
     def acquire_lock(self, mode: str, timeout_mins: int = 60) -> bool:
         """Adquiere un lock en la DB con TTL."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc).replace(tzinfo=None)  # DB naive compat
         lock = self.db.query(AgentLock).filter(AgentLock.mode == mode).first()
         
         if lock:
@@ -48,7 +48,7 @@ class LearningEngine:
         """Libera el lock manualmente."""
         lock = self.db.query(AgentLock).filter(AgentLock.mode == mode).first()
         if lock:
-            lock.expires_at = datetime.utcnow() # Expirar ahora
+            lock.expires_at = datetime.now(timezone.utc).replace(tzinfo=None)  # Expirar ahora, DB naive compat
             self.db.commit()
 
     def analyze_and_update(self) -> Dict[str, Any]:

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ozyrecon"
-version = "4.0.0"
+version = "5.7.0"
 description = "OzyRecon - Offensive Reconnaissance Platform with Adaptive Learning"
 readme = "README.md"
 requires-python = ">=3.10"
