@@ -9,6 +9,7 @@ from fastapi.responses import FileResponse
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 from src.storage.queries import DBQueries
+from src.storage.db_queries import get_latest_scan as db_get_latest_scan
 from src.storage.database import SessionLocal
 from src.intelligence.learning_orchestrator import learning_orchestrator
 from src.intelligence.sync_manager import sync_manager
@@ -116,8 +117,7 @@ def list_targets():
     """Lista todos los targets conocidos por este nodo."""
     db = SessionLocal()
     try:
-        queries = DBQueries(db)
-        targets = db.query(queries.models.Target).all()
+        targets = db.query(Target).all()
         return [{"id": t.id, "domain": t.domain, "added_at": t.added_at} for t in targets]
     finally:
         db.close()
@@ -128,8 +128,7 @@ def get_latest_scan(domain: str):
     from src.export.normalizer import exporter
     db = SessionLocal()
     try:
-        queries = DBQueries(db)
-        latest = queries.get_latest_scan(domain)
+        latest = db_get_latest_scan(db, domain)
         if not latest:
             raise HTTPException(status_code=404, detail="Target or scan not found")
         
