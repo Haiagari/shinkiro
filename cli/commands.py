@@ -31,6 +31,9 @@ from src.core.logging import get_logger
 from src.utils import load_json
 from ui.renderer import console
 
+ROOT_DIR = Path(__file__).resolve().parents[2]
+API_BASE = "http://localhost:8000"
+
 # ══════════════════════════════════════════════════════════════════════════════
 # HUMAN GATE v5.0
 # ══════════════════════════════════════════════════════════════════════════════

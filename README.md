@@ -5,7 +5,7 @@
 
 <div align="center">
 
-![OzyRecon Banner](./assets/banner.svg)
+![OzyRecon Banner](./assets/banner-ozyrecon-v5.svg)
 
 <br/>
 

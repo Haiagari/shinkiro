@@ -1,0 +1,329 @@
+<svg viewBox="0 0 1280 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgOrange" cx="68%" cy="35%" r="42%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bgAmber" cx="68%" cy="75%" r="38%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bgCyan" cx="25%" cy="50%" r="38%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="orangeGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="amberGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="whiteGlow" x="-10%" y="-20%" width="120%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="nodeGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#ffffff06" stroke-width="0.5"/>
+    </pattern>
+    <pattern id="scan" x="0" y="0" width="1" height="3" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1.5" fill="rgba(0,0,0,0.1)"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="500" fill="#080a10"/>
+  <rect width="1280" height="500" fill="url(#grid)"/>
+  <rect width="1280" height="500" fill="url(#bgOrange)"/>
+  <rect width="1280" height="500" fill="url(#bgAmber)"/>
+  <rect width="1280" height="500" fill="url(#bgCyan)"/>
+  <rect width="1280" height="500" fill="url(#scan)" opacity="0.4"/>
+
+  <!-- ═══════════ LEFT SIDE: Knowledge Graph v5.7 ═══════════ -->
+
+  <!-- Graph background panel -->
+  <rect x="18" y="18" width="440" height="464" rx="8" fill="#0c1018" stroke="#f9731612" stroke-width="1"/>
+
+  <!-- Panel label -->
+  <text x="34" y="44" font-family="monospace" font-size="10" fill="#f9731660" letter-spacing="2">KNOWLEDGE GRAPH v5.7</text>
+  <line x1="34" y1="50" x2="200" y2="50" stroke="#f9731630" stroke-width="1"/>
+
+  <!-- Graph edges — outer ring -->
+  <line x1="148" y1="165" x2="82" y2="235" stroke="#06b6d440" stroke-width="1.2"/>
+  <line x1="148" y1="165" x2="218" y2="235" stroke="#06b6d440" stroke-width="1.2"/>
+  <line x1="148" y1="165" x2="148" y2="95" stroke="#f9731640" stroke-width="1.2"/>
+  <line x1="82" y1="235" x2="82" y2="315" stroke="#06b6d430" stroke-width="1.2"/>
+  <line x1="82" y1="235" x2="42" y2="295" stroke="#06b6d428" stroke-width="1"/>
+  <line x1="218" y1="235" x2="280" y2="280" stroke="#f9731435" stroke-width="1.2"/>
+  <line x1="218" y1="235" x2="218" y2="315" stroke="#06b6d430" stroke-width="1.2"/>
+  <line x1="82" y1="315" x2="148" y2="370" stroke="#f9731430" stroke-width="1.2"/>
+  <line x1="218" y1="315" x2="148" y2="370" stroke="#f9731430" stroke-width="1.2"/>
+  <line x1="148" y1="370" x2="148" y2="430" stroke="#10b98138" stroke-width="1.2"/>
+  <line x1="280" y1="280" x2="340" y2="230" stroke="#f9731435" stroke-width="1.2"/>
+  <line x1="340" y1="230" x2="390" y2="285" stroke="#f9731428" stroke-width="1"/>
+  <!-- Cross connections -->
+  <line x1="82" y1="315" x2="218" y2="315" stroke="#f9731420" stroke-width="0.8" stroke-dasharray="3,4"/>
+  <line x1="148" y1="95" x2="82" y2="235" stroke="#f9731420" stroke-width="0.8" stroke-dasharray="3,4"/>
+
+  <!-- Pulse rings on central node -->
+  <circle cx="148" cy="165" r="42" fill="none" stroke="#f97316" stroke-width="0.8" opacity="0.12"/>
+  <circle cx="148" cy="165" r="55" fill="none" stroke="#f97316" stroke-width="0.6" opacity="0.07"/>
+
+  <!-- Graph nodes -->
+  <!-- Central hub: target -->
+  <circle cx="148" cy="165" r="26" fill="#1a0e04" stroke="#f97316" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <circle cx="148" cy="165" r="13" fill="#f97316" opacity="0.25"/>
+  <circle cx="148" cy="165" r="6" fill="#f97316" opacity="0.95"/>
+  <text x="148" y="202" text-anchor="middle" font-family="monospace" font-size="9" fill="#f9731680">target.com</text>
+
+  <!-- Top node: discovery -->
+  <circle cx="148" cy="95" r="14" fill="#0c1018" stroke="#06b6d4" stroke-width="1.8" filter="url(#nodeGlow)"/>
+  <circle cx="148" cy="95" r="5" fill="#06b6d4" opacity="0.9"/>
+  <text x="148" y="82" text-anchor="middle" font-family="monospace" font-size="8" fill="#06b6d460">discovery</text>
+
+  <!-- Left: hypothesis -->
+  <circle cx="82" cy="235" r="16" fill="#0c1018" stroke="#f59e0b" stroke-width="1.8" filter="url(#nodeGlow)"/>
+  <circle cx="82" cy="235" r="6" fill="#f59e0b" opacity="0.9"/>
+  <text x="62" y="222" font-family="monospace" font-size="8" fill="#f59e0b60">hyp</text>
+
+  <!-- Right: validation -->
+  <circle cx="218" cy="235" r="16" fill="#0c1018" stroke="#06b6d4" stroke-width="1.8" filter="url(#nodeGlow)"/>
+  <circle cx="218" cy="235" r="6" fill="#06b6d4" opacity="0.9"/>
+  <text x="222" y="222" font-family="monospace" font-size="8" fill="#06b6d460">validate</text>
+
+  <!-- Far right: auth -->
+  <circle cx="280" cy="280" r="12" fill="#0c1018" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="280" cy="280" r="4.5" fill="#f97316" opacity="0.85"/>
+  <text x="280" y="265" text-anchor="middle" font-family="monospace" font-size="8" fill="#f9731660">auth</text>
+
+  <!-- Further right: graph hub -->
+  <circle cx="340" cy="230" r="10" fill="#0c1018" stroke="#f59e0b" stroke-width="1.5"/>
+  <circle cx="340" cy="230" r="4" fill="#f59e0b" opacity="0.85"/>
+  <circle cx="390" cy="285" r="9" fill="#0c1018" stroke="#06b6d4" stroke-width="1.2"/>
+  <circle cx="390" cy="285" r="3.5" fill="#06b6d4" opacity="0.8"/>
+
+  <!-- Bottom left: far node -->
+  <circle cx="42" cy="295" r="9" fill="#0c1018" stroke="#10b981" stroke-width="1.5"/>
+  <circle cx="42" cy="295" r="3.5" fill="#10b981" opacity="0.85"/>
+
+  <!-- Lower mid: evidence -->
+  <circle cx="82" cy="315" r="14" fill="#0c1018" stroke="#10b981" stroke-width="1.8" filter="url(#nodeGlow)"/>
+  <circle cx="82" cy="315" r="5.5" fill="#10b981" opacity="0.9"/>
+  <text x="62" y="338" font-family="monospace" font-size="8" fill="#10b98160">evidence</text>
+  <circle cx="218" cy="315" r="14" fill="#0c1018" stroke="#10b981" stroke-width="1.8" filter="url(#nodeGlow)"/>
+  <circle cx="218" cy="315" r="5.5" fill="#10b981" opacity="0.9"/>
+  <text x="222" y="338" font-family="monospace" font-size="8" fill="#10b98160">report</text>
+
+  <!-- Bottom: final node -->
+  <circle cx="148" cy="370" r="18" fill="#0c1018" stroke="#10b981" stroke-width="2.2" filter="url(#nodeGlow)"/>
+  <circle cx="148" cy="370" r="8" fill="#10b981" opacity="0.3"/>
+  <circle cx="148" cy="370" r="5" fill="#10b981" opacity="0.95"/>
+  <text x="148" y="395" text-anchor="middle" font-family="monospace" font-size="9" fill="#10b98170">finding</text>
+
+  <!-- Final: report bottom -->
+  <circle cx="148" cy="430" r="12" fill="#0c1018" stroke="#f59e0b" stroke-width="1.8"/>
+  <circle cx="148" cy="430" r="4.5" fill="#f59e0b" opacity="0.9"/>
+  <text x="148" y="455" text-anchor="middle" font-family="monospace" font-size="8" fill="#f59e0b60">SHA256 ✓</text>
+
+  <!-- Pipeline label at bottom of graph panel -->
+  <text x="34" y="476" font-family="monospace" font-size="9" fill="#f9731640" letter-spacing="1">
+    Discovery → Hypothesis → Gate → Validate → Evidence
+  </text>
+
+  <!-- Divider -->
+  <line x1="468" y1="22" x2="468" y2="478" stroke="#ffffff07" stroke-width="1" stroke-dasharray="4,8"/>
+
+  <!-- ═══════════════════════════════
+       PIXEL ART "OZY"  — ORANGE #f97316
+       Block=20, gap=2, col=22
+       startX=490, startY=40
+  ═══════════════════════════════ -->
+  <g filter="url(#orangeGlow)" fill="#f97316">
+    <!-- O -->
+    <rect x="512" y="40" width="20" height="20"/><rect x="534" y="40" width="20" height="20"/><rect x="556" y="40" width="20" height="20"/>
+    <rect x="490" y="62" width="20" height="20"/><rect x="578" y="62" width="20" height="20"/>
+    <rect x="490" y="84" width="20" height="20"/><rect x="578" y="84" width="20" height="20"/>
+    <rect x="490" y="106" width="20" height="20"/><rect x="578" y="106" width="20" height="20"/>
+    <rect x="490" y="128" width="20" height="20"/><rect x="578" y="128" width="20" height="20"/>
+    <rect x="490" y="150" width="20" height="20"/><rect x="578" y="150" width="20" height="20"/>
+    <rect x="512" y="172" width="20" height="20"/><rect x="534" y="172" width="20" height="20"/><rect x="556" y="172" width="20" height="20"/>
+
+    <!-- Z -->
+    <rect x="614" y="40" width="20" height="20"/><rect x="636" y="40" width="20" height="20"/><rect x="658" y="40" width="20" height="20"/><rect x="680" y="40" width="20" height="20"/><rect x="702" y="40" width="20" height="20"/>
+    <rect x="680" y="62" width="20" height="20"/>
+    <rect x="658" y="84" width="20" height="20"/>
+    <rect x="636" y="106" width="20" height="20"/>
+    <rect x="614" y="128" width="20" height="20"/>
+    <rect x="614" y="150" width="20" height="20"/>
+    <rect x="614" y="172" width="20" height="20"/><rect x="636" y="172" width="20" height="20"/><rect x="658" y="172" width="20" height="20"/><rect x="680" y="172" width="20" height="20"/><rect x="702" y="172" width="20" height="20"/>
+
+    <!-- Y -->
+    <rect x="738" y="40" width="20" height="20"/><rect x="826" y="40" width="20" height="20"/>
+    <rect x="738" y="62" width="20" height="20"/><rect x="826" y="62" width="20" height="20"/>
+    <rect x="760" y="84" width="20" height="20"/><rect x="804" y="84" width="20" height="20"/>
+    <rect x="782" y="106" width="20" height="20"/>
+    <rect x="782" y="128" width="20" height="20"/>
+    <rect x="782" y="150" width="20" height="20"/>
+    <rect x="782" y="172" width="20" height="20"/>
+  </g>
+
+  <!-- ═══════════════════════════════
+       PIXEL ART "RECON"  — AMBER #f59e0b
+       startX=490, startY=230
+  ═══════════════════════════════ -->
+  <g filter="url(#amberGlow)" fill="#f59e0b">
+    <!-- R -->
+    <rect x="490" y="230" width="20" height="20"/><rect x="512" y="230" width="20" height="20"/><rect x="534" y="230" width="20" height="20"/><rect x="556" y="230" width="20" height="20"/>
+    <rect x="490" y="252" width="20" height="20"/><rect x="578" y="252" width="20" height="20"/>
+    <rect x="490" y="274" width="20" height="20"/><rect x="578" y="274" width="20" height="20"/>
+    <rect x="490" y="296" width="20" height="20"/><rect x="512" y="296" width="20" height="20"/><rect x="534" y="296" width="20" height="20"/><rect x="556" y="296" width="20" height="20"/>
+    <rect x="490" y="318" width="20" height="20"/><rect x="556" y="318" width="20" height="20"/>
+    <rect x="490" y="340" width="20" height="20"/><rect x="578" y="340" width="20" height="20"/>
+    <rect x="490" y="362" width="20" height="20"/><rect x="578" y="362" width="20" height="20"/>
+
+    <!-- E -->
+    <rect x="614" y="230" width="20" height="20"/><rect x="636" y="230" width="20" height="20"/><rect x="658" y="230" width="20" height="20"/><rect x="680" y="230" width="20" height="20"/><rect x="702" y="230" width="20" height="20"/>
+    <rect x="614" y="252" width="20" height="20"/>
+    <rect x="614" y="274" width="20" height="20"/>
+    <rect x="614" y="296" width="20" height="20"/><rect x="636" y="296" width="20" height="20"/><rect x="658" y="296" width="20" height="20"/><rect x="680" y="296" width="20" height="20"/>
+    <rect x="614" y="318" width="20" height="20"/>
+    <rect x="614" y="340" width="20" height="20"/>
+    <rect x="614" y="362" width="20" height="20"/><rect x="636" y="362" width="20" height="20"/><rect x="658" y="362" width="20" height="20"/><rect x="680" y="362" width="20" height="20"/><rect x="702" y="362" width="20" height="20"/>
+
+    <!-- C -->
+    <rect x="738" y="230" width="20" height="20"/><rect x="760" y="230" width="20" height="20"/><rect x="782" y="230" width="20" height="20"/><rect x="804" y="230" width="20" height="20"/>
+    <rect x="738" y="252" width="20" height="20"/>
+    <rect x="738" y="274" width="20" height="20"/>
+    <rect x="738" y="296" width="20" height="20"/>
+    <rect x="738" y="318" width="20" height="20"/>
+    <rect x="738" y="340" width="20" height="20"/>
+    <rect x="738" y="362" width="20" height="20"/><rect x="760" y="362" width="20" height="20"/><rect x="782" y="362" width="20" height="20"/><rect x="804" y="362" width="20" height="20"/>
+
+    <!-- O -->
+    <rect x="862" y="230" width="20" height="20"/><rect x="884" y="230" width="20" height="20"/><rect x="906" y="230" width="20" height="20"/>
+    <rect x="840" y="252" width="20" height="20"/><rect x="928" y="252" width="20" height="20"/>
+    <rect x="840" y="274" width="20" height="20"/><rect x="928" y="274" width="20" height="20"/>
+    <rect x="840" y="296" width="20" height="20"/><rect x="928" y="296" width="20" height="20"/>
+    <rect x="840" y="318" width="20" height="20"/><rect x="928" y="318" width="20" height="20"/>
+    <rect x="840" y="340" width="20" height="20"/><rect x="928" y="340" width="20" height="20"/>
+    <rect x="862" y="362" width="20" height="20"/><rect x="884" y="362" width="20" height="20"/><rect x="906" y="362" width="20" height="20"/>
+
+    <!-- N -->
+    <rect x="964" y="230" width="20" height="20"/><rect x="1052" y="230" width="20" height="20"/>
+    <rect x="964" y="252" width="20" height="20"/><rect x="986" y="252" width="20" height="20"/><rect x="1052" y="252" width="20" height="20"/>
+    <rect x="964" y="274" width="20" height="20"/><rect x="1008" y="274" width="20" height="20"/><rect x="1052" y="274" width="20" height="20"/>
+    <rect x="964" y="296" width="20" height="20"/><rect x="1030" y="296" width="20" height="20"/><rect x="1052" y="296" width="20" height="20"/>
+    <rect x="964" y="318" width="20" height="20"/><rect x="1052" y="318" width="20" height="20"/>
+    <rect x="964" y="340" width="20" height="20"/><rect x="1052" y="340" width="20" height="20"/>
+    <rect x="964" y="362" width="20" height="20"/><rect x="1052" y="362" width="20" height="20"/>
+  </g>
+
+  <!-- ═══ "INTELLIGENCE" white subtitle ═══ -->
+  <text x="770" y="462" text-anchor="middle"
+        font-family="'Arial Black','Impact',sans-serif"
+        font-size="58" font-weight="900"
+        fill="white" filter="url(#whiteGlow)" letter-spacing="8">INTELLIGENCE</text>
+
+  <!-- ═══ Right side icons cluster ═══ -->
+  <!-- Evidence vault icon -->
+  <g transform="translate(1094, 50)">
+    <rect width="62" height="62" rx="12" fill="#1a0800" stroke="#f97316" stroke-width="1.5"/>
+    <rect x="3" y="3" width="56" height="56" rx="9" fill="#120600"/>
+    <!-- Shield shape -->
+    <path d="M31,12 L50,20 L50,34 Q50,48 31,54 Q12,48 12,34 L12,20 Z" fill="#f97316" opacity="0.18" stroke="#f97316" stroke-width="1.2"/>
+    <!-- Check mark -->
+    <polyline points="20,32 27,39 42,24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="31" y="56" text-anchor="middle" font-family="monospace" font-size="8" fill="#f9731660">evidence</text>
+  </g>
+
+  <!-- Gate / human-in-loop icon -->
+  <g transform="translate(1166, 50)">
+    <rect width="62" height="62" rx="12" fill="#0a1a10" stroke="#10b981" stroke-width="1.5"/>
+    <rect x="3" y="3" width="56" height="56" rx="9" fill="#061210"/>
+    <!-- Gate symbol -->
+    <circle cx="31" cy="24" r="9" fill="none" stroke="#10b981" stroke-width="1.8"/>
+    <circle cx="31" cy="24" r="4" fill="#10b981" opacity="0.7"/>
+    <line x1="18" y1="38" x2="44" y2="38" stroke="#10b981" stroke-width="1.5"/>
+    <line x1="24" y1="38" x2="24" y2="50" stroke="#10b981" stroke-width="1.5"/>
+    <line x1="38" y1="38" x2="38" y2="50" stroke="#10b981" stroke-width="1.5"/>
+    <text x="31" y="58" text-anchor="middle" font-family="monospace" font-size="8" fill="#10b98160">gate</text>
+  </g>
+
+  <!-- Risk classification pills -->
+  <g transform="translate(1085, 138)">
+    <!-- HIGH -->
+    <rect x="0" y="0" width="144" height="26" rx="5" fill="#3b0a0a" stroke="#ef444450" stroke-width="1"/>
+    <circle cx="18" cy="13" r="6" fill="#ef4444"/>
+    <text x="34" y="17" font-family="monospace" font-size="11" fill="#ef4444">HIGH · Direct Impact</text>
+    <!-- MEDIUM -->
+    <rect x="0" y="34" width="144" height="26" rx="5" fill="#2d1b00" stroke="#f59e0b50" stroke-width="1"/>
+    <circle cx="18" cy="47" r="6" fill="#f59e0b"/>
+    <text x="34" y="51" font-family="monospace" font-size="11" fill="#f59e0b">MED  · Conditional</text>
+    <!-- LOW -->
+    <rect x="0" y="68" width="144" height="26" rx="5" fill="#062012" stroke="#10b98150" stroke-width="1"/>
+    <circle cx="18" cy="81" r="6" fill="#10b981"/>
+    <text x="34" y="85" font-family="monospace" font-size="11" fill="#10b981">LOW  · Informational</text>
+  </g>
+
+  <!-- JSON finding card -->
+  <g transform="translate(1085, 250)">
+    <rect x="0" y="0" width="178" height="192" rx="6" fill="#0c1018" stroke="#f9731625" stroke-width="1"/>
+    <!-- header bar -->
+    <rect x="0" y="0" width="178" height="24" rx="6" fill="#1a0e04"/>
+    <rect x="0" y="13" width="178" height="11" fill="#1a0e04"/>
+    <circle cx="14" cy="12" r="4" fill="#ef4444" opacity="0.7"/>
+    <circle cx="26" cy="12" r="4" fill="#f59e0b" opacity="0.7"/>
+    <circle cx="38" cy="12" r="4" fill="#10b981" opacity="0.7"/>
+    <text x="89" y="17" text-anchor="middle" font-family="monospace" font-size="9" fill="#f9731660">finding.json</text>
+    <!-- JSON content -->
+    <text x="10" y="40" font-family="monospace" font-size="8.5" fill="#f9731690">"severity":</text>
+    <text x="10" y="40" font-family="monospace" font-size="8.5" fill="#ef4444" dx="70">"HIGH"</text>
+    <text x="10" y="58" font-family="monospace" font-size="8.5" fill="#f9731690">"confidence":</text>
+    <text x="10" y="58" font-family="monospace" font-size="8.5" fill="#06b6d4" dx="82">0.92</text>
+    <text x="10" y="76" font-family="monospace" font-size="8.5" fill="#f9731690">"evidence_id":</text>
+    <text x="10" y="90" font-family="monospace" font-size="8.5" fill="#10b981">  "ev_8a2f1c9"</text>
+    <text x="10" y="112" font-family="monospace" font-size="8.5" fill="#f9731690">"integrity":</text>
+    <text x="10" y="126" font-family="monospace" font-size="8.5" fill="#f59e0b">  "sha256:7f83b"</text>
+    <text x="10" y="148" font-family="monospace" font-size="8.5" fill="#f9731690">"validated":</text>
+    <text x="10" y="148" font-family="monospace" font-size="8.5" fill="#10b981" dx="76">true</text>
+    <text x="10" y="166" font-family="monospace" font-size="8.5" fill="#f9731690">"opsec":</text>
+    <text x="10" y="166" font-family="monospace" font-size="8.5" fill="#10b981" dx="52">"guard_on"</text>
+    <text x="10" y="184" font-family="monospace" font-size="8.5" fill="#10b981">✓ DECISION GRADE</text>
+  </g>
+
+  <!-- Stars / particles -->
+  <circle cx="478" cy="25" r="1.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="530" cy="15" r="1" fill="#ffffff" opacity="0.3"/>
+  <circle cx="880" cy="18" r="1.5" fill="#f59e0b" opacity="0.45"/>
+  <circle cx="1070" cy="25" r="1" fill="#06b6d4" opacity="0.4"/>
+  <circle cx="490" cy="482" r="1.5" fill="#f97316" opacity="0.35"/>
+  <circle cx="750" cy="490" r="1" fill="#f59e0b" opacity="0.35"/>
+  <circle cx="1020" cy="478" r="1.5" fill="#10b981" opacity="0.3"/>
+  <text x="476" y="478" font-size="12" fill="#f97316" opacity="0.3" font-family="monospace">✦</text>
+  <text x="876" y="215" font-size="10" fill="#f59e0b" opacity="0.3" font-family="monospace">✦</text>
+  <text x="1072" y="465" font-size="10" fill="#10b981" opacity="0.3" font-family="monospace">✦</text>
+
+  <!-- Bottom tagline -->
+  <text x="770" y="490" text-anchor="middle"
+        font-family="'Courier New',monospace" font-size="11"
+        fill="#ffffff28" letter-spacing="2">
+    Controlled Intelligence · Verifiable Evidence · github.com/SamBleed/OzyRecon
+  </text>
+
+  <!-- Corner brackets -->
+  <polyline points="14,14 14,5 24,5" fill="none" stroke="#f97316" stroke-width="2" opacity="0.6"/>
+  <polyline points="1266,14 1266,5 1256,5" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6"/>
+  <polyline points="14,486 14,495 24,495" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6"/>
+  <polyline points="1266,486 1266,495 1256,495" fill="none" stroke="#f97316" stroke-width="2" opacity="0.6"/>
+
+  <!-- Circuit traces -->
+  <polyline points="0,52 50,52 50,26 105,26" fill="none" stroke="#f9731622" stroke-width="1.5"/>
+  <circle cx="105" cy="26" r="2.5" fill="#f97316" opacity="0.45"/>
+  <polyline points="1280,52 1215,52 1215,26 1165,26" fill="none" stroke="#f59e0b22" stroke-width="1.5"/>
+  <circle cx="1165" cy="26" r="2.5" fill="#f59e0b" opacity="0.45"/>
+</svg>

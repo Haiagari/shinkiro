@@ -1,0 +1,8 @@
+name: "Ozy Recon"
+commands:
+  - key: "h"
+    label: "Hunt"
+    exec: "python3 agent.py hunt --json"
+  - key: "v"
+    label: "Validate"
+    exec: "python3 agent.py validate --json"
