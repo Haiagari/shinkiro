@@ -1,59 +1,41 @@
 # 📖 OzyRecon: Use Cases & Operational Scenarios
 
-OzyRecon v5.7 is not just a scanner; it is a **Validation Orchestrator**. This document describes the specific activities and professional scenarios where OzyRecon provides maximum value.
+OzyRecon v6.0 (Phantom Blade) is an **Advanced Persistent Reconnaissance Platform**. This document describes how to leverage its stealth and logic engines in professional scenarios.
 
 ---
 
-## 1. Professional Security Assessments (Pentesting)
-In a professional engagement, time is the most expensive resource. OzyRecon is used in the **Reconnaissance & Vulnerability Analysis** phases.
+## 1. APT-Grade Stealth Operations (Red Team)
+In engagements against mature organizations with advanced WAFs (Cloudflare, Akamai), traditional tools are blocked instantly.
+*   **Activity**: Use OzyRecon's **Chameleon Engine** to impersonate legitimate browser fingerprints (JA3/TLS).
+*   **Outcome**: Perform deep discovery and fuzzing without triggering IP-based bans or bot-detection alarms.
 
-*   **Scenario**: You have 3 days to assess a target with 500 subdomains.
-*   **Activity**: Use OzyRecon to perform "Intelligent Filtering". Instead of running heavy scans on all 500 hosts, OzyRecon identifies the 15 hosts with high-confidence exposure (e.g., exposed .git, staging environments, or unauthenticated APIs).
-*   **Outcome**: The pentester focuses on the 15 targets that actually matter, increasing the "Critials-per-hour" metric.
+## 2. Cross-Asset Logic Discovery (Zero-Day Hunting)
+Logic bugs often span multiple assets that automated scanners see as isolated.
+*   **Activity**: Run the **Logic Brain** to correlate findings. For example, connecting a session cookie leak on a `dev` subdomain with an unauthenticated API on the `prod` infrastructure.
+*   **Outcome**: Discovery of complex "Trust Chains" and logical attack paths that standard tools cannot visualize.
 
-## 2. Continuous Attack Surface Management (EASM)
-For corporate security teams (Blue/Purple Teams), knowing what is "out there" is a constant battle.
+## 3. Surgical Evidence Validation (Zero-Noise Pentesting)
+Stop wasting time filtering false positives. 
+*   **Activity**: Utilize the **Surgical Prober** to automatically confirm findings. If Ozy detects a potential `.env` exposure, it launches a 50-byte probe to verify secrets without exfiltrating data or making noise.
+*   **Outcome**: A final report with **100% Confirmed Proofs**, ready for immediate remediation.
 
-*   **Scenario**: A developer accidentally exposes a new staging server on a Friday afternoon.
-*   **Activity**: Run OzyRecon in **Continuous Mode** (v6.0 roadmap focus). The intelligence layer detects the new asset, correlates it with known patterns, and alerts the team only if a real exposure hypothesis is generated.
-*   **Outcome**: Detection of "Shadow IT" before attackers find it, with zero false positives.
-
-## 3. Bug Bounty Hunting at Scale
-Hunters need to find what others miss by correlating signals across different tools.
-
-*   **Scenario**: Hunting on a large program like Tesla or HackerOne.
-*   **Activity**: Use OzyRecon to correlate **Service Fingerprinting** with **Knowledge Graphs**. Finding an old Jenkins instance is common; finding a Jenkins instance that is trust-linked to a production database via an internal API is what OzyRecon's graph visualization enables.
-*   **Outcome**: Discovery of complex attack chains that automated "spray and pray" tools cannot see.
-
-## 4. Mergers & Acquisitions (M&A) Security Audit
-When a company buys another, they inherit their security debt.
-
-*   **Scenario**: Company A acquires Company B. You need to quickly assess the risk of the new assets.
-*   **Activity**: Run OzyRecon against the acquired infrastructure. Use the **Executive Reporting Engine** to generate a risk posture report for stakeholders.
-*   **Outcome**: A professional, evidence-backed document showing exactly where the critical risks lie in the new acquisition.
+## 4. Continuous Attack Surface Monitoring (EASM)
+Maintain a live, relationship-based map of your infrastructure.
+*   **Activity**: Deploy OzyRecon in **Autopilot Mode**. Let the engine auto-approve and validate high-confidence (0.95+) findings.
+*   **Outcome**: Detection and immediate validation of "Shadow IT" or accidental exposures before they are exploited.
 
 ---
 
-## 🛠️ Specific Activities OzyRecon Excels At:
+## 🛠️ Specialized v6.0 Pillars:
 
-### A. Surgical Exposure Validation
-Instead of trying to "exploit" everything, OzyRecon validates exposure.
-*   *Example*: Detecting an S3 bucket is easy. OzyRecon validates if it's *actually* public and if it contains sensitive file types (backups, .env, keys) without downloading the entire data set.
+### A. Synthetic Identity Generation
+Every request is backed by a consistent, synthetic identity (User-Agent + Client Hints + TLS Profile), making OzyRecon indistinguishable from a real user.
 
-### B. Human-in-the-Loop Sensitive Probing
-In environments where aggressive scanning is prohibited (e.g., medical or industrial systems).
-*   *Example*: OzyRecon identifies a potential RCE. Instead of firing a payload that might crash the service, it presents the **Hypothesis** to the user via the `gate` module for manual approval of a surgical, non-destructive probe.
+### B. Brain-Derived Hypotheses
+The engine doesn't just scan ports; it generates attack hypotheses based on the **Knowledge Graph**'s relationship data.
 
-### C. Evidence-First Reporting
-For consultants who need to prove their findings to skeptical developers.
-*   *Example*: Every finding includes a **Cryptographic Hash (SHA256)** and a visual proof. This eliminates the "it works on my machine" or "that's a false positive" arguments.
+### C. Cryptographically Signed Evidence
+All findings in the **Evidence Vault** are signed with SHA256, providing an immutable audit trail for legal and compliance requirements.
 
 ---
-
-## 🚫 What OzyRecon is NOT:
-*   **It is NOT a DDoS tool**: We prioritize stealth and surgical precision.
-*   **It is NOT an automated exploitation tool**: We do not provide "one-click RCE" scripts. We provide validated intelligence for professionals to act upon.
-*   **It is NOT a brute-forcer**: We prefer correlation and smart discovery over loud, high-traffic brute force attacks.
-
----
-*For more technical details on how these scenarios are implemented, see the [Architecture Guide](architecture.md).*
+*For more technical details, see the [Architecture Guide](architecture.md).*
