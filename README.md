@@ -1,6 +1,6 @@
-# 🧠 OzyRecon
+# 🧠 OzyRecon v6.0 — *Phantom Blade*
 
-> **From Noise to Intelligence — Relationship-Driven Offensive Reconnaissance**
+> **Advanced Offensive Reconnaissance: Invisible. Surgical. Logical.**
 
 <div align="center">
 
@@ -8,23 +8,26 @@
 
 <br/>
 
+[![Version](https://img.shields.io/badge/version-v6.0.0--alpha-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-red?style=flat-square&labelColor=0a0f1a)](LICENSE)
-[![Build](https://img.shields.io/github/actions/workflow/status/SamBleed/OzyRecon/pipeline.yml?style=flat-square&labelColor=0a0f1a)](https://github.com/SamBleed/OzyRecon/actions)
-[![Python](https://img.shields.io/badge/python-3.11+-00d4ff?style=flat-square&labelColor=0a0f1a)]()
+[![Security](https://img.shields.io/badge/stealth-APT--grade-00ff88?style=flat-square&labelColor=0a0f1a)]()
 
 </div>
 
 ---
 
-## ⚠️ The Problem
+## 🎭 v6.0 Core Pillars: "The Phantom Blade"
 
-Traditional recon tools generate **linear, contextless noise**.
+OzyRecon v6.0 marks a paradigm shift from traditional scanning to **Advanced Persistent Reconnaissance**.
 
-* Hundreds of findings
-* Zero relationships
-* Endless false positives
+### 1. 🧤 Advanced Stealth (The Chameleon)
+Powered by `curl_cffi`, OzyRecon now bypasses modern WAFs (Cloudflare, Akamai) via **TLS Fingerprint Impersonation** and **Synthetic Identity Generation**. Your requests look like a real user, not a tool.
 
-> The analyst becomes the filter.
+### 2. 🎯 Surgical Exploitation
+No more noisy scans. OzyRecon uses **Evidence-Based Probing** to validate findings with minimal footprint. It only executes precise payloads when the relationship-logic confirms a high probability of success.
+
+### 3. 🔍 Logic-Bug Pattern Matching
+Leveraging the **Knowledge Graph**, the v6.0 Engine correlates data across isolated assets to discover complex logical attack paths (e.g., cross-asset IDORs, credential leakage bridges).
 
 ---
 

@@ -10,3 +10,4 @@ httpx
 aiohttp
 python-telegram-bot
 prompt_toolkit>=3.0.0
+curl_cffi>=0.7.0

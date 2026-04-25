@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# OzyRecon v5.7 - Automated Setup Wizard
-# -------------------------------------
+# OzyRecon v6.0 - Advanced Setup Wizard (Phantom Blade Edition)
+# -------------------------------------------------------------
 
 set -e # Exit on error
 
-echo "🧠 OzyRecon v5.7 — Automated Setup"
-echo "-------------------------------------"
+echo "🧠 OzyRecon v6.0 — Advanced Setup (Phantom Blade)"
+echo "-------------------------------------------------------------"
 
 # 1. Check Python version
 echo "[+] Checking Python version..."
@@ -46,16 +46,16 @@ fi
 echo "[+] Creating data and evidence directories..."
 mkdir -p data evidence assets
 
-# 6. Final Verification
-echo "-------------------------------------"
-echo "[+] Running quick system check..."
-if python3 -c "import src; print('OzyRecon modules loaded successfully')" &> /dev/null; then
-    echo "✅ Setup Complete!"
+# 6. Final Verification (v6.0 Stealth Check)
+echo "-------------------------------------------------------------"
+echo "[+] Running system & stealth check..."
+if python3 -c "import src; import curl_cffi; print('✅ OzyRecon v6.0 Stealth Layer Loaded')" &> /dev/null; then
+    echo "💎 OzyRecon v6.0 Setup Complete!"
     echo ""
-    echo "To start, run:"
+    echo "To start your operation, run:"
     echo "  source venv/bin/activate"
-    echo "  ozy --help"
+    echo "  ./ozy.py"
 else
-    echo "❌ Verification failed. Check your installation."
+    echo "❌ Stealth Layer failed (check curl_cffi installation)."
     exit 1
 fi
