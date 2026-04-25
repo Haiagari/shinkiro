@@ -3,7 +3,7 @@
 
 <div align="center">
 
-![Knowledge Graph Visualization](assets/knowledge-graph-v5.png)
+![OzyRecon Paradigm Banner](assets/banner-ozyrecon-paradigm.svg)
 
 [![Version](https://img.shields.io/badge/version-v5.7.0-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-red?style=flat-square&labelColor=0a0f1a)](LICENSE)
@@ -15,6 +15,12 @@
 
 ### 💡 The Core Concept
 OzyRecon isn't a scanner; it's an **Intelligence Orchestrator**. It correlates raw signals into a **Knowledge Graph**, generating attack hypotheses that require explicit human approval before execution.
+
+<div align="center">
+  <img src="assets/knowledge-graph-v5.png" alt="Knowledge Graph Visualization" width="900">
+  <br>
+  <sub><i>Figure 1: Knowledge Graph v2 visualizing validated infrastructure relationships.</i></sub>
+</div>
 
 - **🧠 Decision-Grade**: Reduces noise by 26x via relationship-based validation.
 - **🛡️ Human-in-the-loop**: High-risk probes require manual authorization.
