@@ -28,6 +28,20 @@ class WorkflowOrchestrator:
             "AUTH": AuthValidator(),
         }
 
+    def process_approved(self):
+        """Busca y procesa hipótesis aprobadas."""
+        db = SessionLocal()
+        try:
+            approved = db.query(Hypothesis).filter(Hypothesis.status == WorkflowState.APPROVED).all()
+            if not approved:
+                logger.info("No approved hypotheses to process")
+                return
+
+            for hypo in approved:
+                self.validate_hypothesis(hypo)
+        finally:
+            db.close()
+
     def validate_hypothesis(self, hypo: Hypothesis):
         """Ejecuta el validador correspondiente para una hipótesis."""
         logger.info(f"Starting validation for hypothesis {hypo.id} ({hypo.type})")
