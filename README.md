@@ -12,7 +12,7 @@
 [![License](https://img.shields.io/badge/license-MIT-red?style=for-the-badge&labelColor=0a0f1a)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-43%2F43%20passing-00ff88?style=for-the-badge&labelColor=0a0f1a)](https://github.com/SamBleed/OzyRecon/actions)
 
-[Quick Start](#-get-started) • [Benchmarks](#-noise-reduction-benchmark) • [Roadmap](#-strategic-roadmap) • [Contributing](CONTRIBUTING.md)
+[Quick Start](#-get-started) • [Benchmarks](#-noise-reduction-benchmark) • [Roadmap](#-strategic-roadmap) • [Compliance](docs/COMPLIANCE.md) • [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -73,10 +73,21 @@ ozy hunt -t target.com
 ozy gate list
 ozy gate approve --id hyp_8a2f --reason "Suspected admin leak"
 
-# Execute validation and generate report
+# Execute validation and generate professional report
 ozy validate
-ozy report --format pdf
+ozy report --format html
 ```
+
+---
+
+### 📄 Executive Reporting
+OzyRecon v5.7 now features a **Professional Reporting Engine**. 
+Generate high-fidelity, audit-ready HTML reports for your clients or security teams.
+
+- **Executive Summary**: High-level risk metrics and accuracy scores.
+- **Interactive Sidebar**: Easy navigation through validated findings.
+- **Evidence Vault**: Cryptographic integrity hashes (SHA256) for every proof.
+- **Screenshot Integration**: Direct visual evidence mapping.
 
 ---
 
