@@ -39,11 +39,11 @@ jobs:
     - name: Security Lint (Bandit)
       run: |
         pip install bandit
-        bandit -r src/ -ll
+        bandit -c .bandit -r src/ -lll
 
     - name: Upload Test Results
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-results-${{ matrix.python-version }}
-        path: junit/test-results-${{ matrix.python-version historical }}.xml
+        path: junit/test-results-${{ matrix.python-version }}.xml

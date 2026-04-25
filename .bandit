@@ -1,0 +1,9 @@
+# Bandit configuration for OzyRecon
+# -------------------------------
+# Certain security risks are accepted as they are part of reconnaissance logic.
+
+skips:
+  - B602  # subprocess_popen_with_shell_equals_true: Required for running external CLI tools (subfinder, etc)
+  - B501  # request_with_no_cert_validation: Required for scanning targets with broken/expired SSL certificates
+  - B324  # hashlib: We use hashes for IDs, not always for cryptographic security
+  - B104  # hardcoded_bind_all_interfaces: Needed for the API to be accessible from outside containers

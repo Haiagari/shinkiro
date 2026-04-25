@@ -24,7 +24,7 @@ class EvidenceEngine:
         try:
             # Generar ID único para la evidencia
             data_str = str(data)
-            evidence_id = f"ev_{hashlib.md5((hypothesis_id + data_str + str(datetime.now())).encode()).hexdigest()[:8]}"
+            evidence_id = f"ev_{hashlib.sha256((hypothesis_id + data_str + str(datetime.now())).encode()).hexdigest()[:8]}"
             
             # Calcular hash de integridad
             content_hash = hashlib.sha256(data_str.encode()).hexdigest()

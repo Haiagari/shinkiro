@@ -4,6 +4,7 @@ Fase 2: Aprendizaje Reflexivo
 """
 
 import uuid
+import ast
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from typing import Dict, Any, Optional, List
@@ -104,7 +105,7 @@ class DecisionRepository:
         for row in result:
             decisions.append(Decision(
                 id=row[0], session_id=row[1], decision_type=row[2],
-                target=row[3], context=eval(row[4]) if row[4] else {},
+                target=row[3], context=ast.literal_eval(row[4]) if row[4] else {},
                 reason=row[5], timestamp=row[6],
                 reputation_weight=row[7], novelty_weight=row[8], diff_weight=row[9],
                 result=row[10], value_score=row[11]
@@ -122,7 +123,7 @@ class DecisionRepository:
         for row in result:
             decisions.append(Decision(
                 id=row[0], session_id=row[1], decision_type=row[2],
-                target=row[3], context=eval(row[4]) if row[4] else {},
+                target=row[3], context=ast.literal_eval(row[4]) if row[4] else {},
                 reason=row[5], timestamp=row[6],
                 reputation_weight=row[7], novelty_weight=row[8], diff_weight=row[9],
                 result=row[10], value_score=row[11]
@@ -141,7 +142,7 @@ class DecisionRepository:
         for row in result:
             decisions.append(Decision(
                 id=row[0], session_id=row[1], decision_type=row[2],
-                target=row[3], context=eval(row[4]) if row[4] else {},
+                target=row[3], context=ast.literal_eval(row[4]) if row[4] else {},
                 reason=row[5], timestamp=row[6],
                 reputation_weight=row[7], novelty_weight=row[8], diff_weight=row[9],
                 result=row[10], value_score=row[11]
