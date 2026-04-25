@@ -28,7 +28,6 @@ runtime/db/*.db
 
 # Output
 output/
-runtime/
 runtime/scans/
 runtime/logs/
 runtime/state/
@@ -53,5 +52,7 @@ config/config.yaml
 l.txt
 interface_ui_bundle_fixed.zip
 
-# Legacy folders (deprecated - usar src/)
+# Legacy code (no usado - usar src/)
 tui.py
+agent.py
+ui/

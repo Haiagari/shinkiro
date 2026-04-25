@@ -12,6 +12,7 @@
 ![Stars](https://img.shields.io/github/stars/SamBleed/OzyRecon?style=for-the-badge&color=00ff88&labelColor=0a0f1a)
 ![Version](https://img.shields.io/badge/version-v5.7.0-00d4ff?style=for-the-badge&labelColor=0a0f1a)
 ![Python](https://img.shields.io/badge/Python-3.10+-ffd700?style=for-the-badge&logo=python&logoColor=ffd700&labelColor=0a0f1a)
+![Tests](https://img.shields.io/badge/tests-43%2F43%20passing-00ff88?style=for-the-badge&labelColor=0a0f1a)
 </div>
 
 ---
