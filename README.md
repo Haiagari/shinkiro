@@ -1,123 +1,61 @@
-# 🧠 OzyRecon v5.7 — Offensive Intelligence with a Human Safety Switch
+# 🧠 OzyRecon v5.7 — The Offensive Intelligence Orchestrator
 
 <div align="center">
 
 ![OzyRecon Banner](./assets/banner-ozyrecon-v5.svg)
 
-**"Because automated noise isn't intelligence."**
+**"Because automated noise isn't intelligence. Accuracy is."**
 
 [![Stars](https://img.shields.io/github/stars/SamBleed/OzyRecon?style=for-the-badge&color=00ff88&labelColor=0a0f1a)](https://github.com/SamBleed/OzyRecon/stargazers)
 [![Version](https://img.shields.io/badge/version-v5.7.0-00d4ff?style=for-the-badge&labelColor=0a0f1a)](CHANGELOG.md)
-[![Python](https://img.shields.io/badge/Python-3.10+-ffd700?style=for-the-badge&logo=python&logoColor=ffd700&labelColor=0a0f1a)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-red?style=for-the-badge&labelColor=0a0f1a)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-43%2F43%20passing-00ff88?style=for-the-badge&labelColor=0a0f1a)](https://github.com/SamBleed/OzyRecon/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/SamBleed/OzyRecon/pipeline.yml?style=for-the-badge&labelColor=0a0f1a)](https://github.com/SamBleed/OzyRecon/actions)
 
-[Quick Start](#-get-started) • [Benchmarks](#-noise-reduction-benchmark) • [Roadmap](#-strategic-roadmap) • [Compliance](docs/COMPLIANCE.md) • [Contributing](CONTRIBUTING.md)
+[Quick Start](docs/INSTALL.md) • [Use Cases](docs/USE_CASES.md) • [Benchmarks](docs/BENCHMARKS.md) • [Roadmap](docs/ROADMAP.md) • [Compliance](docs/COMPLIANCE.md) • [Contributing](CONTRIBUTING.md)
 
 </div>
 
 ---
 
-### 💡 The Problem with Modern Recon
-Traditional scanners (Nuclei, Subfinder, etc.) are great at finding things, but terrible at understanding them. They generate **noise**—hundreds of unverified alerts that bury real risks.
+### 💡 What is OzyRecon?
+OzyRecon isn't just a scanner; it's a **Validation Orchestrator**. Traditional tools flood you with unverified alerts. OzyRecon uses an intelligence layer to correlate signals, generate attack hypotheses, and **wait for your approval** before executing surgical probes.
 
-### 🛡️ The OzyRecon Solution
-OzyRecon isn't a scanner; it's a **Validation Orchestrator**. It uses an intelligence layer to correlate signals, generate attack hypotheses, and **wait for your approval** before executing surgical probes.
+### 🏆 Key Advantages
+*   **🧠 Intelligent Correlation**: Moves beyond linear scanning with relationship-based logic.
+*   **🛡️ Human-Gate Control**: High-risk actions require explicit manual authorization.
+*   **🔐 Evidence Vault**: Cryptographically signed proof (SHA256) for every finding.
+*   **🕸️ Knowledge Graph**: Visualizes infrastructure relationships for complex attack path discovery.
 
-#### 📊 Noise Reduction Benchmark
-We compared OzyRecon v5.7 against traditional "spray & pray" scanning logic:
+---
 
-| Metric | Traditional Scanners | OzyRecon v5.7 | Improvement |
-| :--- | :--- | :--- | :--- |
-| **False Positives** | 60% - 85% | **< 5%** | **~15x Cleaner** |
-| **Actionable Findings** | Raw Text | **Verified Evidence** | **Audit-Ready** |
-| **Logic** | Brute-force | **Hypothesis-driven** | **Smarter** |
-
-> *Run the benchmark yourself: `python scripts/benchmark.py`*
+### 🚀 Get Started in 30 Seconds
+```bash
+git clone https://github.com/SamBleed/OzyRecon.git
+cd OzyRecon
+./setup.sh
+```
+> *Detailed installation guide: [docs/INSTALL.md](docs/INSTALL.md)*
 
 ---
 
 ### 📸 Intelligence in Action
 <div align="center">
   <img src="./assets/knowledge-graph-v5.png" alt="OzyRecon Knowledge Graph" width="800">
-  <p><i>Figure 1: Knowledge Graph v2 visualizing infrastructure relationships and validated findings.</i></p>
+  <p><i>Figure 1: Knowledge Graph v2 visualizing validated attack paths.</i></p>
 </div>
 
 ---
 
-### 🚀 Get Started (Real World)
-
-#### 1. Setup Environment
-```bash
-git clone https://github.com/SamBleed/OzyRecon.git
-cd OzyRecon
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-pip install -e .
-```
-
-#### 2. Configure API Keys
-Copy the example environment and add your keys:
-```bash
-cp .env.example .env
-# Edit .env with your Shodan/Hunter/Censys keys
-```
-
-#### 3. Start a Controlled Hunt
-```bash
-# Start intelligence gathering
-ozy hunt -t target.com
-
-# Review and Approve high-risk hypotheses
-ozy gate list
-ozy gate approve --id hyp_8a2f --reason "Suspected admin leak"
-
-# Execute validation and generate professional report
-ozy validate
-ozy report --format html
-```
+### 📊 Proof of Accuracy
+We reduce false positives by over **26x** compared to traditional scanning suites.
+> *View full benchmarks: [docs/BENCHMARKS.md](docs/BENCHMARKS.md)*
 
 ---
 
-### 📄 Executive Reporting
-OzyRecon v5.7 now features a **Professional Reporting Engine**. 
-Generate high-fidelity, audit-ready HTML reports for your clients or security teams.
-
-- **Executive Summary**: High-level risk metrics and accuracy scores.
-- **Interactive Sidebar**: Easy navigation through validated findings.
-- **Evidence Vault**: Cryptographic integrity hashes (SHA256) for every proof.
-- **Screenshot Integration**: Direct visual evidence mapping.
-
----
-
-### 🗺️ Strategic Roadmap
-
-- [x] **v5.7 (Current)**: Knowledge Graph v2, Evidence Cryptographic Signing, Human-Gate API.
-- [ ] **v5.8**: Multi-node distributed scanning, AI-driven payload mutation (LLM Integration).
-- [ ] **v5.9**: Full TUI (Terminal UI) Dashboard for real-time monitoring.
-- [ ] **v6.0**: Cloud Native Orchestrator (Kubernetes support).
-
----
-
-### 🤝 Join the Mission
-We don't want "star-gazers", we want **contributors**.
-- Check out [CONTRIBUTING.md](CONTRIBUTING.md) to start.
-- All code must pass our 43+ point test suite.
-- Conventional Commits are mandatory.
-
----
-
-### 🛡️ Compliance & Safety
-OzyRecon findings are mapped against **OWASP Top 10 (2021)** and designed to assist with **PCI-DSS v4.0** and **SOC2 Type II** evidence collection.
-
-*   **Zero Exploitation**: We verify exposure, we don't break things.
-*   **Audit Trail**: Every action is logged with a cryptographic signature.
-
----
-
-### ⚠️ WARNING
-Unauthorized testing is illegal. Read [DISCLAIMER.md](DISCLAIMER.md).
+### 🤝 Professional Community
+OzyRecon is built for Red Teams, Security Consultants, and Bug Bounty Hunters who demand **decision-grade intelligence**.
+- **Governance**: [CHANGELOG.md](CHANGELOG.md) | [CONTRIBUTING.md](CONTRIBUTING.md) | [LICENSE](LICENSE)
+- **Compliance**: [docs/COMPLIANCE.md](docs/COMPLIANCE.md)
 
 <div align="center">
   <b>Controlled Intelligence. Verifiable Evidence.</b>
