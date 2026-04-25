@@ -11,15 +11,18 @@ env/
 dist/
 build/
 
-# IDEs
+# IDEs & AI
 .vscode/
 .idea/
+.codex
+.cursor/
 *.swp
 *.swo
 
 # OS
 .DS_Store
 Thumbs.db
+.directory
 
 # Base de datos
 *.db
@@ -33,26 +36,23 @@ runtime/logs/
 runtime/state/
 runtime/exports/
 runtime/temp/
-runtime/db/*.db
 scopes/
 *.log
 agent_reasoning.log
 llm_usage.json
 
-# Binarios de herramientas (muy grandes (~400MB), no incluir en git)
-# Ejecutar ./setup.sh para instalar
+# Binarios de herramientas
 tools/go/bin/
 tools/go/pkg/
 
 # API keys (sensible)
 config/config.yaml
 
-# OzyRecon specific
+# OzyRecon Specific
 .ozyrecon-cli/
 l.txt
 interface_ui_bundle_fixed.zip
 
-# Legacy code (no usado - usar src/)
-tui.py
-agent.py
-ui/
+# Legacy removal (keeping src clean)
+# UI/Legacy files moved to src or intended for inclusion
+# NO IGNORAR agent.py o tui.py si son funcionales

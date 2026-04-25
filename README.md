@@ -29,6 +29,7 @@ OzyRecon isn't a scanner; it's an **Intelligence Orchestrator**. It correlates r
 ### 🚀 30-Second Setup
 ```bash
 git clone https://github.com/SamBleed/OzyRecon.git && cd OzyRecon && ./setup.sh
+./ozy.py
 ```
 
 ---
