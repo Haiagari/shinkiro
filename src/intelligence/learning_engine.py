@@ -2,16 +2,21 @@
 Learning Engine — Análisis Estadístico Cross-Target
 Calcula efectividad de herramientas por stack tecnológico.
 Restricciones: Lock en DB + Min Observations (5).
+Migrado de backend/modules/learning_engine.py
 """
 
 from datetime import datetime, timedelta, timezone
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from sqlalchemy.orm import Session
-from .models import AgentLock, Vulnerability, AgentMemory
-from .database import SessionLocal
-from .utils import log
+from src.storage.models import AgentLock, AgentMemory
+from src.storage.database import SessionLocal
+from src.core.logging import get_logger
+from src.agent.config_writer import save_scoring_weights
+
+logger = get_logger("learning_engine")
 
 MIN_OBSERVATIONS = 5
+
 
 class LearningEngine:
     def __init__(self, db: Session):
@@ -24,7 +29,7 @@ class LearningEngine:
         
         if lock:
             if lock.expires_at > now:
-                return False # Lock activo
+                return False  # Lock activo
             else:
                 # Lock expirado, lo tomamos
                 lock.locked_at = now
@@ -40,7 +45,7 @@ class LearningEngine:
         try:
             self.db.commit()
             return True
-        except:
+        except Exception:
             self.db.rollback()
             return False
 
@@ -48,26 +53,27 @@ class LearningEngine:
         """Libera el lock manualmente."""
         lock = self.db.query(AgentLock).filter(AgentLock.mode == mode).first()
         if lock:
-            lock.expires_at = datetime.now(timezone.utc).replace(tzinfo=None)  # Expirar ahora, DB naive compat
+            lock.expires_at = datetime.now(timezone.utc).replace(tzinfo=None)
             self.db.commit()
 
     def analyze_and_update(self) -> Dict[str, Any]:
         """Analiza la efectividad histórica y sugiere nuevos pesos."""
         if not self.acquire_lock("aprendizaje"):
-            log("Otro modo activo o lock presente, posponiendo APRENDIZAJE", "warn")
+            logger.warning("Otro modo activo o lock presente, posponiendo APRENDIZAJE")
             return {}
 
         try:
-            log("Iniciando análisis de patrones cross-target...", "info")
+            logger.info("Iniciando analisis de patrones cross-target...")
             new_weights = {}
             
             # 1. Obtener todos los tech_stacks detectados en la memoria
             mems = self.db.query(AgentMemory).filter(AgentMemory.key == "tech_stack").all()
             
             # Agrupar targets por stack
-            stacks = {}
+            stacks: Dict[str, list] = {}
             for m in mems:
-                if not m.value: continue
+                if not m.value:
+                    continue
                 # Asegurar que stack_list sea una lista de strings
                 stack_list = m.value if isinstance(m.value, list) else [m.value]
                 
@@ -75,8 +81,9 @@ class LearningEngine:
                     # Robustez: Solo procesar si el stack es un string
                     if not isinstance(s, str):
                         continue
-                        
-                    if s not in stacks: stacks[s] = []
+                    
+                    if s not in stacks:
+                        stacks[s] = []
                     stacks[s].append(m.target)
 
             # 2. Analizar cada stack
@@ -84,22 +91,21 @@ class LearningEngine:
                 observation_count = len(set(targets))
                 
                 if observation_count < MIN_OBSERVATIONS:
-                    log(f"Stack {tech}: {observation_count} obs, requiere {MIN_OBSERVATIONS}. Saltando.", "info")
+                    logger.info(f"Stack {tech}: {observation_count} obs, requiere {MIN_OBSERVATIONS}. Saltando.")
                     continue
 
-                log(f"Calculando pesos para {tech} ({observation_count} observaciones)...", "success")
+                logger.info(f"Calculando pesos para {tech} ({observation_count} observaciones)...")
                 
                 # Calcular efectividad (simplificado para el test)
-                # En prod: cruzaría hallazgos reales por herramienta
+                # En prod: cruzaria hallazgos reales por herramienta
                 new_weights[tech] = {
                     "nuclei": 0.9,
                     "dalfox": 0.8 if tech.lower() in ["wordpress", "php"] else 0.4
                 }
 
             if new_weights:
-                from .config_writer import save_scoring_weights
                 save_scoring_weights(new_weights, confidence=0.85)
-                log("Archivo config/scoring.yaml actualizado con éxito.", "success")
+                logger.info("Archivo config/scoring.yaml actualizado con exito.")
             
             return new_weights
 

@@ -54,6 +54,4 @@ l.txt
 interface_ui_bundle_fixed.zip
 
 # Legacy folders (deprecated - usar src/)
-backend/
-ui/
 tui.py

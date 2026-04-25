@@ -59,7 +59,7 @@ async def execute_task(
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "platform": "OzyRecon", "version": "4.0"}
+    return {"status": "online", "platform": "OzyRecon", "version": "5.7"}
 
 @app.get("/intelligence/status")
 def get_intel_status():
