@@ -1,0 +1,49 @@
+name: OzyRecon CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Run Tests & Quality Checks
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov
+        pip install -e .
+
+    - name: Run Validation Suite (Pytest)
+      run: |
+        pytest tests/ --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+
+    - name: Security Lint (Bandit)
+      run: |
+        pip install bandit
+        bandit -r src/ -ll
+
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ matrix.python-version }}
+        path: junit/test-results-${{ matrix.python-version historical }}.xml
