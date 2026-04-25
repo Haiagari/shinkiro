@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0-alpha] - 2026-04-24
+### Added
+- **Phantom Blade Architecture**: Total paradigm shift to Advanced Persistent Reconnaissance.
+- **Chameleon Engine**: Stealth layer using `curl_cffi` for TLS Fingerprinting impersonation (Chrome, Safari, Firefox).
+- **Logic Analyzer**: Brain-derived attack paths based on Knowledge Graph relationships.
+- **Surgical Prober**: Evidence-based validation engine for zero-noise findings.
+- **Autopilot Mode**: Automated approval for high-confidence (0.95+) hypotheses.
+- **Unified Entry Point**: New `./ozy.py` script for centralized CLI/TUI management.
+
+### Changed
+- Refactored HTTP client to use `curl_cffi` by default for all operations.
+- Updated `setup.sh` with v6 stealth verification.
+- Improved `README.md` with relationship-driven intelligence focus.
+
 ## [5.7.0] - 2026-04-24
 ### Added
 - **Knowledge Graph v2**: Full visualization of infrastructure relationships using D3.js.

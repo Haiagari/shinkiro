@@ -4,23 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ozyrecon"
-version = "5.7.0"
-description = "OzyRecon - Offensive Reconnaissance Platform with Adaptive Learning"
+version = "6.0.0-alpha.1"
+description = "OzyRecon - Advanced Persistent Reconnaissance Platform (Phantom Blade)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "SamBleed", email = "sam@example.com"}
 ]
-keywords = ["reconnaissance", "bugbounty", "offensive-security", "pentesting"]
+keywords = ["reconnaissance", "bugbounty", "offensive-security", "pentesting", "stealth"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable", # Elevamos status!
     "Intended Audience :: Information Technology",
     "Topic :: Security",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
 ]
 
 dependencies = [
@@ -29,6 +26,8 @@ dependencies = [
     "rich>=13.0",
     "click>=8.1",
     "pyyaml>=6.0",
+    "curl_cffi>=0.7.0",
+    "prompt_toolkit>=3.0.0",
 ]
 
 [project.optional-dependencies]

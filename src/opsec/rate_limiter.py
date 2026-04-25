@@ -5,11 +5,10 @@ Ajusta la velocidad automáticamente para no romper el target.
 
 import time
 from threading import Lock
-from src.utils import log, get_logger
-
 import random
+from src.core.logging import get_logger
 
-logger = log
+logger = get_logger('rate-limiter')
 
 class RateLimiter:
     """
@@ -37,7 +36,7 @@ class RateLimiter:
         self.current_rpm = self.max_rpm
         self.lock = Lock()
         
-        log.info(f"RateLimiter: max {self.max_rpm} req/min | Jitter activado")
+        logger.info(f"RateLimiter: max {self.max_rpm} req/min | Jitter activado")
     
     def can_request(self) -> bool:
         if self.is_banned:
@@ -89,14 +88,14 @@ class RateLimiter:
         old_rpm = self.current_rpm
         self.current_rpm = max(5, int(self.current_rpm * 0.5))
         if old_rpm != self.current_rpm:
-            log.warning(f"OPSEC: {reason} - bajando a {self.current_rpm} RPM")
+            logger.warning(f"OPSEC: {reason} - bajando a {self.current_rpm} RPM")
     
     def _panic_kill_switch(self):
         """Freno de mano total para evitar que sigan quemando la IP."""
         if not self.is_banned:
             self.is_banned = True
-            log.critical("!!! KILL-SWITCH ACTIVADO !!! BAN DETECTADO")
-            log.critical("Pausando escaneo para proteger la IP/Reputación.")
+            logger.critical("!!! KILL-SWITCH ACTIVADO !!! BAN DETECTADO")
+            logger.critical("Pausando escaneo para proteger la IP/Reputación.")
     
     def get_headers(self) -> dict:
         """Headers para debugging."""

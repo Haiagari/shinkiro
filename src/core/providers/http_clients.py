@@ -48,9 +48,11 @@ class OzyHTTPClient:
             request_headers.update(headers)
         
         # Determinar perfil de impersonación (v6 feature)
-        # Si no se pasa uno, usamos el de la identidad actual
         imp = impersonate or self.identity.tls_profile
-        if imp == 'chrome': imp = 'chrome124' # Ajuste para curl_cffi
+        if imp == 'chrome': imp = 'chrome124'
+        
+        # Gestionar timeout para evitar duplicados en kwargs
+        req_timeout = kwargs.pop('timeout', self.timeout)
         
         try:
             # Usamos curl_cffi para evadir TLS Fingerprinting
@@ -59,7 +61,7 @@ class OzyHTTPClient:
                 url, 
                 headers=request_headers, 
                 impersonate=imp,
-                timeout=self.timeout,
+                timeout=req_timeout,
                 **kwargs
             )
             

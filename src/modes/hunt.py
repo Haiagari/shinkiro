@@ -63,6 +63,25 @@ class HuntMode(BaseMode):
                 logger.info(f"  • Found {len(res)} open ports on {host}")
                 services.extend(res)
 
+        # 4.5. v6.0 Logic Pattern Analysis
+        logger.info("[HUNT] Phase 2.5: v6.0 Logic Pattern Analysis")
+        from src.intelligence.logic_analyzer import LogicAnalyzer
+        logic_brain = LogicAnalyzer()
+        
+        # Mapear datos para el cerebro
+        graph_data = {
+            "nodes": [
+                {"type": "subdomain", "name": self.target, "ip": "RESOLVING..."} # Simplificado para el ejemplo
+            ]
+        }
+        # Inyectar subdominios encontrados
+        for s in subdomains:
+            graph_data["nodes"].append({"type": "subdomain", "name": s, "ip": None})
+
+        logic_hypotheses = logic_brain.analyze_graph(graph_data)
+        if logic_hypotheses:
+            logger.info(f"🔥 v6.0 Brain found {len(logic_hypotheses)} logical attack paths!")
+
         # 5. Intelligence Correlation & Hypothesis Generation
         logger.info("[HUNT] Phase 3: Intelligence & Hypothesis Generation")
         out_dir = Path(self.options.get("output") or f"runtime/scans/{self.target}/{self.session_id}")

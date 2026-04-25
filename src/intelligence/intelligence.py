@@ -429,6 +429,16 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
             else:
                 confidence = float(cvss_data) / 10.0
 
+            # v6.0 Autopilot Logic: Auto-approve high confidence hypotheses
+            AUTOPILOT_THRESHOLD = 0.95
+            status = WorkflowState.PENDING_APPROVAL
+            notes_prefix = ""
+            
+            if confidence >= AUTOPILOT_THRESHOLD:
+                status = WorkflowState.APPROVED
+                notes_prefix = "AUTOPILOT: Auto-approved due to high confidence. "
+                log(f"🚀 {notes_prefix} ({h_id})", "warn")
+
             new_hypo = Hypothesis(
                 id=h_id,
                 target_id=t_id,
@@ -437,13 +447,13 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
                 url=h_data.get("url"),
                 severity=h_data.get("severity"),
                 confidence=confidence,
-                status=WorkflowState.PENDING_APPROVAL,
+                status=status,
                 signals={"correlations": results.get("correlations")},
                 validation_method=h_data.get("verification")
             )
             db.add(new_hypo)
             # Registrar en el workflow
-            workflow_engine.add_step(t_id, WorkflowState.HYPOTHESIZED, notes=f"Hypothesis {h_id} generated")
+            workflow_engine.add_step(t_id, WorkflowState.HYPOTHESIZED, notes=f"{notes_prefix}Hypothesis {h_id} generated")
         
         db.commit()
         log(f"✅ {len(hypotheses)} hipótesis persistidas para revisión humana.", "success")

@@ -15,6 +15,7 @@ from src.validation.http import HTTPValidator
 from src.validation.infra import InfraValidator
 from src.validation.automation import AutomationValidator
 from src.validation.auth import AuthValidator
+from src.validation.surgical import surgical_prober # v6.0
 
 logger = get_logger('workflow_orchestrator')
 
@@ -27,26 +28,28 @@ class WorkflowOrchestrator:
             "AUTH": AuthValidator(),
         }
 
-
-    def process_approved(self):
-        """Busca y procesa hipótesis aprobadas."""
-        db = SessionLocal()
-        try:
-            approved = db.query(Hypothesis).filter(Hypothesis.status == WorkflowState.APPROVED).all()
-            if not approved:
-                logger.info("No approved hypotheses to process")
-                return
-
-            for hypo in approved:
-                self.validate_hypothesis(hypo)
-        finally:
-            db.close()
-
     def validate_hypothesis(self, hypo: Hypothesis):
         """Ejecuta el validador correspondiente para una hipótesis."""
         logger.info(f"Starting validation for hypothesis {hypo.id} ({hypo.type})")
         
-        # Mover a estado VALIDATING
+        # 1. v6.0 PRE-VALIDACIÓN QUIRÚRGICA
+        # Si es un hallazgo de archivo expuesto, usamos la sonda primero.
+        if "EXPOSED" in hypo.type or "CONFIG" in hypo.type:
+            logger.info(f"Applying v6.0 Surgical Probe for {hypo.type}")
+            surgical_res = surgical_prober.validate_env_exposure(hypo.url)
+            if surgical_res.get("status") == "confirmed":
+                logger.info(f"✅ CONFIRMED via Surgical Probe: {hypo.id}")
+                # Registrar evidencia y finalizar rápido
+                evidence_engine.record_evidence(
+                    hypothesis_id=hypo.id,
+                    evidence_type="SURGICAL_CONFIRMATION",
+                    data=surgical_res.get("evidence_sample", "Confirmed"),
+                    metadata={"source": "v6.0-surgical-prober"}
+                )
+                workflow_engine.transition_hypothesis(hypo.id, WorkflowState.VALIDATED, notes="Confirmed by v6.0 Surgical Prober")
+                return # Salto quirúrgico exitoso
+
+        # 2. Validación estándar (si la quirúrgica no aplica o no fue conclusiva)
         workflow_engine.transition_hypothesis(hypo.id, WorkflowState.VALIDATING, notes="Starting automated validation")
 
         # Selección inteligente de validador (v5.2-v5.4 update)
