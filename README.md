@@ -3,7 +3,7 @@
 
 <div align="center">
 
-![OzyRecon Paradigm Banner](assets/banner-ozyrecon-paradigm.svg)
+![OzyRecon Paradigm Banner](assets/banner-ozyrecon-paradigm.png)
 
 [![Version](https://img.shields.io/badge/version-v5.7.0-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-red?style=flat-square&labelColor=0a0f1a)](LICENSE)
