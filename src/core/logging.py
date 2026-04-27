@@ -54,6 +54,14 @@ class OzyLogger:
         logger.addHandler(file_handler)
         
         self._loggers[name] = logger
+        
+        # Integration with Ozy Platform Telemetry
+        try:
+            from src.core.platform_telemetry import setup_platform_logging
+            setup_platform_logging()
+        except ImportError:
+            pass
+            
         return logger
     
     def debug(self, msg: str, **kwargs):

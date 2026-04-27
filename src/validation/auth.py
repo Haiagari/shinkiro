@@ -3,7 +3,8 @@ Advanced Auth Validator - Validación de credenciales por defecto v5.7
 """
 
 from typing import Dict, Any, List
-import requests
+from src.core.providers.http_clients import http_client
+from src.core.errors import StealthSSLError, StealthRequestError
 from src.validation.base import BaseValidator, ValidationResult
 from src.core.logging import get_logger
 
@@ -40,7 +41,7 @@ class AuthValidator(BaseValidator):
 
         try:
             # 1. Identificar el tipo de panel (Simple check)
-            res = requests.get(url, timeout=10, verify=False)
+            res = http_client.get(url, timeout=10)
             evidence.append(self.create_evidence("panel_detection", f"HTTP {res.status_code}", {"headers": dict(res.headers)}))
 
             # 2. Probar combinaciones básicas (solo las primeras 2 para mantener OPSEC)
@@ -48,7 +49,7 @@ class AuthValidator(BaseValidator):
             for user, pwd in self.DEFAULT_CREDS[:2]:
                 # Intentamos un login genérico (esto es un ejemplo, variaría por app)
                 # OzyRecon v5.7 prioriza la detección de la respuesta ante el intento
-                auth_res = requests.post(url, data={"user": user, "pass": pwd}, timeout=5, verify=False)
+                auth_res = http_client.post(url, data={"user": user, "pass": pwd}, timeout=5)
                 
                 # Si cambia el comportamiento drásticamente o entramos...
                 if auth_res.status_code in [200, 302] and len(auth_res.content) != len(res.content):
@@ -64,8 +65,13 @@ class AuthValidator(BaseValidator):
                 confidence = 0.1
                 notes = "Default credentials rejected."
 
+        except (StealthSSLError, StealthRequestError) as e:
+            logger.error(f"Stealth Auth validation error: {str(e)}")
+            notes = f"Validation failed due to network/SSL error: {str(e)}"
+            status = "failed_validation"
+
         except Exception as e:
-            logger.error(f"Auth validation error: {str(e)}")
+            logger.error(f"General Auth validation error: {str(e)}")
             notes = f"Validation failed: {str(e)}"
             status = "failed_validation"
 

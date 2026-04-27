@@ -58,6 +58,16 @@ class OPSECError(OzyReconError):
     pass
 
 
+class StealthRequestError(OzyReconError):
+    """Error general en peticiones stealth."""
+    pass
+
+
+class StealthSSLError(StealthRequestError):
+    """Error de SSL/TLS en peticiones stealth."""
+    pass
+
+
 class RateLimitExceededError(OPSECError):
     """Rate limit excedido."""
     pass

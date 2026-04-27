@@ -6,6 +6,7 @@ Abstrae la ejecución de herramientas en capacidades lógicas.
 from typing import List, Dict, Any, Optional
 from src.core.logging import get_logger
 from src.core.providers.base import BaseProvider
+from src.core.manifest_manager import ManifestManager, ToolEntry
 
 logger = get_logger('tool_manager')
 
@@ -28,7 +29,37 @@ class ToolManager:
                 "live_detection": [],
                 "db_probe": []
             }
+            cls._instance._init_from_manifest()
         return cls._instance
+
+    def _init_from_manifest(self):
+        """Carga herramientas dinámicamente desde el manifiesto YAML."""
+        logger.info("Initializing ToolManager from manifest...")
+        manager = ManifestManager()
+        try:
+            tools = manager.get_available_tools()
+            for tool in tools:
+                self._register_tool_entry(tool, manager)
+        except Exception as e:
+            logger.error(f"Failed to load manifest: {e}")
+
+    def _register_tool_entry(self, tool: ToolEntry, manager: ManifestManager):
+        """Instancia y registra una herramienta según su entrada en el manifiesto."""
+        try:
+            adapter_class = manager.get_provider_class(tool.adapter)
+            
+            # Instanciar el provider
+            # Si es GenericDiscoveryProvider o similar, pasar parámetros extra
+            if tool.adapter in ["GenericDiscoveryProvider", "FuzzingProvider", "DBProbeProvider"]:
+                provider = adapter_class(tool.name, tool.executable, tool.cmd_template)
+            else:
+                provider = adapter_class()
+
+            for category in tool.categories:
+                self.register_provider(category, provider)
+                
+        except Exception as e:
+            logger.error(f"Error registering tool {tool.name}: {e}")
 
     def register_provider(self, capability: str, provider: BaseProvider):
         """Registra un proveedor para una capacidad específica."""

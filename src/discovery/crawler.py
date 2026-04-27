@@ -144,15 +144,15 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
     if js_files:
         log(f"Descargando {len(js_files[:20])} archivos JS...", "info")
         
-        import requests
-        import hashlib
-        
+from src.core.providers.http_clients import http_client
+import hashlib
+
         for js_url in js_files[:20]:
             try:
                 fname = hashlib.md5(js_url.encode()).hexdigest() + ".js"
                 fpath = js_dir / fname
                 
-                r = requests.get(js_url, timeout=15, verify=False)
+                r = http_client.get(js_url, timeout=15)
                 if r.status_code == 200:
                     fpath.write_bytes(r.content)
                     downloaded.append(str(fpath))

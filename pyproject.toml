@@ -39,7 +39,7 @@ dev = [
 ]
 
 [project.scripts]
-ozy = "cli.main:main"
+ozy = "cli.ozy:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

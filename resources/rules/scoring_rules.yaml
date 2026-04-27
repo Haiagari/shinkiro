@@ -1,0 +1,186 @@
+# OzyRecon Scoring Rules - Phase 5
+# Intelligent Scoring System for Discovered Assets
+
+version: "5.0"
+generated_by: "sdd-phase-5"
+generated_at: "2026-04-26T00:00:00Z"
+
+# Global weights for scoring factors
+weights:
+  reputation: 0.30      # How known/vulnerable the service is
+  novelty: 0.20         # How common vs rare the finding is
+  exposure: 0.25        # Public accessibility
+  context: 0.25         # Target-specific context
+
+# Service-specific heuristics
+services:
+  apache_php:
+    base_score: 45
+    factors:
+      - name: "version_detected"
+        weight: 0.15
+        conditions:
+          - value: "EOL"
+            modifier: +20
+          - value: "latest"
+            modifier: -10
+      - name: "config_exposure"
+        weight: 0.20
+        conditions:
+          - value: "phpinfo"
+            modifier: +25
+          - value: "git_exposed"
+            modifier: +15
+          - value: "env_file"
+            modifier: +20
+      - name: "module_present"
+        weight: 0.10
+        conditions:
+          - value: "mod_rewrite"
+            modifier: +5
+          - value: "mod_security"
+            modifier: -5
+    recommendations:
+      - "Critical: Information disclosure via phpinfo()"
+      - "Critical: Secrets exposure via .env file"
+      - "High: Outdated Apache/PHP version"
+
+  tomcat:
+    base_score: 65
+    factors:
+      - name: "version_detected"
+        weight: 0.20
+        conditions:
+          - value: "EOL"
+            modifier: +25
+          - value: "default_creds"
+            modifier: +30
+      - name: "path_accessible"
+        weight: 0.25
+        conditions:
+          - value: "/manager/html"
+            modifier: +20
+          - value: "/admin"
+            modifier: +25
+          - value: "/host-manager"
+            modifier: +20
+      - name: "http_method"
+        weight: 0.15
+        conditions:
+          - value: "PUT"
+            modifier: +30
+          - value: "WEBDAV"
+            modifier: +25
+    recommendations:
+      - "High: Deployer interface exposed"
+      - "Critical: File upload via PUT possible"
+
+  smb:
+    base_score: 50
+    factors:
+      - name: "version_detected"
+        weight: 0.15
+        conditions:
+          - value: "SMB1"
+            modifier: +30
+          - value: "anonymous"
+            modifier: +15
+      - name: "share_exposure"
+        weight: 0.30
+        conditions:
+          - value: "readable_sys"
+            modifier: +25
+          - value: "readable_admin"
+            modifier: +30
+          - value: "writable"
+            modifier: +35
+      - name: "signing_disabled"
+        weight: 0.20
+        modifier: +20
+    recommendations:
+      - "High: SMB1 vulnerable to NBSP"
+      - "Critical: Code execution via writable share"
+
+  s3_bucket:
+    base_score: 55
+    factors:
+      - name: "acl_public"
+        weight: 0.25
+        conditions:
+          - value: "allgetops"
+            modifier: +30
+          - value: "allputops"
+            modifier: +35
+      - name: "versioning"
+        weight: 0.15
+        conditions:
+          - value: "enabled"
+            modifier: -5
+          - value: "mfa_delete"
+            modifier: -10
+      - name: "access_logging"
+        weight: 0.10
+        conditions:
+          - value: "enabled"
+            modifier: -5
+          - value: "disabled"
+            modifier: +10
+    recommendations:
+      - "Critical: Full bucket control"
+      - "High: Data exfiltration possible"
+
+  jenkins:
+    base_score: 60
+    factors:
+      - name: "auth_disabled"
+        weight: 0.25
+        modifier: +25
+      - name: "script_console"
+        weight: 0.30
+        conditions:
+          - value: "accessible"
+            modifier: +35
+          - value: "api_exposed"
+            modifier: +20
+      - name: "credential_present"
+        weight: 0.20
+        conditions:
+          - value: "plaintext"
+            modifier: +30
+    recommendations:
+      - "Critical: Unauthenticated code execution"
+      - "Critical: Groovy RCE via script console"
+
+  redis:
+    base_score: 55
+    factors:
+      - name: "auth_disabled"
+        weight: 0.30
+        modifier: +30
+      - name: "protected_mode"
+        weight: 0.20
+        conditions:
+          - value: "no"
+            modifier: +20
+          - value: "yes"
+            modifier: -10
+      - name: "module_loaded"
+        weight: 0.15
+        conditions:
+          - value: "redismodule"
+            modifier: +25
+    recommendations:
+      - "Critical: Unauthenticated Redis access"
+      - "Critical: RCE via Redis CONFIG"
+
+# Criticality thresholds
+thresholds:
+  critical: 80
+  high: 60
+  medium: 40
+  low: 20
+
+# Integration hooks
+hooks:
+  post_discovery: "scoring.integrate"
+  on_validation_complete: "scoring.update_after_validation"

@@ -10,15 +10,12 @@ from src.modes.base import BaseMode
 from src.core.tool_manager import tool_manager
 from src.core.logging import get_logger
 from src.intelligence.intelligence import run_intelligence
-from src.storage.database import save_scan_to_db
 
 logger = get_logger('mode.hunt')
 
 class HuntMode(BaseMode):
     def __init__(self, target: str, options: Dict[str, Any] = None):
         super().__init__(target, "hunt", options)
-        # Asegurar registro de providers
-        import src.core.register_providers
 
     def validate_preconditions(self):
         if not self.target:
@@ -39,31 +36,22 @@ class HuntMode(BaseMode):
         intent = self.get_operational_intent()
         intent.update(opsec.get_operational_params())
 
-        # 3. Asset Discovery
-        logger.info("[HUNT] Phase 1: Asset Discovery")
-        subdomains = tool_manager.run_capability(
-            "asset_discovery", 
-            self.target, 
-            all_providers=True, 
-            opsec_manager=opsec,
-            **intent
-        )
-        subdomains = list(set(subdomains)) if subdomains else []
-        self.context.subdomains_found = len(subdomains)
-        logger.info(f"[HUNT] Found {len(subdomains)} subdomains")
-
-        # 4. Rapid Service Discovery (Feeding the Intelligence engine)
-        logger.info("[HUNT] Phase 2: Rapid Service Discovery")
-        services = []
-        # Focus on top candidates to ensure performance
-        targets_to_scan = [self.target] + subdomains[:5] 
-        for host in targets_to_scan:
-            res = tool_manager.run_capability("port_scan", host, opsec_manager=opsec, **intent)
-            if res:
-                logger.info(f"  • Found {len(res)} open ports on {host}")
-                services.extend(res)
+        # 3. Asset Discovery & Service Analysis (v6.0 Orchestrated Flow)
+        logger.info("[HUNT] Discovery & Analysis Phase (Orchestrated)")
+        from src.intelligence.orchestrator import DiscoveryOrchestrator
+        orchestrator = DiscoveryOrchestrator(self.db_session)
+        
+        # Phase 1: Passive
+        orchestrator.passive_discovery(self.target)
+        
+        # Phase 2: Active
+        orchestrator.active_resolution()
+        
+        # Phase 3: Services
+        orchestrator.service_analysis()
 
         # 4.5. v6.0 Logic Pattern Analysis
+
         logger.info("[HUNT] Phase 2.5: v6.0 Logic Pattern Analysis")
         from src.intelligence.logic_analyzer import LogicAnalyzer
         logic_brain = LogicAnalyzer()
@@ -83,14 +71,27 @@ class HuntMode(BaseMode):
             logger.info(f"🔥 v6.0 Brain found {len(logic_hypotheses)} logical attack paths!")
 
         # 5. Intelligence Correlation & Hypothesis Generation
-        logger.info("[HUNT] Phase 3: Intelligence & Hypothesis Generation")
+        logger.info("[HUNT] Phase 4: Intelligence & Hypothesis Generation")
         out_dir = Path(self.options.get("output") or f"runtime/scans/{self.target}/{self.session_id}")
+        
+        # Recuperar datos de la DB para el motor de inteligencia (ya persistidos por el orquestador)
+        from src.storage.models import Subdomain, Port
+        db_subdomains = self.db_session.query(Subdomain).all()
+        db_ports = self.db_session.query(Port).all()
         
         intel_context = {
             "config": self.options,
             "phases": {
-                "recon": {"all_subdomains": subdomains, "live_hosts": targets_to_scan},
-                "ports": {"open_ports": services},
+                "recon": {
+                    "all_subdomains": [s.domain for s in db_subdomains],
+                    "live_hosts": [s.domain for s in db_subdomains if s.is_live]
+                },
+                "ports": {
+                    "open_ports": [
+                        {"host": p.host, "port": p.port, "service": p.service, "version": p.version}
+                        for p in db_ports
+                    ]
+                },
                 "vulns": {"findings": []}
             }
         }
@@ -98,29 +99,16 @@ class HuntMode(BaseMode):
         # run_intelligence will handle internal persistence to Hypothesis table
         intel_results = run_intelligence(self.target, out_dir, self.options, context=intel_context)
 
-        # 6. Final Persistence (Scan & Findings tables)
+        # 6. Final Status Update
         self.context.mark_completed()
-        db_context = {
-            "target": self.target,
-            "start_time": self.context.started_at.isoformat(),
-            "out_dir": str(out_dir),
-            "scan_status": {"status": "completed", "phase": "intelligence_ready", "progress": 100},
-            "phases": intel_context["phases"]
-        }
-        save_scan_to_db(db_context)
-
+        
         logger.info(f"[HUNT] Discovery and Intelligence phase completed.")
         logger.info(f"Generated {len(intel_results.get('hypotheses', []))} hypotheses. Run 'ozy gate list' to review.")
-
-        # Cleanup if temporary session (v5.4)
-        if self.options.get("temp"):
-            logger.warning(f"[HUNT] Cleaning up temporary session data for {self.session_id}...")
-            workflow_engine.cleanup_session(self.session_id)
 
         return {
             "status": "completed",
             "session_id": self.session_id,
-            "subdomains": len(subdomains),
+            "subdomains": len(db_subdomains),
             "hypotheses": len(intel_results.get("hypotheses", []))
         }
 

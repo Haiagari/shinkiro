@@ -29,43 +29,35 @@ class ContinuousMode(BaseMode):
 
     def execute(self) -> Dict[str, Any]:
         logger.info(f"[CONTINUOUS] Starting monitoring cycle for {self.target}")
-        from src.intelligence.learning_orchestrator import learning_orchestrator
-        from src.storage.database import save_scan_to_db
+        from src.intelligence.orchestrator import DiscoveryOrchestrator
         
         intent = self.get_operational_intent()
         intent["noise"] = "low"
         intent["speed"] = "slow"
         
-        # 1. Discovery Ligero (Pasivo + Rápido)
-        logger.info("[CONTINUOUS] Phase 1: Light Asset Discovery")
-        current_subdomains = tool_manager.run_capability("asset_discovery", self.target, **intent)
-        current_subdomains = list(set(current_subdomains)) if current_subdomains else []
+        # 1. Discovery Orquestado (Passive + Active + Service)
+        logger.info("[CONTINUOUS] Phase 1: Orchestrated Discovery")
+        orchestrator = DiscoveryOrchestrator(self.db_session)
         
-        # Guardamos scan inicial para poder comparar
-        db_context = {
-            "target": self.target,
-            "start_time": self.context.start_time.isoformat(),
-            "out_dir": f"runtime/scans/{self.target}/{self.session_id}",
-            "scan_status": {"status": "running", "phase": "discovery", "progress": 30},
-            "phases": {
-                "recon": {"all_subdomains": current_subdomains, "live_hosts": []},
-                "ports": {"open_ports": []},
-                "vulns": {"findings": []}
-            }
-        }
-        save_scan_to_db(db_context)
-        
-        # Obtenemos el ID del scan recién creado para el DiffEngine
-        target_obj = self.db.get_target(self.target)
-        scan_id = self.db.query(self.db.models.Scan.id).filter(
-            self.db.models.Scan.session_id == self.session_id
-        ).first()[0]
+        # Guardar snapshot inicial del scan
+        from src.storage.models import Scan
+        scan = Scan(
+            target_id=self.db.get_target(self.target).id,
+            session_id=self.session_id,
+            mode="continuous",
+            status="running"
+        )
+        self.db_session.add(scan)
+        self.db_session.commit()
 
-        # 2. Calcular DIFF
-        diff_report = self.diff_engine.get_diff(self.target, scan_id)
+        # Ejecutar fases
+        orchestrator.passive_discovery(self.target)
+        orchestrator.active_resolution()
+        
+        # 2. Calcular DIFF (basado en lo que el orquestador acaba de persistir/actualizar)
+        diff_report = self.diff_engine.get_diff(self.target, scan.id)
         
         all_findings = []
-        all_services = []
 
         if diff_report.has_changes():
             logger.warning(f"[CONTINUOUS] Changes detected: {diff_report.summary()}")
@@ -74,13 +66,15 @@ class ContinuousMode(BaseMode):
             from src.notifications.telegram import notifier
             notifier.notify_diff(self.target, diff_report)
             
-            # A. Nuevos Activos -> Escaneo Completo solo a estos
+            # A. Nuevos Activos -> Análisis de Servicios y Vulns
             if diff_report.new_subdomains:
-                logger.info(f"[CONTINUOUS] Targeted scan on {len(diff_report.new_subdomains)} new subdomains")
+                logger.info(f"[CONTINUOUS] Targeted service scan on {len(diff_report.new_subdomains)} new subdomains")
+                # Aquí podríamos usar orchestrator.service_analysis() filtrando por nuevos, 
+                # pero por simplicidad el orquestador ya analiza lo que está 'live'.
+                # Si queremos ser EFICIENTES, el orquestador debería soportar filtros.
+                orchestrator.service_analysis() 
+                
                 for sub in diff_report.new_subdomains:
-                    # Puertos
-                    p_res = tool_manager.run_capability("port_scan", sub, **intent)
-                    if p_res: all_services.extend(p_res)
                     # Vulns
                     v_res = tool_manager.run_capability("template_scan", sub, **intent)
                     if v_res: all_findings.extend(v_res)
@@ -92,14 +86,12 @@ class ContinuousMode(BaseMode):
                     v_res = tool_manager.run_capability("template_scan", change['host'], **intent)
                     if v_res: all_findings.extend(v_res)
 
-            # Sincronizamos con DB los resultados finales del delta
-            db_context["scan_status"] = {"status": "completed", "phase": "finalized", "progress": 100}
-            db_context["phases"]["ports"]["open_ports"] = all_services
-            db_context["phases"]["vulns"]["findings"] = all_findings
-            save_scan_to_db(db_context)
-
         else:
             logger.info("[CONTINUOUS] No changes detected. Target surface is stable.")
+
+        # Actualizar estado final
+        scan.status = "completed"
+        self.db_session.commit()
 
         # --- EXPORT NORMALIZADO ---
         from src.export.normalizer import exporter

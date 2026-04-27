@@ -18,16 +18,27 @@
 
 ## 🎭 v6.0 Core Pillars: "The Phantom Blade"
 
-OzyRecon v6.0 marks a paradigm shift from traditional scanning to **Advanced Persistent Reconnaissance**.
+OzyRecon v6.0 marks a paradigm shift from traditional scanning to **Advanced Persistent Reconnaissance**, now operating as a high-fidelity headless engine orchestrated by the **Ozy Platform**.
 
 ### 1. 🧤 Advanced Stealth (The Chameleon)
-Powered by `curl_cffi`, OzyRecon now bypasses modern WAFs (Cloudflare, Akamai) via **TLS Fingerprint Impersonation** and **Synthetic Identity Generation**. Your requests look like a real user, not a tool.
+Powered by `curl_cffi`, OzyRecon bypasses modern WAFs (Cloudflare, Akamai) via **TLS Fingerprint Impersonation**. As a headless engine, it delivers stealthy telemetry directly to the Ozy Platform control plane.
 
 ### 2. 🎯 Surgical Exploitation
-No more noisy scans. OzyRecon uses **Evidence-Based Probing** to validate findings with minimal footprint. It only executes precise payloads when the relationship-logic confirms a high probability of success.
+No more noisy scans. OzyRecon uses **Evidence-Based Probing** to validate findings with minimal footprint. Results are normalized and streamed to the Platform's Tactical HUD for real-time analysis.
 
 ### 3. 🔍 Logic-Bug Pattern Matching
-Leveraging the **Knowledge Graph**, the v6.0 Engine correlates data across isolated assets to discover complex logical attack paths (e.g., cross-asset IDORs, credential leakage bridges).
+Leveraging the **Knowledge Graph**, the v6.0 Engine correlates data across isolated assets to discover complex logical attack paths, now visualized through the Platform's "Security Deep-Dive" console.
+
+---
+
+## 🏗️ Platform Integration (Brain & Muscle)
+
+OzyRecon now serves as the **Offensive Recon Muscle** within the **Ozy Platform** ecosystem:
+
+- **Headless Execution**: Optimized for non-interactive reconnaissance via the Go orchestrator.
+- **Unified Telemetry**: All findings, attack paths, and graph nodes are persisted in the centralized `data/scans.json`.
+- **Tactical Visualization**: Attack surfaces and relationship graphs are presented in the Platform's High-Fidelity Tactical Console.
+- **Shared Infrastructure**: Operates within the Platform's unified Python environment (`venv/`).
 
 ---
 
@@ -105,16 +116,45 @@ Built for **compliance, trust, and reproducibility**.
 
 ## ⚡ Quick Start
 
+### 1. Unified Execution (Recommended)
+OzyRecon is now integrated into the **Ozy Platform**. To start the full stack:
+
 ```bash
-git clone https://github.com/SamBleed/OzyRecon.git
-cd OzyRecon
-./setup.sh
-./ozy.py
+cd ../ozy-platform
+./ozy.sh start
+```
+
+### 2. Standalone Engine (Dev Mode)
+To run OzyRecon as a standalone headless agent:
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Execute reconnaissance
+python -m engine.main --target target.com
+```
+
+### 3. Orchestration
+```bash
+ozy scan target.com --engine ozyrecon
 ```
 
 ---
 
 ## 📚 Documentation
+
+### Primary docs
+
+* 🧾 [Phase 0 Audit](OZYRECON_PHASE0_AUDIT.md)
+* 🧰 [Hardening Plan](OZYRECON_HARDENING_PLAN.md)
+
+### Supporting docs
+
+* 🧭 [Improvement Plan](OZYRECON_IMPROVEMENT_PLAN.md)
+* 🪧 [Operational Plan](OZYRECON_OPERATIONAL_PLAN.md)
+
+### General docs
 
 * 📦 [Installation](docs/INSTALL.md)
 * 🧪 [Use Cases](docs/USE_CASES.md)

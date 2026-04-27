@@ -6,9 +6,11 @@ Resilience Mode: Fallback a requests si curl_cffi no está disponible.
 
 import time
 import random
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, Union
+import certifi
 from src.core.logging import get_logger
 from src.opsec.chameleon import chameleon
+from src.core.errors import StealthSSLError, StealthRequestError
 
 # Intento de importar curl_cffi con fallback a requests
 try:
@@ -31,7 +33,10 @@ class OzyHTTPClient:
         self.last_request_time = 0
         self.min_interval = 1.0 if HAS_STEALTH else 0.1 # Jitter agresivo solo si hay sigilo
         
-        if not HAS_STEALTH:
+        if HAS_STEALTH:
+            self.session = stealth_requests.Session()
+        else:
+            self.session = stealth_requests.Session()
             logger.warning("Stealth Layer (curl_cffi) not found. Running in Legacy Mode.")
 
     def _wait_for_rate_limit(self):
@@ -46,6 +51,7 @@ class OzyHTTPClient:
         url: str,
         headers: Optional[Dict[str, str]] = None,
         impersonate: Optional[str] = None,
+        verify: Optional[Union[bool, str]] = None,
         **kwargs
     ) -> Any:
         self._wait_for_rate_limit()
@@ -57,30 +63,42 @@ class OzyHTTPClient:
         # Gestionar timeout
         req_timeout = kwargs.pop('timeout', self.timeout)
         
+        # Configurar verify por defecto con certifi
+        if verify is None:
+            verify = certifi.where()
+        
         try:
             if HAS_STEALTH:
                 imp = impersonate or self.identity.tls_profile
                 if imp == 'chrome': imp = 'chrome124'
                 
-                return stealth_requests.request(
+                return self.session.request(
                     method, url, 
                     headers=request_headers, 
                     impersonate=imp,
+                    verify=verify,
                     timeout=req_timeout,
                     **kwargs
                 )
             else:
                 # Modo Legacy sin impersonation
-                return stealth_requests.request(
+                return self.session.request(
                     method, url, 
                     headers=request_headers, 
+                    verify=verify,
                     timeout=req_timeout,
                     **kwargs
                 )
             
         except Exception as e:
-            logger.error(f"Request failed: {url} - {e}")
-            raise
+            error_msg = str(e)
+            logger.error(f"Request failed: {url} - {error_msg}")
+            
+            # Mapeo de excepciones
+            if "SSL" in error_msg or "certificate" in error_msg.lower():
+                raise StealthSSLError(f"SSL/TLS Error: {error_msg}") from e
+            
+            raise StealthRequestError(f"Request Error: {error_msg}") from e
 
     def get(self, url: str, **kwargs): return self.request("GET", url, **kwargs)
     def post(self, url: str, **kwargs): return self.request("POST", url, **kwargs)

@@ -1,0 +1,40 @@
+tools:
+  - name: subfinder
+    executable: subfinder
+    adapter: SubfinderProvider
+    categories: ["asset_discovery"]
+    enabled: true
+
+  - name: assetfinder
+    executable: assetfinder
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} --subs-only {target} > {out}"
+    categories: ["asset_discovery"]
+    enabled: true
+
+  - name: amass
+    executable: amass
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} enum -passive -timeout 2 -d {target} -o {out}"
+    categories: ["asset_discovery"]
+    enabled: true
+
+  - name: nmap
+    executable: nmap
+    adapter: NmapProvider
+    categories: ["service_discovery"]
+    enabled: true
+
+  - name: httpx
+    executable: httpx
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} -l {target} -silent -status-code -title -tech-detect -o {out} -threads {threads}"
+    categories: ["live_detection"]
+    enabled: true
+
+  - name: dnsx
+    executable: dnsx
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} -l {target} -silent -o {out} -t {threads}"
+    categories: ["dns_resolution"]
+    enabled: true

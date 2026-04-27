@@ -3,13 +3,10 @@ HTTP Validator - Validación de hipótesis a nivel protocolo v5.0
 """
 
 from typing import Dict, Any
-import requests
-import urllib3
+from src.core.providers.http_clients import http_client
+from src.core.errors import StealthSSLError, StealthRequestError
 from src.validation.base import BaseValidator, ValidationResult
 from src.core.logging import get_logger
-
-# Desactivar warnings de SSL para validación
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = get_logger('validation.http')
 
@@ -26,8 +23,8 @@ class HTTPValidator(BaseValidator):
         notes = ""
 
         try:
-            # Simulación de validación controlada
-            response = requests.get(url, timeout=10, verify=False, allow_redirects=True)
+            # Simulación de validación controlada usando el cliente unificado
+            response = http_client.get(url, timeout=10)
             
             # Evidencia: Metadata de la respuesta
             evidence.append(self.create_evidence(
@@ -67,10 +64,15 @@ class HTTPValidator(BaseValidator):
                 except Exception as ex:
                     logger.error(f"Screenshot failed: {str(ex)}")
 
-        except Exception as e:
-
-            logger.error(f"Validation error: {str(e)}")
+        except (StealthSSLError, StealthRequestError) as e:
+            logger.error(f"Stealth validation error: {str(e)}")
             notes = f"Error during validation: {str(e)}"
+            status = "refuted"
+            confidence = 0.1
+
+        except Exception as e:
+            logger.error(f"General validation error: {str(e)}")
+            notes = f"Unexpected error: {str(e)}"
             status = "refuted"
             confidence = 0.1
 

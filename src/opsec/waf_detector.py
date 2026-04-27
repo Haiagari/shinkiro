@@ -3,9 +3,8 @@ Detector de WAFs y sistemas de protección.
 Ajuste estrategias según el WAF detectado.
 """
 
-import requests
 import re
-from src.utils import log, get_stealth_headers
+from src.utils import log
 
 # Headers que indican WAF
 WAF_HEADERS = {
@@ -51,9 +50,8 @@ def detect_waf(url: str) -> dict:
     protection_level = "none"
     
     try:
-        # Usar headers de sigilo
-        headers_stealth = get_stealth_headers()
-        r = requests.get(url, headers=headers_stealth, timeout=10, verify=False)
+        from src.core.providers.http_clients import http_client
+        r = http_client.get(url, timeout=10)
         
         resp_headers = r.headers
         text = r.text.lower()
