@@ -1,14 +1,26 @@
-# OzyRecon v5.7 Architecture — Assisted Offensive Validation Platform
+# OzyRecon v6.0 Architecture — Safe Autonomy, Normalized Output, and Traceability
 
 ## Overview
 
-OzyRecon v5.7 es una **Security Validation Platform** diseñada para transformar el reconocimiento ofensivo en inteligencia auditable y de alta confianza. Se especializa en descubrimiento de superficie, validación asistida y evidencia visual con integridad criptográfica.
-
-**Filosofía: NO EXPLOITATION** — Confirmamos exposición, no la explotamos.
+OzyRecon v6.0 ha evolucionado a un **headless reconnaissance engine** con contrato de runtime local explícito. Se especializa en reconocimiento controlado, correlación de activos, salida normalizada y trazabilidad de sesiones. La integración con la plataforma vive en el contrato del bridge, no en el runtime principal de este árbol.
 
 ---
 
-## Los 8 Pilares de OzyRecon
+## Runtime Surface
+
+El runtime expone estos puntos de entrada:
+
+1. `ozy.py` como entrypoint local canónico.
+2. `cli/ozy.py` como wrapper de línea de comandos.
+3. `src/core/api.py` como API FastAPI.
+4. `src/export/normalizer.py` como contrato de salida normalizado.
+5. `GET /sessions/{session_id}/trace` como superficie de trazabilidad.
+
+La integración con Ozy Platform se define por `docs/BRIDGE_CONTRACT.md` y no por el runtime interno de este árbol.
+
+---
+
+## Los Pilares de OzyRecon v6.0
 
 ### 1. Tool Manager + Capabilities
 Abstracción de herramientas basada en capacidades:
@@ -53,7 +65,12 @@ Scoring dinámico basado en:
 - Recomendaciones concretas
 
 ### 8. Output Normalizado
-- `ScanResult` schema: JSON para OzyAudit, Markdown para clientes, CSV, Burp SAR
+- `ScanResult` schema: JSON normalizado para consumo de plataforma y export local
+
+### 9. Observability and Traceability
+- `ScanContext` mantiene timeline de eventos
+- `BaseMode` adjunta observability al envelope de salida
+- `GET /sessions/{session_id}/trace` consolida scan, session, workflow, evidence y decisions
 
 ---
 
@@ -97,7 +114,7 @@ src/
 
 ---
 
-## API Endpoints (src/core/api.py)
+## API Endpoints (`src/core/api.py`)
 
 | Endpoint | Método | Descripción |
 |----------|--------|-------------|
@@ -107,6 +124,7 @@ src/
 | `/intelligence/export` | GET | Exporta brain a .ozy |
 | `/targets` | GET | Lista de targets conocidos |
 | `/targets/{domain}/latest` | GET | Último scan normalizado |
+| `/sessions/{session_id}/trace` | GET | Trazado consolidado de una sesión |
 | `/gate/pending` | GET | Hipótesis pendientes de aprobación |
 | `/gate/approve/{hyp_id}` | POST | Aprueba hipótesis |
 | `/gate/reject/{hyp_id}` | POST | Rechaza hipótesis |
@@ -115,42 +133,45 @@ src/
 
 ---
 
-## Technical Flow: Visual Evidence (v5.7)
+## Technical Flow: Evidence and Traceability
 
-1. **Detection**: `HTTPValidator` confirma un finding sensible
-2. **Trigger**: Si status es `confirmed`, llama `src.utils.visual.capture_screenshot()`
-3. **Headless Execution**: Playwright lanza Chromium headless, navega y renderiza
-4. **Capture**: PNG guardado en `runtime/evidence/screenshots/`
-5. **Integrity**: `EvidenceEngine` calcula SHA256 del archivo
+1. **Detection**: `HTTPValidator` o un validador equivalente produce un hallazgo o hipótesis.
+2. **Gate**: La policy decide si puede ejecutarse o si requiere aprobación.
+3. **Evidence**: `EvidenceEngine` registra evidencia ligada a la hipótesis.
+4. **Trace**: `ScanContext` agrega eventos a su timeline y `BaseMode` adjunta el record observability.
+5. **Replay**: `GET /sessions/{session_id}/trace` reconstruye la ejecución desde DB.
 
 ---
 
-## Data Flow Pipeline
+## Data Flow Pipeline (Platform Unified)
 
 ```
-Target → Discovery → Intelligence (Correlation)
-                     ↓
-             [HYPOTHESIS GENERATED]
-                     ↓
-               [HUMAN GATE] <─── Operator Authorization
-                     ↓
-             [VALIDATION LAYER] ───> Surgical Probes
-                     ↓
-              [VISUAL EVIDENCE] ───> Automated Screenshots + SHA256
-                     ↓
-              [EVIDENCE ENGINE] ───> Secure Evidence Vault
-                     ↓
-               [REPORT ENGINE] ───> Executive Narrative (MD/JSON)
+Target → Ozy Platform Orchestrator → OzyRecon Engine
+                                          ↓
+                              [STEALTH RECONNAISSANCE]
+                                          ↓
+                            [KNOWLEDGE GRAPH CORRELATION]
+                                          ↓
+                            [NORMALIZED TELEMETRY STREAM]
+                                          ↓
+                       Ozy Platform Data Layer (data/scans.json)
+                                          ↓
+                         Tactical HUD (Relationship Surface Map)
 ```
 
 ---
 
 ## Project Status
 
-**Phase 1: Adaptativo (reacciona al delta)** — ✅ COMPLETED  
-**Phase 2: Reflexivo (evalúa y aprende)** — ✅ COMPLETED  
-**Classification**: Professional Security Validation Platform
+**Phase 3: The Phantom Blade** — current runtime baseline
+**Phase 4: Safe Autonomy** — completed in this tree as review planning and non-exploitative correlation
+**Phase 5: Harden Safety and Scope** — implemented in the runtime path
+**Phase 6: Normalize Output and Contracts** — implemented through the shared mode envelope
+**Phase 7: Observability and Traceability** — implemented through timeline + trace surfaces
+**Phase 8: Documentation Alignment** — completed in this tree
 
-**Test Suite**: 43 tests passing (API integration + architecture)
+**Classification**: Professional security validation and reconnaissance platform
 
-**Última actualización**: 24/04/2026
+**Validation**: focused contract, trace, and round-trip tests passing in the current tree
+
+**Última actualización**: 26/04/2026 (Hardening closure)

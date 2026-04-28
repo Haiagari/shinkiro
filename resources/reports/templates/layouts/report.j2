@@ -1,0 +1,140 @@
+{# layouts/report.j2 - Main report layout extending base.j2 #}
+{% extends "base.j2" %}
+
+{% block title %}Security Assessment Report - {{ scan_info.target if scan_info else 'OzyRecon' }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Layout-specific styles */
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 30px;
+        margin-bottom: 50px;
+    }
+
+    .audit-meta {
+        text-align: right;
+        font-size: 13px;
+        color: var(--secondary);
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .section-header {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--secondary);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        margin: 40px 0 25px 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 60px;
+    }
+
+    .chart-box {
+        border: 1px solid var(--border);
+        padding: 25px;
+        border-radius: 12px;
+    }
+
+    footer {
+        margin-top: 100px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        font-size: 11px;
+        color: var(--secondary);
+    }
+
+    /* Print styles */
+    @media print {
+        header { page-break-after: avoid; }
+        .section-header { page-break-after: avoid; }
+        table { page-break-inside: avoid; }
+        .finding-row { page-break-inside: avoid; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    {# Import macros #}
+    {% import "macros.j2" as macros %}
+
+    {# Header Section #}
+    <header>
+        <div>
+            <span style="color: var(--accent); font-weight: 600; font-size: 14px; text-transform: uppercase;">
+                Cybersecurity Assessment Report
+            </span>
+            <h1>{{ scan_info.target if scan_info else 'N/A' }}</h1>
+            {% if scan_info and scan_info.timestamp %}
+                <p style="color: var(--secondary); font-size: 13px; margin-top: 8px;">
+                    Scan Date: {{ macros.format_date(scan_info.timestamp) }}
+                </p>
+            {% endif %}
+        </div>
+        <div class="audit-meta">
+            {% if scan_info %}
+                {% if scan_info.ozy_version %}
+                    OzyRecon v{{ scan_info.ozy_version }}<br>
+                {% endif %}
+                {% if scan_info.duration %}
+                    Duration: {{ "%.2f"|format(scan_info.duration) }}s<br>
+                {% endif %}
+            {% endif %}
+            Report Generated: {{ macros.format_date(scan_info.timestamp if scan_info else '') }}
+        </div>
+    </header>
+
+    {# Summary Section #}
+    {% include "partials/summary.j2" %}
+
+    {# Charts Section #}
+    {% include "partials/charts.j2" %}
+
+    {# Findings Section #}
+    {% include "partials/findings.j2" %}
+
+    {# Scoring / Top 5 Critical Assets #}
+    {% include "partials/scoring.j2" %}
+
+    {# Attack Paths #}
+    {% include "partials/attack_paths.j2" %}
+
+    {# Footer #}
+    <footer>
+        CONFIDENTIAL - OzyRecon v{{ scan_info.ozy_version if scan_info and scan_info.ozy_version else '6.0' }} Intelligence Platform.
+        Generated for authorized use only.
+        {% if scan_info and scan_info.timestamp %}
+            <br>Report generated on {{ macros.format_date(scan_info.timestamp) }}
+        {% endif %}
+    </footer>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Chart.js configurations will be injected here
+    {% if charts %}
+        {% for chart_name, chart_config in charts.items() %}
+            {% if chart_config %}
+                new Chart(document.getElementById('{{ chart_name }}'), {
+                    type: '{{ chart_config.chart_type }}',
+                    data: {
+                        labels: {{ chart_config.labels|tojson }},
+                        datasets: {{ chart_config.datasets|tojson }}
+                    },
+                    options: {{ chart_config.options|tojson if chart_config.options else '{}' }}
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+{% endblock %}

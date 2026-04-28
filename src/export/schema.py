@@ -8,6 +8,8 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from enum import Enum
 
+from src.core.contracts import CONTRACT_VERSION
+
 
 class SeverityLevel(str, Enum):
     """Niveles de severidad."""
@@ -111,6 +113,7 @@ class ScanResult:
     type: str = "scan-result"
     source: str = "ozy-recon"
     version: str = "1.0"
+    contract_version: str = CONTRACT_VERSION
     
     # Identificación
     session_id: str = ""
@@ -170,6 +173,9 @@ class ScanResult:
             'ports_found': scan.ports_found,
             'findings': scan.findings,
         }
+
+        if scan.errors:
+            result.errors = [line.strip() for line in scan.errors.splitlines() if line.strip()]
         
         return result
 

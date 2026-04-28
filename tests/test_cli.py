@@ -104,6 +104,11 @@ class TestCliDirectoryStructure:
         main_file = ROOT_DIR / 'cli' / '__main__.py'
         assert main_file.exists(), "cli/__main__.py must exist"
 
+    def test_root_ozy_py_exists(self):
+        """Test 1.3b: ozy.py debe existir como wrapper estable del runtime"""
+        root_entry = ROOT_DIR / 'ozy.py'
+        assert root_entry.exists(), "ozy.py must exist"
+
     def test_cli_commands_init_exists(self):
         """Test 1.4: cli/commands/__init__.py debe existir"""
         commands_init = ROOT_DIR / 'cli' / 'commands' / '__init__.py'

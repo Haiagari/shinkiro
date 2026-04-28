@@ -1,0 +1,287 @@
+/*
+ * OzyRecon Report Styles
+ * Print-friendly CSS for WeasyPrint PDF generation
+ */
+
+/* Base styles */
+:root {
+    --primary-color: #1a365d;
+    --secondary-color: #2d3748;
+    --accent-color: #3182ce;
+    --critical-color: #e53e3e;
+    --high-color: #dd6b20;
+    --medium-color: #d69e2e;
+    --low-color: #38a169;
+    --bg-color: #ffffff;
+    --text-color: #2d3748;
+    --border-color: #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: var(--text-color);
+    background: var(--bg-color);
+    padding: 20px;
+}
+
+/* Header */
+.report-header {
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.report-header h1 {
+    color: var(--primary-color);
+    font-size: 24pt;
+    margin-bottom: 5px;
+}
+
+.report-header .meta {
+    color: var(--secondary-color);
+    font-size: 10pt;
+}
+
+/* Executive Summary */
+.executive-summary {
+    background: #f7fafc;
+    border-left: 4px solid var(--accent-color);
+    padding: 15px;
+    margin-bottom: 25px;
+}
+
+/* Findings Table */
+.findings-section {
+    margin-bottom: 30px;
+}
+
+.findings-section h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th {
+    background: var(--primary-color);
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-size: 10pt;
+}
+
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 10pt;
+}
+
+/* Severity Badges */
+.severity-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 9pt;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.severity-critical {
+    background: var(--critical-color);
+    color: white;
+}
+
+.severity-high {
+    background: var(--high-color);
+    color: white;
+}
+
+.severity-medium {
+    background: var(--medium-color);
+    color: white;
+}
+
+.severity-low {
+    background: var(--low-color);
+    color: white;
+}
+
+/* Scoring / Top 5 Assets */
+.scoring-section {
+    margin-bottom: 30px;
+}
+
+.asset-card {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #f7fafc;
+}
+
+.asset-card .asset-name {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.asset-card .criticality-score {
+    float: right;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+/* Attack Paths */
+.attack-path {
+    border-left: 4px solid var(--accent-color);
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+.attack-path h3 {
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+}
+
+.attack-path ol {
+    margin-left: 20px;
+}
+
+/* Charts - Static Fallback */
+.chart-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.chart-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Footer */
+.report-footer {
+    border-top: 2px solid var(--border-color);
+    padding-top: 15px;
+    margin-top: 40px;
+    font-size: 9pt;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+/* Print-specific styles */
+@media print {
+    body {
+        padding: 0;
+    }
+
+    .page-break {
+        page-break-before: always;
+    }
+
+    /* Avoid breaking inside these elements */
+    table, .asset-card, .attack-path {
+        page-break-inside: avoid;
+    }
+
+    /* Chart.js fallback - ensure images are visible */
+    .chart-container {
+        page-break-inside: avoid;
+    }
+}
+
+/* Chart.js Canvas Fallback (when JS is disabled/PDF) */
+.chart-fallback {
+    display: none;
+    padding: 20px;
+    background: #f7fafc;
+    border: 1px dashed var(--border-color);
+    text-align: left;
+    color: var(--secondary-color);
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+@media print {
+    .chart-fallback {
+        display: block !important;
+    }
+
+    canvas {
+        display: none !important;
+    }
+}
+
+/* Progress Bar Styles */
+.progress-bar-container {
+    width: 100%;
+    background: #e2e8f0;
+    height: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.progress-bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    min-width: 30px;
+    transition: width 0.3s ease;
+}
+
+/* Finding Details (Evidence/Remediation) */
+details {
+    font-size: 11px;
+}
+
+details summary {
+    cursor: pointer;
+    color: var(--accent-color);
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+details pre {
+    background: #f7fafc;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 10pt;
+    margin-top: 5px;
+}
+
+details p {
+    margin: 5px 0;
+    font-size: 11pt;
+}
+
+/* Table Improvements */
+.finding-row:hover {
+    background: #f7fafc;
+}
+
+/* Asset Card Improvements */
+.asset-card {
+    transition: box-shadow 0.2s ease;
+}
+
+.asset-card:hover {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+}

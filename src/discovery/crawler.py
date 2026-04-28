@@ -1,5 +1,7 @@
 from pathlib import Path
 from urllib.parse import urlparse
+from src.core.providers.http_clients import http_client
+import hashlib
 from src.utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -143,10 +145,6 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
     
     if js_files:
         log(f"Descargando {len(js_files[:20])} archivos JS...", "info")
-        
-from src.core.providers.http_clients import http_client
-import hashlib
-
         for js_url in js_files[:20]:
             try:
                 fname = hashlib.md5(js_url.encode()).hexdigest() + ".js"

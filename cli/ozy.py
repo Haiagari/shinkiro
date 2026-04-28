@@ -17,6 +17,9 @@ from rich.theme import Theme
 # Task 2.10: Importar config al inicio (línea 1 después de docstring)
 from src.core.config import config  # noqa: E402 (import after docstring)
 
+# Task 6.1: Import report command (handled in main to avoid circular imports)
+# from cli.commands.report import report
+
 
 # Task 2.7: register_mode_commands - carga dinámica de modos usando pkgutil
 def register_mode_commands() -> List[click.Command]:
@@ -263,6 +266,10 @@ def main() -> int:
     Returns:
         Exit code (0 = éxito, 1 = error)
     """
+    # Task 6.4: Registrar subcomando de reportes
+    from cli.commands.report import report
+    cli.add_command(report)
+
     # Task 3.1-3.2: Registrar signal handlers para shutdown limpio
     _setup_signal_handlers()
     

@@ -1,6 +1,6 @@
-# 🧠 OzyRecon v6.0 — *Phantom Blade*
+# 🧠 OzyRecon v6.0 — *Safe Autonomy*
 
-> **Advanced Offensive Reconnaissance: Invisible. Surgical. Logical.**
+> **Headless reconnaissance with normalized output, explicit gates, and platform-friendly contracts.**
 
 <div align="center">
 
@@ -10,35 +10,36 @@
 
 [![Version](https://img.shields.io/badge/version-v6.0.0--alpha-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-red?style=flat-square&labelColor=0a0f1a)](LICENSE)
-[![Security](https://img.shields.io/badge/stealth-APT--grade-00ff88?style=flat-square&labelColor=0a0f1a)]()
+[![Security](https://img.shields.io/badge/security-controlled--recon-00ff88?style=flat-square&labelColor=0a0f1a)]()
 
 </div>
 
 ---
 
-## 🎭 v6.0 Core Pillars: "The Phantom Blade"
+## 🎭 v6.0 Core Pillars: "Safe Autonomy"
 
-OzyRecon v6.0 marks a paradigm shift from traditional scanning to **Advanced Persistent Reconnaissance**, now operating as a high-fidelity headless engine orchestrated by the **Ozy Platform**.
+OzyRecon v6.0 is a headless reconnaissance engine with a local runtime contract in this tree. It focuses on safe autonomy, contract-driven output, and explicit validation gates. The platform bridge is defined separately in [`docs/BRIDGE_CONTRACT.md`](docs/BRIDGE_CONTRACT.md).
 
-### 1. 🧤 Advanced Stealth (The Chameleon)
-Powered by `curl_cffi`, OzyRecon bypasses modern WAFs (Cloudflare, Akamai) via **TLS Fingerprint Impersonation**. As a headless engine, it delivers stealthy telemetry directly to the Ozy Platform control plane.
+### 1. 🧤 Stealth-Aware Transport
+Powered by `curl_cffi`, OzyRecon keeps transport handling consistent while preserving the ability to adapt to defensive controls without assuming a fixed network fingerprint.
 
-### 2. 🎯 Surgical Exploitation
-No more noisy scans. OzyRecon uses **Evidence-Based Probing** to validate findings with minimal footprint. Results are normalized and streamed to the Platform's Tactical HUD for real-time analysis.
+### 2. 🎯 Gated Validation
+OzyRecon uses evidence-based probing with explicit approval policy. Results are normalized and streamed to the platform for review and correlation.
 
-### 3. 🔍 Logic-Bug Pattern Matching
-Leveraging the **Knowledge Graph**, the v6.0 Engine correlates data across isolated assets to discover complex logical attack paths, now visualized through the Platform's "Security Deep-Dive" console.
+### 3. 🔍 Correlation-First Analysis
+The Knowledge Graph correlates data across assets to highlight relationships, exposure patterns, and review priorities.
 
 ---
 
-## 🏗️ Platform Integration (Brain & Muscle)
+## 🏗️ Runtime Surface
 
-OzyRecon now serves as the **Offensive Recon Muscle** within the **Ozy Platform** ecosystem:
+OzyRecon exposes a local engine surface that can be consumed directly or through the platform bridge:
 
-- **Headless Execution**: Optimized for non-interactive reconnaissance via the Go orchestrator.
-- **Unified Telemetry**: All findings, attack paths, and graph nodes are persisted in the centralized `data/scans.json`.
-- **Tactical Visualization**: Attack surfaces and relationship graphs are presented in the Platform's High-Fidelity Tactical Console.
-- **Shared Infrastructure**: Operates within the Platform's unified Python environment (`venv/`).
+- **Local entrypoint**: [`ozy.py`](ozy.py)
+- **API runtime**: [`src/core/api.py`](src/core/api.py)
+- **Normalized export**: [`src/export/normalizer.py`](src/export/normalizer.py)
+- **Runtime trace**: `GET /sessions/{session_id}/trace`
+- **Bridge contract**: [`docs/BRIDGE_CONTRACT.md`](docs/BRIDGE_CONTRACT.md)
 
 ---
 
@@ -48,12 +49,12 @@ OzyRecon doesn’t scan targets — it builds **relationships**.
 
 * Assets become **nodes**
 * Connections become **edges**
-* Weak signals become **Attack Paths**
+* Weak signals become **review priorities**
 
 <div align="center">
   <img src="assets/knowledge-graph-v5.png" alt="Knowledge Graph Visualization" width="900">
   <br>
-  <sub><i>Knowledge Graph correlating infrastructure into actionable attack paths.</i></sub>
+<sub><i>Knowledge Graph correlating infrastructure into reviewable relationships.</i></sub>
 </div>
 
 ---
@@ -65,7 +66,7 @@ OzyRecon doesn’t scan targets — it builds **relationships**.
 Findings are **validated through relationships**, not isolated signals.
 
 → Open port ≠ vulnerability
-→ Correlated evidence = **Critical Attack Vector**
+→ Correlated evidence = **review candidate**
 
 ---
 
@@ -80,10 +81,10 @@ Evidence-based scoring eliminates irrelevant data.
 
 ### 🧑‍💻 Human-in-the-Loop Security
 
-No blind exploitation.
+No blind execution.
 
 ```text
-Attack Hypothesis → PENDING_APPROVAL → Controlled Execution
+Review Candidate → PENDING_APPROVAL → Controlled Execution
 ```
 
 You decide **when** and **what** runs.
@@ -117,28 +118,57 @@ Built for **compliance, trust, and reproducibility**.
 ## ⚡ Quick Start
 
 ### 1. Unified Execution (Recommended)
-OzyRecon is now integrated into the **Ozy Platform**. To start the full stack:
+Start the local engine runtime from this repository:
 
 ```bash
-cd ../ozy-platform
-./ozy.sh start
+python ozy.py --help
+python ozy.py
 ```
 
-### 2. Standalone Engine (Dev Mode)
-To run OzyRecon as a standalone headless agent:
+### 2. CLI Automation
+Use the CLI wrapper for scripted runs:
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Execute reconnaissance
-python -m engine.main --target target.com
+python -m cli --help
+python -m cli hunt target.com
 ```
 
-### 3. Orchestration
+### 3. Report Generation
+Generate dynamic HTML and PDF reports:
+
 ```bash
-ozy scan target.com --engine ozyrecon
+# Basic HTML report
+python ozy.py report target.com
+
+# PDF report (requires system dependencies)
+python ozy.py report target.com --format pdf
+
+# Both formats in a specific directory
+python ozy.py report target.com --format both --output my_reports/
 ```
+
+> **Note**: PDF generation requires `WeasyPrint`. See [System Dependencies](#system-dependencies) for installation details.
+
+### 4. Platform Bridge
+If you are using the Ozy Platform, the adapter should consume the same contract described in [`docs/BRIDGE_CONTRACT.md`](docs/BRIDGE_CONTRACT.md).
+
+---
+
+## 🛠️ System Dependencies
+
+### WeasyPrint (PDF Generation)
+To generate PDF reports, OzyRecon requires `WeasyPrint`, which depends on several system libraries for graphics and text layout:
+
+- **Debian/Ubuntu**:
+  ```bash
+  sudo apt-get install libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 libpangocairo-1.0-0
+  ```
+- **macOS (Homebrew)**:
+  ```bash
+  brew install pango
+  ```
+- **Windows**:
+  Follow the instructions on the [WeasyPrint documentation](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#windows).
 
 ---
 
@@ -148,11 +178,13 @@ ozy scan target.com --engine ozyrecon
 
 * 🧾 [Phase 0 Audit](OZYRECON_PHASE0_AUDIT.md)
 * 🧰 [Hardening Plan](OZYRECON_HARDENING_PLAN.md)
+* 📜 [Runtime Contract](docs/RUNTIME_CONTRACT.md)
 
 ### Supporting docs
 
 * 🧭 [Improvement Plan](OZYRECON_IMPROVEMENT_PLAN.md)
 * 🪧 [Operational Plan](OZYRECON_OPERATIONAL_PLAN.md)
+* 🤝 [Bridge Contract](docs/BRIDGE_CONTRACT.md)
 
 ### General docs
 
@@ -166,6 +198,6 @@ ozy scan target.com --engine ozyrecon
 
 <div align="center">
 
-**Built for operators who prefer signal over noise.**
+**Built for operators who prefer signal, gates, and traceable output.**
 
 </div>

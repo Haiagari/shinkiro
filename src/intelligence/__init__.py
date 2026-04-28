@@ -53,6 +53,12 @@ from .false_positive_memory import (
     false_positive_memory,
 )
 
+from .autonomy import (
+    AutonomyPlanner,
+    AutonomyPlan,
+    build_autonomy_plan,
+)
+
 __all__ = [
     # ===== FASE 1: Inteligencia Adaptativa =====
     # Severity
@@ -96,4 +102,8 @@ __all__ = [
     'FalsePositiveMemory',
     'FalsePositivePattern',
     'false_positive_memory',
+    # ===== FASE 4: Autonomía Segura =====
+    'AutonomyPlanner',
+    'AutonomyPlan',
+    'build_autonomy_plan',
 ]

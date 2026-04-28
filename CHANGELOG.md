@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0-alpha.2] - 2026-04-27
+### Added
+- **Dynamic Report Generation (Phase 6)**: New reporting engine based on Jinja2 and WeasyPrint.
+- **ozy report command**: CLI subcommand to generate comprehensive HTML and PDF reports.
+- **Multi-format Support**: Capability to export reports as HTML, PDF, or both.
+- **Template System**: Modular .j2 templates in `resources/reports/templates/` for easy customization.
+- **Asset Scoring Integration**: Reports now include Top 5 Critical Assets from the Scoring Engine.
+- **Attack Path Visualization**: Integration with Logic Analyzer to display potential attack vectors.
+
+### Removed
+- Legacy string-replacement based reporting engine in `src/reporting/engine.py`.
+- Old static HTML template `resources/reports/template_v2.html`.
+
 ## [6.0.0-alpha] - 2026-04-24
 ### Added
 - **Phantom Blade Architecture**: Total paradigm shift to Advanced Persistent Reconnaissance.

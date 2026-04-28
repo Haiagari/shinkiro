@@ -6,6 +6,7 @@ from typing import Dict, Any
 from src.core.providers.http_clients import http_client
 from src.core.errors import StealthSSLError, StealthRequestError
 from src.validation.base import BaseValidator, ValidationResult
+from src.validation.policy import validation_policy
 from src.core.logging import get_logger
 
 logger = get_logger('validation.automation')
@@ -14,6 +15,19 @@ class AutomationValidator(BaseValidator):
     def validate(self, hypothesis: Dict[str, Any]) -> ValidationResult:
         hypo_id = hypothesis.get("id")
         url = hypothesis.get("url")
+        policy_decision = validation_policy.classify(hypothesis)
+
+        if policy_decision.is_blocked:
+            return ValidationResult(hypo_id, "inconclusive", 0.0, [], f"Blocked by policy: {policy_decision.reason}")
+
+        if policy_decision.requires_gate and not hypothesis.get("approved", False):
+            return ValidationResult(
+                hypo_id,
+                "inconclusive",
+                0.0,
+                [],
+                f"Gate required before automation validation: {policy_decision.reason}"
+            )
         
         logger.info(f"Validating Automation Panel on {url}")
         

@@ -104,6 +104,18 @@ class RateLimiter:
             "X-Errors": str(self.errors),
         }
 
+    def get_control_summary(self) -> dict:
+        """Resumen auditable del estado actual del rate limiter."""
+        return {
+            "enabled": self.enabled,
+            "max_rpm": self.max_rpm,
+            "current_rpm": self.current_rpm,
+            "jitter_range": self.jitter_range,
+            "errors": self.errors,
+            "consecutive_403": self.consecutive_403,
+            "is_banned": self.is_banned,
+        }
+
 # Instancia global
 _limiter = None
 

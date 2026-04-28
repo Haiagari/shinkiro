@@ -16,6 +16,7 @@ from src.validation.infra import InfraValidator
 from src.validation.automation import AutomationValidator
 from src.validation.auth import AuthValidator
 from src.validation.surgical import surgical_prober # v6.0
+from src.validation.policy import validation_policy
 
 logger = get_logger('workflow_orchestrator')
 
@@ -45,7 +46,35 @@ class WorkflowOrchestrator:
     def validate_hypothesis(self, hypo: Hypothesis):
         """Ejecuta el validador correspondiente para una hipótesis."""
         logger.info(f"Starting validation for hypothesis {hypo.id} ({hypo.type})")
-        
+
+        hypo_dict = {
+            "id": hypo.id,
+            "type": hypo.type,
+            "url": hypo.url,
+            "confidence": hypo.confidence,
+            "signals": hypo.signals,
+            "approved": hypo.status == WorkflowState.APPROVED,
+        }
+
+        policy_decision = validation_policy.classify(hypo_dict)
+        if policy_decision.is_blocked:
+            logger.warning(f"Skipping blocked validation for {hypo.id}: {policy_decision.reason}")
+            workflow_engine.transition_hypothesis(
+                hypo.id,
+                WorkflowState.ANALYZED,
+                notes=f"Validation blocked by policy: {policy_decision.reason}"
+            )
+            return
+
+        if policy_decision.requires_gate and not hypo_dict["approved"]:
+            logger.info(f"Sensitive validation deferred for {hypo.id}: {policy_decision.reason}")
+            workflow_engine.transition_hypothesis(
+                hypo.id,
+                WorkflowState.PENDING_APPROVAL,
+                notes=f"Validation requires explicit approval: {policy_decision.reason}"
+            )
+            return
+
         # 1. v6.0 PRE-VALIDACIÓN QUIRÚRGICA
         # Si es un hallazgo de archivo expuesto, usamos la sonda primero.
         if "EXPOSED" in hypo.type or "CONFIG" in hypo.type:
@@ -76,16 +105,8 @@ class WorkflowOrchestrator:
             v_type = "AUTH"
             
         validator = self.validators.get(v_type, self.validators["HTTP"])
-
-        
-        # Convertir modelo a dict para el validador
-        hypo_dict = {
-            "id": hypo.id,
-            "type": hypo.type,
-            "url": hypo.url,
-            "confidence": hypo.confidence,
-            "signals": hypo.signals
-        }
+        if policy_decision.requires_gate:
+            logger.info(f"Sensitive validation path for {hypo.id}: {policy_decision.reason}")
 
         result = validator.validate(hypo_dict)
 

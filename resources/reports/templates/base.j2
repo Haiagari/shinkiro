@@ -1,0 +1,83 @@
+{# base.j2 - Base HTML template for OzyRecon reports #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OzyRecon Security Report{% endblock %}</title>
+
+    {# Google Fonts #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    {# Chart.js for interactive charts #}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {# Critical CSS inline - loaded first for faster rendering #}
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #64748b;
+            --accent: #0ea5e9;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #e2e8f0;
+            --bg-color: #fcfcfd;
+            --critical: #dc2626;
+            --high: #ea580c;
+            --medium: #d97706;
+            --low: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--primary);
+            line-height: 1.6;
+            background: var(--bg-color);
+            margin: 0;
+            padding: 40px;
+        }
+
+        .report-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border-radius: 8px;
+        }
+
+        h1 { font-size: 36px; letter-spacing: -0.025em; margin: 0; }
+        h2 { font-size: 24px; color: var(--primary); margin-top: 30px; }
+        h3 { font-size: 18px; color: var(--secondary); }
+
+        p { margin-bottom: 15px; }
+
+        @media print {
+            body { padding: 0; background: white; }
+            .report-container { box-shadow: none; padding: 0; width: 100%; }
+        }
+    </style>
+
+    {# Additional CSS block for child templates #}
+    {% block extra_css %}{% endblock %}
+
+    {# Link to external stylesheet #}
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="report-container">
+        {% block content %}{% endblock %}
+    </div>
+
+    {# JavaScript block for child templates #}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

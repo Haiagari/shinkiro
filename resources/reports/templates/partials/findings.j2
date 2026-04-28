@@ -1,0 +1,47 @@
+{# partials/findings.j2 - Findings Section with Severity Grouping #}
+
+{% import "macros.j2" as macros %}
+
+<div class="section-header">Detailed Findings & Remediation</div>
+
+{% if findings %}
+    {% set severity_order = ['critical', 'high', 'medium', 'low'] %}
+
+    {% for severity in severity_order %}
+        {% if findings[severity] %}
+            <div class="findings-section" style="margin-bottom: 40px;">
+                <h2 style="color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 20px;">
+                    {{ severity|capitalize }} Severity Findings
+                    <span style="font-size: 14px; color: var(--secondary); font-weight: normal;">
+                        ({{ findings[severity]|length }} finding{{ 's' if findings[severity]|length > 1 else '' }})
+                    </span>
+                </h2>
+
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th>Title</th>
+                            <th style="width: 100px;">Severity</th>
+                            <th>Description</th>
+                            <th style="width: 120px;">Evidence</th>
+                            <th style="width: 120px;">Remediation</th>
+                            <th style="width: 80px;">CVSS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for finding in findings[severity] %}
+                            {{ macros.finding_row(finding, loop.index) }}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+{% else %}
+    <div style="padding: 30px; text-align: center; background: #f7fafc; border-radius: 8px; color: var(--secondary);">
+        <p style="font-size: 16px; margin-bottom: 10px;">No findings to display</p>
+        <p style="font-size: 13px;">The scan did not identify any vulnerabilities or security issues.</p>
+    </div>
+{% endif %}

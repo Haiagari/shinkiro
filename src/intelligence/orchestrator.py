@@ -1,11 +1,13 @@
 from sqlalchemy.orm import Session
 from src.storage.models import Subdomain, Port
 from src.core.tool_manager import tool_manager
+from src.intelligence.scoring_engine import get_scoring_engine
 from src.utils import log
 
 class DiscoveryOrchestrator:
     def __init__(self, db: Session):
         self.db = db
+        self.scoring_engine = get_scoring_engine()
 
     def _upsert_assets(self, assets: list[dict]):
         """
@@ -36,6 +38,7 @@ class DiscoveryOrchestrator:
     def _upsert_services(self, services: list[dict]):
         """
         Inserta o actualiza servicios (puertos) basándose en host y puerto.
+        Aplica el motor de scoring si hay nuevos datos.
         """
         for service_data in services:
             host = service_data.get("host")
@@ -43,6 +46,28 @@ class DiscoveryOrchestrator:
             if not host or not port:
                 continue
             
+            # Preparar info para el motor de scoring
+            service_info = {
+                "service_type": service_data.get("service") or service_data.get("product") or "unknown",
+                "identifier": f"{host}:{port}",
+                "details": {
+                    "version": service_data.get("version"),
+                    "product": service_data.get("product"),
+                    "extra_info": service_data.get("extra_info"),
+                    "state": service_data.get("state")
+                }
+            }
+            
+            # Obtener score
+            score_obj = self.scoring_engine.score_asset(service_info)
+            service_data["criticality_index"] = score_obj.index
+            service_data["severity"] = score_obj.severity
+            service_data["scoring_details"] = {
+                "breakdown": score_obj.score_breakdown,
+                "modifiers": score_obj.modifiers,
+                "recommendations": score_obj.recommendations
+            }
+
             existing = self.db.query(Port).filter_by(host=host, port=port).first()
             if existing:
                 for key, value in service_data.items():
@@ -65,7 +90,7 @@ class DiscoveryOrchestrator:
         
         if not subdomains:
             log(f"No subdomains found for {target}", level="warn")
-            return
+            return []
             
         # Deduplicar y preparar para upsert
         unique_subs = list(set(s.lower().strip() for s in subdomains if s))
@@ -73,6 +98,7 @@ class DiscoveryOrchestrator:
         
         self._upsert_assets(assets)
         log(f"Passive discovery finished. {len(assets)} assets identified/updated.", level="success")
+        return unique_subs
 
     def active_resolution(self):
         """
@@ -84,7 +110,7 @@ class DiscoveryOrchestrator:
         assets_in_db = self.db.query(Subdomain).all()
         if not assets_in_db:
             log("No assets in database to resolve", level="warn")
-            return
+            return []
             
         import tempfile
         import os
@@ -100,7 +126,7 @@ class DiscoveryOrchestrator:
             
             if not results:
                 log("No resolution results found", level="warn")
-                return
+                return []
 
             # Procesar resultados (httpx con los flags en manifest devuelve algo como "http://domain [200]")
             updated_assets = []
@@ -135,6 +161,7 @@ class DiscoveryOrchestrator:
                 os.remove(temp_path)
                 
         log(f"Active resolution finished. {len(resolved_domains)} hosts confirmed live.", level="success")
+        return list(resolved_domains.keys())
 
     def service_analysis(self):
         """
@@ -146,7 +173,7 @@ class DiscoveryOrchestrator:
         
         if not live_assets:
             log("No live assets found for service analysis", level="warn")
-            return
+            return []
 
         total_ports = 0
         for asset in live_assets:
@@ -183,3 +210,4 @@ class DiscoveryOrchestrator:
                 log(f"Error scanning services for {asset.domain}: {e}", level="error")
         
         log(f"Service analysis finished. {total_ports} open ports identified/updated.", level="success")
+        return total_ports

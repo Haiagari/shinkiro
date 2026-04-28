@@ -8,6 +8,7 @@ from src.opsec.rate_limiter import get_rate_limiter
 from src.opsec.waf_detector import detect_waf, adjust_strategy
 from src.opsec.kill_switch import check_kill
 from src.opsec.chameleon import chameleon
+from src.validation.policy import validation_policy
 
 class OPSECManager:
     """
@@ -34,6 +35,18 @@ class OPSECManager:
             "tls_profile": self.identity.tls_profile,
             "rpm": self.rate_limiter.current_rpm,
             "waf_strategy": self.waf_detected.get("strategy") if self.waf_detected else None
+        }
+
+    def get_safety_summary(self) -> Dict[str, Any]:
+        """Resumen auditable del estado de seguridad del target."""
+        scope = validation_policy.scope_decision(f"https://{self.target}")
+        return {
+            "target": self.target,
+            "scope": scope.action,
+            "scope_reason": scope.reason,
+            "kill_switch": check_kill(),
+            "rate_limiter": self.rate_limiter.get_control_summary(),
+            "waf_detected": bool(self.waf_detected),
         }
 
     def pre_flight_check(self) -> Dict[str, Any]:
@@ -68,10 +81,16 @@ class OPSECManager:
                 "strategy": strategy,
                 "source": "detection",
                 "action": "Rate reduced due to WAF protection",
-                "identity": self.identity.name
+                "identity": self.identity.name,
+                "safety": self.get_safety_summary(),
             }
         
-        return {"waf": None, "strategy": None, "identity": self.identity.name}
+        return {
+            "waf": None,
+            "strategy": None,
+            "identity": self.identity.name,
+            "safety": self.get_safety_summary(),
+        }
     
     def record_response(self, response_time_ms: float = 0, status_code: int = 200):
         """Registra cada response para el rate limiter adaptativo."""

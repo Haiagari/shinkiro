@@ -1,9 +1,11 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from src.storage.models import Base, Subdomain, Port
+from src.storage.models import Base, Subdomain, Port, Hypothesis
 from src.intelligence.orchestrator import DiscoveryOrchestrator
+from src.workflow.orchestrator import WorkflowOrchestrator
 from unittest.mock import MagicMock, patch
+from src.workflow.states import WorkflowState
 
 # Setup in-memory SQLite for testing
 @pytest.fixture
@@ -71,7 +73,7 @@ def test_passive_discovery_calls_tool_manager(orchestrator, db_session):
     with patch("src.intelligence.orchestrator.tool_manager") as mock_tool_manager:
         mock_tool_manager.run_capability.return_value = ["sub1.test.com", "sub2.test.com"]
         
-        orchestrator.passive_discovery("test.com")
+        result = orchestrator.passive_discovery("test.com")
         
         # Verify it called run_capability for asset_discovery
         mock_tool_manager.run_capability.assert_called_with(
@@ -81,6 +83,7 @@ def test_passive_discovery_calls_tool_manager(orchestrator, db_session):
         # Verify results were persisted
         assert db_session.query(Subdomain).count() == 2
         assert db_session.query(Subdomain).filter_by(domain="sub1.test.com").first() is not None
+        assert sorted(result) == ["sub1.test.com", "sub2.test.com"]
 
 def test_passive_discovery_deduplicates_and_normalizes(orchestrator, db_session):
     """
@@ -208,3 +211,71 @@ def test_complete_orchestrator_flow(orchestrator, db_session):
         port = db_session.query(Port).filter_by(host="sub1.test.com").first()
         assert port is not None
         assert port.port == 443
+
+
+def test_passive_discovery_returns_normalized_subdomains(orchestrator, db_session):
+    with patch("src.intelligence.orchestrator.tool_manager") as mock_tool_manager:
+        mock_tool_manager.run_capability.return_value = ["SUB1.test.com", "sub1.test.com ", "sub2.test.com"]
+
+        result = orchestrator.passive_discovery("test.com")
+
+        assert sorted(result) == ["sub1.test.com", "sub2.test.com"]
+
+
+def test_validate_hypothesis_defers_gate_required_until_approved(db_session):
+    workflow_orchestrator = WorkflowOrchestrator()
+    hypo = Hypothesis(
+        id="hypo-gate-1",
+        target_id=1,
+        type="DEFAULT_AUTH",
+        url="https://auth.example.com/login",
+        confidence=0.6,
+        status=WorkflowState.ANALYZED,
+    )
+    db_session.add(hypo)
+    db_session.commit()
+
+    with patch("src.workflow.orchestrator.workflow_engine.transition_hypothesis") as mock_transition, \
+         patch("src.workflow.orchestrator.validation_policy.classify") as mock_classify, \
+         patch("src.workflow.orchestrator.AuthValidator.validate") as mock_validate, \
+         patch("src.workflow.orchestrator.SessionLocal", return_value=db_session):
+        mock_classify.return_value.action = "gate_required"
+        mock_classify.return_value.requires_gate = True
+        mock_classify.return_value.is_blocked = False
+        mock_classify.return_value.reason = "DEFAULT_AUTH should remain explicitly gated"
+        mock_validate.return_value = MagicMock(status="confirmed", confidence_after=0.9, evidence=[], notes="ok")
+
+        workflow_orchestrator.validate_hypothesis(hypo)
+
+        mock_transition.assert_called_once()
+        mock_validate.assert_not_called()
+
+
+def test_validate_hypothesis_allows_gate_required_after_manual_approval(db_session):
+    workflow_orchestrator = WorkflowOrchestrator()
+    hyp_id = "hypo-gate-2"
+    hypo = Hypothesis(
+        id=hyp_id,
+        target_id=1,
+        type="DEFAULT_AUTH",
+        url="https://auth.example.com/login",
+        confidence=0.6,
+        status=WorkflowState.APPROVED,
+    )
+    db_session.add(hypo)
+    db_session.commit()
+
+    with patch("src.workflow.orchestrator.workflow_engine.transition_hypothesis") as mock_transition, \
+         patch("src.workflow.orchestrator.validation_policy.classify") as mock_classify, \
+         patch("src.workflow.orchestrator.AuthValidator.validate") as mock_validate, \
+         patch("src.workflow.orchestrator.SessionLocal", return_value=db_session):
+        mock_classify.return_value.action = "gate_required"
+        mock_classify.return_value.requires_gate = True
+        mock_classify.return_value.is_blocked = False
+        mock_classify.return_value.reason = "DEFAULT_AUTH should remain explicitly gated"
+        mock_validate.return_value = MagicMock(status="confirmed", confidence_after=0.9, evidence=[], notes="ok")
+
+        workflow_orchestrator.validate_hypothesis(hypo)
+
+        mock_validate.assert_called_once()
+        mock_transition.assert_any_call(hyp_id, WorkflowState.VALIDATING, notes="Starting automated validation")

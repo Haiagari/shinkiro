@@ -103,13 +103,13 @@ class ContinuousMode(BaseMode):
             from src.workflow.engine import workflow_engine
             workflow_engine.cleanup_session(self.session_id)
 
-        return {
-            "status": "completed",
-            "session_id": self.session_id,
-            "has_changes": diff_report.has_changes(),
-            "findings_found": len(all_findings),
-            "export_path": str(export_path)
-        }
+        return self.build_output_envelope(
+            "completed",
+            has_changes=diff_report.has_changes(),
+            findings_found=len(all_findings),
+            export_path=str(export_path),
+            include_diff=True,
+        )
 
 
 def run_continuous(target: str, **options) -> Dict[str, Any]:

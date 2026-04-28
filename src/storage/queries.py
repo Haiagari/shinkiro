@@ -3,12 +3,25 @@ Consultas Predefinidas para la Base de Datos
 OzyRecon Storage Layer - Queries utilitarias.
 """
 
+import ast
 from datetime import datetime, timedelta
 from typing import List, Optional, Dict, Any
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_, or_, text
 from sqlalchemy.orm import Session as DbSession
 
-from src.storage.models import Target, Scan, Subdomain, Port, Vulnerability, Session as ScanSession, Finding, AgentMemory
+from src.storage.models import (
+    Target,
+    Scan,
+    Subdomain,
+    Port,
+    Vulnerability,
+    Session as ScanSession,
+    Finding,
+    AgentMemory,
+    Hypothesis,
+    WorkflowStep,
+    Evidence,
+)
 
 
 class DBQueries:
@@ -223,10 +236,165 @@ class DBQueries:
                 setattr(session, key, value)
             
             self.db.commit()
-    
-    # ══════════════════════════════════════════════════════════════════════════════
-    # AGENT MEMORY
-    # ══════════════════════════════════════════════════════════════════════════════
+
+    def get_session_trace(self, session_id: str) -> Dict[str, Any]:
+        """Construye un resumen trazable de una sesión y sus artefactos asociados."""
+        scan = self.get_scan_by_session(session_id)
+        session_row = self.db.query(ScanSession).filter(ScanSession.session_id == session_id).first()
+
+        if not scan and not session_row:
+            return {}
+
+        hypothesis_ids: List[str] = []
+        workflow_steps: List[Dict[str, Any]] = []
+        evidence_records: List[Dict[str, Any]] = []
+
+        if scan:
+            hypotheses = self.db.query(Hypothesis).filter(Hypothesis.scan_id == scan.id).all()
+            hypothesis_ids = [h.id for h in hypotheses]
+
+            if hypothesis_ids:
+                steps = self.db.query(WorkflowStep).filter(
+                    WorkflowStep.hypothesis_id.in_(hypothesis_ids)
+                ).order_by(WorkflowStep.timestamp.asc()).all()
+                workflow_steps = [
+                    {
+                        "id": step.id,
+                        "hypothesis_id": step.hypothesis_id,
+                        "target_id": step.target_id,
+                        "state": step.state,
+                        "timestamp": step.timestamp.isoformat() if step.timestamp else None,
+                        "actor": step.actor,
+                        "notes": step.notes,
+                    }
+                    for step in steps
+                ]
+
+                evidences = self.db.query(Evidence).filter(
+                    Evidence.hypothesis_id.in_(hypothesis_ids)
+                ).order_by(Evidence.timestamp.asc()).all()
+                evidence_records = [
+                    {
+                        "id": evidence.id,
+                        "hypothesis_id": evidence.hypothesis_id,
+                        "type": evidence.type,
+                        "timestamp": evidence.timestamp.isoformat() if evidence.timestamp else None,
+                        "data": evidence.data,
+                        "metadata": evidence.metadata_json or {},
+                        "hash": evidence.hash_sha256,
+                    }
+                    for evidence in evidences
+                ]
+
+        try:
+            decision_rows = self.db.execute(
+                text(
+                    "SELECT id, session_id, decision_type, target, context, reason, timestamp, "
+                    "reputation_weight, novelty_weight, diff_weight, result, value_score "
+                    "FROM decisions WHERE session_id = :session_id ORDER BY timestamp"
+                ),
+                {"session_id": session_id},
+            ).fetchall()
+        except Exception:
+            decision_rows = []
+
+        def _parse_context(raw: Optional[str]) -> Dict[str, Any]:
+            if not raw:
+                return {}
+            try:
+                parsed = ast.literal_eval(raw)
+                return parsed if isinstance(parsed, dict) else {"value": parsed}
+            except Exception:
+                return {"raw": raw}
+
+        decisions = [
+            {
+                "id": row[0],
+                "session_id": row[1],
+                "decision_type": row[2],
+                "target": row[3],
+                "context": _parse_context(row[4]),
+                "reason": row[5],
+                "timestamp": row[6],
+                "weights": {
+                    "reputation": row[7],
+                    "novelty": row[8],
+                    "diff": row[9],
+                },
+                "result": row[10],
+                "value_score": row[11],
+            }
+            for row in decision_rows
+        ]
+
+        scan_summary = None
+        if scan:
+            scan_summary = {
+                "scan_id": scan.id,
+                "session_id": scan.session_id,
+                "target": scan.target.domain if scan.target else (session_row.target if session_row else ""),
+                "mode": scan.mode,
+                "status": scan.status,
+                "started_at": scan.start_time.isoformat() if scan.start_time else None,
+                "ended_at": scan.end_time.isoformat() if scan.end_time else None,
+                "duration_seconds": (
+                    (scan.end_time - scan.start_time).total_seconds()
+                    if scan.start_time and scan.end_time
+                    else None
+                ),
+                "stats": {
+                    "subdomains_found": scan.subdomains_found,
+                    "hosts_alive": scan.hosts_alive,
+                    "ports_found": scan.ports_found,
+                    "findings": scan.findings,
+                },
+                "errors": [line.strip() for line in scan.errors.splitlines() if line.strip()] if scan.errors else [],
+            }
+
+        session_summary = None
+        if session_row:
+            session_summary = {
+                "session_id": session_row.session_id,
+                "target": session_row.target,
+                "mode": session_row.mode,
+                "started_at": session_row.started_at.isoformat() if session_row.started_at else None,
+                "ended_at": session_row.ended_at.isoformat() if session_row.ended_at else None,
+                "duration": session_row.duration,
+                "status": session_row.status,
+                "exit_code": session_row.exit_code,
+                "counts": {
+                    "subdomains": session_row.subdomains,
+                    "hosts": session_row.hosts,
+                    "ports": session_row.ports,
+                    "findings": session_row.findings,
+                },
+                "error_summary": session_row.error_summary,
+                "config_used": session_row.config_used or {},
+            }
+
+        event_count = len(workflow_steps) + len(evidence_records) + len(decisions)
+
+        return {
+            "session_id": session_id,
+            "target": session_summary["target"] if session_summary else scan_summary["target"] if scan_summary else "",
+            "mode": session_summary["mode"] if session_summary else scan_summary["mode"] if scan_summary else "",
+            "scan": scan_summary,
+            "session": session_summary,
+            "workflow_steps": workflow_steps,
+            "evidence": evidence_records,
+            "decisions": decisions,
+            "summary": {
+                "hypotheses": len(hypothesis_ids),
+                "workflow_steps": len(workflow_steps),
+                "evidence_items": len(evidence_records),
+                "decisions": len(decisions),
+                "event_count": event_count,
+            },
+        }
+
+# ══════════════════════════════════════════════════════════════════════════════
+# AGENT MEMORY
+# ══════════════════════════════════════════════════════════════════════════════
     
     def get_agent_memory(self, target: str, key: str) -> Optional[AgentMemory]:
         """Obtiene memoria del agente para un target y clave."""

@@ -4,7 +4,6 @@ Establece línea base y genera hipótesis para validación asistida.
 """
 
 from typing import List, Dict, Any
-from datetime import datetime
 from pathlib import Path
 from src.modes.base import BaseMode
 from src.core.tool_manager import tool_manager
@@ -42,29 +41,71 @@ class HuntMode(BaseMode):
         orchestrator = DiscoveryOrchestrator(self.db_session)
         
         # Phase 1: Passive
-        orchestrator.passive_discovery(self.target)
+        passive_subdomains = orchestrator.passive_discovery(self.target) or []
         
         # Phase 2: Active
-        orchestrator.active_resolution()
+        active_hosts = orchestrator.active_resolution() or []
         
         # Phase 3: Services
         orchestrator.service_analysis()
 
-        # 4.5. v6.0 Logic Pattern Analysis
+        # Phase 4: Scoring & Prioritization (v6.0)
+        logger.info("[HUNT] Phase 4: Asset Scoring & Prioritization")
+        from src.storage.models import Port
+        from rich.table import Table
+        from rich.panel import Panel
+        from src.core.logging import console
+        
+        top_critical = self.db_session.query(Port).order_by(Port.criticality_index.desc()).limit(5).all()
+        
+        if top_critical:
+            table = Table(title="[bold red]Top 5 Critical Targets Identified[/bold red]", show_header=True, header_style="bold magenta")
+            table.add_column("Target (Host:Port)", style="dim")
+            table.add_column("Service/Product", style="cyan")
+            table.add_column("Criticality", justify="center")
+            table.add_column("Severity", justify="center")
+            table.add_column("Key Recommendation", style="italic")
 
+            for p in top_critical:
+                score_color = "red" if p.criticality_index >= 80 else "yellow" if p.criticality_index >= 60 else "blue"
+                sev_map = {"CRITICAL": "[bold red]CRITICAL[/bold red]", "HIGH": "[bold orange1]HIGH[/bold orange1]", "MEDIUM": "[bold yellow]MEDIUM[/bold yellow]", "LOW": "[bold green]LOW[/bold green]", "INFO": "[bold blue]INFO[/bold blue]"}
+                
+                # Obtener recomendación de los detalles guardados
+                rec = "-"
+                if p.scoring_details and "recommendations" in p.scoring_details:
+                    recs = p.scoring_details["recommendations"]
+                    rec = recs[0] if recs else "-"
+
+                table.add_row(
+                    f"{p.host}:{p.port}",
+                    f"{p.service or 'unknown'} ({p.product or '?'})",
+                    f"[{score_color}]{p.criticality_index}[/{score_color}]",
+                    sev_map.get(p.severity, p.severity),
+                    rec
+                )
+            console.print(Panel(table, expand=False, border_style="red"))
+        
+        # 4.5. v6.0 Logic Pattern Analysis
         logger.info("[HUNT] Phase 2.5: v6.0 Logic Pattern Analysis")
         from src.intelligence.logic_analyzer import LogicAnalyzer
         logic_brain = LogicAnalyzer()
         
-        # Mapear datos para el cerebro
-        graph_data = {
-            "nodes": [
-                {"type": "subdomain", "name": self.target, "ip": "RESOLVING..."} # Simplificado para el ejemplo
+        # Mapear datos para el cerebro usando los activos ya persistidos
+        graph_data = {"nodes": []}
+        for subdomain in passive_subdomains:
+            graph_data["nodes"].append({
+                "type": "subdomain",
+                "name": subdomain,
+                "ip": None,
+            })
+
+        # Si hubo hosts confirmados como vivos, los priorizamos para el análisis
+        if active_hosts:
+            live_set = {host.lower().strip() for host in active_hosts if host}
+            graph_data["nodes"] = [
+                node for node in graph_data["nodes"]
+                if node.get("name", "").lower().strip() in live_set or not live_set
             ]
-        }
-        # Inyectar subdominios encontrados
-        for s in subdomains:
-            graph_data["nodes"].append({"type": "subdomain", "name": s, "ip": None})
 
         logic_hypotheses = logic_brain.analyze_graph(graph_data)
         if logic_hypotheses:
@@ -105,12 +146,12 @@ class HuntMode(BaseMode):
         logger.info(f"[HUNT] Discovery and Intelligence phase completed.")
         logger.info(f"Generated {len(intel_results.get('hypotheses', []))} hypotheses. Run 'ozy gate list' to review.")
 
-        return {
-            "status": "completed",
-            "session_id": self.session_id,
-            "subdomains": len(db_subdomains),
-            "hypotheses": len(intel_results.get("hypotheses", []))
-        }
+        return self.build_output_envelope(
+            "completed",
+            subdomains=len(db_subdomains),
+            active_hosts=len(active_hosts),
+            hypotheses=len(intel_results.get("hypotheses", [])),
+        )
 
 def run_hunt(target: str, **options) -> Dict[str, Any]:
     return HuntMode(target, options).run()

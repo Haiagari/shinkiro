@@ -1,6 +1,6 @@
 # 🚀 OzyRecon Installation & Setup Guide
 
-This guide will walk you through setting up **OzyRecon v6.0 (Phantom Blade)** for professional, stealth-focused security assessments.
+This guide will walk you through setting up **OzyRecon v6.0** for controlled reconnaissance and review.
 
 ## Prerequisites
 - **Python 3.10+** (3.11 recommended)
@@ -8,7 +8,7 @@ This guide will walk you through setting up **OzyRecon v6.0 (Phantom Blade)** fo
 - **curl_cffi** requirements (Automatically handled by setup.sh)
 
 ## 1. Fast Setup (The Wizard)
-The easiest way to install OzyRecon is using our automated script which now includes **Stealth Layer** verification:
+The easiest way to install OzyRecon is using the automated setup script:
 ```bash
 git clone https://github.com/SamBleed/OzyRecon.git
 cd OzyRecon
@@ -17,7 +17,7 @@ chmod +x setup.sh
 ```
 
 ## 2. Manual Installation
-If you prefer manual control, ensure you install the `curl_cffi` dependency for TLS Fingerprinting:
+If you prefer manual control, install the project dependencies yourself:
 ```bash
 python -m venv venv
 source venv/bin/activate
@@ -26,20 +26,22 @@ pip install -e .
 ```
 
 ## 3. Configuration & API Keys
-OzyRecon reaches its full potential when integrated with external intelligence sources.
+OzyRecon can consume external intelligence sources when available.
 ```bash
 cp .env.example .env
 ```
-*Edit the `.env` file with your Shodan, Censys, and Hunter.io keys.*
+Edit the `.env` file with any keys you actually use.
 
-## 4. Running the Phantom Blade
-OzyRecon v6.0 uses a unified entry point for all operations:
+## 4. Running the engine
+OzyRecon uses a local runtime entrypoint and a CLI wrapper:
 
-- **Launch TUI (Interactive)**: `./ozy.py`
-- **Launch CLI (Automation)**: `./ozy.py --cli scan target.com --mode hunt`
+- **Launch TUI / shell entry**: `python ozy.py`
+- **Launch CLI (Automation)**: `python -m cli hunt target.com`
+- **Launch wrapper script**: `./ozy`
 
-## 5. OPSEC & Stealth
-By default, v6.0 uses the **Chameleon Engine**. You can tune the stealth profiles in `config/ozy.yaml` to better mimic specific browser signatures or adjust the **Autopilot** confidence threshold.
+## 5. OPSEC & Safety
+By default, v6.0 uses the runtime safety policy and gate checks documented in the hardening plan. You can tune the policy in the runtime configuration files if needed.
+The runtime also exposes a session trace endpoint for reconstruction and audit.
 
 ---
 *Next: Learn how to use OzyRecon in our [Operational Scenarios](USE_CASES.md).*

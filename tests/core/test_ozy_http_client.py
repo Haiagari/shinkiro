@@ -1,5 +1,6 @@
 import pytest
 import sys
+import importlib
 from unittest.mock import MagicMock, patch
 
 # Mock curl_cffi before importing anything that might use it
@@ -9,9 +10,13 @@ mock_curl_cffi.requests = mock_curl_cffi_requests
 sys.modules['curl_cffi'] = mock_curl_cffi
 sys.modules['curl_cffi.requests'] = mock_curl_cffi_requests
 
-from src.core.providers.http_clients import OzyHTTPClient
-from src.core.errors import StealthSSLError, StealthRequestError
 import certifi
+import src.core.providers.http_clients as http_clients
+
+http_clients = importlib.reload(http_clients)
+OzyHTTPClient = http_clients.OzyHTTPClient
+StealthSSLError = http_clients.StealthSSLError
+StealthRequestError = http_clients.StealthRequestError
 
 def test_ozy_http_client_uses_session():
     client = OzyHTTPClient()
@@ -72,8 +77,20 @@ def test_ozy_http_client_verify_override():
     
     client = OzyHTTPClient()
     client.session = mock_session_instance
-    
-    client.request("GET", "https://example.com", verify=False)
-    
+
+    with pytest.raises(StealthRequestError):
+        client.request("GET", "https://example.com", verify=False)
+
+
+def test_ozy_http_client_verify_override_with_explicit_opt_in():
+    mock_session_instance = MagicMock()
+    mock_session_instance.request.return_value = MagicMock(status_code=200)
+    mock_curl_cffi_requests.Session.return_value = mock_session_instance
+
+    client = OzyHTTPClient()
+    client.session = mock_session_instance
+
+    client.request("GET", "https://example.com", verify=False, allow_insecure=True)
+
     args, kwargs = mock_session_instance.request.call_args
     assert kwargs['verify'] is False

@@ -1,0 +1,101 @@
+{# partials/summary.j2 - Executive Summary Section #}
+
+{% if summary or (scan_info and scan_info.target) %}
+    <div class="section-header">Executive Summary</div>
+
+    <div class="executive-summary">
+        {% if scan_info and scan_info.target %}
+            <h2 style="margin-top: 0; color: var(--primary);">
+                Security Assessment: {{ scan_info.target }}
+            </h2>
+        {% endif %}
+
+        {% if summary %}
+            <div class="stats-grid" style="margin-top: 20px;">
+                {# Risk Score #}
+                <div class="chart-box" style="text-align: center;">
+                    <h3 style="font-size: 14px; color: var(--secondary); margin-bottom: 15px;">
+                        Overall Risk Score
+                    </h3>
+                    <div style="font-size: 48px; font-weight: 700; color:
+                        {% if summary.risk_score >= 80 %}var(--critical)
+                        {% elif summary.risk_score >= 60 %}var(--high)
+                        {% elif summary.risk_score >= 40 %}var(--medium)
+                        {% else %}var(--low){% endif %};">
+                        {{ "%.1f"|format(summary.risk_score) if summary.risk_score else '0.0' }}
+                    </div>
+                    <p style="font-size: 12px; color: var(--secondary); margin-top: 10px;">
+                        Out of 100 possible points
+                    </p>
+                </div>
+
+                {# Findings Summary #}
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 14px; color: var(--secondary); margin-bottom: 15px;">
+                        Findings Distribution
+                    </h3>
+                    <table style="width: 100%; border: none;">
+                        <tr>
+                            <td style="border: none; padding: 5px 10px;">
+                                <span class="severity-badge severity-critical">CRITICAL</span>
+                            </td>
+                            <td style="border: none; padding: 5px 10px; font-weight: bold;">
+                                {{ summary.critical_count if summary.critical_count else 0 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; padding: 5px 10px;">
+                                <span class="severity-badge severity-high">HIGH</span>
+                            </td>
+                            <td style="border: none; padding: 5px 10px; font-weight: bold;">
+                                {{ summary.high_count if summary.high_count else 0 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; padding: 5px 10px;">
+                                <span class="severity-badge severity-medium">MEDIUM</span>
+                            </td>
+                            <td style="border: none; padding: 5px 10px; font-weight: bold;">
+                                {{ summary.medium_count if summary.medium_count else 0 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; padding: 5px 10px;">
+                                <span class="severity-badge severity-low">LOW</span>
+                            </td>
+                            <td style="border: none; padding: 5px 10px; font-weight: bold;">
+                                {{ summary.low_count if summary.low_count else 0 }}
+                            </td>
+                        </tr>
+                        <tr style="border-top: 2px solid var(--border);">
+                            <td style="border: none; padding: 10px 10px 5px 10px; font-weight: bold;">
+                                TOTAL
+                            </td>
+                            <td style="border: none; padding: 10px 10px 5px 10px; font-weight: bold;">
+                                {{ summary.total_findings if summary.total_findings else 0 }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            {% if summary.risk_score >= 60 %}
+                <div style="margin-top: 20px; padding: 15px; background: #fef2f2; border-left: 4px solid var(--danger); border-radius: 4px;">
+                    <strong style="color: var(--danger);">⚠ High Risk Assessment:</strong>
+                    This target presents significant security risks that require immediate attention.
+                    Please review the detailed findings below.
+                </div>
+            {% elif summary.risk_score >= 40 %}
+                <div style="margin-top: 20px; padding: 15px; background: #fffbeb; border-left: 4px solid var(--warning); border-radius: 4px;">
+                    <strong style="color: var(--warning);">⚠ Medium Risk Assessment:</strong>
+                    Several security issues found. Review and prioritize remediation based on business impact.
+                </div>
+            {% else %}
+                <div style="margin-top: 20px; padding: 15px; background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 4px;">
+                    <strong style="color: #16a34a;">✓ Low Risk Assessment:</strong>
+                    No critical or high-severity vulnerabilities detected. Continue monitoring.
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}

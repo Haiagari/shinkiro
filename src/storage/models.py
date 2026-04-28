@@ -147,6 +147,11 @@ class Port(Base):
     # Extra
     extra_info = Column(String(500))
     
+    # Scoring (Phase 5)
+    criticality_index = Column(Integer, default=0)
+    severity = Column(String(20))
+    scoring_details = Column(JSON, nullable=True)
+    
     scan = relationship("Scan", back_populates="ports")
 
 

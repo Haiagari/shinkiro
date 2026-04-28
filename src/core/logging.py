@@ -23,7 +23,7 @@ class OzyLogger:
     @staticmethod
     def _get_default_log_dir() -> Path:
         """Obtiene el directorio de logs por defecto."""
-        return Path(__file__).resolve().parents[3] / "runtime" / "logs"
+        return Path(__file__).resolve().parents[2] / "runtime" / "logs"
     
     def _setup_logger(self, name: str) -> logging.Logger:
         """Configura el logger con handlers de consola y archivo."""

@@ -247,6 +247,57 @@ class TestModeIntegration:
         assert hasattr(orch, "validators")
         assert hasattr(orch, "process_approved")
 
+    def test_hunt_mode_run_uses_discovered_subdomains(self):
+        """Verifica que HUNT no dependa de una variable inexistente al analizar lógica."""
+        from src.modes.hunt import HuntMode
+
+        mode = HuntMode("example.com")
+
+        with patch("src.intelligence.orchestrator.DiscoveryOrchestrator") as mock_orchestrator_cls, \
+             patch("src.intelligence.intelligence.run_intelligence") as mock_run_intelligence, \
+             patch("src.intelligence.logic_analyzer.LogicAnalyzer") as mock_logic_analyzer_cls, \
+             patch("src.opsec.manager.OPSECManager") as mock_opsec_manager_cls, \
+             patch("src.opsec.kill_switch.kill_switch.reset") as mock_kill_switch_reset:
+
+            mock_orchestrator = MagicMock()
+            mock_orchestrator.passive_discovery.return_value = ["sub1.example.com", "sub2.example.com"]
+            mock_orchestrator.active_resolution.return_value = ["sub1.example.com"]
+            mock_orchestrator.service_analysis.return_value = 1
+            mock_orchestrator_cls.return_value = mock_orchestrator
+
+            mock_opsec = MagicMock()
+            mock_opsec.get_operational_params.return_value = {"noise": "low"}
+            mock_opsec_manager_cls.return_value = mock_opsec
+
+            mock_logic_analyzer = MagicMock()
+            mock_logic_analyzer.analyze_graph.return_value = []
+            mock_logic_analyzer_cls.return_value = mock_logic_analyzer
+
+            mock_run_intelligence.return_value = {"hypotheses": []}
+
+            result = mode.run()
+
+            assert result["status"] == "completed"
+            assert result["contract_version"] == "scan-result.v1"
+            assert result["subdomains"] == 0 or isinstance(result["subdomains"], int)
+            assert result["result"]["target"] == "example.com"
+            assert result["result"]["mode"] == "hunt"
+            assert "assets" in result["result"]
+            mock_logic_analyzer.analyze_graph.assert_called()
+            graph_data = mock_logic_analyzer.analyze_graph.call_args.args[0]
+            assert "nodes" in graph_data
+            assert len(graph_data["nodes"]) == 1
+            assert graph_data["nodes"][0]["name"] == "sub1.example.com"
+            mock_kill_switch_reset.assert_called_once()
+
+    def test_scan_result_contract_version_present(self):
+        """Verifica que el contrato normalizado expone una versión explícita."""
+        from src.export.schema import ScanResult
+
+        result = ScanResult()
+        assert result.contract_version == "scan-result.v1"
+        assert result.to_dict()["contract_version"] == "scan-result.v1"
+
 
 class TestNewArchitectureImports:
     """Verifica que los módulos migrados son importables."""

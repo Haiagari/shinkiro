@@ -45,40 +45,60 @@ class ScanContext:
     # Resultados (se填充an durante ejecución)
     results: Dict[str, Any] = field(default_factory=dict)
     errors: List[str] = field(default_factory=list)
+    timeline: List[Dict[str, Any]] = field(default_factory=list)
+
+    def record_event(self, stage: str, message: str, **data: Any):
+        """Agrega un evento a la línea de tiempo del scan."""
+        event = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "stage": stage,
+            "message": message,
+        }
+        if data:
+            event["data"] = data
+        self.timeline.append(event)
+        return event
     
     def mark_running(self):
         """Marca el scan como en ejecución."""
         self.status = "running"
+        self.record_event("status", "scan marked as running")
     
     def mark_completed(self):
         """Marca el scan como completado."""
         self.status = "completed"
         self.finished_at = datetime.now()
         self.progress = 100.0
+        self.record_event("status", "scan marked as completed", progress=self.progress)
     
     def mark_failed(self, error: str):
         """Marca el scan como fallido."""
         self.status = "failed"
         self.finished_at = datetime.now()
         self.errors.append(error)
+        self.record_event("status", "scan marked as failed", error=error)
     
     def mark_interrupted(self):
         """Marca el scan como interrumpido."""
         self.status = "interrupted"
         self.finished_at = datetime.now()
+        self.record_event("status", "scan marked as interrupted")
     
     def update_progress(self, step: str, progress: float):
         """Actualiza el progreso del scan."""
         self.progress = progress
         self.results[step] = {"status": "running", "progress": progress}
+        self.record_event("progress", f"progress updated for {step}", step=step, progress=progress)
     
     def add_error(self, error: str):
         """Agrega un error al contexto."""
         self.errors.append(error)
+        self.record_event("error", error)
     
     def add_result(self, key: str, value: Any):
         """Agrega un resultado."""
         self.results[key] = value
+        self.record_event("result", f"result added for {key}", key=key)
     
     @property
     def duration(self) -> Optional[float]:
@@ -104,7 +124,21 @@ class ScanContext:
             "duration": self.duration,
             "results": self.results,
             "errors": self.errors,
+            "timeline": self.timeline,
         }
+
+    def to_observability_record(self) -> Dict[str, Any]:
+        """
+        Devuelve un record compacto para logs, trazas y depuración.
+        Mantiene el contrato del contexto, pero añade derivados útiles.
+        """
+        base = self.to_dict()
+        base["error_count"] = len(self.errors)
+        base["result_keys"] = sorted(self.results.keys())
+        base["event_count"] = len(self.timeline)
+        base["last_event"] = self.timeline[-1] if self.timeline else None
+        base["is_terminal"] = self.status in {"completed", "failed", "interrupted"}
+        return base
 
 
 @dataclass 

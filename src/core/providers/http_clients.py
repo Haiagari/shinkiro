@@ -62,11 +62,14 @@ class OzyHTTPClient:
         
         # Gestionar timeout
         req_timeout = kwargs.pop('timeout', self.timeout)
-        
+        allow_insecure = kwargs.pop('allow_insecure', False)
+
         # Configurar verify por defecto con certifi
         if verify is None:
             verify = certifi.where()
-        
+        elif verify is False and not allow_insecure:
+            raise StealthRequestError("Insecure TLS verification disabled. Set allow_insecure=True to override.")
+
         try:
             if HAS_STEALTH:
                 imp = impersonate or self.identity.tls_profile

@@ -4,12 +4,12 @@ Descarga y parsea los scopes de HackerOne y Bugcrowd para verificar objetivos.
 Detecta programas nuevos para cazar antes que otros.
 """
 
-import json
 import requests
-from datetime import datetime, timedelta
 from pathlib import Path
 from src.utils import log, save_json, load_config
-from .database import get_db, SessionLocal, Target
+from src.storage.database import SessionLocal
+from src.storage.queries import DBQueries
+from src.storage.models import Target
 
 def get_hackerone_scope(program_slug: str) -> dict:
     """
@@ -72,18 +72,58 @@ def get_bugcrowd_scope(program_slug: str) -> dict:
         log(f"Error: {e}", "error")
         return {}
 
+def _scope_entry_to_target_fields(asset: dict, platform: str, program_slug: str) -> dict:
+    raw_value = (asset.get("value") or "").strip()
+    normalized_value = raw_value.lower()
+    eligible = bool(asset.get("eligible_for_bounty", True))
+
+    notes = (
+        f"Imported from {platform}:{program_slug}. "
+        f"Asset type={asset.get('type', 'unknown')}. "
+        f"Eligible for bounty={eligible}."
+    )
+
+    tags = [platform, "bugbounty", "scope"]
+    if eligible:
+        tags.append("bounty")
+
+    return {
+        "domain": normalized_value,
+        "in_scope": 1,
+        "notes": notes,
+        "tags": tags,
+    }
+
+
 def save_scope_to_db(scope_data: dict):
     """
     Guarda el alcance en la base de datos.
     """
     db = SessionLocal()
     try:
-        # Por cada asset en el scope, guardar como un target permitido
+        platform = scope_data.get("platform", "unknown")
+        program_slug = scope_data.get("program", "unknown")
+        dbq = DBQueries(db)
+
+        saved = 0
         for asset in scope_data.get("scope", []):
-            # Aquí guardamos cada dominio/IP como un registro en la DB
-            # Por ahora es un placeholder; la lógica depende de tu modelo de DB
-            pass
-        log(f"Scope guardado en base de datos", "success")
+            fields = _scope_entry_to_target_fields(asset, platform, program_slug)
+            domain = fields["domain"]
+            if not domain:
+                continue
+
+            existing = dbq.get_target(domain)
+            if existing:
+                existing.in_scope = fields["in_scope"]
+                existing.notes = fields["notes"]
+                existing.tags = fields["tags"]
+            else:
+                db.add(Target(**fields))
+            saved += 1
+
+        db.commit()
+        log(f"Scope guardado en base de datos ({saved} assets)", "success")
+        return saved
     finally:
         db.close()
 

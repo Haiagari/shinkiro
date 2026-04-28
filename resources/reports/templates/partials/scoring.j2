@@ -1,0 +1,67 @@
+{# partials/scoring.j2 - Top 5 Critical Assets Section #}
+
+{% import "macros.j2" as macros %}
+
+{% if scoring and scoring|length > 0 %}
+    <div class="section-header">Top {{ scoring|length }} Critical Assets</div>
+
+    <div class="scoring-section">
+        <p style="color: var(--secondary); font-size: 14px; margin-bottom: 20px;">
+            These assets have the highest criticality index based on the ScoringEngine analysis.
+            Prioritize security measures for these resources.
+        </p>
+
+        {% for item in scoring %}
+            <div class="asset-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span class="asset-name" style="font-size: 16px;">
+                        {{ loop.index }}. {{ item.asset }}
+                    </span>
+                    <span class="criticality-score">
+                        {{ macros.risk_score_badge(item.criticality_index) }}
+                    </span>
+                </div>
+
+                {% if item.port or item.service %}
+                    <div style="font-size: 12px; color: var(--secondary); margin-bottom: 8px;">
+                        {% if item.port %}
+                            <span style="margin-right: 15px;">Port: <strong>{{ item.port }}</strong></span>
+                        {% endif %}
+                        {% if item.service %}
+                            <span>Service: <strong>{{ item.service }}</strong></span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if item.reasoning %}
+                    <div style="font-size: 13px; color: var(--text-color); padding: 8px; background: white; border-radius: 4px; border-left: 3px solid var(--accent);">
+                        <strong>Reasoning:</strong> {{ item.reasoning }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {# Scoring Summary Bar Chart - Static Fallback #}
+        <div class="chart-container" style="margin-top: 30px;">
+            <h3 style="font-size: 14px; color: var(--secondary); margin-bottom: 15px; text-align: left;">
+                Criticality Index Distribution
+            </h3>
+            {% for item in scoring %}
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                        <span>{{ item.asset }}</span>
+                        <span>{{ "%.1f"|format(item.criticality_index) }}</span>
+                    </div>
+                    {{ macros.progress_bar(item.criticality_index, max_value=100) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% else %}
+    <div class="section-header">Critical Assets</div>
+    <div style="padding: 30px; text-align: center; background: #f7fafc; border-radius: 8px; color: var(--secondary);">
+        <p style="font-size: 16px; margin-bottom: 10px;">No critical assets identified</p>
+        <p style="font-size: 13px;">The ScoringEngine did not return any prioritized assets for this scan.</p>
+    </div>
+{% endif %}

@@ -19,6 +19,7 @@ from src.storage.models import Hypothesis, Evidence, Target, Port, Subdomain
 from src.workflow.states import WorkflowState, Actor
 
 from src.gate.manager import gate_manager
+from src.intelligence.autonomy import build_autonomy_plan
 
 app = FastAPI(title="OzyRecon API", version="5.7")
 
@@ -102,7 +103,8 @@ def get_evidence(hyp_id: str):
             "type": e.type,
             "data": e.data,
             "timestamp": e.timestamp.isoformat(),
-            "hash": e.hash_sha256
+            "hash": e.hash_sha256,
+            "metadata": e.metadata_json or {},
         } for e in evs
     ]
 
@@ -111,6 +113,17 @@ def export_intel():
     """Exporta el cerebro para sincronización."""
     path = sync_manager.export_brain()
     return {"status": "exported", "file": str(path)}
+
+@app.get("/intelligence/autonomy")
+def get_autonomy_plan(target: str):
+    """Genera un plan seguro de autonomía para un target."""
+    db = SessionLocal()
+    try:
+        return build_autonomy_plan(db, target)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    finally:
+        db.close()
 
 @app.get("/targets")
 def list_targets():
@@ -125,15 +138,27 @@ def list_targets():
 @app.get("/targets/{domain}/latest")
 def get_latest_scan(domain: str):
     """Obtiene el último resultado normalizado de un target."""
-    from src.export.normalizer import exporter
+    from src.export.normalizer import NormalizedExporter
     db = SessionLocal()
     try:
         latest = db_get_latest_scan(db, domain)
         if not latest:
             raise HTTPException(status_code=404, detail="Target or scan not found")
         
-        result = exporter.export_scan(latest.session_id, domain)
+        result = NormalizedExporter(db).export_scan(latest.session_id, domain)
         return result.to_dict()
+    finally:
+        db.close()
+
+@app.get("/sessions/{session_id}/trace")
+def get_session_trace(session_id: str):
+    """Devuelve un trazado consolidado de sesión para observabilidad."""
+    db = SessionLocal()
+    try:
+        trace = DBQueries(db).get_session_trace(session_id)
+        if not trace:
+            raise HTTPException(status_code=404, detail="Session not found")
+        return trace
     finally:
         db.close()
 

@@ -43,7 +43,7 @@ class ResearchMode(BaseMode):
         
         if not known_assets:
             logger.warning(f"[RESEARCH] No live assets found for {self.target}")
-            return {"status": "completed", "findings_count": 0}
+            return self.build_output_envelope("completed", findings_count=0, targets_scanned=0, tags_used=tags)
 
         # 2. Determinar tags de escaneo
         tags = []
@@ -60,12 +60,12 @@ class ResearchMode(BaseMode):
         logger.info(f"[RESEARCH] Running targeted scan on {len(known_assets)} hosts")
         findings = tool_manager.run_capability("template_scan", str(temp_file), tags=tags, **intent)
         
-        return {
-            "status": "completed",
-            "findings_count": len(findings) if findings else 0,
-            "targets_scanned": len(known_assets),
-            "tags_used": tags
-        }
+        return self.build_output_envelope(
+            "completed",
+            findings_count=len(findings) if findings else 0,
+            targets_scanned=len(known_assets),
+            tags_used=tags,
+        )
 
 def run_research(target: str, cve_id: Optional[str] = None, **options) -> Dict[str, Any]:
     return ResearchMode(target, cve_id, options).run()

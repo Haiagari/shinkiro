@@ -56,14 +56,13 @@ class ForensicMode(BaseMode):
             self.db.models.Vulnerability.scan_id == latest_scan.id
         ).all()
 
-        return {
-            "status": "completed",
-            "target": self.target,
-            "total_scans_analyzed": len(scans),
-            "first_seen": first_scan.start_time.isoformat() if first_scan.start_time else "n/a",
-            "last_seen": latest_scan.start_time.isoformat() if latest_scan.start_time else "n/a",
-            "findings_snapshot": len(findings)
-        }
+        return self.build_output_envelope(
+            "completed",
+            total_scans_analyzed=len(scans),
+            first_seen=first_scan.start_time.isoformat() if first_scan.start_time else "n/a",
+            last_seen=latest_scan.start_time.isoformat() if latest_scan.start_time else "n/a",
+            findings_snapshot=len(findings),
+        )
 
 def run_forensic(target: str, **options) -> Dict[str, Any]:
     return ForensicMode(target, options).run()

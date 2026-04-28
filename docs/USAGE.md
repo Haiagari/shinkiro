@@ -1,21 +1,27 @@
 # 📖 OzyRecon: Operating Guide
 
-OzyRecon is designed for **Controlled Intelligence**. This guide covers the standard operational workflow for a Red Team engagement.
+OzyRecon is designed for **controlled reconnaissance and review**. This guide covers the current engine runtime, its normalized outputs, and the session trace surface.
 
 ## 🕹️ Running the Interfaces
 
 ### 1. The TUI (Recommended)
-The terminal user interface is the best way to visualize the **Decision Log** and the **Knowledge Graph** in real-time.
+The terminal user interface is the easiest way to inspect the **Decision Log**, the **Knowledge Graph**, and the runtime state.
 ```bash
-./ozy.py
+python ozy.py
 ```
 *   Use `help` within the TUI to see available commands.
-*   `focus <target>` to set your current operational objective.
+*   `focus <target>` to set the current operational objective.
 
 ### 2. The CLI (Automation)
 For CI/CD or scripting, use the classic CLI:
 ```bash
-./ozy.py --cli scan target.com --mode hunt
+python -m cli hunt target.com
+```
+
+### 3. Runtime Trace
+For a reconstructed run, query the session trace endpoint:
+```bash
+GET /sessions/{session_id}/trace
 ```
 
 ---
@@ -24,21 +30,23 @@ For CI/CD or scripting, use the classic CLI:
 
 ### Phase 1: Passive Recon & Discovery
 OzyRecon starts by mapping relationships without touching the target directly.
-1.  Add target: `focus target.com`
-2.  Start discovery: `scan target.com --mode passive`
+1. Add target: `focus target.com`
+2. Start discovery through the selected mode, usually `hunt`
 
 ### Phase 2: Hypothesis Validation
 Once the **Knowledge Graph** is populated, OzyRecon will generate hypotheses in the **Decision Log**.
 *   View pending decisions in the TUI.
-*   Approve high-risk probes only after verifying the attack path.
+*   Approve gated validations only after verifying the relationship chain.
 
 ### Phase 3: Evidence Collection & Reporting
-All findings are cryptographically signed and stored in the **Evidence Vault**.
-*   Generate executive report: `report target.com`
-*   Export raw intelligence: `export target.com --format json`
+All findings are signed and stored in the **Evidence** layer and exported through the normalized contract.
+*   Generate reports from the current runtime outputs.
+*   Export normalized intelligence through the API or export pipeline.
 
 ---
 
 ## 🔐 Safety & OPSEC
 *   **Kill Switch**: Hit `Ctrl+C` twice to immediately terminate all active probes.
-*   **Identity Rotation**: OzyRecon automatically rotates headers and timing unless configured otherwise in `config/config.yaml`.
+*   **Identity Rotation**: OzyRecon rotates headers and timing unless configured otherwise in `config/config.yaml`.
+*   **Validation policy**: low-risk exposure checks run automatically, sensitive auth/panel checks remain gated, and blocked hypotheses do not execute.
+*   **Traceability**: Every run keeps a timeline in the runtime context and exposes a consolidated session trace.

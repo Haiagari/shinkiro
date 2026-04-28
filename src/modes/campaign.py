@@ -64,13 +64,12 @@ class CampaignMode(BaseMode):
             if critical_count > 0:
                 notifier.send_message(f"🔥 *CAMPAIGN ALERT*\nPattern: `{self.pattern}`\nFindings: `{len(findings)}` total\nCritical/High: `{critical_count}`")
 
-        return {
-            "status": "completed",
-            "session_id": self.session_id,
-            "pattern": self.pattern,
-            "targets_count": len(self.targets),
-            "findings_found": len(findings) if findings else 0
-        }
+        return self.build_output_envelope(
+            "completed",
+            pattern=self.pattern,
+            targets_count=len(self.targets),
+            findings_found=len(findings) if findings else 0,
+        )
 
 def run_campaign(target: str, pattern: str = "", **options) -> Dict[str, Any]:
     return CampaignMode(target, pattern, options).run()

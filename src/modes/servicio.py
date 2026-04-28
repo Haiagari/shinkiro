@@ -53,7 +53,7 @@ class ServiceMode(BaseMode):
         
         if not latest:
             logger.error(f"No scans found for {target_clean}")
-            return {"status": "failed", "reason": "no_data"}
+            return self.build_output_envelope("failed", reason="no_data")
 
         result_obj = exp.export_scan(latest.session_id, target_clean, mode="servicio")
         
@@ -62,12 +62,11 @@ class ServiceMode(BaseMode):
         
         logger.info(f"[SERVICE] Reports generated: {md_path}")
         
-        return {
-            "status": "completed",
-            "target": self.target,
-            "markdown_report": str(md_path),
-            "json_report": str(json_path)
-        }
+        return self.build_output_envelope(
+            "completed",
+            markdown_report=str(md_path),
+            json_report=str(json_path),
+        )
 
 def run_servicio(target: str, **options) -> Dict[str, Any]:
     return ServiceMode(target, options).run()

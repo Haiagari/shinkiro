@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# OzyRecon CLI Wrapper
+# Ejecuta python -m cli.ozy pasando todos los argumentos
+#
+
+# obtener el directorio donde está este script (resuelto canonicalmente)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# ejecutar el CLI через Python module
+exec python3 -m cli.ozy "$@"

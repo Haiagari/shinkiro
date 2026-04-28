@@ -6,7 +6,10 @@ Prueba TODOS los endpoints de src/core/api.py
 import pytest
 import sys
 from pathlib import Path
+from unittest.mock import patch
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
@@ -17,7 +20,7 @@ from src.core.api import app
 from src.validation.auth import AuthValidator
 from src.utils.visual import capture_screenshot
 from src.storage.database import SessionLocal, init_db
-from src.storage.models import Target, Scan, Hypothesis, Subdomain
+from src.storage.models import Base, Target, Scan, Hypothesis, Subdomain, Port, Vulnerability
 
 # Initialize DB for tests
 init_db()
@@ -114,18 +117,58 @@ def test_targets_latest_not_found():
 
 def test_targets_latest_with_existing_target():
     """Verifica que latest responda con scan result para target existente."""
-    # Usa el primer target que exista en la DB, o falla gracefully si no hay
-    targets_response = client.get("/targets")
-    targets = targets_response.json()
-    
-    if targets:
-        existing_domain = targets[0]["domain"]
-        response = client.get(f"/targets/{existing_domain}/latest")
-        assert response.status_code in [200, 404]
-    else:
-        # Si no hay targets, verificamos que el endpoint no crashee
-        response = client.get("/targets/test.example.com/latest")
-        assert response.status_code in [200, 404]
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    target = Target(domain="api-roundtrip.example.com")
+    session.add(target)
+    session.flush()
+
+    scan = Scan(
+        target_id=target.id,
+        session_id="api-roundtrip-session",
+        mode="hunt",
+        status="completed",
+        subdomains_found=1,
+        hosts_alive=1,
+        ports_found=1,
+        findings=1,
+    )
+    session.add(scan)
+    session.flush()
+    session.add_all([
+        Subdomain(scan_id=scan.id, domain="api.api-roundtrip.example.com", is_live=1),
+        Port(scan_id=scan.id, host="api.api-roundtrip.example.com", port=443, service="https", state="open"),
+        Vulnerability(
+            scan_id=scan.id,
+            name="Open Admin",
+            type="exposed_panel",
+            severity="medium",
+            host="api.api-roundtrip.example.com",
+            path="/admin",
+            description="Admin reachable",
+            payload="GET /admin",
+            evidence="proof-block",
+            status="confirmed",
+        ),
+    ])
+    session.commit()
+
+    from src.core.api import get_latest_scan as api_get_latest_scan
+
+    with patch("src.core.api.SessionLocal", return_value=session):
+        data = api_get_latest_scan("api-roundtrip.example.com")
+
+    assert data["target"] == "api-roundtrip.example.com"
+    assert data["session_id"] == "api-roundtrip-session"
+    assert data["assets"][0]["value"] == "api.api-roundtrip.example.com"
+    assert data["services"][0]["port"] == 443
+    assert data["findings"][0]["name"] == "Open Admin"
+    assert data["findings"][0]["evidence"][0]["content"] == "proof-block"
+
+    session.close()
 
 
 # =============================================================================

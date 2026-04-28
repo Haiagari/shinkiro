@@ -1,4 +1,4 @@
-# ✅ Checklist de Implementación - OzyRecon v4.0
+# ✅ Checklist de Implementación - OzyRecon
 
 Basado en el plan de transformación de `l.txt`
 
@@ -9,7 +9,7 @@ Basado en el plan de transformación de `l.txt`
 | Item del Plan | Estado | Notas |
 |--------------|--------|-------|
 | **Renombrar a OzyRecon** | ✅ HECHO | Proyecto renombrado + README actualizado |
-| **Tagline: "Local-first offensive reconnaissance"** | ✅ HECHO | Incluido en README y branding |
+| **Tagline: "Local-first controlled reconnaissance"** | ✅ HECHO | Incluido en README y branding |
 | **Separar adquisición de datos** | ✅ HECHO | `src/scanners/` separado de `src/storage/` |
 | **Separar almacenamiento** | ✅ HECHO | `src/storage/` con models, queries, diff |
 | **Separar normalización** | ✅ HECHO | `src/export/` con schema normalizado |
