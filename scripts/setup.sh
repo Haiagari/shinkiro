@@ -1,65 +1,61 @@
 #!/bin/bash
-# Setup de herramientas de Bug Bounty Framework
-# Uso: ./scripts/setup.sh
 
-set -e
+# OzyRecon v6.0 - Advanced Setup Wizard (Phantom Blade Edition)
+# -------------------------------------------------------------
 
-echo "🔧 BugBounty Framework - Setup de Herramientas"
-echo "================================================="
+set -e # Exit on error
 
-# Resolver root del repositorio
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+echo "🧠 OzyRecon v6.0 — Advanced Setup (Phantom Blade)"
+echo "-------------------------------------------------------------"
 
-# Crear directorio si no existe
-mkdir -p "$ROOT_DIR/tools/go/bin"
+# 1. Check Python version
+echo "[+] Checking Python version..."
+if ! command -v python3 &> /dev/null; then
+    echo "[-] Error: Python3 is not installed."
+    exit 1
+fi
 
-echo "📦 Instalando herramientas de Go..."
+PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+echo "[*] Found Python $PYTHON_VERSION"
 
-export GOPATH="$ROOT_DIR/tools/go"
-export PATH=$GOPATH/bin:$PATH
-export GO111MODULE=on
-
-#Tools a instalar
-TOOLS=(
-    "github.com/projectdiscovery/subfinder/v2/cmd/subfinder"
-    "github.com/projectdiscovery/httpx/cmd/httpx"
-    "github.com/projectdiscovery/dnsx/cmd/dnsx"
-    "github.com/projectdiscovery/naabu/v2/cmd/naabu"
-    "github.com/ffuf/ffuf/v2"
-    "github.com/projectdiscovery/nuclei/v3/cmd/nuclei"
-    "github.com/OWASP/Amass/v3/..."
-    "github.com/tomnomnom/assetfinder"
-    "github.com/projectdiscovery/katana/cmd/katana"
-    "github.com/lc/gau/v2/cmd/gau"
-    "github.com/tomnomnom/waybackurls"
-)
-
-echo "Instalando: ${#TOOLS[@]} herramientas..."
-
-for tool in "${TOOLS[@]}"; do
-    name=$(basename $tool)
-    echo "  - Instalando $name..."
-    go install $tool@latest 2>/dev/null || true
-done
-
-# Verificar instalación
-echo ""
-echo "Verificando instalación..."
-INSTALLED=0
-
-for bin in subfinder httpx dnsx naabu ffuf nuclei amass assetfinder katana gau waybackurls; do
-    if [ -f "$ROOT_DIR/tools/go/bin/$bin" ]; then
-        echo "  ✅ $bin"
-        INSTALLED=$((INSTALLED+1))
-    else
-        echo "  ❌ $bin"
-    fi
-done
-
-echo ""
-echo "================================================="
-if [ $INSTALLED -ge 11 ]; then
-    echo "✅ INSTALACIÓN COMPLETA ($INSTALLED herramientas)"
+# 2. Check and Create Virtual Environment
+if [ ! -d "venv" ]; then
+    echo "[+] Creating virtual environment..."
+    python3 -m venv venv
 else
-    echo "⚠️ Se instalaron $INSTALLED herramientas"
+    echo "[*] Virtual environment already exists."
+fi
+
+# 3. Activate and Install
+echo "[+] Activating environment and installing dependencies..."
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install -e .
+
+# 4. Configure Environment Variables
+if [ ! -f ".env" ]; then
+    echo "[+] Initializing .env from example..."
+    cp .env.example .env
+    echo "[!] IMPORTANT: Edit the .env file with your Shodan/Censys API keys."
+else
+    echo "[*] .env file already exists."
+fi
+
+# 5. Create necessary directories
+echo "[+] Creating data and evidence directories..."
+mkdir -p data evidence assets
+
+# 6. Final Verification (v6.0 Stealth Check)
+echo "-------------------------------------------------------------"
+echo "[+] Running system & stealth check..."
+if python3 -c "import src; import curl_cffi; print('✅ OzyRecon v6.0 Stealth Layer Loaded')" &> /dev/null; then
+    echo "💎 OzyRecon v6.0 Setup Complete!"
+    echo ""
+    echo "To start your operation, run:"
+    echo "  source venv/bin/activate"
+    echo "  ./ozy.py"
+else
+    echo "❌ Stealth Layer failed (check curl_cffi installation)."
+    exit 1
 fi
