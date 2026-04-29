@@ -63,7 +63,7 @@ class AutomationValidator(BaseValidator):
 
         except (StealthSSLError, StealthRequestError) as e:
             logger.error(f"Stealth Automation validation error: {str(e)}")
-            status = "refuted"
+            status = "inconclusive"
             notes = f"Error during validation: {str(e)}"
 
         except Exception as e:

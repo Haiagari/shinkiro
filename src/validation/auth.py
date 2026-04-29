@@ -82,7 +82,7 @@ class AuthValidator(BaseValidator):
         except (StealthSSLError, StealthRequestError) as e:
             logger.error(f"Stealth Auth validation error: {str(e)}")
             notes = f"Validation failed due to network/SSL error: {str(e)}"
-            status = "failed_validation"
+            status = "inconclusive"
 
         except Exception as e:
             logger.error(f"General Auth validation error: {str(e)}")

@@ -82,7 +82,7 @@ class HTTPValidator(BaseValidator):
         except (StealthSSLError, StealthRequestError) as e:
             logger.error(f"Stealth validation error: {str(e)}")
             notes = f"Error during validation: {str(e)}"
-            status = "refuted"
+            status = "inconclusive"
             confidence = 0.1
 
         except Exception as e:
