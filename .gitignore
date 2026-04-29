@@ -29,30 +29,40 @@ Thumbs.db
 *.sqlite
 runtime/db/*.db
 
-# Output
+# Output y Evidencia (OPSEC)
 output/
-runtime/scans/
-runtime/logs/
-runtime/state/
-runtime/exports/
-runtime/temp/
+reports/
+evidence/
+data/
+runtime/
 scopes/
 *.log
+*.pdf
+*.html
+!docs/**/*.html
 agent_reasoning.log
 llm_usage.json
+
+# JUnit y Testing
+junit/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Binarios de herramientas
 tools/go/bin/
 tools/go/pkg/
 
-# API keys (sensible)
+# API keys y Config Sensible
 config/config.yaml
+config/backup_*.yaml
+.env
 
 # OzyRecon Specific
 .ozyrecon-cli/
 l.txt
 interface_ui_bundle_fixed.zip
-
+graph_preview.html
 # Legacy removal (keeping src clean)
 # UI/Legacy files moved to src or intended for inclusion
 # NO IGNORAR agent.py o tui.py si son funcionales
