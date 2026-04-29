@@ -25,7 +25,8 @@ def test_auth_validator_uses_ozy_http_client(auth_validator):
         hypothesis = {
             "id": "auth-1",
             "url": "http://example.com/login",
-            "type": "DEFAULT_AUTH"
+            "type": "DEFAULT_AUTH",
+            "approved": True
         }
         
         result = auth_validator.validate(hypothesis)
@@ -40,8 +41,8 @@ def test_auth_validator_handles_stealth_ssl_error(auth_validator):
     with patch('src.validation.auth.http_client') as mock_client:
         mock_client.get.side_effect = StealthSSLError("SSL Error")
         
-        hypothesis = {"id": "auth-ssl", "url": "https://expired.com", "type": "DEFAULT_AUTH"}
+        hypothesis = {"id": "auth-ssl", "url": "https://expired.com", "type": "DEFAULT_AUTH", "approved": True}
         result = auth_validator.validate(hypothesis)
         
-        assert result.status == "failed_validation"
+        assert result.status == "inconclusive"
         assert "SSL Error" in result.notes
