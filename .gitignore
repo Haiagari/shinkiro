@@ -59,8 +59,11 @@ tools/go/pkg/
 
 # API keys y Config Sensible
 config/config.yaml
+config/api_keys.json
 config/backup_*.yaml
 .env
+resources/keys/api_keys.json
+resources/keys/evidence_key.priv
 
 # OzyRecon Specific
 .ozyrecon-cli/
