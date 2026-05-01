@@ -114,7 +114,7 @@ def get_banner() -> str:
     Returns:
         Markup de Rich con el banner formateado.
     """
-    version = "6.0.0-alpha.1"
+    version = "7.0.0-alpha.1"
     
     banner = r"""
 [bold cyan]
