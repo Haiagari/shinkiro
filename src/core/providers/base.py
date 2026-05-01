@@ -5,7 +5,7 @@ Define la interfaz para todos los adaptadores de herramientas.
 
 import abc
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, List
 
 class BaseProvider(abc.ABC):
     """Clase base para un proveedor de herramientas (herramienta concreta)."""
