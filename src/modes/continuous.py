@@ -37,18 +37,11 @@ class ContinuousMode(BaseMode):
         
         # 1. Discovery Orquestado (Passive + Active + Service)
         logger.info("[CONTINUOUS] Phase 1: Orchestrated Discovery")
-        orchestrator = DiscoveryOrchestrator(self.db_session)
-        
-        # Guardar snapshot inicial del scan
-        from src.storage.models import Scan
-        scan = Scan(
-            target_id=self.db.get_target(self.target).id,
-            session_id=self.session_id,
-            mode="continuous",
-            status="running"
+        orchestrator = DiscoveryOrchestrator(
+            self.db_session,
+            scan_id=self.runtime_scan.id if self.runtime_scan else None,
         )
-        self.db_session.add(scan)
-        self.db_session.commit()
+        scan = self.runtime_scan
 
         # Ejecutar fases
         orchestrator.passive_discovery(self.target)
@@ -90,8 +83,7 @@ class ContinuousMode(BaseMode):
             logger.info("[CONTINUOUS] No changes detected. Target surface is stable.")
 
         # Actualizar estado final
-        scan.status = "completed"
-        self.db_session.commit()
+        self._finalize_runtime_scan("completed")
 
         # --- EXPORT NORMALIZADO ---
         from src.export.normalizer import exporter

@@ -79,6 +79,7 @@ That means the engine is real, but the published runtime contract and the platfo
 `OzyRecon` es ahora un motor formal y estable:
 
 - El núcleo de ejecución es real y consistente.
+- **Persistencia Blindada:** Se resolvió la vinculación de activos y scans mediante inyección de `scan_id` en el orquestador.
 - El bridge con Ozy Platform está totalmente alineado bajo `ozy.runtime.v1`.
 - Se eliminó el comportamiento placeholder del camino productivo.
 - El runtime contract está formalizado y verificado por tests.

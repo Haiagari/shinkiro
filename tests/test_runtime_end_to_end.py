@@ -66,6 +66,66 @@ def test_runtime_latest_scan_round_trip_returns_normalized_contract():
     session.close()
 
 
+def test_runtime_hunt_mode_publishes_latest_scan_contract():
+    engine = create_engine(
+        "sqlite://",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    Base.metadata.create_all(engine)
+    SessionFactory = sessionmaker(bind=engine)
+    session = SessionFactory()
+
+    with patch("src.storage.database.engine", engine), \
+         patch("src.storage.database.SessionLocal", SessionFactory), \
+         patch("src.modes.base.SessionLocal", SessionFactory), \
+         patch("src.core.api.SessionLocal", return_value=session), \
+         patch("src.opsec.manager.OPSECManager") as mock_opsec_manager_cls, \
+         patch("src.opsec.kill_switch.kill_switch") as mock_kill_switch, \
+         patch("src.intelligence.logic_analyzer.LogicAnalyzer") as mock_logic_analyzer_cls, \
+         patch("src.modes.hunt.run_intelligence") as mock_run_intelligence, \
+         patch("src.intelligence.orchestrator.tool_manager") as mock_tool_manager:
+
+        mock_kill_switch.reset.return_value = None
+
+        mock_opsec = mock_opsec_manager_cls.return_value
+        mock_opsec.get_operational_params.return_value = {"noise": "low", "jitter": 0}
+        mock_opsec.pre_flight_check.return_value = {"ok": True}
+
+        mock_logic_analyzer = mock_logic_analyzer_cls.return_value
+        mock_logic_analyzer.analyze_graph.return_value = []
+
+        def side_effect(capability, target, **kwargs):
+            if capability == "asset_discovery":
+                return ["API.E2E.example.com", "api.e2e.example.com "]
+            if capability == "live_detection":
+                return ["https://api.e2e.example.com [200]"]
+            if capability == "service_discovery":
+                return [{"host": target, "port": 443, "service": "https", "state": "open"}]
+            return []
+
+        mock_tool_manager.run_capability.side_effect = side_effect
+        mock_run_intelligence.return_value = {"hypotheses": []}
+
+        from src.modes.hunt import HuntMode
+
+        mode = HuntMode("e2e.example.com", options={"threads": 2})
+        result = mode.run()
+
+        from src.core.api import get_latest_scan as api_get_latest_scan
+        latest = api_get_latest_scan("e2e.example.com")
+
+    assert result["status"] == "completed"
+    assert result["contract_version"] == "ozy.runtime.v1"
+    assert latest["target"] == "e2e.example.com"
+    assert latest["session_id"] == mode.session_id
+    assert latest["assets"][0]["value"] == "api.e2e.example.com"
+    assert latest["services"][0]["port"] == 443
+    assert latest["stats"]["subdomains_found"] >= 0
+
+    session.close()
+
+
 @pytest.mark.skip(reason="Mocks de KillSwitch testarudos en CI local")
 def test_runtime_hunt_mode_persists_session_and_trace():
     engine = create_engine(

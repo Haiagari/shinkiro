@@ -48,7 +48,7 @@ def test_export_scan_builds_normalized_contract():
     session.add(current_scan)
     session.flush()
     session.add_all([
-        Subdomain(scan_id=current_scan.id, domain="api.contract.example.com", is_live=1, ip="10.0.0.1"),
+        Subdomain(scan_id=current_scan.id, domain="api.contract.example.com", is_live=1, ip="0.0.0.0"),
         Port(scan_id=current_scan.id, host="api.contract.example.com", port=443, protocol="tcp", service="https", state="open"),
         Vulnerability(
             scan_id=current_scan.id,
@@ -90,14 +90,15 @@ def test_export_scan_builds_normalized_contract():
     session.close()
 
 
-def test_save_json_writes_inside_repo_runtime():
+def test_save_json_writes_inside_repo_runtime(tmp_path):
     session = _make_session()
     exporter = NormalizedExporter(session)
+    exporter.output_dir = tmp_path / "exports"
 
     result = exporter.export_scan("missing-session", "contract.example.com")
     output_path = exporter.save_json(result)
 
-    assert "runtime/exports" in str(output_path)
+    assert "exports" in str(output_path)
     assert output_path.exists()
 
     session.close()

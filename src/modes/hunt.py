@@ -38,7 +38,10 @@ class HuntMode(BaseMode):
         # 3. Asset Discovery & Service Analysis (v6.0 Orchestrated Flow)
         logger.info("[HUNT] Discovery & Analysis Phase (Orchestrated)")
         from src.intelligence.orchestrator import DiscoveryOrchestrator
-        orchestrator = DiscoveryOrchestrator(self.db_session)
+        orchestrator = DiscoveryOrchestrator(
+            self.db_session,
+            scan_id=self.runtime_scan.id if self.runtime_scan else None,
+        )
         
         # Phase 1: Passive
         passive_subdomains = orchestrator.passive_discovery(self.target) or []

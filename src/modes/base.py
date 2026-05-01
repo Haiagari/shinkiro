@@ -28,6 +28,7 @@ class BaseMode(ABC):
         self.mode_name = mode_name
         self.options = options or {}
         self.session_id = str(uuid.uuid4())
+        self.runtime_scan = None
         
         # Contexto de ejecución
         self.context = ScanContext(
@@ -54,16 +55,19 @@ class BaseMode(ABC):
         try:
             self.validate_preconditions()
             self.context.record_event("mode", "preconditions validated", mode=self.mode_name)
+            self._ensure_runtime_scan()
             result = self.execute()
             self.context.mark_completed()
             self.context.record_event("mode", "execution completed", mode=self.mode_name)
             if isinstance(result, dict) and "observability" not in result:
                 result["observability"] = self.context.to_observability_record()
+            self._finalize_runtime_scan("completed")
             self._upsert_session_summary(status="success")
             return result
         except Exception as e:
             self.context.mark_failed(str(e))
             self.context.record_event("mode", "execution failed", mode=self.mode_name, error=str(e))
+            self._finalize_runtime_scan("failed", error_summary=str(e), exit_code=1)
             self._upsert_session_summary(status="failed", error_summary=str(e), exit_code=1)
             return self.build_output_envelope("failed", error=str(e))
         finally:
@@ -153,6 +157,52 @@ class BaseMode(ABC):
         envelope.update(details)
         validate_required_fields(envelope, MODE_ENVELOPE_FIELDS)
         return envelope
+
+    def _ensure_runtime_scan(self):
+        """Crea o reutiliza el scan SQLAlchemy que representa esta ejecución."""
+        if self.runtime_scan is not None:
+            return self.runtime_scan
+
+        existing = self.db.get_scan_by_session(self.session_id)
+        if existing:
+            self.runtime_scan = existing
+            return self.runtime_scan
+
+        self.runtime_scan = self.db.create_scan(
+            self.target,
+            self.session_id,
+            mode=self.mode_name,
+            status="running",
+            start_time=self.context.started_at,
+            subdomains_found=0,
+            hosts_alive=0,
+            ports_found=0,
+            findings=0,
+            out_dir=self.options.get("output"),
+        )
+        return self.runtime_scan
+
+    def _finalize_runtime_scan(
+        self,
+        status: str,
+        error_summary: Optional[str] = None,
+        exit_code: int = 0,
+    ):
+        """Actualiza el scan persistido con el estado final de la ejecución."""
+        if self.runtime_scan is None:
+            return
+
+        scan_status = "completed" if status in {"success", "completed"} else "failed"
+        self.db.update_scan_status(
+            self.runtime_scan.id,
+            scan_status,
+            subdomains_found=self.context.subdomains_found,
+            hosts_alive=self.context.hosts_alive,
+            ports_found=self.context.ports_found,
+            findings=self.context.findings,
+            errors=error_summary,
+            out_dir=self.options.get("output"),
+        )
 
     def _upsert_session_summary(
         self,

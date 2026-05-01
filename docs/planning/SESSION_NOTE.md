@@ -21,6 +21,8 @@ Estado operativo real:
 - Phase 11 de continuous hardening quedó implementada con guardrails recurrentes de contrato y docs.
 - El runtime ya tiene entrypoint estable.
 - Se corrigieron placeholders y bugs de flujo principales.
+- **Persistencia Atómica:** Cada ejecución de modo crea un registro `Scan` vinculado al `session_id`.
+- **Trazabilidad de Activos:** El orquestador de descubrimiento vincula `Subdomain` y `Port` al `scan_id` activo.
 - El contrato de salida quedó normalizado y documentado.
 - La integración bridge/adapter queda fuera de este árbol y se debe cerrar en el repo de Ozy Platform.
 - La limpieza legacy quedó reducida al módulo de compatibilidad explícita.

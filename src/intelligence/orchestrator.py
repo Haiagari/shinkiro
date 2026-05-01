@@ -5,8 +5,9 @@ from src.intelligence.scoring_engine import get_scoring_engine
 from src.utils import log
 
 class DiscoveryOrchestrator:
-    def __init__(self, db: Session):
+    def __init__(self, db: Session, scan_id: int | None = None):
         self.db = db
+        self.scan_id = scan_id
         self.scoring_engine = get_scoring_engine()
 
     def _upsert_assets(self, assets: list[dict]):
@@ -21,6 +22,8 @@ class DiscoveryOrchestrator:
             # Normalización básica: lowercase
             domain = domain.lower().strip()
             asset_data["domain"] = domain
+            if self.scan_id is not None:
+                asset_data["scan_id"] = self.scan_id
 
             existing = self.db.query(Subdomain).filter_by(domain=domain).first()
             if existing:
@@ -67,6 +70,8 @@ class DiscoveryOrchestrator:
                 "modifiers": score_obj.modifiers,
                 "recommendations": score_obj.recommendations
             }
+            if self.scan_id is not None:
+                service_data["scan_id"] = self.scan_id
 
             existing = self.db.query(Port).filter_by(host=host, port=port).first()
             if existing:
