@@ -11,12 +11,15 @@ from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Optional, Tuple
 
+from src.core.bootstrap import ensure_api_key_registry
+
 logger = logging.getLogger("auth.key_store")
 
 class KeyStore:
     def __init__(self, storage_path: str = "config/api_keys.json"):
         self.storage_path = Path(storage_path)
         self.storage_path.parent.mkdir(parents=True, exist_ok=True)
+        ensure_api_key_registry(self.storage_path)
         if not self.storage_path.exists():
             self._save_keys([])
 

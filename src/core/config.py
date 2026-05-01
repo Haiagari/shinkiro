@@ -9,6 +9,8 @@ from typing import Any, Dict, Optional
 
 import yaml
 
+from src.core.bootstrap import ensure_config_file
+
 
 class Config:
     """Singleton para acceder a la configuración global."""
@@ -41,11 +43,20 @@ class Config:
                 with open(path, 'r') as f:
                     self._config = yaml.safe_load(f) or {}
                 return
-        
-        # Si no encuentra config.yaml, usar ejemplo
+
+        # Si no encuentra config.yaml, materializarlo desde el ejemplo.
+        if ensure_config_file():
+            materialized = Path("config/config.yaml")
+            if materialized.exists():
+                self._config_path = materialized
+                with open(materialized, "r") as f:
+                    self._config = yaml.safe_load(f) or {}
+                return
+
+        # Fallback: usar ejemplo sin escribirlo si no se pudo materializar.
         example_path = Path("config/config.example.yaml")
         if example_path.exists():
-            with open(example_path, 'r') as f:
+            with open(example_path, "r") as f:
                 self._config = yaml.safe_load(f) or {}
     
     def reload(self):

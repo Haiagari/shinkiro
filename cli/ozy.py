@@ -238,6 +238,9 @@ def main() -> int:
     Returns:
         Exit code (0 = éxito, 1 = error)
     """
+    from src.core.bootstrap import bootstrap_runtime_files
+
+    bootstrap_runtime_files()
     register_runtime_commands()
 
     # Task 3.1-3.2: Registrar signal handlers para shutdown limpio
