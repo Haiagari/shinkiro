@@ -1,37 +1,57 @@
 # Contributing to OzyRecon
 
-First off, thank you for considering contributing to OzyRecon! It's people like you that make OzyRecon a powerful tool for the community.
+Thanks for taking the time to improve OzyRecon. This repository is maintained as a runtime engine plus operational docs, so changes should stay aligned with the current baseline rather than old plan text.
 
-### 📜 Our Standards
-We follow **Clean Architecture** and **Strict TypeScript/Python patterns**. Before you start:
-1. Ensure your code follows the [Architecture Guide](docs/architecture.md).
-2. All new features **must** include tests.
-3. No sensitive data (domains, keys, IPs) should be hardcoded.
+## Standards
 
-### 🚀 Getting Started
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/my-amazing-feature`.
-3. Install dev dependencies: `pip install -r requirements-dev.txt`.
-4. Make your changes.
+- Keep changes scoped and easy to review
+- Prefer source-of-truth code over doc guesses
+- Add or update tests when behavior changes
+- Do not hardcode secrets, domains, IPs, or private keys
+- Keep documentation consistent with the actual runtime
 
-### 🧪 Testing
-We take testing seriously. We have 43+ integration and unit tests that must pass.
+## Before You Start
+
+1. Read the runtime docs that match the area you are changing.
+2. Check whether the behavior already exists before adding new surface area.
+3. Prefer small, isolated patches over broad rewrites.
+
+## Development Flow
+
 ```bash
-pytest tests/
+git checkout -b feature/my-change
+python ozy.py verify
+python -m pytest tests/
 ```
 
-### 📝 Commit Messages
-We follow [Conventional Commits](https://www.conventionalcommits.org/):
-- `feat:` for new features.
-- `fix:` for bug fixes.
-- `docs:` for documentation changes.
-- `refactor:` for code changes that neither fix a bug nor add a feature.
+If the change touches documentation only, still make sure the runtime contract remains accurate.
 
-### 📬 Pull Request Process
-1. Update the `README.md` if your change adds functionality.
-2. Update the `CHANGELOG.md` under the `[Unreleased]` section.
-3. The PR will be reviewed by at least one maintainer.
-4. Once approved, it will be merged into `main`.
+## Testing Expectations
 
----
-**Questions?** Open an issue or join our community discussions.
+- Run the relevant targeted tests for the area you touched
+- Run the full suite when the change affects runtime, auth, bootstrap, or output contracts
+- If a test depends on the local venv or optional libs, document that in the PR description
+
+## Commit Messages
+
+Use conventional commits:
+
+- `feat:` for new features
+- `fix:` for bug fixes
+- `docs:` for documentation changes
+- `refactor:` for structural changes without behavior change
+- `test:` for test-only updates
+
+## Pull Requests
+
+1. Update `README.md` if the user-facing flow changes.
+2. Update the relevant docs under `docs/` if runtime behavior changes.
+3. Include verification notes in the PR description.
+4. Keep the scope focused on one concern whenever possible.
+
+## Review Notes
+
+- Avoid reintroducing generated artifacts into version control
+- Avoid reintroducing secret material into version control
+- Keep the engine contract and the documentation in sync
+- If a change affects bootstrap, auth, or lifecycle flow, mention that explicitly in the review notes

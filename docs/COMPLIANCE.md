@@ -1,37 +1,57 @@
 # 🛡️ OzyRecon Compliance & Risk Mapping
 
-This document outlines how OzyRecon maps its intelligence gathering and validation capabilities to industry-standard security frameworks, specifically the **OWASP Top 10 (2021)**.
+This document maps the current OzyRecon runtime to common security frameworks and operational guardrails. It is not a legal opinion and it is not a substitute for an authorized assessment.
+
+## Scope
+
+OzyRecon is designed for controlled reconnaissance, validation, traceability, and reporting. The engine focuses on:
+
+- relationship-based review
+- scoped access control
+- evidence-backed output
+- operator-visible session traces
+- non-blocking lifecycle management
 
 ## OWASP Top 10 Mapping
 
-| Category | Risk Name | OzyRecon Validation Capability |
+| Category | Risk Name | OzyRecon Capability |
 | :--- | :--- | :--- |
-| **A01:2021** | **Broken Access Control** | The **Human-Gate API** validates exposed admin endpoints and unauthorized API routes by correlating service metadata with known exposure patterns. |
-| **A04:2021** | **Insecure Design** | The **Knowledge Graph** visualizes architectural flaws and cross-target trust relationships that require review. |
-| **A05:2021** | **Security Misconfiguration** | Automated probes detect default credentials, exposed cloud storage (S3/Azure), and verbose error messages through policy-approved validation. |
-| **A06:2021** | **Vulnerable & Outdated Components** | Service fingerprinting correlates technical signals to identify legacy versions of software before any exploitation is attempted. |
-| **A07:2021** | **Identification & Auth Failures** | **Authentication Exposure Validation** identifies credential leaks and weak auth mechanisms without intrusive brute-forcing. |
-| **A09:2021** | **Security Logging & Monitoring Failures** | The **Evidence Engine** provides signed Ed25519 audit logs of all reconnaissance activities, helping Blue Teams verify their own monitoring gaps. |
+| A01:2021 | Broken Access Control | Hashed API keys, scopes, and protected routes with `X-API-KEY` |
+| A04:2021 | Insecure Design | Graph-based correlation that exposes cross-target trust relationships |
+| A05:2021 | Security Misconfiguration | Policy-approved validation that surfaces common exposure patterns |
+| A06:2021 | Vulnerable & Outdated Components | Service fingerprinting before any exploit-like action |
+| A07:2021 | Identification & Auth Failures | Multi-key RBAC and access-seed management |
+| A09:2021 | Security Logging & Monitoring Failures | Signed evidence and consolidated session traces |
 
----
+## Evidence and Audit Readiness
 
-## Audit-Ready Evidence
-OzyRecon is designed to assist in evidence collection for the following frameworks:
+OzyRecon is built to help operators collect reviewable evidence for security programs and internal assurance work.
 
-### 1. PCI-DSS v4.0
-- **Requirement 11.3**: External penetration testing. OzyRecon provides validated intelligence that can inform follow-up testing.
-- **Requirement 1.2**: Network security controls. The Knowledge Graph maps the external exposure surface.
+### PCI-DSS
 
-### 2. SOC2 Type II (Security Criteria)
-- **CC7.2**: Vulnerability Management. OzyRecon acts as a continuous validation layer to identify and verify exposures before they are reported as findings.
+- Requirement 11.3: external testing support through controlled validation
+- Requirement 1.2: exposure mapping for network security controls
 
----
+### SOC 2
 
-## Ethical & Safety Guardrails
-To maintain compliance with ethical hacking standards, OzyRecon enforces:
-- **Zero-Exploitation Policy**: We confirm the *presence* of a vulnerability using surgical probes; we do not execute payloads that impact system integrity.
-- **Human-in-the-Loop**: High-risk validations require explicit manual authorization via the `gate` module.
-- **OPSEC Guard**: Automatic exclusion of sensitive domains (gov, mil, edu) and detection of PII/Keys in evidence.
+- CC7.2: vulnerability management support through continuous validation
+- CC7.3: detection and review visibility through signed outputs
 
----
-*Note: OzyRecon is a validation tool, not a replacement for a full penetration test. It should be used to augment security intelligence and reduce engineering response time.*
+### Internal assurance
+
+- session-level traceability
+- reproducible findings
+- evidence signing for tamper detection
+- prioritized graph output for review queues
+
+## Operational Guardrails
+
+- No blind execution
+- Gated validation stays explicit
+- Sensitive auth checks remain protected
+- Blocked paths stay visible in logs and trace output
+- Mutable runtime files are bootstrapped locally instead of being committed with secrets
+
+## Practical Note
+
+OzyRecon supports validation and analysis workflows. It should be used only with authorization and within the scope of the engagement or environment being reviewed.
