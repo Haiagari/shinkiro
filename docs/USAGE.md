@@ -2,43 +2,44 @@
 
 OzyRecon is designed for **controlled reconnaissance and review**. This guide covers the current engine runtime, its normalized outputs, and the session trace surface.
 
-## 🕹️ Running the Interfaces
+## 🕹️ Running the Engine
 
-### 1. The TUI (Recommended)
-The terminal user interface is the easiest way to inspect the **Decision Log**, the **Knowledge Graph**, and the runtime state.
+### 1. The Unified Entrypoint
+The `ozy.py` wrapper is the stable interface for all operations.
 ```bash
-python ozy.py
-```
-*   Use `help` within the TUI to see available commands.
-*   `focus <target>` to set the current operational objective.
-
-### 2. The CLI (Automation)
-For CI/CD or scripting, use the classic CLI:
-```bash
-python -m cli hunt target.com
+python ozy.py --help
 ```
 
-### 3. Runtime Trace
-For a reconstructed run, query the session trace endpoint:
+### 2. Hunting & Discovery
+Execute a full discovery and intelligence mapping:
+```bash
+python ozy.py hunt target.com
+```
+
+### 3. Runtime Trace & Observability
+For a reconstructed run, query the session trace endpoint or inspect the TUI:
 ```bash
 GET /sessions/{session_id}/trace
 ```
 
-### 4. Quick Verification
-Use the built-in verifier to check bootstrap, dependency coverage, and an optional real smoke run:
+### 4. System Verification
+Check your capability matrix and binary availability:
 ```bash
 python ozy.py verify
-python ozy.py verify example.com
-python ozy.py verify --allow-degraded --json
 ```
+This command ensures that required tools (`subfinder`, `dnsx`, `httpx`) and optional ones are properly configured in your PATH or `tools/go/bin/`.
 
-When you pass a target, the command runs:
-- a lightweight `recon` smoke
-- a lightweight `hunt` smoke
+---
 
-`--allow-degraded` is meant for CI-lite checks where missing optional tools should not fail the build.
+## 📊 Normalized Contract: ozy.runtime.v1
+OzyRecon produces a standard JSON output for platform integration. This contract ensures that assets, services, and findings are mapped correctly across the ecosystem.
 
-If the required binaries are missing, the command still reports the downgrade instead of failing silently.
+Key Export Fields:
+- **assets**: Discovered subdomains with title and tech fingerprints.
+- **services**: Open ports with service/version identification.
+- **findings**: Security hypotheses and confirmed vulnerabilities.
+- **stats**: Summary metrics of the operation.
+
 
 ---
 

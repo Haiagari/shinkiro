@@ -11,8 +11,7 @@ from typing import Any, Optional, List, Callable
 from functools import wraps
 
 import click
-from rich.console import Console
-from rich.theme import Theme
+from cli.shared import console, ensure_config_loaded, handle_exception
 
 # Task 2.10: Importar config al inicio (línea 1 después de docstring)
 from src.core.config import config  # noqa: E402 (import after docstring)
@@ -76,68 +75,8 @@ def register_mode_commands() -> List[click.Command]:
     return commands
 
 
-def _create_mode_command(mode_name: str, mode_class: type) -> click.Command:
-    """
-    Crea un comando Click wrapper para una clase de modo.
-    
-    Args:
-        mode_name: Nombre del modo (e.g., 'hunt')
-        mode_class: Clase que hereda de BaseMode
-        
-    Returns:
-        Comando Click registrado
-    """
-    @click.command(name=mode_name)
-    @click.argument('target')
-    @click.option('--threads', default=None, type=int, help='Number of threads')
-    @click.option('--speed', default='normal', type=click.Choice(['slow', 'normal', 'fast']), help='Speed mode')
-    @click.option('--depth', default='standard', type=click.Choice(['shallow', 'standard', 'deep']), help='Depth level')
-    @ensure_config_loaded()
-    def command(target: str, threads: int, speed: str, depth: str):
-        """Execute {mode_name} mode on TARGET."""
-        mode = mode_class(target, options={'threads': threads, 'speed': speed, 'depth': depth})
-        result = mode.run()
-        console.print(f"[green]✓ {mode_name} completed: {result.get('status', 'unknown')}[/green]")
-        return result
-    
-    return command
-
-
-# Task 2.8: Decorator ensure_config_loaded - valida que el config está listo antes de ejecutar
-def ensure_config_loaded() -> Callable:
-    """
-    Decorator que valida que el sistema está listo antes de ejecutar un comando.
-    
-    Verifica que:
-    - Config está cargado
-    - Base de datos inicializada (si es necesario)
-    - APIs disponibles (si aplica)
-    """
-    def decorator(func: Callable) -> Callable:
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            # Bypass validation for platform orchestration if needed
-            # or ensure config is actually loaded.
-            return func(*args, **kwargs)
-        return wrapper
-    return decorator
-
-
-# Task 2.9: handle_exception - muestra errores limpios con Rich
-def handle_exception(error: Exception) -> None:
-    """
-    Maneja excepciones mostrando errores limpios y claros usando Rich.
-    
-    Args:
-        error: La excepción a mostrar
-    """
-    if _debug:
-        # Modo debug: mostrar traceback completo
-        console.print(f"[red]Error:[/red] {str(error)}")
-        console.print_exception(show_locals=False)
-    else:
-        # Modo normal: mensaje limpio
-        console.print(f"[red]✗ Error:[/red] {str(error)}")
+# Task 2.9: handle_exception - movido a cli.shared
+# Task 2.8: Decorator ensure_config_loaded - movido a cli.shared
 
 
 # Task 2.5: Definir función get_banner() con ASCII art cyan bold y versión
@@ -166,15 +105,7 @@ def get_banner() -> str:
     return banner
 
 
-# Consola Rich global
-console = Console(
-    theme=Theme({
-        "info": "cyan",
-        "warning": "yellow",
-        "error": "bold red",
-        "success": "bold green",
-    })
-)
+# Consola Rich global - movida a cli.shared
 
 
 # Variable global para debug mode

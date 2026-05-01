@@ -16,7 +16,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from cli.ozy import console, ensure_config_loaded, handle_exception
+from cli.shared import console, ensure_config_loaded, handle_exception
 from src.core.manifest_manager import ManifestManager
 from src.core.runtime_paths import get_runtime_root, safe_filename
 from src.discovery.assets.recon import run_recon

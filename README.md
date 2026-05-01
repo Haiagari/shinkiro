@@ -121,48 +121,47 @@ Built for **compliance, trust, and reproducibility**.
 Start the local engine runtime from this repository:
 
 ```bash
-python ozy.py --help
-python ozy.py
+# Verify environment and dependencies
+python ozy.py verify
+
+# Run a baseline hunt
+python ozy.py hunt target.com
 ```
 
-### 2. CLI Automation
-Use the CLI wrapper for scripted runs:
-
-```bash
-python -m cli --help
-python -m cli hunt target.com
-```
+### 2. Available Modes
+OzyRecon operates in different modes depending on the objective:
+- **hunt**: Full discovery and baseline mapping.
+- **continuous**: Differential monitoring for changes.
+- **research**: Deep-dive into specific assets.
+- **forensic**: Post-compromise or evidence recovery.
 
 ### 3. Runtime Verification
-Quickly check the engine contract and dependency coverage:
+Use the `verify` command to check the engine contract and tool availability:
 
 ```bash
 python ozy.py verify
-python ozy.py verify example.com
-python ozy.py verify --allow-degraded --json
 ```
 
-The first form prints the capability matrix. The second form adds a lightweight real smoke for `recon` and `hunt`.
-Use `--allow-degraded` in CI when you want the contract check to pass even if required binaries are not installed in the runner.
-
-### 4. Report Generation
-Generate dynamic HTML and PDF reports:
+### 4. Engine API
+OzyRecon exposes a FastAPI service for remote orchestration:
 
 ```bash
-# Basic HTML report
-python ozy.py report target.com
-
-# PDF report (requires system dependencies)
-python ozy.py report target.com --format pdf
-
-# Both formats in a specific directory
-python ozy.py report target.com --format both --output my_reports/
+# Start the API service
+python -c "from src.core.api import start_api; start_api()"
 ```
 
-> **Note**: PDF generation requires `WeasyPrint`. See [System Dependencies](#system-dependencies) for installation details.
+The API follows the **`ozy.runtime.v1`** contract.
 
-### 4. Platform Bridge
-If you are using the Ozy Platform, the adapter should consume the same contract described in [`docs/BRIDGE_CONTRACT.md`](docs/BRIDGE_CONTRACT.md).
+---
+
+## 🛠️ System Requirements
+
+- **Python 3.11+**
+- **Go Binaries** (placed in `tools/go/bin/` or in PATH):
+  - subfinder, assetfinder, amass (Discovery)
+  - httpx, dnsx (Resolution)
+  - naabu, nmap (Services)
+  - nuclei (Templates)
 
 ---
 

@@ -13,7 +13,7 @@ from rich.console import Console
 from src.reporting.jinja_engine import Jinja2ReportEngine
 from src.storage.database import SessionLocal
 from src.storage.models import Target
-from cli.ozy import console, ensure_config_loaded, handle_exception
+from cli.shared import console, ensure_config_loaded, handle_exception
 
 @click.command(name='report')
 @click.argument('target')
