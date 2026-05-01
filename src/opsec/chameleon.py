@@ -5,7 +5,7 @@ Genera identidades sintéticas completas con consistencia de headers y TLS Finge
 
 import random
 from dataclasses import dataclass
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 @dataclass
 class ChameleonIdentity:
