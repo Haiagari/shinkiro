@@ -75,6 +75,33 @@ def register_mode_commands() -> List[click.Command]:
     return commands
 
 
+def _create_mode_command(mode_name: str, mode_class: type) -> click.Command:
+    """
+    Crea un comando Click wrapper para una clase de modo.
+    
+    Args:
+        mode_name: Nombre del modo (e.g., 'hunt')
+        mode_class: Clase que hereda de BaseMode
+        
+    Returns:
+        Comando Click registrado
+    """
+    @click.command(name=mode_name)
+    @click.argument('target')
+    @click.option('--threads', default=None, type=int, help='Number of threads')
+    @click.option('--speed', default='normal', type=click.Choice(['slow', 'normal', 'fast']), help='Speed mode')
+    @click.option('--depth', default='standard', type=click.Choice(['shallow', 'standard', 'deep']), help='Depth level')
+    @ensure_config_loaded()
+    def command(target: str, threads: int, speed: str, depth: str):
+        """Execute {mode_name} mode on TARGET."""
+        mode = mode_class(target, options={'threads': threads, 'speed': speed, 'depth': depth})
+        result = mode.run()
+        console.print(f"[green]✓ {mode_name} completed: {result.get('status', 'unknown')}[/green]")
+        return result
+    
+    return command
+
+
 # Task 2.9: handle_exception - movido a cli.shared
 # Task 2.8: Decorator ensure_config_loaded - movido a cli.shared
 

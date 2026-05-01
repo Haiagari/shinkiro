@@ -10,35 +10,26 @@ The `ozy.py` wrapper is the stable interface for all operations.
 python ozy.py --help
 ```
 
-### 2. Hunting & Discovery
-Execute a full discovery and intelligence mapping:
+### 2. Hunting & Adaptive Discovery
+Execute an intelligent scan. The engine will choose the best profile:
 ```bash
 python ozy.py hunt target.com
 ```
 
-### 3. Runtime Trace & Observability
-For a reconstructed run, query the session trace endpoint or inspect the TUI:
-```bash
-GET /sessions/{session_id}/trace
-```
-
-### 4. System Verification
-Check your capability matrix and binary availability:
-```bash
-python ozy.py verify
-```
-This command ensures that required tools (`subfinder`, `dnsx`, `httpx`) and optional ones are properly configured in your PATH or `tools/go/bin/`.
+### 3. Intelligence API v7
+OzyRecon exposes relationship-first data:
+- **Relationship Graph**: `GET /intelligence/graph?target=domain.com`
+- **Session Trace**: `GET /sessions/{session_id}/trace`
+- **Novelty Events**: `GET /scans/{scan_id}/novelty` (WIP)
 
 ---
 
-## 📊 Normalized Contract: ozy.runtime.v1
-OzyRecon produces a standard JSON output for platform integration. This contract ensures that assets, services, and findings are mapped correctly across the ecosystem.
+## 📊 Intelligent Context: ozy.runtime.v1
+OzyRecon v7 enriches every asset with business and infrastructure context:
 
-Key Export Fields:
-- **assets**: Discovered subdomains with title and tech fingerprints.
-- **services**: Open ports with service/version identification.
-- **findings**: Security hypotheses and confirmed vulnerabilities.
-- **stats**: Summary metrics of the operation.
+- **Infrastructure**: ASN, ISP/Organization, Cloud Provider (AWS, GCP, Azure).
+- **Semantics**: Functional roles (admin panels, APIs, transactional) and Impact Level (CRITICAL, HIGH, LOW).
+- **Novelty**: Automatic detection of new assets or technology changes between runs.
 
 
 ---

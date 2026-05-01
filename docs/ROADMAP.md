@@ -14,17 +14,17 @@ Current operational work is focused on hardening and contract closure for the ex
 - [x] **Evidence Engine**: SHA256 cryptographic signing of findings.
 - [x] **Professional Reporting**: High-fidelity executive reports.
 
-## 🗡️ Phase 3: The Phantom Blade (v6.0 Alpha) - [CURRENT]
+## 🗡️ Phase 3: The Phantom Blade (v6.0) - [COMPLETED]
 - [x] **Chameleon Stealth**: TLS Fingerprinting evasion via `curl_cffi`.
 - [x] **Logic Brain**: Automated correlation of review paths in the Knowledge Graph.
 - [x] **Surgical Prober**: Zero-noise evidence validation engine.
-- [x] **Autopilot**: Automated decision support for high-confidence findings.
 
-## 🧠 Phase 4: Safe Autonomy (v6.1 - v6.5) - [COMPLETED]
-- [x] **LLM-Directed Analysis**: Local prioritization and review prompts for existing findings.
-- [x] **Cross-Asset Correlation**: Non-exploitative chaining of findings across targets.
-- [x] **Lab-Only Decoy Planning**: Safe decoy metadata for training and dashboard workflows.
-- [x] **Distributed Work Queue**: Multi-node coordination for analysis tasks, not offensive scanning.
+## 🧠 Phase 4: Intelligent Engine (v7.0 Alpha) - [CURRENT]
+- [x] **Contextual Recon**: ASN, Organization, and Cloud enrichment.
+- [x] **Snapshot Memory**: Historical diffing and novelty detection.
+- [x] **Semantic Classifier**: Inferred roles (`admin`, `api`, `commerce`) and business impact mapping.
+- [x] **Adaptive Planning**: Target-aware execution profiles.
+- [x] **Graph v7**: Relationship-first data model.
 
 Phase 4 is intentionally constrained to safe autonomy. It improves prioritization, correlation and review workflows without adding exploitation automation.
 

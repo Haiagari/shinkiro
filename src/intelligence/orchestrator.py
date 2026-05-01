@@ -1,8 +1,11 @@
 import re
+import socket
 from sqlalchemy.orm import Session
 from src.storage.models import Subdomain, Port
 from src.core.tool_manager import tool_manager
 from src.intelligence.scoring_engine import get_scoring_engine
+from src.intelligence.infrastructure import infra_enricher
+from src.intelligence.classifier import semantic_classifier
 from src.utils import log
 
 class DiscoveryOrchestrator:
@@ -13,27 +16,31 @@ class DiscoveryOrchestrator:
 
     def _upsert_assets(self, assets: list[dict]):
         """
-        Inserta o actualiza activos (subdominios) basándose en el nombre de dominio.
+        Inserta activos (subdominios) vinculados al scan actual.
+        Para la v7, permitimos múltiples registros del mismo dominio para trackear historial.
         """
         for asset_data in assets:
             domain = asset_data.get("domain")
             if not domain:
                 continue
             
-            # Normalización básica: lowercase
             domain = domain.lower().strip()
             asset_data["domain"] = domain
             if self.scan_id is not None:
                 asset_data["scan_id"] = self.scan_id
 
-            existing = self.db.query(Subdomain).filter_by(domain=domain).first()
+            # En la v7 buscamos si ya existe EN ESTE SCAN para evitar duplicados internos,
+            # pero no pisamos los de scans anteriores.
+            existing = self.db.query(Subdomain).filter_by(
+                domain=domain, 
+                scan_id=self.scan_id
+            ).first()
+            
             if existing:
-                # Update existing
                 for key, value in asset_data.items():
                     if hasattr(existing, key) and value is not None:
                         setattr(existing, key, value)
             else:
-                # Insert new
                 new_asset = Subdomain(**asset_data)
                 self.db.add(new_asset)
         
@@ -41,8 +48,7 @@ class DiscoveryOrchestrator:
 
     def _upsert_services(self, services: list[dict]):
         """
-        Inserta o actualiza servicios (puertos) basándose en host y puerto.
-        Aplica el motor de scoring si hay nuevos datos.
+        Inserta servicios (puertos) vinculados al scan actual.
         """
         for service_data in services:
             host = service_data.get("host")
@@ -50,7 +56,17 @@ class DiscoveryOrchestrator:
             if not host or not port:
                 continue
             
-            # Preparar info para el motor de scoring
+            if self.scan_id is not None:
+                service_data["scan_id"] = self.scan_id
+
+            # Buscar si ya existe EN ESTE SCAN
+            existing = self.db.query(Port).filter_by(
+                host=host, 
+                port=port, 
+                scan_id=self.scan_id
+            ).first()
+
+            # (Scoring logic keeps same)
             service_info = {
                 "service_type": service_data.get("service") or service_data.get("product") or "unknown",
                 "identifier": f"{host}:{port}",
@@ -61,8 +77,6 @@ class DiscoveryOrchestrator:
                     "state": service_data.get("state")
                 }
             }
-            
-            # Obtener score
             score_obj = self.scoring_engine.score_asset(service_info)
             service_data["criticality_index"] = score_obj.index
             service_data["severity"] = score_obj.severity
@@ -71,10 +85,7 @@ class DiscoveryOrchestrator:
                 "modifiers": score_obj.modifiers,
                 "recommendations": score_obj.recommendations
             }
-            if self.scan_id is not None:
-                service_data["scan_id"] = self.scan_id
 
-            existing = self.db.query(Port).filter_by(host=host, port=port).first()
             if existing:
                 for key, value in service_data.items():
                     if hasattr(existing, key) and value is not None:
@@ -100,7 +111,16 @@ class DiscoveryOrchestrator:
             
         # Deduplicar y preparar para upsert
         unique_subs = list(set(s.lower().strip() for s in subdomains if s))
-        assets = [{"domain": s} for s in unique_subs]
+        assets = []
+        for s in unique_subs:
+            # CLASIFICACIÓN SEMÁNTICA v7 (Fase Pasiva)
+            # Alta velocidad, confianza media (solo por nombre de dominio)
+            analysis = semantic_classifier.classify_asset({"domain": s})
+            assets.append({
+                "domain": s,
+                "semantic_labels": analysis.get("labels"),
+                "business_impact": analysis.get("impact")
+            })
         
         self._upsert_assets(assets)
         log(f"Passive discovery finished. {len(assets)} assets identified/updated.", level="success")
@@ -160,16 +180,39 @@ class DiscoveryOrchestrator:
                 if status_match:
                     res_data["http_status"] = int(status_match.group(1))
 
-                # Extraer Título (entre los corchetes después del status)
-                # El formato suele ser: [status] [title] [tech]
+                # Extraer IP (httpx con -ip devuelve [0.0.0.0])
+                ip_match = re.search(r"\[(\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b)\]", line)
+                if ip_match:
+                    ip = ip_match.group(1)
+                    res_data["ip"] = ip
+                    
+                    # ENRIQUECIMIENTO v7 (Phase 2)
+                    infra = infra_enricher.enrich_ip(ip)
+                    res_data["asn"] = infra.get("asn")
+                    res_data["asn_organization"] = infra.get("asn_organization")
+                    res_data["cloud_provider"] = infra.get("cloud_provider")
+
+                # Extraer Título (entre los corchetes después del status/ip)
+                # El formato suele ser: [status] [ip] [title] [tech]
                 all_brackets = re.findall(r"\[(.*?)\]", line)
-                if len(all_brackets) >= 2:
-                    res_data["title"] = all_brackets[1]
+                # El título suele ser el primero que no es status ni IP
+                potential_titles = [b for b in all_brackets if not re.match(r"^\d{3}$", b) and not re.match(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$", b)]
+                if potential_titles:
+                    res_data["title"] = potential_titles[0]
                 
-                # Extraer Tecnologías (el último par de corchetes si hay más de 2)
-                if len(all_brackets) >= 3:
-                    techs = [t.strip() for t in all_brackets[-1].split(",")]
+                # Extraer Tecnologías (el último si hay varios y no es lo anterior)
+                if len(potential_titles) >= 2:
+                    techs = [t.strip() for t in potential_titles[-1].split(",")]
                     res_data["technologies"] = techs
+
+                # CLASIFICACIÓN SEMÁNTICA v7 (Phase 5 & 7)
+                analysis = semantic_classifier.classify_asset({
+                    "domain": domain,
+                    "title": res_data.get("title", ""),
+                    "technologies": res_data.get("technologies", [])
+                })
+                res_data["semantic_labels"] = analysis.get("labels")
+                res_data["business_impact"] = analysis.get("impact")
 
                 resolved_domains[domain] = res_data
             

@@ -1,6 +1,6 @@
-# 🧠 OzyRecon v6.0 — *Safe Autonomy*
+# 🧠 OzyRecon v7.0 — *Intelligent Autonomy*
 
-> **Headless reconnaissance with normalized output, explicit gates, and platform-friendly contracts.**
+> **Relationship-first reconnaissance engine with semantic inference, infrastructure enrichment, and adaptive planning.**
 
 <div align="center">
 
@@ -8,26 +8,31 @@
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-v6.0.0--alpha-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
-[![License](https://img.shields.io/badge/license-MIT-red?style=flat-square&labelColor=0a0f1a)](LICENSE)
-[![Security](https://img.shields.io/badge/security-controlled--recon-00ff88?style=flat-square&labelColor=0a0f1a)]()
+[![Version](https://img.shields.io/badge/version-v7.0.0--alpha.1-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
+[![Contract](https://img.shields.io/badge/contract-ozy.runtime.v1-00ff88?style=flat-square&labelColor=0a0f1a)]()
 
 </div>
 
 ---
 
-## 🎭 v6.0 Core Pillars: "Safe Autonomy"
+## 🎭 v7.0 Core Pillars: "Intelligent Autonomy"
 
-OzyRecon v6.0 is a headless reconnaissance engine with a local runtime contract in this tree. It focuses on safe autonomy, contract-driven output, and explicit validation gates. The platform bridge is defined separately in [`docs/BRIDGE_CONTRACT.md`](docs/BRIDGE_CONTRACT.md).
+OzyRecon v7.0 evolves from a discovery tool into a **Contextual Intelligence Agent**. It doesn't just find assets; it understands their role and business impact.
 
-### 1. 🧤 Stealth-Aware Transport
-Powered by `curl_cffi`, OzyRecon keeps transport handling consistent while preserving the ability to adapt to defensive controls without assuming a fixed network fingerprint.
+### 1. 🌐 Contextual Enrichment
+Automatic **ASN and Organization lookup** (via Team Cymru) and Cloud detection. Every asset is enriched with its infrastructure "DNA" from the first second.
 
-### 2. 🎯 Gated Validation
-OzyRecon uses evidence-based probing with explicit approval policy. Results are normalized and streamed to the platform for review and correlation.
+### 2. 🧠 Semantic Inference
+The engine labels assets based on their functional role (`gate_admin`, `api_surface`, `cms_surface`) and assigns **Business Impact** scores using hybrid passive/active analysis.
 
-### 3. 🔍 Correlation-First Analysis
-The Knowledge Graph correlates data across assets to highlight relationships, exposure patterns, and review priorities.
+### 3. 🕒 Hunter's Memory (Snapshot-Based)
+True **differential reconnaissance**. Every scan is a persistent snapshot. The motor remembers the past, detects novelties, and alerts on critical infrastructure changes.
+
+### 4. 🗺️ Relationship Graph v7
+Data is modeled as a **Knowledge Graph**. Query relationships between domains, IPs, ports, and technologies through a modernized API.
+
+### 5. 🎯 Adaptive Recon Planner
+Dynamic execution profiles. The engine chooses the best tool mix based on the target type (IP, Domain, CIDR) and operational intent.
 
 ---
 

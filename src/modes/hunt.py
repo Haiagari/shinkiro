@@ -9,6 +9,7 @@ from src.modes.base import BaseMode
 from src.core.tool_manager import tool_manager
 from src.core.logging import get_logger
 from src.intelligence.intelligence import run_intelligence
+from src.intelligence.planner import recon_planner
 
 logger = get_logger('mode.hunt')
 
@@ -21,8 +22,12 @@ class HuntMode(BaseMode):
             raise ValueError("Target domain is required for HUNT mode")
 
     def execute(self) -> Dict[str, Any]:
-        logger.info(f"[HUNT v5.0] Starting intelligent hunt on {self.target}")
+        logger.info(f"[HUNT v7.0] Starting intelligent adaptive hunt on {self.target}")
         
+        # 0. Adaptive Planning (v7 - Phase 8)
+        plan = recon_planner.generate_plan(self.target, intent=self.options.get("intent", "balanced"))
+        logger.info(f"[HUNT] Plan generated: {plan['type']} target, capabilities: {plan['capabilities']}")
+
         # 1. Reset Kill-Switch for a fresh run
         from src.opsec.kill_switch import kill_switch
         kill_switch.reset()
@@ -35,22 +40,23 @@ class HuntMode(BaseMode):
         intent = self.get_operational_intent()
         intent.update(opsec.get_operational_params())
 
-        # 3. Asset Discovery & Service Analysis (v6.0 Orchestrated Flow)
-        logger.info("[HUNT] Discovery & Analysis Phase (Orchestrated)")
+        # 3. Discovery & Analysis Phase (Adaptive Orchestration)
         from src.intelligence.orchestrator import DiscoveryOrchestrator
         orchestrator = DiscoveryOrchestrator(
             self.db_session,
             scan_id=self.runtime_scan.id if self.runtime_scan else None,
         )
         
-        # Phase 1: Passive
-        passive_subdomains = orchestrator.passive_discovery(self.target) or []
+        passive_subdomains = []
+        if "asset_discovery" in plan["capabilities"]:
+            passive_subdomains = orchestrator.passive_discovery(self.target) or []
         
-        # Phase 2: Active
-        active_hosts = orchestrator.active_resolution() or []
+        active_hosts = []
+        if "live_detection" in plan["capabilities"]:
+            active_hosts = orchestrator.active_resolution() or []
         
-        # Phase 3: Services
-        orchestrator.service_analysis()
+        if "service_discovery" in plan["capabilities"]:
+            orchestrator.service_analysis()
 
         # Phase 4: Scoring & Prioritization (v6.0)
         logger.info("[HUNT] Phase 4: Asset Scoring & Prioritization")

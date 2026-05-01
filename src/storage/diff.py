@@ -15,6 +15,7 @@ class DiffReport:
     target: str
     new_subdomains: List[str] = field(default_factory=list)
     removed_subdomains: List[str] = field(default_factory=list)
+    changed_subdomains: List[Dict[str, Any]] = field(default_factory=list)
     new_ports: List[Dict[str, Any]] = field(default_factory=list)
     closed_ports: List[Dict[str, Any]] = field(default_factory=list)
     changed_services: List[Dict[str, Any]] = field(default_factory=list)
@@ -22,7 +23,7 @@ class DiffReport:
     
     def has_changes(self) -> bool:
         return any([
-            self.new_subdomains, self.removed_subdomains,
+            self.new_subdomains, self.removed_subdomains, self.changed_subdomains,
             self.new_ports, self.closed_ports,
             self.changed_services, self.new_findings
         ])
@@ -30,6 +31,7 @@ class DiffReport:
     def summary(self) -> str:
         parts = []
         if self.new_subdomains: parts.append(f"+{len(self.new_subdomains)} subdomains")
+        if self.changed_subdomains: parts.append(f"*{len(self.changed_subdomains)} metadata changes")
         if self.new_ports: parts.append(f"+{len(self.new_ports)} ports")
         if self.changed_services: parts.append(f"*{len(self.changed_services)} services")
         if self.new_findings: parts.append(f"!{len(self.new_findings)} findings")
@@ -80,11 +82,43 @@ class DiffEngine:
 
     def _diff_subdomains(self, curr_id: int, prev_id: int, report: DiffReport):
         from src.storage.models import Subdomain
-        curr_subs = {s.domain for s in self.db.query(Subdomain.domain).filter(Subdomain.scan_id == curr_id).all()}
-        prev_subs = {s.domain for s in self.db.query(Subdomain.domain).filter(Subdomain.scan_id == prev_id).all()}
+        curr_objs = self.db.query(Subdomain).filter(Subdomain.scan_id == curr_id).all()
+        prev_objs = self.db.query(Subdomain).filter(Subdomain.scan_id == prev_id).all()
         
-        report.new_subdomains = list(curr_subs - prev_subs)
-        report.removed_subdomains = list(prev_subs - curr_subs)
+        curr_map = {s.domain: s for s in curr_objs}
+        prev_map = {s.domain: s for s in prev_objs}
+        
+        curr_set = set(curr_map.keys())
+        prev_set = set(prev_map.keys())
+        
+        report.new_subdomains = list(curr_set - prev_set)
+        report.removed_subdomains = list(prev_set - curr_set)
+
+        # Detectar cambios en metadatos para dominios existentes
+        for domain in (curr_set & prev_set):
+            c = curr_map[domain]
+            p = prev_map[domain]
+            
+            changes = {}
+            if c.ip != p.ip: changes["ip"] = {"old": p.ip, "new": c.ip}
+            if c.title != p.title: changes["title"] = {"old": p.title, "new": c.title}
+            if c.asn != p.asn: changes["asn"] = {"old": p.asn, "new": c.asn}
+            if c.cloud_provider != p.cloud_provider: changes["cloud"] = {"old": p.cloud_provider, "new": c.cloud_provider}
+            
+            # Comparar tecnologías (listas)
+            c_tech = set(c.technologies or [])
+            p_tech = set(p.technologies or [])
+            if c_tech != p_tech:
+                changes["technologies"] = {
+                    "added": list(c_tech - p_tech),
+                    "removed": list(p_tech - c_tech)
+                }
+
+            if changes:
+                report.changed_subdomains.append({
+                    "domain": domain,
+                    "changes": changes
+                })
 
     def _diff_ports(self, curr_id: int, prev_id: int, report: DiffReport):
         from src.storage.models import Port

@@ -118,6 +118,14 @@ class NormalizedExporter:
         return result
 
     def _asset_from_subdomain(self, subdomain) -> Asset:
+        metadata = {
+            "asn": subdomain.asn,
+            "asn_organization": subdomain.asn_organization,
+            "cloud_provider": subdomain.cloud_provider,
+            "env_tag": subdomain.env_tag,
+            "semantic_labels": subdomain.semantic_labels,
+            "business_impact": subdomain.business_impact
+        }
         return Asset(
             type="subdomain",
             value=subdomain.domain,
@@ -127,6 +135,7 @@ class NormalizedExporter:
             title=subdomain.title,
             web_server=subdomain.web_server,
             technologies=subdomain.technologies or [],
+            metadata=metadata
         )
 
     def _service_from_port(self, port) -> Service:

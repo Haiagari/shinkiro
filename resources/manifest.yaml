@@ -17,7 +17,7 @@ tools:
     adapter: GenericDiscoveryProvider
     cmd_template: "{bin} enum -passive -timeout 2 -d {target} -o {out}"
     categories: ["asset_discovery"]
-    enabled: true
+    enabled: false
 
   - name: nmap
     executable: nmap
@@ -34,7 +34,7 @@ tools:
   - name: httpx
     executable: httpx
     adapter: GenericDiscoveryProvider
-    cmd_template: "{bin} -l {target} -silent -status-code -title -tech-detect -o {out} -threads {threads}"
+    cmd_template: "{bin} -l {target} -silent -status-code -title -tech-detect -ip -o {out} -threads {threads}"
     categories: ["live_detection"]
     enabled: true
 

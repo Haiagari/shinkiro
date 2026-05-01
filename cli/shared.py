@@ -30,7 +30,7 @@ def ensure_config_loaded() -> Callable:
             # Task 2.10: Import config here to ensure it's loaded
             from src.core.config import config
             return func(*args, **kwargs)
-        return decorator
+        return wrapper
     return decorator
 
 def handle_exception(error: Exception) -> None:

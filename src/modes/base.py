@@ -12,8 +12,9 @@ from src.core.contracts import MODE_ENVELOPE_FIELDS, validate_required_fields
 from src.core.context import ScanContext, set_context
 from src.storage.database import SessionLocal, init_db
 from src.storage.queries import DBQueries
-from src.storage.models import Session as ScanSession
-from src.storage.diff import DiffEngine
+from src.storage.models import Session as ScanSession, WorkflowStep
+from src.storage.diff import DiffEngine, DiffReport
+from src.intelligence.novelty import novelty_alerter
 from src.notifications.notifier import Notifier
 from src.export.normalizer import NormalizedExporter, ScanResult
 
@@ -57,16 +58,34 @@ class BaseMode(ABC):
             self.context.record_event("mode", "preconditions validated", mode=self.mode_name)
             self._ensure_runtime_scan()
             result = self.execute()
+            
+            # NOVELTY ANALYSIS v7 (Phase 3 & 9)
+            try:
+                diff = self.diff_engine.get_diff(self.target, self.runtime_scan.id)
+                if diff.has_changes():
+                    alerts = novelty_alerter.analyze_diff(diff)
+                    self.context.record_event("novelty", "changes detected", summary=diff.summary(), count=len(alerts))
+                    if isinstance(result, dict):
+                        result["novelty"] = {
+                            "summary": diff.summary(),
+                            "events": alerts
+                        }
+            except Exception as e:
+                self.context.record_event("novelty", "analysis failed", error=str(e))
+
             self.context.mark_completed()
             self.context.record_event("mode", "execution completed", mode=self.mode_name)
             if isinstance(result, dict) and "observability" not in result:
                 result["observability"] = self.context.to_observability_record()
+            
+            self._persist_workflow_history()
             self._finalize_runtime_scan("completed")
             self._upsert_session_summary(status="success")
             return result
         except Exception as e:
             self.context.mark_failed(str(e))
             self.context.record_event("mode", "execution failed", mode=self.mode_name, error=str(e))
+            self._persist_workflow_history()
             self._finalize_runtime_scan("failed", error_summary=str(e), exit_code=1)
             self._upsert_session_summary(status="failed", error_summary=str(e), exit_code=1)
             return self.build_output_envelope("failed", error=str(e))
@@ -260,3 +279,28 @@ class BaseMode(ABC):
             session.error_summary = error_summary
 
         self.db_session.commit()
+
+    def _persist_workflow_history(self):
+        """Vuelca la timeline del contexto en la base de datos."""
+        import json
+        target_obj = self.db.get_target(self.target)
+        target_id = target_obj.id if target_obj else None
+
+        for event in self.context.timeline:
+            # Evitar duplicados simples si se llama varias veces (opcional)
+            step = WorkflowStep(
+                target_id=target_id,
+                state=event.get("stage", "unknown").upper(),
+                timestamp=datetime.fromisoformat(event["timestamp"]),
+                actor="SYSTEM",
+                notes=json.dumps({
+                    "message": event.get("message"),
+                    "data": event.get("data", {})
+                })
+            )
+            self.db_session.add(step)
+        
+        try:
+            self.db_session.commit()
+        except Exception as e:
+            logger.warning(f"Failed to persist workflow history: {e}")

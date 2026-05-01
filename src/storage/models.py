@@ -121,6 +121,16 @@ class Subdomain(Base):
     web_server = Column(String(200))
     technologies = Column(JSON, nullable=True)
     
+    # Infrastructure Context (v7 - Phase 2)
+    asn = Column(Integer, nullable=True)
+    asn_organization = Column(String(200), nullable=True)
+    cloud_provider = Column(String(100), nullable=True)
+    env_tag = Column(String(50), nullable=True)  # prod, staging, dev, shadow_it
+    
+    # Semantic Intelligence (v7 - Phase 5 & 7)
+    semantic_labels = Column(JSON, nullable=True)
+    business_impact = Column(String(20), default="LOW")
+    
     # Timestamps
     discovered_at = Column(DateTime, default=datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.utcnow)

@@ -20,6 +20,7 @@ from src.workflow.states import WorkflowState, Actor
 
 from src.gate.manager import gate_manager
 from src.intelligence.autonomy import build_autonomy_plan
+from src.intelligence.graph_builder import graph_builder
 
 app = FastAPI(title="OzyRecon API", version="6.0.0-alpha.1")
 
@@ -133,61 +134,34 @@ def get_session_trace(session_id: str):
         db.close()
 
 @app.get("/intelligence/graph")
-def get_knowledge_graph():
+def get_knowledge_graph(target: Optional[str] = None):
     """
-    Genera la estructura de nodos y aristas para el Knowledge Graph (v5.7).
-    Formato compatible con Cytoscape.js.
+    Genera el Knowledge Graph v7 basado en relaciones reales.
     """
     db = SessionLocal()
     try:
-        nodes = []
-        edges = []
-        processed_targets = set()
+        # Si no hay target, buscamos el último scan global
+        if target:
+            target_obj = db.query(Target).filter(Target.domain == target).first()
+            if not target_obj:
+                raise HTTPException(status_code=404, detail="Target not found")
+            scan = db.query(Scan).filter(Scan.target_id == target_obj.id).order_by(Scan.start_time.desc()).first()
+        else:
+            scan = db.query(Scan).order_by(Scan.start_time.desc()).first()
         
-        # 1. Obtener Targets
-        targets = db.query(Target).all()
-        for t in targets:
-            nodes.append({
-                "data": {"id": f"t_{t.id}", "label": t.domain, "type": "target", "color": "#3b82f6"}
-            })
+        if not scan:
+            return {"nodes": [], "edges": []}
             
-            # 2. Obtener Scans para este target
-            for s in t.scans:
-                # 3. Obtener Subdominios
-                for sub in s.subdomains:
-                    sub_id = f"sub_{sub.id}"
-                    nodes.append({
-                        "data": {"id": sub_id, "label": sub.domain, "type": "subdomain", "color": "#10b981"}
-                    })
-                    edges.append({"data": {"source": f"t_{t.id}", "target": sub_id, "label": "has_subdomain"}})
-                    
-                    # 4. Obtener Puertos
-                    # (Buscamos por host coincidente con el subdominio en el mismo scan)
-                    ports = db.query(Port).filter(Port.scan_id == s.id, Port.host == sub.domain).all()
-                    for p in ports:
-                        port_id = f"p_{p.id}"
-                        nodes.append({
-                            "data": {"id": port_id, "label": f"{p.port}/{p.protocol}", "type": "port", "color": "#f59e0b"}
-                        })
-                        edges.append({"data": {"source": sub_id, "target": port_id, "label": "open_port"}})
-                        
-                        # 5. Obtener Hipótesis vinculadas al scan y puerto (via URL o host)
-                        hyps = db.query(Hypothesis).filter(Hypothesis.scan_id == s.id).all()
-                        for h in hyps:
-                            # Link simple por host en la URL
-                            if sub.domain in (h.url or ""):
-                                hyp_node_id = f"h_{h.id}"
-                                nodes.append({
-                                    "data": {
-                                        "id": hyp_node_id, 
-                                        "label": h.type, 
-                                        "type": "hypothesis", 
-                                        "color": "#ef4444" if h.severity == "critical" else "#f97316"
-                                    }
-                                })
-                                edges.append({"data": {"source": port_id, "target": hyp_node_id, "label": "triggers"}})
+        return graph_builder.build_scan_graph(db, scan.id)
+    finally:
+        db.close()
 
-        return {"nodes": nodes, "edges": edges}
+@app.get("/scans/{scan_id}/graph")
+def get_scan_graph(scan_id: int):
+    """Devuelve el grafo de relaciones para un scan específico."""
+    db = SessionLocal()
+    try:
+        return graph_builder.build_scan_graph(db, scan_id)
     finally:
         db.close()
 
