@@ -24,6 +24,7 @@ It replaces the old session-note style of tracking and points to the live baseli
 
 The following content is historical and should not be treated as the active plan:
 
+- [`docs/archive/README.md`](archive/README.md)
 - `docs/archive/OZYRECON_PHASE0_AUDIT.md`
 - `docs/archive/OZYRECON_HARDENING_PLAN.md`
 - `docs/archive/OZYRECON_IMPROVEMENT_PLAN.md`
