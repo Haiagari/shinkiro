@@ -13,7 +13,7 @@ The goal is to remove runtime ambiguity, align the platform bridge, and keep the
 - Phase 0 completed: baseline audit captured in [OZYRECON_PHASE0_AUDIT.md](./OZYRECON_PHASE0_AUDIT.md).
 - The remaining phases describe the staged path to a formal runtime contract and a stable platform bridge.
 - In this tree, safe autonomy and normalized export are already implemented.
-- The bridge adapter remains a platform-repo responsibility and is documented in [docs/BRIDGE_CONTRACT.md](./docs/BRIDGE_CONTRACT.md).
+- The bridge adapter remains a platform-repo responsibility and is documented in [docs/BRIDGE_CONTRACT.md](../BRIDGE_CONTRACT.md).
 
 ## Purpose
 
