@@ -1,12 +1,15 @@
 import re
 import socket
 import json
+from pathlib import Path
+from datetime import datetime
 from sqlalchemy.orm import Session
 from src.storage.models import Subdomain, Port
 from src.core.tool_manager import tool_manager
 from src.intelligence.scoring_engine import get_scoring_engine
 from src.intelligence.infrastructure import infra_enricher
 from src.intelligence.classifier import semantic_classifier
+from src.utils.crypto import evidence_signer
 from src.utils import log
 
 class DiscoveryOrchestrator:
@@ -14,6 +17,50 @@ class DiscoveryOrchestrator:
         self.db = db
         self.scan_id = scan_id
         self.scoring_engine = get_scoring_engine()
+        self.session_id = self._get_session_id()
+
+    def _get_session_id(self) -> str:
+        """Obtiene el session_id vinculado al scan_id."""
+        from src.storage.models import Scan
+        scan = self.db.query(Scan).get(self.scan_id)
+        return scan.session_id if scan else "unknown"
+
+    def finalize_session(self):
+        """
+        Genera la estructura de artefactos en runs/{session_id}/
+        v7.5 - Requerimiento Anti-Humo
+        """
+        log(f"Finalizing session {self.session_id} and generating artifacts", level="info")
+        base_dir = Path("runs") / self.session_id
+        dirs = ["raw", "normalized", "evidence", "graph", "reports"]
+        for d in dirs:
+            (base_dir / d).mkdir(parents=True, exist_ok=True)
+
+        # 1. Export Normalized Findings (JSON)
+        from src.export.normalizer import NormalizedExporter
+        exporter = NormalizedExporter(self.db)
+        # Buscar el target domain vinculado al scan
+        from src.storage.models import Scan
+        scan = self.db.query(Scan).get(self.scan_id)
+        target_domain = scan.target.domain if scan and scan.target else "unknown"
+        
+        result = exporter.export_scan(self.session_id, target_domain)
+        with open(base_dir / "normalized" / "findings.json", "w") as f:
+            json.dump(result.to_dict(), f, indent=2, default=str)
+
+        # 2. Export Graph
+        from src.intelligence.graph_builder import graph_builder
+        graph_data = graph_builder.build_scan_graph(self.db, self.scan_id)
+        with open(base_dir / "graph" / "graph.json", "w") as f:
+            json.dump(graph_data, f, indent=2)
+
+        # 3. Export Trace
+        from src.storage.queries import DBQueries
+        trace = DBQueries(self.db).get_session_trace(self.session_id)
+        with open(base_dir / "trace.json", "w") as f:
+            json.dump(trace, f, indent=2, default=str)
+
+        log(f"Artifacts generated successfully in {base_dir}", level="success")
 
     def _upsert_assets(self, assets: list[dict]):
         """
@@ -114,14 +161,29 @@ class DiscoveryOrchestrator:
         unique_subs = list(set(s.lower().strip() for s in subdomains if s))
         assets = []
         for s in unique_subs:
-            # CLASIFICACIÓN SEMÁNTICA v7 (Fase Pasiva)
-            # Alta velocidad, confianza media (solo por nombre de dominio)
+            # CLASIFICACIÓN SEMÁNTICA v7.5 (Trazable)
             analysis = semantic_classifier.classify_asset({"domain": s})
-            assets.append({
+            
+            asset_payload = {
                 "domain": s,
                 "semantic_labels": analysis.get("labels"),
-                "business_impact": analysis.get("impact")
+                "business_impact": analysis.get("impact"),
+                "inference_trace": analysis.get("trace")
+            }
+            
+            # Firmar evidencia digitalmente con contexto completo (v8.3.2)
+            asset_payload["evidence_signature"] = evidence_signer.sign_data({
+                "domain": s,
+                "semantic_labels": analysis.get("labels"),
+                "business_impact": analysis.get("impact"),
+                "context": {
+                    "session_id": self.session_id,
+                    "timestamp": datetime.now().isoformat(),
+                    "engine": "OzyRecon v8.3.2"
+                }
             })
+            
+            assets.append(asset_payload)
         
         self._upsert_assets(assets)
         log(f"Passive discovery finished. {len(assets)} assets identified/updated.", level="success")
@@ -191,14 +253,32 @@ class DiscoveryOrchestrator:
                     res_data["asn_organization"] = infra.get("asn_organization")
                     res_data["cloud_provider"] = infra.get("cloud_provider")
 
-                # CLASIFICACIÓN SEMÁNTICA (Enriquecida con Título y Tech reales)
+                # CLASIFICACIÓN SEMÁNTICA v7.5 (Trazable)
                 analysis = semantic_classifier.classify_asset({
                     "domain": domain,
                     "title": res_data["title"] or "",
-                    "technologies": res_data["technologies"]
+                    "technologies": res_data["technologies"],
+                    "headers": res_data["http_headers"]
                 })
                 res_data["semantic_labels"] = analysis.get("labels")
                 res_data["business_impact"] = analysis.get("impact")
+                res_data["inference_trace"] = analysis.get("trace")
+
+                # Firmar evidencia digitalmente con contexto completo (v8.3.2)
+                # Evita Replay Attacks y recontextualización
+                res_data["evidence_signature"] = evidence_signer.sign_data({
+                    "domain": domain,
+                    "ip": res_data["ip"],
+                    "http_status": res_data["http_status"],
+                    "title": res_data["title"],
+                    "semantic_labels": res_data["semantic_labels"],
+                    "context": {
+                        "session_id": self.session_id,
+                        "timestamp": datetime.now().isoformat(),
+                        "engine": "OzyRecon v8.3.2",
+                        "schema_version": "1.2"
+                    }
+                })
 
                 resolved_domains[domain] = res_data
             
@@ -296,10 +376,12 @@ class DiscoveryOrchestrator:
                 severity = res.get("info", {}).get("severity", "critical")
                 host = res.get("host", "")
                 
-                log(f"🔥 TAKEOVER DETECTED: {host} -> {vuln_name}", level="critical")
+                log(f"🔥 TAKEOVER CANDIDATE: {host} -> {vuln_name}", level="warn")
                 
-                # Persistir en la tabla de Vulnerabilidades
+                # Persistir en la tabla de Vulnerabilidades con estado PENDING_APPROVAL
+                # v7.5 - Requerimiento de Seguridad (No explotación)
                 from src.storage.queries import DBQueries
+                from src.workflow.states import WorkflowState
                 queries = DBQueries(self.db)
                 queries.add_vulnerability(
                     scan_id=self.scan_id,
@@ -310,6 +392,14 @@ class DiscoveryOrchestrator:
                     payload=res.get("matched-at"),
                     evidence=res.get("template-id")
                 )
+                
+                # Actualizar el estado a PENDING_APPROVAL para el Gate Humano
+                # Nota: add_vulnerability por defecto lo pone en 'open', lo movemos a 'pending_approval'
+                from src.storage.models import Vulnerability
+                vuln = self.db.query(Vulnerability).filter_by(scan_id=self.scan_id, host=host, name=vuln_name).first()
+                if vuln:
+                    vuln.status = WorkflowState.PENDING_APPROVAL
+                    self.db.commit()
                 
             return results
 

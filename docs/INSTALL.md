@@ -1,6 +1,6 @@
 # 🚀 OzyRecon Installation & Setup Guide
 
-This guide will walk you through setting up **OzyRecon v6.0** for controlled reconnaissance and review.
+This guide will walk you through setting up **OzyRecon v7.5** for controlled reconnaissance and review.
 
 ## Prerequisites
 - **Python 3.10+** (3.11 recommended)
@@ -40,7 +40,8 @@ OzyRecon uses a local runtime entrypoint and a CLI wrapper:
 - **Launch wrapper script**: `./ozy`
 
 ## 5. OPSEC & Safety
-By default, v6.0 uses the runtime safety policy and gate checks documented in the hardening plan. You can tune the policy in the runtime configuration files if needed.
+By default, v7.5 uses the runtime safety policy and gate checks documented in the hardening plan.
+ You can tune the policy in the runtime configuration files if needed.
 The runtime also exposes a session trace endpoint for reconstruction and audit.
 
 ---

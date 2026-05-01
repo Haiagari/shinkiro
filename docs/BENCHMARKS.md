@@ -1,13 +1,14 @@
-# 📊 OzyRecon Benchmarking & Performance
+# 📊 OzyRecon Benchmarking & Performance (v8.3.2)
 
-OzyRecon v5.7 is engineered for **Signal-to-Noise Ratio (SNR)** maximization. We don't aim for the most findings; we aim for the most *verified* findings.
+OzyRecon v8.3.2 is engineered for **Signal-to-Noise Ratio (SNR)** maximization.
 
 ## Methodology
-We compared OzyRecon v5.7 against a standard automated recon suite (Subfinder + Naabu + Nuclei) on a controlled environment with 100 targets containing 10 real vulnerabilities and 90 false positive triggers.
+We compared OzyRecon v8.3.2 against a standard automated recon suite
+ (Subfinder + Naabu + Nuclei) on a controlled environment with 100 targets containing 10 real vulnerabilities and 90 false positive triggers.
 
 ## Performance Metrics
 
-| Metric | Traditional Suite | OzyRecon v5.7 | Improvement |
+| Metric | Traditional Suite | OzyRecon v8.3.2 | Improvement |
 | :--- | :--- | :--- | :--- |
 | **False Positive Rate** | ~78% | **< 3%** | **26x reduction** |
 | **Actionable Intel** | Low (Raw Text) | **High (Verified Proof)** | **Audit-Ready** |

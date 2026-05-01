@@ -153,7 +153,7 @@ class HuntMode(BaseMode):
         # run_intelligence will handle internal persistence to Hypothesis table
         intel_results = run_intelligence(self.target, out_dir, self.options, context=intel_context)
 
-        # 6. Final Status Update
+        # 6. Final Status Update & Artifact Generation (v7.7.2 Handled in BaseMode finally)
         self.context.mark_completed()
         
         logger.info(f"[HUNT] Discovery and Intelligence phase completed.")

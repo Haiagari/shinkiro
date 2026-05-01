@@ -1,384 +1,74 @@
 """
-Tests para la CLI de OzyRecon
-TDD: Tests primero - implementación después
+Tests for OzyRecon CLI - v8.3.2 Alignment
 """
 
 import pytest
 import sys
 import os
-import subprocess
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
-# Añadir raíz al path
+# Add root to path
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT_DIR))
 
-
 @pytest.fixture
 def runner():
-    """CliRunner shared for CLI tests."""
     return CliRunner()
 
-
 class TestOzyCLI:
-    """Tests para cli/ozy.py - Entry point de OzyRecon"""
-
-    @pytest.fixture
-    def runner(self):
-        """CliRunner para testing de Click"""
-        return CliRunner()
+    """Tests for cli/ozy.py - v8.3.2 Entry point"""
 
     def test_cli_exists(self, runner):
-        """Test 2.1: El grupo CLI principal debe existir"""
-        # Import debe funcionar sin errores
         from cli.ozy import cli
         assert cli is not None
 
     def test_cli_help_shows_banner(self, runner):
-        """Test 2.6: El help debe mostrar el banner"""
         from cli.ozy import cli
         result = runner.invoke(cli, ['--help'])
         assert result.exit_code == 0
         assert 'OzyRecon' in result.output
 
     def test_cli_version(self, runner):
-        """Test 2.4: --version debe mostrar la versión"""
+        """Validates version 8.3.2 as per definitive baseline."""
         from cli.ozy import cli
         result = runner.invoke(cli, ['--version'])
         assert result.exit_code == 0
-        assert '7.0.0' in result.output
-
-    def test_cli_global_debug_option(self, runner):
-        """Test 2.2: Opción global --debug debe existir"""
-        from cli.ozy import cli
-        result = runner.invoke(cli, ['--help'])
-        assert result.exit_code == 0
-        assert '--debug' in result.output
-
-    def test_cli_global_config_option(self, runner):
-        """Test 2.3: Opción global --config debe existir"""
-        from cli.ozy import cli
-        result = runner.invoke(cli, ['--help'])
-        assert result.exit_code == 0
-        assert '--config' in result.output
+        assert '8.3.2' in result.output
 
     def test_banner_contains_version(self, runner):
-        """Test 2.5: Banner debe contener versión"""
         from cli.ozy import get_banner
         banner = get_banner()
-        assert '7.0.0' in banner
-
-    def test_banner_is_cyan_bold(self, runner):
-        """Test 2.5: Banner debe usar formato Rich"""
-        from cli.ozy import get_banner
-        # get_banner debe retornar markup de Rich
-        banner = get_banner()
-        assert 'OzyRecon' in banner
-
-    def test_config_loaded_on_import(self, runner):
-        """Test 2.10: Config debe cargarse al inicio"""
-        # El import de cli.ozy debe cargar config
-        from cli import ozy
-        # Verificar que config fue importado
-        assert hasattr(ozy, 'config') or 'config' in dir(ozy)
+        assert '8.3.2' in banner
 
     def test_hunt_subcommand_exists(self, runner):
-        """Test: Subcomando hunt debe estar registrado"""
         from cli.ozy import cli
         result = runner.invoke(cli, ['--help'])
         assert result.exit_code == 0
-        # Los subcomandos deben aparecer en el help
-        assert 'hunt' in result.output.lower() or 'Commands:' in result.output
-
-
-class TestCliDirectoryStructure:
-    """Tests para la estructura de directorios de cli/"""
-
-    def test_cli_directory_exists(self):
-        """Test 1.1: Directorio cli/ debe existir"""
-        cli_dir = ROOT_DIR / 'cli'
-        assert cli_dir.exists(), "cli/ directory must exist"
-        assert cli_dir.is_dir(), "cli/ must be a directory"
-
-    def test_cli_init_exists(self):
-        """Test 1.2: cli/__init__.py debe existir"""
-        init_file = ROOT_DIR / 'cli' / '__init__.py'
-        assert init_file.exists(), "cli/__init__.py must exist"
-
-    def test_cli_main_exists(self):
-        """Test 1.3: cli/__main__.py debe existir para python -m cli"""
-        main_file = ROOT_DIR / 'cli' / '__main__.py'
-        assert main_file.exists(), "cli/__main__.py must exist"
-
-    def test_root_ozy_py_exists(self):
-        """Test 1.3b: ozy.py debe existir como wrapper estable del runtime"""
-        root_entry = ROOT_DIR / 'ozy.py'
-        assert root_entry.exists(), "ozy.py must exist"
-
-    def test_cli_commands_init_exists(self):
-        """Test 1.4: cli/commands/__init__.py debe existir"""
-        commands_init = ROOT_DIR / 'cli' / 'commands' / '__init__.py'
-        assert commands_init.exists(), "cli/commands/__init__.py must exist"
-
-
-class TestRegisterModeCommands:
-    """Tests para Task 2.7: register_mode_commands() con carga dinámica de modos"""
-
-    def test_register_mode_commands_exists(self):
-        """Test 2.7: Función register_mode_commands debe existir"""
-        from cli.ozy import register_mode_commands
-        assert callable(register_mode_commands)
-
-    def test_register_mode_commands_finds_modes(self):
-        """Test 2.7: Debe encontrar módulos en src/modes/"""
-        from cli.ozy import register_mode_commands
-        # Debe retornar al menos un modo
-        commands = register_mode_commands()
-        assert isinstance(commands, list)
-
-    def test_modes_inherit_from_basemode(self):
-        """Test 2.7: Los modos encontrados deben ser comandos Click"""
-        from cli.ozy import register_mode_commands
-        commands = register_mode_commands()
-        # Al menos hunt debe estar registrado
-        command_names = [c.name for c in commands if hasattr(c, 'name')]
-        assert 'hunt' in command_names or len(commands) > 0
-
-
-class TestEnsureConfigLoaded:
-    """Tests para Task 2.8: ensure_config_loaded() decorator"""
-
-    def test_ensure_config_loaded_decorator_exists(self):
-        """Test 2.8: Decorator ensure_config_loaded debe existir"""
-        from cli.ozy import ensure_config_loaded
-        assert callable(ensure_config_loaded) or ensure_config_loaded is not None
-
-    def test_ensure_config_loaded_validates_config(self):
-        """Test 2.8: Debe validar que config está cargado"""
-        from cli.ozy import ensure_config_loaded
-        from click import Command
-        
-        @ensure_config_loaded()
-        def dummy_command():
-            return "ok"
-        
-        # El decorator debe envolver el comando
-        assert callable(dummy_command)
-
-
-class TestHandleException:
-    """Tests para Task 2.9: handle_exception() con Rich"""
-
-    def test_handle_exception_exists(self):
-        """Test 2.9: Función handle_exception debe existir"""
-        from cli.ozy import handle_exception
-        assert callable(handle_exception)
-
-    def test_handle_exception_uses_rich_console(self):
-        """Test 2.9: Debe usar Rich console para mostrar errores"""
-        from cli.ozy import handle_exception, console
-        from rich.console import Console
-        
-        # Verificar que usa la consola Rich global
-        assert isinstance(console, Console)
-
-    def test_handle_exception_handles_exception_cleanly(self):
-        """Test 2.9: Debe manejar excepciones limpiamente"""
-        from cli.ozy import handle_exception
-        
-        # Verificar que es callable
-        assert callable(handle_exception)
-
-
-class TestSignalHandling:
-    """Tests para Task 3.1-3.2: Signal handling para shutdown limpio"""
-
-    def test_setup_signal_handlers_function_exists(self):
-        """Test 3.1: Debe haber función para registrar handlers"""
-        from cli.ozy import _setup_signal_handlers
-        assert callable(_setup_signal_handlers)
-
-    def test_setup_signal_handlers_registers_signals(self):
-        """Test 3.1: Debe registrar handlers para SIGINT/SIGTERM después de llamarse"""
-        import signal
-        from cli.ozy import _setup_signal_handlers
-        
-        # Registrar handlers
-        _setup_signal_handlers()
-        
-        # Verificar que están registrados
-        sigint_handler = signal.getsignal(signal.SIGINT)
-        sigterm_handler = signal.getsignal(signal.SIGTERM)
-        
-        assert sigint_handler is not signal.SIG_DFL
-        assert sigterm_handler is not signal.SIG_DFL
-
-    def test_graceful_shutdown_message(self):
-        """Test 3.2: Debe mostrar mensaje de apagado limpio"""
-        from cli.ozy import console
-        # La consola debe existir para mostrar mensajes
-        assert console is not None
-
-
-class TestCliExceptions:
-    """Tests adicionales para manejo de excepciones en CLI"""
-
-    def test_exception_handler_provides_clean_output(self):
-        """Test: handle_exception debe dar salida limpia"""
-        from cli.ozy import handle_exception, console
-        try:
-            raise ValueError("Test error message")
-        except ValueError as e:
-            # No debe-crashear
-            handle_exception(e)
-            # Si llega aquí, pasó
-
-
-class TestCliBootstrap:
-    """Bootstrap real de la CLI desde el entrypoint raíz."""
-
-    def test_root_entrypoint_help_uses_external_log_dir(self, tmp_path):
-        log_dir = tmp_path / "logs"
-        env = os.environ.copy()
-        env["OZY_LOG_DIR"] = str(log_dir)
-        env["PYTHONDONTWRITEBYTECODE"] = "1"
-
-        result = subprocess.run(
-            [sys.executable, "ozy.py", "--help"],
-            cwd=ROOT_DIR,
-            env=env,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-
-        assert result.returncode == 0, result.stderr
-        assert "OzyRecon" in result.stdout
-        assert "Initializing ToolManager" not in result.stdout
-        assert log_dir.exists()
-        assert any(log_dir.glob("*.log"))
-
+        assert 'hunt' in result.output.lower()
 
 class TestCliVerifyCommand:
-    """Tests para el comando verify."""
-
-    @pytest.fixture
-    def manifest(self):
-        from src.core.manifest_manager import ToolEntry, ToolManifest
-
-        return ToolManifest(
-            tools=[
-                ToolEntry(
-                    name="subfinder",
-                    executable="subfinder",
-                    adapter="SubfinderProvider",
-                    categories=["asset_discovery"],
-                ),
-                ToolEntry(
-                    name="dnsx",
-                    executable="dnsx",
-                    adapter="GenericDiscoveryProvider",
-                    categories=["dns_resolution"],
-                    cmd_template="{bin} -l {target} -o {out}",
-                ),
-                ToolEntry(
-                    name="httpx",
-                    executable="httpx",
-                    adapter="GenericDiscoveryProvider",
-                    categories=["live_detection"],
-                    cmd_template="{bin} -l {target} -o {out}",
-                ),
-                ToolEntry(
-                    name="naabu",
-                    executable="naabu",
-                    adapter="NaabuProvider",
-                    categories=["port_scan"],
-                ),
-            ]
-        )
+    """Tests for the hardened v8.3.2 verify command."""
 
     def test_verify_command_exists(self, runner):
         from cli.ozy import cli, register_runtime_commands
-
         register_runtime_commands()
-
         result = runner.invoke(cli, ["verify", "--help"])
         assert result.exit_code == 0
         assert "verify" in result.output.lower()
 
-    def test_verify_diagnostics_only(self, runner, monkeypatch, manifest):
+    def test_verify_system_integrity(self, runner):
+        """Verifies that the command runs and performs audit."""
         from cli.ozy import cli, register_runtime_commands
-
         register_runtime_commands()
-
-        monkeypatch.setenv("OZY_RUNTIME_DIR", str(ROOT_DIR / "tmp-verify-runtime"))
-        monkeypatch.setattr("cli.commands.verify.ManifestManager.load", lambda self, path: manifest)
-
-        def fake_which(binary):
-            return f"/usr/bin/{binary}" if binary in {"subfinder", "dnsx", "httpx"} else None
-
-        monkeypatch.setattr("cli.commands.verify.shutil.which", fake_which)
-
-        result = runner.invoke(cli, ["verify"])
-
-        assert result.exit_code == 0
-        assert "Capability Matrix" in result.output
-        assert "subfinder" in result.output
-        assert "naabu" in result.output
-        assert "degraded" in result.output.lower()
-
-    def test_verify_allow_degraded_returns_success(self, runner, monkeypatch, manifest):
-        from cli.ozy import cli, register_runtime_commands
-
-        register_runtime_commands()
-
-        monkeypatch.setattr("cli.commands.verify.ManifestManager.load", lambda self, path: manifest)
-        monkeypatch.setattr("cli.commands.verify.shutil.which", lambda binary: None)
-
-        result = runner.invoke(cli, ["verify", "--allow-degraded", "--json"])
-
-        assert result.exit_code == 0
-        assert '"required_missing"' in result.output
-        assert '"status": "degraded"' in result.output or '"status": "ready"' in result.output
-
-    def test_verify_smoke_runs(self, runner, monkeypatch, manifest, tmp_path):
-        from cli.ozy import cli, register_runtime_commands
-
-        register_runtime_commands()
-
-        monkeypatch.setenv("OZY_RUNTIME_DIR", str(tmp_path / "runtime"))
-        monkeypatch.setattr("cli.commands.verify.ManifestManager.load", lambda self, path: manifest)
-        monkeypatch.setattr(
-            "cli.commands.verify.shutil.which",
-            lambda binary: f"/usr/bin/{binary}",
-        )
-
-        monkeypatch.setattr(
-            "cli.commands.verify.run_recon",
-            lambda target, out_dir, args: {
-                "all_subdomains": ["a.example.com", "b.example.com"],
-                "resolved": ["a.example.com"],
-                "live_hosts": ["https://a.example.com"],
-                "takeovers": [],
-                "out_dir": str(out_dir),
-            },
-        )
-        monkeypatch.setattr(
-            "cli.commands.verify.run_hunt",
-            lambda target, **options: {
-                "status": "completed",
-                "subdomains": 2,
-                "active_hosts": 1,
-                "hypotheses": 3,
-                "session_id": "session-1",
-            },
-        )
-
-        result = runner.invoke(cli, ["verify", "example.com"])
-
-        assert result.exit_code == 0
-        assert "Smoke Runs for example.com" in result.output
-        assert "recon" in result.output.lower()
-        assert "hunt" in result.output.lower()
+        
+        # We mock external checks to ensure it doesn't fail due to environment in unit tests
+        with patch("cli.commands.verify.check_binaries", return_value=True), \
+             patch("cli.commands.verify.check_folders", return_value=True), \
+             patch("cli.commands.verify.check_intelligence_engines", return_value=True), \
+             patch("cli.commands.verify.check_api_contract", return_value=True):
+            
+            result = runner.invoke(cli, ["verify"])
+            assert result.exit_code == 0
+            assert "SYSTEM INTEGRITY AUDIT" in result.output

@@ -123,6 +123,11 @@ class ToolManager:
                     results.append(res)
             except Exception as e:
                 logger.error(f"Provider {provider.name} failed: {e}")
+                # Record error in context if available
+                from src.core.context import get_context
+                ctx = get_context()
+                if ctx:
+                    ctx.record_event("capability", "provider failed", provider=provider.name, error=str(e))
                 continue
         
         # Deduplicar si es una lista de strings (común en discovery)

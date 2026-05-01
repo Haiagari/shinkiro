@@ -130,10 +130,12 @@ class Subdomain(Base):
     # Semantic Intelligence (v7 - Phase 5 & 7)
     semantic_labels = Column(JSON, nullable=True)
     business_impact = Column(String(20), default="LOW")
+    inference_trace = Column(JSON, nullable=True) # v7.5 - Explainability Trace
     
     # Evidence & Performance (v7.1 - Phase 6)
     http_headers = Column(JSON, nullable=True)
     response_time_ms = Column(Integer, nullable=True)
+    evidence_signature = Column(Text, nullable=True) # v7.5 - Digital Signature
     
     # DNS Chain (v7.3 - Phase 2 Advanced)
     cname = Column(String(500), nullable=True)
@@ -332,6 +334,9 @@ class Evidence(Base):
     data = Column(Text) # Contenido o path a archivo
     metadata_json = Column(JSON, nullable=True)
     hash_sha256 = Column(String(64), nullable=True)
+    digital_signature = Column(Text, nullable=True) # v7.5 - Ed25519 signature
+    chain_of_custody = Column(JSON, nullable=True) # v7.5 - History trace
+    version = Column(Integer, default=1) # v7.5 - Evidence versioning
     
     hypothesis = relationship("Hypothesis", back_populates="evidences")
 

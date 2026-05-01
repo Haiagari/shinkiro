@@ -91,12 +91,32 @@ def _create_mode_command(mode_name: str, mode_class: type) -> click.Command:
     @click.option('--threads', default=None, type=int, help='Number of threads')
     @click.option('--speed', default='normal', type=click.Choice(['slow', 'normal', 'fast']), help='Speed mode')
     @click.option('--depth', default='standard', type=click.Choice(['shallow', 'standard', 'deep']), help='Depth level')
+    @click.option('--dry-run', is_flag=True, default=False, help='Plan only, do not execute')
+    @click.option('--json', 'json_output', is_flag=True, default=False, help='Output in JSON format')
     @ensure_config_loaded()
-    def command(target: str, threads: int, speed: str, depth: str):
+    def command(target: str, threads: int, speed: str, depth: str, dry_run: bool, json_output: bool):
         """Execute {mode_name} mode on TARGET."""
-        mode = mode_class(target, options={'threads': threads, 'speed': speed, 'depth': depth})
-        result = mode.run()
-        console.print(f"[green]✓ {mode_name} completed: {result.get('status', 'unknown')}[/green]")
+        options = {
+            'threads': threads, 
+            'speed': speed, 
+            'depth': depth, 
+            'dry_run': dry_run,
+            'json': json_output
+        }
+        mode = mode_class(target, options=options)
+        
+        if dry_run:
+            console.print(f"[yellow]!! DRY RUN ENABLED - Planning for {target} !![/yellow]")
+            # In dry-run we just return the plan if possible, or a mock result
+            result = {"status": "dry_run_completed", "target": target}
+        else:
+            result = mode.run()
+            
+        if json_output:
+            import json
+            click.echo(json.dumps(result, indent=2, default=str))
+        else:
+            console.print(f"[green]✓ {mode_name} completed: {result.get('status', 'unknown')}[/green]")
         return result
     
     return command
@@ -114,7 +134,7 @@ def get_banner() -> str:
     Returns:
         Markup de Rich con el banner formateado.
     """
-    version = "7.0.0-alpha.1"
+    version = "8.3.2"
     
     banner = r"""
 [bold cyan]
@@ -125,7 +145,7 @@ def get_banner() -> str:
 ██║     ██║  ██║██║  ██║╚██████╔╝██║  ██║   ██║   
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
 [/bold cyan]
-[bold]OzyRecon[/bold] - Advanced Persistent Reconnaissance
+[bold]OzyRecon[/bold] - Advanced Persistent Reconnaissance [bold red](Enterprise Sentinel v8.3.2)[/bold red]
 [dim]Version {version}[/dim]
 """.format(version=version)
     
@@ -256,9 +276,16 @@ def register_runtime_commands() -> None:
     # Task 6.5: Registrar subcomando de verificación
     try:
         from cli.commands.verify import verify
-
         if verify.name not in cli.commands:
             cli.add_command(verify)
+    except ImportError:
+        pass
+
+    # v8.1: Registrar subcomando de gestión de llaves
+    try:
+        from cli.commands.keys import keys
+        if keys.name not in cli.commands:
+            cli.add_command(keys)
     except ImportError:
         pass
 

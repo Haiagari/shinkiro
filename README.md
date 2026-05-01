@@ -1,6 +1,6 @@
-# 🧠 OzyRecon v7.3 — *The Elite Sentinel*
+# 🧠 OzyRecon v8.3.2 — *The Enterprise Sentinel*
 
-> **Relationship-first reconnaissance engine with semantic inference, infrastructure enrichment, adaptive planning, and automated takeover hunting.**
+> **Professional Intelligence Platform: Secure relationship-first reconnaissance with multi-key RBAC, cryptographic chain of custody, AI narrative analysis, and operational resilience.**
 
 <div align="center">
 
@@ -8,31 +8,35 @@
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-v7.3.0--alpha.1-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v8.3.2-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/status-ENTERPRISE--READY-00ff88?style=flat-square&labelColor=0a0f1a)]()
 [![Contract](https://img.shields.io/badge/contract-ozy.runtime.v1-00ff88?style=flat-square&labelColor=0a0f1a)]()
 
 </div>
 
 ---
 
-## 🎭 v7.3 Core Pillars: "The Elite Sentinel"
+## 🎭 v8.3.2 Core Pillars: "The Enterprise Sentinel"
 
-OzyRecon v7.3 solidifies its position as a high-fidelity intelligence platform.
+OzyRecon v8.3.2 is a hardened, production-grade intelligence engine.
 
-### 1. 🧤 Refined Chameleon Stealth
-Advanced **User-Agent rotation and header injection** for all tools (httpx, subfinder, nuclei). Identity is protected with safe shell quoting to bypass modern WAFs.
+### 1. 🔐 Multi-Key RBAC (Identity Pro)
+No more single-key risks. Implement fine-grained access control using **Hashed API Keys** and **Scopes** (`hunt:run`, `sessions:read`, `admin:*`). Manage identities via the `config/api_keys.json` registry.
 
-### 2. 🔍 Takeover Hunter
-Automated **Subdomain Takeover detection** integrated into the primary flow. The motor tracks DNS lineages (CNAME) and validates exposure using surgical Nuclei templates.
+### 2. 🛡️ Advanced Operational Security (SSRF Pro)
+Built-in protection against **DNS Rebinding** and internal scanning. The engine resolves targets and validates against private IP ranges (RFC 1918) before any probe execution.
 
-### 3. 🧾 Technical Evidence Layer
-Every finding is backed by **HTTP evidence**. The engine captures response headers, titles, and performance metrics (ms) using a structured JSON-first pipeline.
+### 3. 🧾 Forensic Chain of Custody 2.0
+Every finding is **digitally signed (Ed25519)** with full context: `session_id`, `timestamp`, and `schema_version`. Detection of database tampering is instant and verifiable externally.
 
-### 4. 🌐 Contextual Enrichment
-Automatic **ASN and Organization lookup** (via Team Cymru) and Cloud detection.
+### 4. 🧠 AI Narrative Analyst
+The motor decides, the IA explains. Integrated LLM bridge contextualizes findings into **Human-Readable Business Impact** reports and technical recommendations.
 
-### 5. 🧠 Semantic Inference
-Functional role labeling (`gate_admin`, `api_surface`, `cms_surface`) and **Business Impact** scoring.
+### 5. 🧱 Operational Resilience
+Controlled execution with **Managed Lifecycles**:
+- **Cancellation**: Abort active scans via `POST /sessions/{id}/cancel`.
+- **Deduplication**: Isolated idempotency per user/config.
+- **Observability**: Structured **JSONL logs with rotation** and real-time health metrics.
 
 ---
 
@@ -100,11 +104,11 @@ You decide **when** and **what** runs.
 
 Every finding is:
 
-* Hashed (SHA256)
+* Digitally Signed (Ed25519)
 * Timestamped
 * Audit-ready
 
-Built for **compliance, trust, and reproducibility**.
+Built for **compliance, trust, and forensic reproducibility**.
 
 ---
 
@@ -192,14 +196,14 @@ To generate PDF reports, OzyRecon requires `WeasyPrint`, which depends on severa
 
 ### Primary docs
 
-* 🧾 [Phase 0 Audit](OZYRECON_PHASE0_AUDIT.md)
-* 🧰 [Hardening Plan](OZYRECON_HARDENING_PLAN.md)
+* 🧾 [Phase 0 Audit](docs/planning/OZYRECON_PHASE0_AUDIT.md)
+* 🧰 [Hardening Plan](docs/planning/OZYRECON_HARDENING_PLAN.md)
 * 📜 [Runtime Contract](docs/RUNTIME_CONTRACT.md)
 
 ### Supporting docs
 
-* 🧭 [Improvement Plan](OZYRECON_IMPROVEMENT_PLAN.md)
-* 🪧 [Operational Plan](OZYRECON_OPERATIONAL_PLAN.md)
+* 🧭 [Improvement Plan](docs/planning/OZYRECON_IMPROVEMENT_PLAN.md)
+* 🪧 [Operational Plan](docs/planning/OZYRECON_OPERATIONAL_PLAN.md)
 * 🤝 [Bridge Contract](docs/BRIDGE_CONTRACT.md)
 
 ### General docs

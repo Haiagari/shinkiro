@@ -1,68 +1,90 @@
 """
-Modo FORENSE - Análisis Post-Mortem
-Análisis de brechas de detección y auto-ajuste de scoring.
+Forensic Mode - OzyRecon v7.7
+Reconstructs and verifies evidence signatures for a past session.
 """
 
-import uuid
-from typing import Optional, Dict, Any, List
-from datetime import datetime, timedelta
-
-from src.core.config import config
-from src.core.logging import get_logger
-from src.core.context import ScanContext, set_context
-from src.storage.database import SessionLocal, init_db
-from src.storage.queries import DBQueries
-
-logger = get_logger('mode_forensic')
-
-
+import logging
+from typing import Dict, Any, List
 from src.modes.base import BaseMode
-from src.core.logging import get_logger
-from src.storage.queries import DBQueries
+from src.utils.crypto import evidence_signer
+from src.storage.models import Subdomain
+from src.core.logging import console
+from rich.table import Table
 
-logger = get_logger('mode.forensic')
+logger = logging.getLogger('mode.forensic')
 
 class ForensicMode(BaseMode):
-    """
-    Modo FORENSE - Análisis Post-Mortem
-    Objetivo: Analizar brechas de detección y evolución de la superficie.
-    """
-    
-    def __init__(self, target: str, options: Optional[Dict[str, Any]] = None):
-        super().__init__(target, "forensic", options)
+    def __init__(self, session_id: str, options: Dict[str, Any] = None):
+        # In forensic mode, target is derived from session_id
+        super().__init__("forensic_audit", "forensic", options)
+        self.audit_session_id = session_id
 
     def validate_preconditions(self):
-        db = DBQueries(self.db_session)
-        target_obj = db.get_target(self.target)
-        if not target_obj:
-            raise ValueError(f"No history found for {self.target}. Forensic needs a baseline.")
+        if not self.audit_session_id:
+            raise ValueError("Session ID is required for FORENSIC mode")
 
     def execute(self) -> Dict[str, Any]:
-        logger.info(f"[FORENSIC] Deep historical analysis for {self.target}")
+        console.print(f"[bold cyan]🔍 Starting Forensic Audit for Session: {self.audit_session_id}[/bold cyan]")
         
-        db = DBQueries(self.db_session)
-        scans = db.get_scan_history(self.target, days=365) # Historial de un año
+        # 1. Fetch assets for the session
+        assets = self.db_session.query(Subdomain).filter_by(scan_id=self._get_scan_id_from_session()).all()
         
-        if len(scans) < 2:
-            logger.warning("[FORENSIC] Limited history. Analysis might be shallow.")
-        
-        # 1. Análisis de Evolución de Superficie
-        first_scan = scans[-1]
-        latest_scan = scans[0]
-        
-        # 2. Análisis de Hallazgos Recurrentes vs Resueltos
-        # Esto es lo que OzyAudit amará
-        findings = db.query(self.db.models.Vulnerability).filter(
-            self.db.models.Vulnerability.scan_id == latest_scan.id
-        ).all()
+        if not assets:
+            return {"status": "failed", "error": "No assets found for this session"}
 
-        return self.build_output_envelope(
-            "completed",
-            total_scans_analyzed=len(scans),
-            first_seen=first_scan.start_time.isoformat() if first_scan.start_time else "n/a",
-            last_seen=latest_scan.start_time.isoformat() if latest_scan.start_time else "n/a",
-            findings_snapshot=len(findings),
-        )
+        table = Table(title=f"Forensic Integrity Audit: {self.audit_session_id}")
+        table.add_column("Asset", style="cyan")
+        table.add_column("Signature", style="dim")
+        table.add_column("Status", justify="center")
 
-def run_forensic(target: str, **options) -> Dict[str, Any]:
-    return ForensicMode(target, options).run()
+        verified_count = 0
+        failed_count = 0
+
+        for asset in assets:
+            if not asset.evidence_signature:
+                table.add_row(asset.domain, "N/A", "[yellow]NO SIGNATURE[/yellow]")
+                continue
+
+            # Re-construct data object for verification
+            # This must match the exact dictionary structure used during signing in orchestrator.py
+            data_to_verify = {
+                "domain": asset.domain,
+                "ip": asset.ip,
+                "http_status": asset.http_status,
+                "title": asset.title,
+                "semantic_labels": asset.semantic_labels
+            }
+            
+            is_valid = evidence_signer.verify_data(data_to_verify, asset.evidence_signature)
+            
+            if is_valid:
+                status = "[green]✅ VERIFIED[/green]"
+                verified_count += 1
+            else:
+                status = "[red]❌ COMPROMISED[/red]"
+                failed_count += 1
+                
+            table.add_row(asset.domain, f"{asset.evidence_signature[:16]}...", status)
+
+        console.print(table)
+        
+        summary = f"Audit complete. Verified: {verified_count}, Failed: {failed_count}"
+        if failed_count > 0:
+            console.print(f"[bold red]⚠️ ALERT: {failed_count} evidence items failed integrity check![/bold red]")
+        else:
+            console.print("[bold green]✅ Integrity Audit PASSED. All evidence is authentic.[/bold green]")
+
+        return {
+            "status": "completed",
+            "verified": verified_count,
+            "failed": failed_count,
+            "summary": summary
+        }
+
+    def _get_scan_id_from_session(self) -> int:
+        from src.storage.models import Scan
+        scan = self.db_session.query(Scan).filter_by(session_id=self.audit_session_id).first()
+        return scan.id if scan else 0
+
+def run_forensic(session_id: str, **options) -> Dict[str, Any]:
+    return ForensicMode(session_id, options).run()

@@ -4,17 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ozyrecon"
-version = "6.0.0-alpha.1"
-description = "OzyRecon - Advanced Persistent Reconnaissance Platform (Phantom Blade)"
+version = "8.3.2"
+description = "OzyRecon - Enterprise Sentinel: Secure relationship-first intelligence engine."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11" # We updated to 3.11 for v8
 license = {text = "MIT"}
 authors = [
     {name = "SamBleed", email = "sam@example.com"}
 ]
-keywords = ["reconnaissance", "bugbounty", "offensive-security", "pentesting", "stealth"]
+keywords = ["reconnaissance", "intelligence", "offensive-security", "RBAC", "stealth", "forensics"]
 classifiers = [
-    "Development Status :: 5 - Production/Stable", # Elevamos status!
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Information Technology",
     "Topic :: Security",
     "Programming Language :: Python :: 3",
@@ -30,6 +30,10 @@ dependencies = [
     "prompt_toolkit>=3.0.0",
     "jinja2>=3.1",
     "weasyprint>=62.0",
+    "cryptography>=42.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.27.0",
+    "python-multipart>=0.0.9"
 ]
 
 [project.optional-dependencies]

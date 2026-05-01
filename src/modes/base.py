@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List
 from datetime import datetime
 import uuid
-
+import re
 from src.core.config import config
 from src.core.contracts import MODE_ENVELOPE_FIELDS, validate_required_fields
 from src.core.context import ScanContext, set_context
@@ -19,6 +19,10 @@ from src.notifications.notifier import Notifier
 from src.opsec.kill_switch import kill_switch
 from src.export.normalizer import NormalizedExporter, ScanResult
 
+from src.core.logging import get_logger
+
+logger = get_logger('modes.base')
+
 class BaseMode(ABC):
     """
     Contrato base para todos los modos operativos de OzyRecon.
@@ -26,10 +30,12 @@ class BaseMode(ABC):
     """
     
     def __init__(self, target: str, mode_name: str, options: Optional[Dict[str, Any]] = None):
-        self.target = target
+        self.target = self._sanitize_target(target)
         self.mode_name = mode_name
         self.options = options or {}
-        self.session_id = str(uuid.uuid4())
+        
+        # v7.7.2 - Support session_id override from API to ensure deterministic IDs
+        self.session_id = self.options.get("session_id_override") or str(uuid.uuid4())
         self.runtime_scan = None
         
         # Contexto de ejecución
@@ -48,6 +54,14 @@ class BaseMode(ABC):
         self.db = DBQueries(self.db_session)
         self.diff_engine = DiffEngine(self.db_session)
         self.notifier = Notifier()
+
+    def _sanitize_target(self, target: str) -> str:
+        """Sanitizes the target input to prevent command injection."""
+        if not target:
+            return ""
+        # Remove shell meta-characters
+        sanitized = re.sub(r"[;&|`$<>^{}\[\]\s]", "", target)
+        return sanitized
 
     def run(self) -> Dict[str, Any]:
         """Flujo de ejecución principal con manejo de ciclo de vida."""
@@ -91,6 +105,16 @@ class BaseMode(ABC):
             self._upsert_session_summary(status="failed", error_summary=str(e), exit_code=1)
             return self.build_output_envelope("failed", error=str(e))
         finally:
+            # v7.7.2 - Garantía de Artefactos: Escribir a disco SIEMPRE
+            try:
+                from src.intelligence.orchestrator import DiscoveryOrchestrator
+                # Solo si logramos tener un runtime_scan
+                if self.runtime_scan:
+                    orchestrator = DiscoveryOrchestrator(self.db_session, scan_id=self.runtime_scan.id)
+                    orchestrator.finalize_session()
+            except Exception as final_err:
+                logger.error(f"Critical failure during artifact finalization: {final_err}")
+            
             self.db_session.close()
 
     @abstractmethod

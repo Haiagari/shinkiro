@@ -11,7 +11,7 @@ This document outlines how OzyRecon maps its intelligence gathering and validati
 | **A05:2021** | **Security Misconfiguration** | Automated probes detect default credentials, exposed cloud storage (S3/Azure), and verbose error messages through policy-approved validation. |
 | **A06:2021** | **Vulnerable & Outdated Components** | Service fingerprinting correlates technical signals to identify legacy versions of software before any exploitation is attempted. |
 | **A07:2021** | **Identification & Auth Failures** | **Authentication Exposure Validation** identifies credential leaks and weak auth mechanisms without intrusive brute-forcing. |
-| **A09:2021** | **Security Logging & Monitoring Failures** | The **Evidence Engine** provides signed SHA256 audit logs of all reconnaissance activities, helping Blue Teams verify their own monitoring gaps. |
+| **A09:2021** | **Security Logging & Monitoring Failures** | The **Evidence Engine** provides signed Ed25519 audit logs of all reconnaissance activities, helping Blue Teams verify their own monitoring gaps. |
 
 ---
 

@@ -1,0 +1,10 @@
+2026-05-01 17:00:54 | INFO     | rate-limiter | RateLimiter: max 200 req/min | Jitter activado
+>>> DEBUG: KillSwitch.__new__ start
+>>> DEBUG: KillSwitch.__new__ end
+>>> DEBUG: KillSwitch.__init__ start
+>>> DEBUG: KillSwitch.__init__ end
+!! DRY RUN ENABLED - Planning for god-test.com !!
+{
+  "status": "dry_run_completed",
+  "target": "god-test.com"
+}

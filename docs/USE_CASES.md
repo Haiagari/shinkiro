@@ -1,6 +1,7 @@
 # 📖 OzyRecon: Use Cases & Operational Scenarios
 
-OzyRecon v6.0 is a **controlled reconnaissance and review engine**. This document describes practical scenarios for discovery, correlation, evidence collection, and safe validation.
+OzyRecon v7.5 is a **controlled reconnaissance and review engine**.
+ This document describes practical scenarios for discovery, correlation, evidence collection, and safe validation.
 
 ---
 
@@ -26,7 +27,7 @@ Maintain a live, relationship-based map of your infrastructure.
 
 ---
 
-## 🛠️ Specialized v6.0 Pillars:
+## 🛠️ Specialized v7.5 Pillars:
 
 ### A. Controlled Request Identity
 Every request can use a consistent identity profile so repeated runs stay comparable and auditable.
@@ -35,7 +36,7 @@ Every request can use a consistent identity profile so repeated runs stay compar
 The engine doesn't just scan ports; it generates review hypotheses based on the **Knowledge Graph**'s relationship data.
 
 ### C. Cryptographically Signed Evidence
-All findings in the evidence layer are signed with SHA256, providing an immutable audit trail for review and compliance.
+All findings in the evidence layer are digitally signed with Ed25519, providing an immutable audit trail for review and compliance.
 
 ---
 *For more technical details, see the [Architecture Guide](architecture.md).*

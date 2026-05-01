@@ -38,7 +38,7 @@ ozy hunt -t target.com
 ozy continuous -t target.com
 ```
 
-### v5.0 Workflow
+### v8.3.2 Workflow
 1. Periodic differential scanning.
 2. Detection of new assets or service drift.
 3. Policy-approved validation of low-risk hypotheses (e.g., version disclosure).
@@ -46,7 +46,7 @@ ozy continuous -t target.com
 
 ---
 
-## Summary of Capabilities v5.0
+## Summary of Capabilities v8.3.2
 
 | Mode | Primary Goal | Validation Type | User Control |
 |------|--------------|-----------------|--------------|

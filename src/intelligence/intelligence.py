@@ -8,7 +8,7 @@ Módulo de Inteligencia y Correlación
 
 from pathlib import Path
 from src.utils import log, save_json, load_json
-from .ai_analyzer import run_ai_analysis
+from .ai_analyzer import ai_analyst
 
 # Mapeo CVSS: vulnerabilidades known a scores
 CVSS_MAPPINGS = {
@@ -368,7 +368,8 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
     config = context.get("config", {})
     if config.get("ai", {}).get("gemini_api_key") or config.get("ai", {}).get("claude_api_key"):
         log("  • Ejecutando análisis con IA...", "info")
-        ai_analysis = run_ai_analysis(context, config)
+        # v8.0 Update: Use the new Analyst class
+        ai_analysis = ai_analyst.generate_finding_narrative(context)
     
     # Resultados
     results = {

@@ -1,0 +1,15 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_6",
+        "label": "test5.example.com",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    }
+  ],
+  "edges": []
+}

@@ -1,0 +1,80 @@
+# OzyRecon Semantic Inference Rules - v7.7 (Stability Layer)
+# Formalizes the conversion of metadata into functional intelligence.
+
+version: "1.1"
+
+# Roles: Functional categorization of the asset
+roles:
+  MANAGEMENT:
+    keywords: ["cpanel", "whm", "webmail", "phpmyadmin", "plesk", "directadmin", "admin", "dashboard", "panel", "gestión"]
+    confidence_step: 0.3
+    impact: "CRITICAL"
+  AUTH:
+    keywords: ["login", "signin", "sso", "auth", "portal", "identity", "acceso"]
+    confidence_step: 0.3
+    impact: "HIGH"
+  API:
+    keywords: ["api", "v1", "v2", "v3", "graphql", "rest", "soap", "swagger", "docs", "endpoint"]
+    confidence_step: 0.4
+    impact: "HIGH"
+  DEVELOPMENT:
+    keywords: ["dev", "staging", "test", "qa", "internal", "jenkins", "gitlab", "bitbucket", "sandbox"]
+    confidence_step: 0.2
+    impact: "MEDIUM"
+  COMMERCE:
+    keywords: ["shop", "store", "checkout", "cart", "payment", "billing", "pago"]
+    confidence_step: 0.3
+    impact: "CRITICAL"
+
+# Labels: Specific tags with high-level significance
+labels:
+  gate_admin:
+    patterns: ["^admin[-.]", "^dashboard[-.]", "^panel[-.]", "/admin", "/manage"]
+    signals: ["title", "domain"]
+    weight: 0.5
+    impact: "CRITICAL"
+    priority: 10
+  gate_auth:
+    patterns: ["login", "sign.?in", "acceso"]
+    signals: ["title", "domain"]
+    weight: 0.4
+    impact: "HIGH"
+    priority: 8
+  api_surface:
+    patterns: ["api", "endpoint", "swagger", "graphql"]
+    signals: ["title", "domain", "headers"]
+    weight: 0.4
+    impact: "HIGH"
+    priority: 9
+  non_prod_env:
+    patterns: ["dev", "staging", "test", "qa", "sandbox"]
+    signals: ["domain"]
+    weight: 0.3
+    impact: "MEDIUM"
+    priority: 5
+  static_asset:
+    patterns: ["cdn", "static", "assets", "images"]
+    signals: ["domain"]
+    weight: 0.1
+    impact: "INFO"
+    priority: 2
+  data_storage:
+    patterns: ["storage", "bucket", "s3", "cloud"]
+    signals: ["domain", "technologies"]
+    weight: 0.4
+    impact: "HIGH"
+    priority: 7
+
+# Multi-Signal Promotion Rules
+promotion_rules:
+  - name: "Authenticated API Surface"
+    condition:
+      labels: ["api_surface", "gate_auth"]
+    result_label: "critical_target"
+    impact: "CRITICAL"
+  - name: "Shadow Admin Panel"
+    condition:
+      labels: ["gate_admin"]
+      technologies: ["unknown"]
+    result_label: "high_risk_shadow"
+    impact: "HIGH"

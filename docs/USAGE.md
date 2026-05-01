@@ -20,38 +20,56 @@ python ozy.py hunt target.com
 OzyRecon exposes relationship-first data:
 - **Relationship Graph**: `GET /intelligence/graph?target=domain.com`
 - **Session Trace**: `GET /sessions/{session_id}/trace`
-- **Novelty Events**: `GET /scans/{scan_id}/novelty` (WIP)
+- **Novelty Events**: `GET /scans/{scan_id}/novelty`
 
 ---
 
-## 📊 Intelligent Context: ozy.runtime.v1
-OzyRecon v7 enriches every asset with business and infrastructure context:
+## 🔐 Identity & Access Control (v8.1+)
+OzyRecon uses a professional **Multi-Key RBAC** system.
 
-- **Infrastructure**: ASN, ISP/Organization, Cloud Provider (AWS, GCP, Azure).
-- **Semantics**: Functional roles (admin panels, APIs, transactional) and Impact Level (CRITICAL, HIGH, LOW).
-- **Evidence**: Capture of HTTP headers and response time for auditable intelligence.
-- **Takeovers**: Automatic monitoring of DNS CNAME chains to detect vulnerable services.
-- **Novelty**: Automatic detection of new assets, technology changes, or **version shifts** between runs.
+### 1. Managing API Keys
+Manage identities via the CLI:
+```bash
+# Create a key with specific permissions
+python ozy.py keys create analyst-name --scopes sessions:read,analysis:read
 
+# List all keys and their status
+python ozy.py keys list
+
+# Revoke a key permanently
+python ozy.py keys revoke analyst-name
+```
+
+### 2. Operational Scopes
+- `hunt:run`: Execute active reconnaissance.
+- `sessions:read`: List and view session results.
+- `analysis:read`: Access AI narrative reports.
+- `admin:*`: Unrestricted access.
 
 ---
 
-## 🛠️ Operational Workflow
+## 🕹️ Running the Engine
 
-### Phase 1: Passive Recon & Discovery
-OzyRecon starts by mapping relationships without touching the target directly.
-1. Add target: `focus target.com`
-2. Start discovery through the selected mode, usually `hunt`
+### 1. The Unified Entrypoint
+Access the API using the `X-API-KEY` header:
+```bash
+curl -H "X-API-KEY: ozy_live_..." http://localhost:8000/health
+```
 
-### Phase 2: Hypothesis Validation
-Once the **Knowledge Graph** is populated, OzyRecon will generate hypotheses in the **Decision Log**.
-*   View pending decisions in the TUI.
-*   Approve gated validations only after verifying the relationship chain.
+### 2. Managing Scans
+Start and stop scans through the API:
+- **Start Hunt**: `POST /hunt` (Queued and tracked).
+- **Cancel Scan**: `POST /sessions/{id}/cancel` (Immediate termination).
 
-### Phase 3: Evidence Collection & Reporting
-All findings are signed and stored in the **Evidence** layer and exported through the normalized contract.
-*   Generate reports from the current runtime outputs.
-*   Export normalized intelligence through the API or export pipeline.
+---
+
+## 📊 Intelligent Context: Enterprise Baseline v8.3.2
+OzyRecon v8.3.2 provides the highest level of forensic and operational data:
+
+- **Anti-SSRF**: Full protection against internal scanning and DNS Rebinding.
+- **Forensic Chain**: Every finding is digitally signed (Ed25519) with session context.
+- **AI Narrative**: Narrative explanation of business risk via the `/analyze` endpoint.
+- **Smart Graph**: Interactive relationship map with automatic truncation and prioritization.
 
 ---
 

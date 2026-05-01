@@ -1,87 +1,152 @@
 """
-Semantic Classifier Engine (OzyRecon v7 - Phase 5)
-Infers the functional role of an asset based on rich metadata.
+Intelligent Inference Engine (OzyRecon v7.5 - Intelligence Formalization Layer)
+Converts raw metadata into functional intelligence with full traceability.
 """
 
 import re
 import logging
+import yaml
+from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 logger = logging.getLogger(__name__)
 
 class SemanticClassifier:
     """
-    Analyzes asset metadata to assign functional roles and impact levels.
+    Formalized inference engine that uses structured rules to classify assets.
+    Provides 'Explainability' through reasoning traces.
     """
 
-    # Functional Roles
-    ROLES = {
-        "MANAGEMENT": ["cpanel", "whm", "webmail", "phpmyadmin", "plesk", "directadmin"],
-        "AUTH": ["login", "signin", "sso", "auth", "portal", "identity"],
-        "API": ["api", "v1", "v2", "v3", "graphql", "rest", "soap", "swagger", "docs"],
-        "DEVELOPMENT": ["dev", "staging", "test", "qa", "internal", "jenkins", "gitlab", "bitbucket"],
-        "COMMERCE": ["shop", "store", "checkout", "cart", "payment", "billing"],
-        "CMS": ["wordpress", "drupal", "joomla", "magento", "shopify"]
-    }
+    def __init__(self, rules_path: str = "resources/rules/semantic_rules.yaml"):
+        self.rules_path = Path(rules_path)
+        self.rules = self._load_rules()
+        logger.info(f"IntelligentInferenceEngine initialized with {len(self.rules.get('roles', {}))} roles and {len(self.rules.get('labels', {}))} label rules.")
 
-    # Semantic Labels Mapping (Keyword in Title/Domain -> Label)
-    LABEL_RULES = [
-        (r"login|sign.?in|acceso", "gate_auth", "HIGH"),
-        (r"admin|dashboard|panel|gesti.n", "gate_admin", "CRITICAL"),
-        (r"api|endpoint|swagger|graphql", "api_surface", "HIGH"),
-        (r"dev|staging|test|qa|sandbox", "non_prod_env", "MEDIUM"),
-        (r"mail|webmail|outlook|exchange", "comm_surface", "MEDIUM"),
-        (r"storage|bucket|s3|cloud", "data_storage", "HIGH"),
-        (r"checkout|pago|pay|cart", "transaccional", "CRITICAL")
-    ]
+    def _load_rules(self) -> Dict[str, Any]:
+        """Loads semantic rules from YAML."""
+        try:
+            if self.rules_path.exists():
+                with open(self.rules_path, "r") as f:
+                    return yaml.safe_load(f)
+            else:
+                logger.warning(f"Rules file not found at {self.rules_path}. Using fallback defaults.")
+                return self._get_fallback_rules()
+        except Exception as e:
+            logger.error(f"Error loading semantic rules: {e}")
+            return self._get_fallback_rules()
+
+    def _get_fallback_rules(self) -> Dict[str, Any]:
+        """Hardcoded defaults if YAML fails."""
+        return {
+            "roles": {"API": {"keywords": ["api"], "confidence_step": 0.4, "impact": "HIGH"}},
+            "labels": {"gate_admin": {"patterns": ["admin"], "signals": ["domain"], "weight": 0.5, "impact": "CRITICAL"}}
+        }
 
     def classify_asset(self, asset_data: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Infers the role and labels for an asset based on its metadata.
+        Main entry point for asset classification.
+        Returns labels, confidence, impact, and a detailed trace.
         """
         domain = asset_data.get("domain", "").lower()
         title = asset_data.get("title", "").lower()
         techs = [t.lower() for t in (asset_data.get("technologies", []) or [])]
-        
+        headers = str(asset_data.get("headers", {})).lower()
+
         inferred_labels = []
         confidence = 0.0
         impact = "LOW"
         reasoning = []
+        trace = []
 
-        # 1. Domain-based classification
-        for role, keywords in self.ROLES.items():
-            for kw in keywords:
-                if kw in domain:
-                    inferred_labels.append(f"role:{role.lower()}")
-                    reasoning.append(f"Domain contains keyword '{kw}'")
-                    confidence += 0.3
+        # 1. Role-based matching (Keyword match)
+        roles_rules = self.rules.get("roles", {})
+        for role_name, config in roles_rules.items():
+            for kw in config.get("keywords", []):
+                if kw in domain or kw in title:
+                    label = f"role:{role_name.lower()}"
+                    inferred_labels.append(label)
+                    step = config.get("confidence_step", 0.2)
+                    confidence += step
+                    msg = f"Domain/Title contains keyword '{kw}'"
+                    reasoning.append(msg)
+                    trace.append({
+                        "type": "role_match",
+                        "rule": role_name,
+                        "signal": "domain/title",
+                        "match": kw,
+                        "contribution": step
+                    })
+                    if self._priority_value(config.get("impact", "LOW")) > self._priority_value(impact):
+                        impact = config.get("impact", "LOW")
 
-        # 2. Rule-based label matching (Regex on Title/Domain)
-        for pattern, label, imp in self.LABEL_RULES:
-            if re.search(pattern, domain) or re.search(pattern, title):
-                inferred_labels.append(label)
-                reasoning.append(f"Matched pattern '{pattern}' in domain/title")
-                confidence += 0.4
-                if self._priority_value(imp) > self._priority_value(impact):
-                    impact = imp
+        # 2. Label-based matching (Regex match with Priority)
+        labels_rules = self.rules.get("labels", {})
+        # Sort labels by priority (descending) to allow overrides
+        sorted_labels = sorted(
+            labels_rules.items(), 
+            key=lambda x: x[1].get("priority", 0), 
+            reverse=True
+        )
 
-        # 3. Tech-based enrichment
-        for t in techs:
-            if "wordpress" in t or "cpanel" in t:
-                inferred_labels.append("management_surface")
-                reasoning.append(f"Detected sensitive technology: {t}")
-                confidence += 0.5
-                impact = "HIGH"
+        for label_name, config in sorted_labels:
+            patterns = config.get("patterns", [])
+            signals = config.get("signals", ["domain"])
+            weight = config.get("weight", 0.3)
+            priority = config.get("priority", 0)
+            
+            for pattern in patterns:
+                matched = False
+                if "domain" in signals and re.search(pattern, domain): matched = True
+                if "title" in signals and re.search(pattern, title): matched = True
+                if "headers" in signals and re.search(pattern, headers): matched = True
+                
+                if matched:
+                    # Logic: If a higher priority label already matched something conflicting, 
+                    # we could skip. But for now, we just record the priority.
+                    inferred_labels.append(label_name)
+                    confidence += weight
+                    msg = f"Matched pattern '{pattern}' (P:{priority}) for label '{label_name}'"
+                    reasoning.append(msg)
+                    trace.append({
+                        "type": "label_match",
+                        "rule": label_name,
+                        "pattern": pattern,
+                        "priority": priority,
+                        "contribution": weight
+                    })
+                    if self._priority_value(config.get("impact", "LOW")) > self._priority_value(impact):
+                        impact = config.get("impact", "LOW")
+                    break
 
-        # Deduplicate and Cap Confidence
+        # 3. Promotion Rules (Correlation Motor)
+        promotion_rules = self.rules.get("promotion_rules", [])
+        for rule in promotion_rules:
+            cond_labels = rule.get("condition", {}).get("labels", [])
+            # Check if all condition labels are met
+            if all(lbl in inferred_labels for lbl in cond_labels):
+                res_label = rule.get("result_label")
+                inferred_labels.append(res_label)
+                confidence += 0.2 # Boost confidence for multi-signal validation
+                reasoning.append(f"Promoted to '{res_label}' due to signal correlation: {rule.get('name')}")
+                trace.append({
+                    "type": "promotion",
+                    "rule": rule.get("name"),
+                    "correlation": cond_labels,
+                    "contribution": 0.2
+                })
+                if self._priority_value(rule.get("impact", "LOW")) > self._priority_value(impact):
+                    impact = rule.get("impact", "LOW")
+
+        # Deduplicate and finalize
         inferred_labels = list(set(inferred_labels))
         confidence = min(1.0, confidence)
 
         return {
             "labels": inferred_labels,
-            "confidence": confidence,
+            "confidence": round(confidence, 2),
             "impact": impact,
-            "reasoning": reasoning[:3] # Keep it concise
+            "reasoning": list(set(reasoning))[:5],
+            "trace": trace
         }
 
     def _priority_value(self, p: str) -> int:

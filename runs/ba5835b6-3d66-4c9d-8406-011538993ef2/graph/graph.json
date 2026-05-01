@@ -1,0 +1,15 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_25",
+        "label": "rbac.test.com",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    }
+  ],
+  "edges": []
+}

@@ -17,11 +17,14 @@ class GraphBuilder:
 
     def build_scan_graph(self, db: Session, scan_id: int) -> Dict[str, Any]:
         """
-        Builds a relationship graph for a specific scan.
+        Builds a relationship graph with Smart Truncation (v8.3.1).
+        Prioritizes high-risk nodes when over limit.
         """
         nodes = []
         edges = []
         seen_nodes = set()
+        MAX_NODES = 500
+        is_truncated = False
 
         scan = db.query(Scan).get(scan_id)
         if not scan:
@@ -34,11 +37,18 @@ class GraphBuilder:
 
         # 2. Subdomains & IPs
         subdomains = db.query(Subdomain).filter_by(scan_id=scan_id).all()
+        if len(subdomains) > MAX_NODES:
+            subdomains = sorted(subdomains, key=lambda x: self._calculate_priority("subdomain", {"impact": x.business_impact}), reverse=True)[:MAX_NODES]
+            is_truncated = True
+
         for sub in subdomains:
+            # ...
+            if len(nodes) >= MAX_NODES: break # Hard Stop
             sub_id = f"sub_{sub.id}"
             self._add_node(nodes, seen_nodes, sub_id, sub.domain, "subdomain", {
                 "impact": sub.business_impact,
-                "labels": sub.semantic_labels
+                "labels": sub.semantic_labels,
+                "trace": sub.inference_trace # v7.5 - Explainability
             })
             self._add_edge(edges, target_node_id, sub_id, "has_subdomain")
 
@@ -59,8 +69,8 @@ class GraphBuilder:
         # 3. Ports & Services
         ports = db.query(Port).filter_by(scan_id=scan_id).all()
         for p in ports:
-            # Find parent subdomain node (simple match by host string)
-            parent_id = next((n["id"] for n in nodes if n["label"] == p.host), None)
+            # Find parent subdomain node (v8.3.2 fix: access through ['data']['label'])
+            parent_id = next((n["data"]["id"] for n in nodes if n["data"]["label"] == p.host), None)
             
             port_id = f"port_{p.id}"
             label = f"{p.port}/{p.protocol}"
@@ -88,25 +98,60 @@ class GraphBuilder:
                 "cvss": v.cvss
             })
             
-            # Link to port or subdomain
-            parent_id = next((n["id"] for n in nodes if n["label"] == v.host), None)
+            # Link to port or subdomain (v8.3.2 fix: access through ['data']['label'])
+            parent_id = next((n["data"]["id"] for n in nodes if n["data"]["label"] == v.host), None)
             if parent_id:
                 self._add_edge(edges, parent_id, vuln_id, "vulnerable")
 
-        return {"nodes": nodes, "edges": edges}
+        # v8.3.2 - Extended Metadata for Operation
+        return {
+            "nodes": nodes, 
+            "edges": edges, 
+            "is_truncated": is_truncated,
+            "metadata": {
+                "total_nodes_detected": len(db.query(Subdomain).filter_by(scan_id=scan_id).all()),
+                "nodes_returned": len(nodes),
+                "schema_version": "1.2"
+            }
+        }
 
     def _add_node(self, nodes: List[Dict], seen: Set, id: str, label: str, type: str, metadata: Dict = None):
         if id not in seen:
+            # v7.5 - Decision Guidance: Calculate visual priority
+            priority = self._calculate_priority(type, metadata or {})
+            
             # Wrap in 'data' for Cytoscape.js and legacy compatibility
             nodes.append({
                 "data": {
                     "id": id,
                     "label": label,
                     "type": type,
+                    "priority": priority,
+                    "is_critical": priority >= 80,
                     "metadata": metadata or {}
                 }
             })
             seen.add(id)
+
+    def _calculate_priority(self, type: str, metadata: Dict) -> int:
+        """Calculates a visual priority score (0-100) to guide the user."""
+        if type == "finding":
+            sev = str(metadata.get("severity", "info")).lower()
+            return {"critical": 100, "high": 80, "medium": 50, "low": 20}.get(sev, 10)
+        
+        if type == "subdomain":
+            impact = str(metadata.get("impact", "low")).upper()
+            base = {"CRITICAL": 90, "HIGH": 70, "MEDIUM": 40, "LOW": 10}.get(impact, 0)
+            # Boost if has sensitive labels
+            labels = metadata.get("labels", []) or []
+            if any(l in ["gate_admin", "api_surface"] for l in labels):
+                base += 10
+            return min(100, base)
+            
+        if type == "service":
+            return metadata.get("criticality", 0)
+            
+        return 0
 
     def _add_edge(self, edges: List[Dict], source: str, target: str, relation: str):
         # Wrap in 'data' for Cytoscape.js and legacy compatibility
