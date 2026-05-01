@@ -31,6 +31,8 @@ OzyRecon can consume external intelligence sources when available.
 cp .env.example .env
 ```
 Edit the `.env` file with any keys you actually use.
+The runtime bootstrap will also materialize `config/config.yaml` from `config/config.example.yaml` and `config/api_keys.json` from `config/api_keys.example.json` the first time you run `python ozy.py` if they are missing.
+The Ed25519 evidence key at `resources/keys/evidence_key.priv` is generated locally on first use.
 
 ## 4. Running the engine
 OzyRecon uses a local runtime entrypoint and a CLI wrapper:

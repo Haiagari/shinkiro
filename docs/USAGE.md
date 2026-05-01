@@ -39,6 +39,7 @@ python ozy.py keys list
 # Revoke a key permanently
 python ozy.py keys revoke analyst-name
 ```
+The default runtime seed lives in `config/api_keys.example.json`. On a fresh checkout, `python ozy.py` materializes `config/api_keys.json` automatically if it is missing.
 
 ### 2. Operational Scopes
 - `hunt:run`: Execute active reconnaissance.
@@ -55,6 +56,7 @@ Access the API using the `X-API-KEY` header:
 ```bash
 curl -H "X-API-KEY: ozy_live_..." http://localhost:8000/health
 ```
+Use the `master-admin` seed for full access (`admin:*`) or the `auditor-externo` seed for read-only dashboard access (`sessions:read`) until you rotate your own keys.
 
 ### 2. Managing Scans
 Start and stop scans through the API:

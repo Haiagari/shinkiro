@@ -22,6 +22,7 @@ OzyRecon v8.3.2 is a hardened, production-grade intelligence engine.
 
 ### 1. 🔐 Multi-Key RBAC (Identity Pro)
 No more single-key risks. Implement fine-grained access control using **Hashed API Keys** and **Scopes** (`hunt:run`, `sessions:read`, `admin:*`). Manage identities via the versioned `config/api_keys.example.json` seed, which materializes `config/api_keys.json` at runtime when missing.
+The runtime also bootstraps `config/config.yaml` from `config/config.example.yaml` and creates `resources/keys/evidence_key.priv` locally when those files are absent.
 
 ### 2. 🛡️ Advanced Operational Security (SSRF Pro)
 Built-in protection against **DNS Rebinding** and internal scanning. The engine resolves targets and validates against private IP ranges (RFC 1918) before any probe execution.
