@@ -1,87 +1,81 @@
 # 📖 OzyRecon: Operating Guide
 
-OzyRecon is designed for **controlled reconnaissance and review**. This guide covers the current engine runtime, its normalized outputs, and the session trace surface.
+OzyRecon is designed for controlled reconnaissance and review. This guide focuses on the live engine contract, API usage, session lifecycle, and the output surfaces operators should expect.
 
-## 🕹️ Running the Engine
+## 🕹️ Daily Flow
 
-### 1. The Unified Entrypoint
-The `ozy.py` wrapper is the stable interface for all operations.
+### 1. Verify the runtime
+
 ```bash
-python ozy.py --help
+python ozy.py verify
 ```
 
-### 2. Hunting & Adaptive Discovery
-Execute an intelligent scan. The engine will choose the best profile:
+### 2. Run a hunt
+
 ```bash
 python ozy.py hunt target.com
 ```
 
-### 3. Intelligence API v7
-OzyRecon exposes relationship-first data:
-- **Relationship Graph**: `GET /intelligence/graph?target=domain.com`
-- **Session Trace**: `GET /sessions/{session_id}/trace`
-- **Novelty Events**: `GET /scans/{scan_id}/novelty`
+### 3. Inspect the result
 
----
+- Session trace: `GET /sessions/{session_id}/trace`
+- Narrative analysis: `GET /sessions/{session_id}/analyze`
+- Health metrics: `GET /health`
 
-## 🔐 Identity & Access Control (v8.1+)
-OzyRecon uses a professional **Multi-Key RBAC** system.
+## 🔐 Identity & Access Control
 
-### 1. Managing API Keys
-Manage identities via the CLI:
+OzyRecon uses multi-key RBAC with hashed API keys.
+
+### Key management
+
 ```bash
-# Create a key with specific permissions
 python ozy.py keys create analyst-name --scopes sessions:read,analysis:read
-
-# List all keys and their status
 python ozy.py keys list
-
-# Revoke a key permanently
 python ozy.py keys revoke analyst-name
 ```
+
 The default runtime seed lives in `config/api_keys.example.json`. On a fresh checkout, `python ozy.py` materializes `config/api_keys.json` automatically if it is missing.
 
-### 2. Operational Scopes
-- `hunt:run`: Execute active reconnaissance.
-- `sessions:read`: List and view session results.
-- `analysis:read`: Access AI narrative reports.
-- `admin:*`: Unrestricted access.
+### Operational scopes
 
----
+- `hunt:run`: execute active reconnaissance
+- `sessions:read`: list and view session results
+- `analysis:read`: access AI narrative reports
+- `admin:*`: unrestricted access
 
-## 🕹️ Running the Engine
+## 🔌 API Usage
 
-### 1. The Unified Entrypoint
-Access the API using the `X-API-KEY` header:
+Protected endpoints expect the `X-API-KEY` header:
+
 ```bash
-curl -H "X-API-KEY: ozy_live_..." http://localhost:8000/health
+curl -H "X-API-KEY: <your-key>" http://localhost:8000/health
 ```
+
 Use the `master-admin` seed for full access (`admin:*`) or the `auditor-externo` seed for read-only dashboard access (`sessions:read`) until you rotate your own keys.
 
-### 2. Managing Scans
-Start and stop scans through the API:
-- **Start Hunt**: `POST /hunt` (Queued and tracked).
-- **Cancel Scan**: `POST /sessions/{id}/cancel` (Immediate termination).
+### Lifecycle operations
 
----
+- `POST /hunt` starts a session and returns a `session_id`
+- `POST /sessions/{session_id}/cancel` stops an active scan
+- `GET /sessions/{session_id}/analyze` returns the narrative layer
+- `GET /sessions/{session_id}/trace` exposes the runtime trace
 
-## 📊 Intelligent Context: Enterprise Baseline v8.3.2
-OzyRecon v8.3.2 provides the highest level of forensic and operational data:
+## 📊 Enterprise Baseline v8.3.2
 
-- **Anti-SSRF**: Full protection against internal scanning and DNS Rebinding.
-- **Forensic Chain**: Every finding is digitally signed (Ed25519) with session context.
-- **AI Narrative**: Narrative explanation of business risk via the `/analyze` endpoint.
-- **Smart Graph**: Interactive relationship map with automatic truncation and prioritization.
+The current baseline provides:
 
----
+- Anti-SSRF validation before execution
+- Ed25519 signatures for findings
+- Non-blocking hunts with cancel support
+- Smart Graph output with `is_truncated`
+- Health metrics with `scans_total`, `scans_failed`, and `active_concurrency`
 
 ## 🔐 Safety & OPSEC
-*   **Kill Switch**: Hit `Ctrl+C` twice to immediately terminate all active probes.
-*   **Identity Rotation**: OzyRecon rotates headers and timing unless configured otherwise in `config/config.yaml`.
-*   **Validation policy**: low-risk exposure checks run automatically, sensitive auth/panel checks remain gated, and blocked hypotheses do not execute.
-*   **Traceability**: Every run keeps a timeline in the runtime context and exposes a consolidated session trace.
 
----
+- `Ctrl+C` stops the local CLI flow
+- Low-risk checks run automatically
+- Sensitive auth/panel checks remain gated
+- Blocked hypotheses stay visible in logs and traces
 
 ## 🧩 Capability Matrix
 

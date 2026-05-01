@@ -1,23 +1,31 @@
 # 🚀 OzyRecon Installation & Setup Guide
 
-This guide will walk you through setting up **OzyRecon v7.5** for controlled reconnaissance and review.
+This guide covers the current **v8.3.2 Enterprise Baseline** and the runtime bootstrap model used by the engine.
 
 ## Prerequisites
-- **Python 3.11+** (3.11 recommended)
-- **Git**
-- **curl_cffi** requirements (Automatically handled by setup.sh)
 
-## 1. Fast Setup (The Wizard)
-The easiest way to install OzyRecon is using the automated setup script:
+- **Python 3.11+**
+- **Git**
+- A working virtual environment
+- `pip`
+- Optional but recommended system libraries for PDF generation if you plan to use reports
+
+## 1. Fast Setup
+
+The fastest path is to clone the repo and run the wrapper once:
+
 ```bash
 git clone https://github.com/SamBleed/OzyRecon.git
 cd OzyRecon
-chmod +x setup.sh
-./setup.sh
+python ozy.py verify
 ```
 
+The first run bootstraps mutable runtime files automatically.
+
 ## 2. Manual Installation
-If you prefer manual control, install the project dependencies yourself:
+
+If you want explicit control over the environment:
+
 ```bash
 python -m venv venv
 source venv/bin/activate
@@ -25,26 +33,55 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-## 3. Configuration & API Keys
-OzyRecon can consume external intelligence sources when available.
+## 3. Runtime Bootstrap
+
+OzyRecon keeps secrets and mutable runtime files out of Git, but still materializes them locally when needed:
+
+- `config/config.yaml` from `config/config.example.yaml`
+- `config/api_keys.json` from `config/api_keys.example.json`
+- `resources/keys/evidence_key.priv` as a local Ed25519 seed
+
+The default API key seed includes:
+
+- `master-admin` with `admin:*`
+- `auditor-externo` with `sessions:read`
+
+## 4. Configuration
+
+Copy the environment example if you need local integrations:
+
 ```bash
 cp .env.example .env
 ```
-Edit the `.env` file with any keys you actually use.
-The runtime bootstrap will also materialize `config/config.yaml` from `config/config.example.yaml` and `config/api_keys.json` from `config/api_keys.example.json` the first time you run `python ozy.py` if they are missing.
-The Ed25519 evidence key at `resources/keys/evidence_key.priv` is generated locally on first use.
 
-## 4. Running the engine
-OzyRecon uses a local runtime entrypoint and a CLI wrapper:
+Then edit only the values you actually use.
 
-- **Launch TUI / shell entry**: `python ozy.py`
-- **Launch CLI (Automation)**: `python -m cli hunt target.com`
-- **Launch wrapper script**: `./ozy`
+## 5. Running the Engine
 
-## 5. OPSEC & Safety
-By default, v7.5 uses the runtime safety policy and gate checks documented in the hardening plan.
- You can tune the policy in the runtime configuration files if needed.
-The runtime also exposes a session trace endpoint for reconstruction and audit.
+Use the unified entrypoint for interactive work and verification:
+
+```bash
+python ozy.py --help
+python ozy.py verify
+python ozy.py hunt target.com
+```
+
+For the API runtime:
+
+```bash
+python -c "from src.core.api import start_api; start_api()"
+```
+
+## 6. API Access
+
+Protected endpoints expect the `X-API-KEY` header. Use `admin:*` for full operator access or `sessions:read` for dashboard-only access.
+
+## 7. Safety Notes
+
+- The engine validates targets before execution.
+- Hunts are cancellable via `POST /sessions/{session_id}/cancel`.
+- Session traces and health metrics are available for audit and troubleshooting.
 
 ---
-*Next: Learn how to use OzyRecon in our [Operational Scenarios](USE_CASES.md).*
+
+Next: review [Usage](USAGE.md) for day-to-day operations and [Runtime Contract](RUNTIME_CONTRACT.md) for the exact runtime surface.
