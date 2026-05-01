@@ -11,3 +11,6 @@ aiohttp
 python-telegram-bot
 prompt_toolkit>=3.0.0
 curl_cffi>=0.7.0
+jinja2>=3.1
+weasyprint>=62.0
+cryptography>=42.0
