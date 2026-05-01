@@ -277,23 +277,27 @@ Follow the instructions in the [WeasyPrint documentation](https://doc.courtbouil
 
 ### Primary docs
 
-- 🧾 [Phase 0 Audit](docs/planning/OZYRECON_PHASE0_AUDIT.md)
-- 🧰 [Hardening Plan](docs/planning/OZYRECON_HARDENING_PLAN.md)
+- 🧭 [Status](docs/STATUS.md)
 - 📜 [Runtime Contract](docs/RUNTIME_CONTRACT.md)
+- 🗺️ [Roadmap](docs/ROADMAP.md)
+
+### Historical docs
+
+- 🧾 [Phase 0 Audit](docs/archive/OZYRECON_PHASE0_AUDIT.md)
+- 🧰 [Hardening Plan](docs/archive/OZYRECON_HARDENING_PLAN.md)
+- 🧪 [Improvement Plan](docs/archive/OZYRECON_IMPROVEMENT_PLAN.md)
+- 🪧 [Operational Plan](docs/archive/OZYRECON_OPERATIONAL_PLAN.md)
 
 ### Supporting docs
 
-- 🧭 [Improvement Plan](docs/planning/OZYRECON_IMPROVEMENT_PLAN.md)
-- 🪧 [Operational Plan](docs/planning/OZYRECON_OPERATIONAL_PLAN.md)
+- 🧪 [Use Cases](docs/USE_CASES.md)
+- 📜 [Runtime Contract](docs/RUNTIME_CONTRACT.md)
 - 🤝 [Bridge Contract](docs/BRIDGE_CONTRACT.md)
 
 ### General docs
 
 - 📦 [Installation](docs/INSTALL.md)
-- 🧪 [Use Cases](docs/USE_CASES.md)
 - 📊 [Benchmarks](docs/BENCHMARKS.md)
-- 🛣️ [Roadmap](docs/ROADMAP.md)
-- 🧭 [Status](docs/STATUS.md)
 - 🤝 [Contributing](CONTRIBUTING.md)
 - 📖 [Usage](docs/USAGE.md)
 
