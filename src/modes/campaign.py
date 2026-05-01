@@ -12,6 +12,7 @@ from src.core.context import ScanContext, set_context
 from src.storage.database import SessionLocal, init_db
 from src.storage.queries import DBQueries
 from src.export.normalizer import NormalizedExporter
+from src.core.runtime_paths import get_temp_dir
 
 logger = get_logger('mode_campaign')
 
@@ -49,7 +50,7 @@ class CampaignMode(BaseMode):
         intent["speed"] = "fast"
         
         # 1. Preparar lista de targets
-        temp_file = Path("runtime/temp") / f"campaign_{self.session_id}_targets.txt"
+        temp_file = get_temp_dir() / f"campaign_{self.session_id}_targets.txt"
         temp_file.parent.mkdir(parents=True, exist_ok=True)
         temp_file.write_text("\n".join(self.targets))
         

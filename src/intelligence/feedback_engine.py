@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from src.core.logging import get_logger
+from src.core.runtime_paths import get_config_dir
 
 logger = get_logger('feedback_engine')
 
@@ -51,7 +52,7 @@ class FeedbackEngine:
     MAX_WEIGHT = 0.9
     
     def __init__(self, config_path: Optional[Path] = None):
-        self.config_path = config_path or Path("runtime/config/scoring_weights.json")
+        self.config_path = config_path or get_config_dir() / "scoring_weights.json"
         self.weights = self._load_weights()
     
     def _load_weights(self) -> ScoringWeights:

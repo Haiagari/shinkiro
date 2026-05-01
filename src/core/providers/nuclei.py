@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from src.core.providers.base import BaseProvider
 from src.core.logging import get_logger
+from src.core.runtime_paths import get_temp_dir
 
 logger = get_logger('provider.nuclei')
 
@@ -20,7 +21,7 @@ class NucleiProvider(BaseProvider):
             logger.error("Nuclei binary not found")
             return []
         
-        output_file = Path("runtime/temp") / f"nuclei_results.json"
+        output_file = get_temp_dir() / "nuclei_results.json"
         output_file.parent.mkdir(parents=True, exist_ok=True)
         
         # Mapeo de intención operativa

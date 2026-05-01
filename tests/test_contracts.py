@@ -18,7 +18,7 @@ def test_scan_result_fields_are_frozen():
     result = ScanResult()
     payload = result.to_dict()
 
-    assert result.contract_version == "scan-result.v1"
+    assert result.contract_version == "ozy.runtime.v1"
     assert missing_fields(payload, SCAN_RESULT_FIELDS) == []
 
 
@@ -27,7 +27,7 @@ def test_mode_envelope_fields_are_frozen():
     envelope = mode.build_output_envelope("completed")
 
     assert missing_fields(envelope, MODE_ENVELOPE_FIELDS) == []
-    assert envelope["contract_version"] == "scan-result.v1"
+    assert envelope["contract_version"] == "ozy.runtime.v1"
     assert envelope["observability"]["session_id"] == mode.session_id
 
     mode.db_session.close()

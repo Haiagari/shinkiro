@@ -133,7 +133,19 @@ python -m cli --help
 python -m cli hunt target.com
 ```
 
-### 3. Report Generation
+### 3. Runtime Verification
+Quickly check the engine contract and dependency coverage:
+
+```bash
+python ozy.py verify
+python ozy.py verify example.com
+python ozy.py verify --allow-degraded --json
+```
+
+The first form prints the capability matrix. The second form adds a lightweight real smoke for `recon` and `hunt`.
+Use `--allow-degraded` in CI when you want the contract check to pass even if required binaries are not installed in the runner.
+
+### 4. Report Generation
 Generate dynamic HTML and PDF reports:
 
 ```bash

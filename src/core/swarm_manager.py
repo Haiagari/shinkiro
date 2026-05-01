@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from datetime import datetime
 from src.core.logging import get_logger
+from src.core.runtime_paths import get_config_dir
 
 logger = get_logger('swarm_manager')
 
@@ -49,7 +50,7 @@ class SwarmManager:
     """Gestiona el registro y orquestación de múltiples nodos."""
     
     def __init__(self):
-        self.config_path = Path("runtime/config/swarm_nodes.json")
+        self.config_path = get_config_dir() / "swarm_nodes.json"
         self.nodes: List[SwarmNode] = []
         self._load_nodes()
 

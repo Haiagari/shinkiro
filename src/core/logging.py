@@ -4,10 +4,13 @@ Provee logging con diferentes niveles y salida a archivos.
 """
 
 import logging
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+
+from rich.console import Console
 
 
 class OzyLogger:
@@ -23,7 +26,19 @@ class OzyLogger:
     @staticmethod
     def _get_default_log_dir() -> Path:
         """Obtiene el directorio de logs por defecto."""
-        return Path(__file__).resolve().parents[2] / "runtime" / "logs"
+        env_dir = os.getenv("OZY_LOG_DIR")
+        if env_dir:
+            return Path(env_dir).expanduser()
+
+        state_dir = os.getenv("OZY_STATE_DIR")
+        if state_dir:
+            return Path(state_dir).expanduser() / "logs"
+
+        xdg_state_home = os.getenv("XDG_STATE_HOME")
+        if xdg_state_home:
+            return Path(xdg_state_home).expanduser() / "OzyRecon" / "logs"
+
+        return Path.home() / ".local" / "state" / "OzyRecon" / "logs"
     
     def _setup_logger(self, name: str) -> logging.Logger:
         """Configura el logger con handlers de consola y archivo."""
@@ -46,12 +61,22 @@ class OzyLogger:
         logger.addHandler(console)
         
         # Handler de archivo
-        self.log_dir.mkdir(parents=True, exist_ok=True)
-        log_file = self.log_dir / f"{name}.log"
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(logging.DEBUG)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
+        try:
+            self.log_dir.mkdir(parents=True, exist_ok=True)
+            log_file = self.log_dir / f"{name}.log"
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(logging.DEBUG)
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+        except OSError:
+            fallback_dir = Path("/tmp/OzyRecon/logs")
+            fallback_dir.mkdir(parents=True, exist_ok=True)
+            log_file = fallback_dir / f"{name}.log"
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(logging.DEBUG)
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+            self.log_dir = fallback_dir
         
         self._loggers[name] = logger
         
@@ -95,3 +120,6 @@ scan_logger = get_logger('scan')
 opsec_logger = get_logger('opsec')
 recon_logger = get_logger('recon')
 notification_logger = get_logger('notification')
+
+# Rich console shared by operational modes that render live tables/panels.
+console = Console()

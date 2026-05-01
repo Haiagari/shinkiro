@@ -5,6 +5,8 @@ TDD: Tests primero - implementación después
 
 import pytest
 import sys
+import os
+import subprocess
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
@@ -12,6 +14,12 @@ from click.testing import CliRunner
 # Añadir raíz al path
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT_DIR))
+
+
+@pytest.fixture
+def runner():
+    """CliRunner shared for CLI tests."""
+    return CliRunner()
 
 
 class TestOzyCLI:
@@ -226,3 +234,151 @@ class TestCliExceptions:
             # No debe-crashear
             handle_exception(e)
             # Si llega aquí, pasó
+
+
+class TestCliBootstrap:
+    """Bootstrap real de la CLI desde el entrypoint raíz."""
+
+    def test_root_entrypoint_help_uses_external_log_dir(self, tmp_path):
+        log_dir = tmp_path / "logs"
+        env = os.environ.copy()
+        env["OZY_LOG_DIR"] = str(log_dir)
+        env["PYTHONDONTWRITEBYTECODE"] = "1"
+
+        result = subprocess.run(
+            [sys.executable, "ozy.py", "--help"],
+            cwd=ROOT_DIR,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert "OzyRecon" in result.stdout
+        assert "Initializing ToolManager" not in result.stdout
+        assert log_dir.exists()
+        assert any(log_dir.glob("*.log"))
+
+
+class TestCliVerifyCommand:
+    """Tests para el comando verify."""
+
+    @pytest.fixture
+    def manifest(self):
+        from src.core.manifest_manager import ToolEntry, ToolManifest
+
+        return ToolManifest(
+            tools=[
+                ToolEntry(
+                    name="subfinder",
+                    executable="subfinder",
+                    adapter="SubfinderProvider",
+                    categories=["asset_discovery"],
+                ),
+                ToolEntry(
+                    name="dnsx",
+                    executable="dnsx",
+                    adapter="GenericDiscoveryProvider",
+                    categories=["dns_resolution"],
+                    cmd_template="{bin} -l {target} -o {out}",
+                ),
+                ToolEntry(
+                    name="httpx",
+                    executable="httpx",
+                    adapter="GenericDiscoveryProvider",
+                    categories=["live_detection"],
+                    cmd_template="{bin} -l {target} -o {out}",
+                ),
+                ToolEntry(
+                    name="naabu",
+                    executable="naabu",
+                    adapter="NaabuProvider",
+                    categories=["port_scan"],
+                ),
+            ]
+        )
+
+    def test_verify_command_exists(self, runner):
+        from cli.ozy import cli, register_runtime_commands
+
+        register_runtime_commands()
+
+        result = runner.invoke(cli, ["verify", "--help"])
+        assert result.exit_code == 0
+        assert "verify" in result.output.lower()
+
+    def test_verify_diagnostics_only(self, runner, monkeypatch, manifest):
+        from cli.ozy import cli, register_runtime_commands
+
+        register_runtime_commands()
+
+        monkeypatch.setenv("OZY_RUNTIME_DIR", str(ROOT_DIR / "tmp-verify-runtime"))
+        monkeypatch.setattr("cli.commands.verify.ManifestManager.load", lambda self, path: manifest)
+
+        def fake_which(binary):
+            return f"/usr/bin/{binary}" if binary in {"subfinder", "dnsx", "httpx"} else None
+
+        monkeypatch.setattr("cli.commands.verify.shutil.which", fake_which)
+
+        result = runner.invoke(cli, ["verify"])
+
+        assert result.exit_code == 0
+        assert "Capability Matrix" in result.output
+        assert "subfinder" in result.output
+        assert "naabu" in result.output
+        assert "degraded" in result.output.lower()
+
+    def test_verify_allow_degraded_returns_success(self, runner, monkeypatch, manifest):
+        from cli.ozy import cli, register_runtime_commands
+
+        register_runtime_commands()
+
+        monkeypatch.setattr("cli.commands.verify.ManifestManager.load", lambda self, path: manifest)
+        monkeypatch.setattr("cli.commands.verify.shutil.which", lambda binary: None)
+
+        result = runner.invoke(cli, ["verify", "--allow-degraded", "--json"])
+
+        assert result.exit_code == 0
+        assert '"required_missing"' in result.output
+        assert '"status": "degraded"' in result.output or '"status": "ready"' in result.output
+
+    def test_verify_smoke_runs(self, runner, monkeypatch, manifest, tmp_path):
+        from cli.ozy import cli, register_runtime_commands
+
+        register_runtime_commands()
+
+        monkeypatch.setenv("OZY_RUNTIME_DIR", str(tmp_path / "runtime"))
+        monkeypatch.setattr("cli.commands.verify.ManifestManager.load", lambda self, path: manifest)
+        monkeypatch.setattr(
+            "cli.commands.verify.shutil.which",
+            lambda binary: f"/usr/bin/{binary}",
+        )
+
+        monkeypatch.setattr(
+            "cli.commands.verify.run_recon",
+            lambda target, out_dir, args: {
+                "all_subdomains": ["a.example.com", "b.example.com"],
+                "resolved": ["a.example.com"],
+                "live_hosts": ["https://a.example.com"],
+                "takeovers": [],
+                "out_dir": str(out_dir),
+            },
+        )
+        monkeypatch.setattr(
+            "cli.commands.verify.run_hunt",
+            lambda target, **options: {
+                "status": "completed",
+                "subdomains": 2,
+                "active_hosts": 1,
+                "hypotheses": 3,
+                "session_id": "session-1",
+            },
+        )
+
+        result = runner.invoke(cli, ["verify", "example.com"])
+
+        assert result.exit_code == 0
+        assert "Smoke Runs for example.com" in result.output
+        assert "recon" in result.output.lower()
+        assert "hunt" in result.output.lower()

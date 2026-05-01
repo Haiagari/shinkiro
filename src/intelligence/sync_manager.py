@@ -10,6 +10,7 @@ from datetime import datetime
 from src.core.logging import get_logger
 from src.intelligence.feedback_engine import feedback_engine
 from src.intelligence.false_positive_memory import false_positive_memory
+from src.core.runtime_paths import get_export_dir
 
 logger = get_logger('sync_manager')
 
@@ -17,8 +18,8 @@ class SyncManager:
     """Gestiona la exportación/importación del estado mental del sistema."""
     
     def __init__(self):
-        self.config_dir = Path("runtime/config")
-        self.export_dir = Path("runtime/exports/sync")
+        self.config_dir = None
+        self.export_dir = get_export_dir("sync")
         self.export_dir.mkdir(parents=True, exist_ok=True)
 
     def export_brain(self) -> Path:

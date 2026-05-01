@@ -11,11 +11,12 @@ from sqlalchemy.orm import sessionmaker
 
 # Importar utilidades
 from src.utils import log, save_json, load_json
+from src.core.runtime_paths import get_runtime_root
 
 # Importar modelos locales
 from .models import Base, Target, Scan, Subdomain, Port, Vulnerability, Finding, AgentMemory, AgentLock, Session, WeightHistory, Hypothesis, Evidence, WorkflowStep
 
-DB_PATH = Path(__file__).resolve().parents[2] / "runtime" / "db" / "ozyrecon.db"
+DB_PATH = get_runtime_root() / "db" / "ozyrecon.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 DB_URL = f"sqlite:///{DB_PATH}"
 

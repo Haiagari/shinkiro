@@ -6,7 +6,7 @@ These values define the stable shape that the local engine exposes.
 
 from typing import Dict, Iterable, Tuple
 
-CONTRACT_VERSION = "scan-result.v1"
+CONTRACT_VERSION = "ozy.runtime.v1"
 
 MODE_ENVELOPE_FIELDS: Tuple[str, ...] = (
     "status",

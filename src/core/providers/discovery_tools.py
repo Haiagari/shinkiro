@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List
 from src.core.providers.base import BaseProvider
 from src.core.logging import get_logger
+from src.core.runtime_paths import get_temp_dir, safe_filename
 
 logger = get_logger('provider.generic')
 
@@ -20,7 +21,7 @@ class GenericDiscoveryProvider(BaseProvider):
             logger.error(f"Provider {self.name} binary not found: {self.binary}")
             return []
         
-        out_file = Path("runtime/temp") / f"{self.name}_{target}.txt"
+        out_file = get_temp_dir() / f"{self.name}_{safe_filename(target)}.txt"
         out_file.parent.mkdir(parents=True, exist_ok=True)
         
         cmd = self.cmd_template.format(

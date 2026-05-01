@@ -21,46 +21,16 @@ from src.workflow.states import WorkflowState, Actor
 from src.gate.manager import gate_manager
 from src.intelligence.autonomy import build_autonomy_plan
 
-app = FastAPI(title="OzyRecon API", version="5.7")
+app = FastAPI(title="OzyRecon API", version="6.0.0-alpha.1")
 
-
-# --- SEGURIDAD: Validación de API Key ---
-API_KEY = config.ozyrecon_api_key
-
-async def verify_token(x_api_key: str = Header(...)):
-    if x_api_key != API_KEY:
-        raise HTTPException(status_code=403, detail="Invalid API Key")
-    return x_api_key
-
-# Montar archivos estáticos para el dashboard (El dashboard también necesita auth en prod, 
-# pero por ahora lo dejamos libre para visualización local)
-static_path = Path(__file__).parent / "static"
-app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
-
-@app.get("/dashboard")
-async def get_dashboard():
-    return FileResponse(str(static_path / "index.html"))
-
-@app.post("/tasks/execute", dependencies=[Depends(verify_token)])
-async def execute_task(
-    capability: str = Body(...),
-    target: str = Body(...),
-    options: Dict[str, Any] = Body(default_factory=dict)
-):
-
-    """
-    Endpoint para que un nodo Cerebro mande tareas a este nodo Worker.
-    """
-    try:
-        # El Worker ejecuta la capacidad localmente
-        result = tool_manager.run_capability(capability, target, **options)
-        return {"status": "success", "result": result}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@app.get("/health")
+def health_check():
+    """Endpoint para validación de salud del motor."""
+    return {"status": "ok", "engine": "OzyRecon", "version": "6.0.0-alpha.1"}
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "platform": "OzyRecon", "version": "5.7"}
+    return {"status": "online", "platform": "OzyRecon", "version": "6.0.0-alpha.1"}
 
 @app.get("/intelligence/status")
 def get_intel_status():

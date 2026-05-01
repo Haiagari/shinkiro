@@ -25,6 +25,12 @@ tools:
     categories: ["service_discovery"]
     enabled: true
 
+  - name: naabu
+    executable: naabu
+    adapter: NaabuProvider
+    categories: ["port_scan"]
+    enabled: true
+
   - name: httpx
     executable: httpx
     adapter: GenericDiscoveryProvider
@@ -37,4 +43,10 @@ tools:
     adapter: GenericDiscoveryProvider
     cmd_template: "{bin} -l {target} -silent -o {out} -t {threads}"
     categories: ["dns_resolution"]
+    enabled: true
+
+  - name: nuclei
+    executable: nuclei
+    adapter: NucleiProvider
+    categories: ["template_scan"]
     enabled: true

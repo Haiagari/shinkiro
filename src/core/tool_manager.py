@@ -29,11 +29,13 @@ class ToolManager:
                 "live_detection": [],
                 "db_probe": []
             }
-            cls._instance._init_from_manifest()
+            cls._instance._initialized = False
         return cls._instance
 
     def _init_from_manifest(self):
         """Carga herramientas dinámicamente desde el manifiesto YAML."""
+        if getattr(self, "_initialized", False):
+            return
         logger.info("Initializing ToolManager from manifest...")
         manager = ManifestManager()
         try:
@@ -42,6 +44,12 @@ class ToolManager:
                 self._register_tool_entry(tool, manager)
         except Exception as e:
             logger.error(f"Failed to load manifest: {e}")
+        finally:
+            self._initialized = True
+
+    def _ensure_initialized(self):
+        if not getattr(self, "_initialized", False):
+            self._init_from_manifest()
 
     def _register_tool_entry(self, tool: ToolEntry, manager: ManifestManager):
         """Instancia y registra una herramienta según su entrada en el manifiesto."""
@@ -77,6 +85,7 @@ class ToolManager:
         """
         Ejecuta proveedores para una capacidad con inteligencia OPSEC.
         """
+        self._ensure_initialized()
         providers = self._capabilities.get(capability, [])
         if not providers:
             logger.error(f"No providers registered for capability: {capability}")

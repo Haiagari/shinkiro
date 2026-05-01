@@ -4,7 +4,9 @@ Ajuste estrategias según el WAF detectado.
 """
 
 import re
-from src.utils import log
+from src.core.logging import get_logger
+
+logger = get_logger("waf-detector")
 
 # Headers que indican WAF
 WAF_HEADERS = {
@@ -43,7 +45,7 @@ def detect_waf(url: str) -> dict:
     Detecta si un sitio tiene WAF.
     Enhanced: Usa headers de sigilo para no ser bloqueado durante la detección.
     """
-    log.info(f"Detectando WAF en: {url}")
+    logger.info(f"Detectando WAF en: {url}")
     
     waf_type = None
     waf_name = None
@@ -79,7 +81,7 @@ def detect_waf(url: str) -> dict:
         
         # Check específico de respuesta 403
         if r.status_code == 403:
-            if "cloudflare" in text or "cf-ray" in headers:
+            if "cloudflare" in text or "cf-ray" in resp_headers:
                 waf_name = "Cloudflare"
                 waf_type = "cloudflare"
                 protection_level = "high"
@@ -96,7 +98,7 @@ def detect_waf(url: str) -> dict:
                 protection_level = "low"
         
     except Exception as e:
-        log.error(f"Error detectando WAF: {e}")
+        logger.error(f"Error detectando WAF: {e}")
     
     result = {
         "detected": bool(waf_name),
@@ -107,9 +109,9 @@ def detect_waf(url: str) -> dict:
     }
     
     if waf_name:
-        log.warning(f"  WAF detectado: {waf_name} ({protection_level})")
+        logger.warning(f"  WAF detectado: {waf_name} ({protection_level})")
     else:
-        log.info(f"  Sin WAF detectado")
+        logger.info(f"  Sin WAF detectado")
     
     return result
 

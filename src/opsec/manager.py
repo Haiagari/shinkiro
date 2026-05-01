@@ -37,6 +37,14 @@ class OPSECManager:
             "waf_strategy": self.waf_detected.get("strategy") if self.waf_detected else None
         }
 
+    def get_operational_params(self) -> Dict[str, Any]:
+        """
+        Compatibilidad con modos que esperan el nombre anterior del contrato.
+        """
+        params = self.get_stealth_params()
+        params["safety"] = self.get_safety_summary()
+        return params
+
     def get_safety_summary(self) -> Dict[str, Any]:
         """Resumen auditable del estado de seguridad del target."""
         scope = validation_policy.scope_decision(f"https://{self.target}")

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from src.core.providers.base import BaseProvider
 from src.utils import read_lines
+from src.core.runtime_paths import get_temp_dir
 
 class FuzzingProvider(BaseProvider):
     def __init__(self, name: str, binary: str):
@@ -15,7 +16,7 @@ class FuzzingProvider(BaseProvider):
     def execute(self, target_file: str, **kwargs) -> List[Dict[str, Any]]:
         if not self.is_available(): return []
         
-        out_file = Path("runtime/temp") / f"{self.name}_fuzz.txt"
+        out_file = get_temp_dir() / f"{self.name}_fuzz.txt"
         out_file.parent.mkdir(parents=True, exist_ok=True)
         
         # Ejemplo simplificado para dalfox

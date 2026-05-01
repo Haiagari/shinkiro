@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List
 from src.core.providers.base import BaseProvider
 from src.core.logging import get_logger
+from src.core.runtime_paths import get_temp_dir, safe_filename
 
 logger = get_logger('provider.subfinder')
 
@@ -19,7 +20,7 @@ class SubfinderProvider(BaseProvider):
             logger.error("Subfinder binary not found")
             return []
         
-        output_file = Path("runtime/temp") / f"subfinder_{target}.txt"
+        output_file = get_temp_dir() / f"subfinder_{safe_filename(target)}.txt"
         output_file.parent.mkdir(parents=True, exist_ok=True)
         
         # Mapeo de intención operativa a ejecución técnica

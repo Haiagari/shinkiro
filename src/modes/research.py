@@ -6,6 +6,7 @@ from typing import List, Dict, Any, Optional
 from src.modes.base import BaseMode
 from src.core.tool_manager import tool_manager
 from src.core.logging import get_logger
+from src.core.runtime_paths import get_temp_dir, safe_filename
 
 logger = get_logger('mode.research')
 
@@ -52,7 +53,7 @@ class ResearchMode(BaseMode):
         
         # 3. Preparar archivo de targets para Nuclei
         from pathlib import Path
-        temp_file = Path("runtime/temp") / f"research_{self.target}_targets.txt"
+        temp_file = get_temp_dir() / f"research_{safe_filename(self.target)}_targets.txt"
         temp_file.parent.mkdir(parents=True, exist_ok=True)
         temp_file.write_text("\n".join(known_assets))
 

@@ -55,6 +55,7 @@ class Asset:
     web_server: Optional[str] = None
     technologies: List[str] = field(default_factory=list)
     ports: List[int] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -200,14 +201,14 @@ Ejemplo de output normalizado:
       "type": "subdomain",
       "value": "api.example.com",
       "is_live": true,
-      "ip": "1.2.3.4",
+      "ip": "0.0.0.0",
       "http_status": 200,
       "technologies": ["nginx", "python"]
     }
   ],
   "services": [
     {
-      "host": "1.2.3.4",
+      "host": "0.0.0.0",
       "port": 443,
       "protocol": "tcp",
       "service": "https",

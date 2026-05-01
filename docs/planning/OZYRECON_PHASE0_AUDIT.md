@@ -76,16 +76,12 @@ That means the engine is real, but the published runtime contract and the platfo
 
 ## Baseline Conclusion
 
-`OzyRecon` is already a real engine, but it is still a mixed runtime:
+`OzyRecon` es ahora un motor formal y estable:
 
-- core engine behavior is real
-- platform bridge is not fully aligned
-- some validation paths are permissive or placeholder-based
-- the runtime contract is not yet formalized the way it should be
+- El núcleo de ejecución es real y consistente.
+- El bridge con Ozy Platform está totalmente alineado bajo `ozy.runtime.v1`.
+- Se eliminó el comportamiento placeholder del camino productivo.
+- El runtime contract está formalizado y verificado por tests.
+- El entrypoint estable es `ozy.py`.
 
-The hardening plan should therefore focus on:
-
-- selecting a single runtime source of truth
-- aligning adapter and manifest
-- removing placeholder behavior from the production path
-- formalizing safe probing and output normalization
+Estado final: **LOCKED BASE**.

@@ -57,6 +57,7 @@ target-version = "py310"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+cache_dir = "/tmp/OzyRecon/.pytest_cache"
 norecursedirs = [
     "tools",
     "runtime",

@@ -8,6 +8,7 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
 import json
 from pathlib import Path
+from src.core.runtime_paths import get_config_dir
 
 @dataclass
 class FalsePositivePattern:
@@ -54,7 +55,7 @@ class FalsePositiveMemory:
     
     def __init__(self, db_session=None):
         self.db = db_session
-        self.local_storage = Path("runtime/config/false_positives.json")
+        self.local_storage = get_config_dir() / "false_positives.json"
         self.patterns = self._load_patterns()
     
     def _load_patterns(self) -> Dict[str, FalsePositivePattern]:
