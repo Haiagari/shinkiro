@@ -3,7 +3,7 @@
 This guide will walk you through setting up **OzyRecon v7.5** for controlled reconnaissance and review.
 
 ## Prerequisites
-- **Python 3.10+** (3.11 recommended)
+- **Python 3.11+** (3.11 recommended)
 - **Git**
 - **curl_cffi** requirements (Automatically handled by setup.sh)
 
