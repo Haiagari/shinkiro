@@ -1,3 +1,4 @@
+import re
 from sqlalchemy.orm import Session
 from src.storage.models import Subdomain, Port
 from src.core.tool_manager import tool_manager
@@ -138,25 +139,43 @@ class DiscoveryOrchestrator:
             resolved_domains = {}
             
             for line in results:
-                # Parsing rústico: extraer dominio y status
-                parts = line.split()
+                # Parsing mejorado: httpx devuelve algo como:
+                # http://domain [status] [title] [tech1,tech2]
+                parts = line.strip().split(" ")
                 if not parts: continue
                 
                 url = parts[0]
                 from urllib.parse import urlparse
                 parsed = urlparse(url)
                 domain = parsed.netloc.split(':')[0]
-                if not domain and parsed.path: # Fallback if URL doesn't have scheme
+                if not domain and parsed.path:
                     domain = parsed.path.split('/')[0].split(':')[0]
                 
-                if domain:
-                    resolved_domains[domain] = {
-                        "is_live": 1,
-                    }
+                if not domain: continue
+
+                res_data = {"is_live": 1}
+                
+                # Extraer Status Code [200]
+                status_match = re.search(r"\[(\d{3})\]", line)
+                if status_match:
+                    res_data["http_status"] = int(status_match.group(1))
+
+                # Extraer Título (entre los corchetes después del status)
+                # El formato suele ser: [status] [title] [tech]
+                all_brackets = re.findall(r"\[(.*?)\]", line)
+                if len(all_brackets) >= 2:
+                    res_data["title"] = all_brackets[1]
+                
+                # Extraer Tecnologías (el último par de corchetes si hay más de 2)
+                if len(all_brackets) >= 3:
+                    techs = [t.strip() for t in all_brackets[-1].split(",")]
+                    res_data["technologies"] = techs
+
+                resolved_domains[domain] = res_data
             
             # Mapear resultados a assets de la DB
             for domain, data in resolved_domains.items():
-                updated_assets.append({"domain": domain, "is_live": 1})
+                updated_assets.append({"domain": domain, **data})
             
             if updated_assets:
                 self._upsert_assets(updated_assets)
