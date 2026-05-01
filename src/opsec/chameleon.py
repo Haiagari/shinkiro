@@ -95,9 +95,10 @@ class ChameleonEngine:
         """Genera flags de sigilo para herramientas de CLI (httpx, nuclei, etc)."""
         ua = self.get_random_ua()
         if tool_name.lower() == "httpx":
-            return ["-H", f"User-Agent: {ua}", "-H", "Accept-Language: en-US,en;q=0.9"]
+            # Usamos comillas simples para proteger los espacios en el User-Agent
+            return ["-H", f"'User-Agent: {ua}'", "-H", "'Accept-Language: en-US,en;q=0.9'"]
         if tool_name.lower() == "nuclei":
-            return ["-H", f"User-Agent: {ua}"]
+            return ["-H", f"'User-Agent: {ua}'"]
         return []
 
 # Instancia global para v7.2

@@ -50,6 +50,12 @@ class GraphBuilder:
                 })
                 self._add_edge(edges, sub_id, ip_id, "resolves_to")
 
+            # 2.5. DNS Chain / CNAME (v7.3)
+            if sub.cname:
+                cname_id = f"cname_{sub.cname}"
+                self._add_node(nodes, seen_nodes, cname_id, sub.cname, "dns_cname")
+                self._add_edge(edges, sub_id, cname_id, "cname_pointer")
+
         # 3. Ports & Services
         ports = db.query(Port).filter_by(scan_id=scan_id).all()
         for p in ports:

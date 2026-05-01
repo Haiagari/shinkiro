@@ -135,6 +135,9 @@ class Subdomain(Base):
     http_headers = Column(JSON, nullable=True)
     response_time_ms = Column(Integer, nullable=True)
     
+    # DNS Chain (v7.3 - Phase 2 Advanced)
+    cname = Column(String(500), nullable=True)
+    
     # Timestamps
     discovered_at = Column(DateTime, default=datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.utcnow)

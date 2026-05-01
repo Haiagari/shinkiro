@@ -19,10 +19,13 @@ Current operational work is focused on hardening and contract closure for the ex
 - [x] **Logic Brain**: Automated correlation of review paths in the Knowledge Graph.
 - [x] **Surgical Prober**: Zero-noise evidence validation engine.
 
-## 🧠 Phase 4: Intelligent Engine (v7.0 Alpha) - [CURRENT]
+## 🧠 Phase 4: Intelligent Engine (v7.3 Alpha) - [COMPLETED]
 - [x] **Contextual Recon**: ASN, Organization, and Cloud enrichment.
 - [x] **Snapshot Memory**: Historical diffing and novelty detection.
-- [x] **Semantic Classifier**: Inferred roles (`admin`, `api`, `commerce`) and business impact mapping.
+- [x] **Semantic Classifier**: Inferred roles and business impact mapping.
+- [x] **Evidence Layer**: HTTP headers and response capture.
+- [x] **Takeover Hunter**: DNS lineage and automated takeover detection.
+- [x] **Chameleon v2**: Refined stealth with identity rotation.
 - [x] **Adaptive Planning**: Target-aware execution profiles.
 - [x] **Graph v7**: Relationship-first data model.
 

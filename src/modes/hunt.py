@@ -58,6 +58,10 @@ class HuntMode(BaseMode):
         if "service_discovery" in plan["capabilities"]:
             orchestrator.service_analysis()
 
+        # Phase 3.5: Takeover Detection (v7.3)
+        if "takeover_detection" in plan["capabilities"] or plan["intent"] == "aggressive":
+            orchestrator.takeover_detection()
+
         # Phase 4: Scoring & Prioritization (v6.0)
         logger.info("[HUNT] Phase 4: Asset Scoring & Prioritization")
         from src.storage.models import Port

@@ -9,6 +9,9 @@ Estado operativo real:
 - **v7 Contextual Awakening:** Implementado enriquecimiento automático de ASN y Organización (vía Cymru).
 - **v7 Hunter's Memory:** Implementada persistencia basada en Snapshots y `DiffEngine` para detección de novedades.
 - **v7 Semantic Brain:** Implementada inferencia de roles (`admin`, `api`, `gate`) e impacto de negocio.
+- **v7 Evidence Sentinel:** Captura de cabeceras HTTP, tiempos de respuesta y detección de cambios de versión (`v7.1`).
+- **v7 Chameleon Refined:** Sigilo avanzado con rotación de identidades y blindaje de comillas (`v7.2`).
+- **v7 Takeover Hunter:** Implementada detección de Subdomain Takeover y linaje CNAME (`v7.3`).
 - **v7 Final Form:** Implementado Planeamiento Adaptativo y API de Grafos de Conocimiento.
 - Validación final realizada con target real (`owlperu.com`) confirmando la captura de metadatos ricos y relaciones.
 

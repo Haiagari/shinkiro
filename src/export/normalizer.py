@@ -124,7 +124,8 @@ class NormalizedExporter:
             "cloud_provider": subdomain.cloud_provider,
             "env_tag": subdomain.env_tag,
             "semantic_labels": subdomain.semantic_labels,
-            "business_impact": subdomain.business_impact
+            "business_impact": subdomain.business_impact,
+            "cname": subdomain.cname
         }
         return Asset(
             type="subdomain",

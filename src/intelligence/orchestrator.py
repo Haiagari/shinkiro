@@ -179,6 +179,7 @@ class DiscoveryOrchestrator:
                     "title": raw_data.get("title"),
                     "technologies": raw_data.get("tech", []),
                     "ip": raw_data.get("ip"),
+                    "cname": raw_data.get("cname", [])[0] if raw_data.get("cname") else None,
                     "http_headers": raw_data.get("header", {}),
                     "response_time_ms": int(raw_data.get("time", "0ms").replace("ms", "")) if "ms" in str(raw_data.get("time")) else 0
                 }
@@ -263,3 +264,55 @@ class DiscoveryOrchestrator:
         
         log(f"Service analysis finished. {total_ports} open ports identified/updated.", level="success")
         return total_ports
+
+    def takeover_detection(self):
+        """
+        Fase 4: Detección de Subdomain Takeover (v7.3).
+        Usa Nuclei con el tag 'takeover' sobre los activos vivos.
+        """
+        log("Starting subdomain takeover detection", level="info")
+        live_assets = self.db.query(Subdomain).filter_by(is_live=1, scan_id=self.scan_id).all()
+        if not live_assets:
+            return []
+
+        import tempfile
+        import os
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as tf:
+            for asset in live_assets:
+                tf.write(f"{asset.domain}\n")
+            temp_path = tf.name
+
+        try:
+            # Ejecutar Nuclei filtrando solo por Takeovers
+            results = tool_manager.run_capability("template_scan", temp_path, tags=["takeover"])
+            
+            if not results:
+                log("No takeovers detected", level="info")
+                return []
+
+            # Procesar hallazgos de Nuclei
+            for res in results:
+                vuln_name = res.get("info", {}).get("name", "Potential Takeover")
+                severity = res.get("info", {}).get("severity", "critical")
+                host = res.get("host", "")
+                
+                log(f"🔥 TAKEOVER DETECTED: {host} -> {vuln_name}", level="critical")
+                
+                # Persistir en la tabla de Vulnerabilidades
+                from src.storage.queries import DBQueries
+                queries = DBQueries(self.db)
+                queries.add_vulnerability(
+                    scan_id=self.scan_id,
+                    name=vuln_name,
+                    severity=severity,
+                    host=host,
+                    description=res.get("info", {}).get("description", "Vulnerable to subdomain takeover"),
+                    payload=res.get("matched-at"),
+                    evidence=res.get("template-id")
+                )
+                
+            return results
+
+        finally:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)

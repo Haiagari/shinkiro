@@ -1,6 +1,6 @@
-# 🧠 OzyRecon v7.0 — *Intelligent Autonomy*
+# 🧠 OzyRecon v7.3 — *The Elite Sentinel*
 
-> **Relationship-first reconnaissance engine with semantic inference, infrastructure enrichment, and adaptive planning.**
+> **Relationship-first reconnaissance engine with semantic inference, infrastructure enrichment, adaptive planning, and automated takeover hunting.**
 
 <div align="center">
 
@@ -8,31 +8,31 @@
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-v7.0.0--alpha.1-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v7.3.0--alpha.1-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
 [![Contract](https://img.shields.io/badge/contract-ozy.runtime.v1-00ff88?style=flat-square&labelColor=0a0f1a)]()
 
 </div>
 
 ---
 
-## 🎭 v7.0 Core Pillars: "Intelligent Autonomy"
+## 🎭 v7.3 Core Pillars: "The Elite Sentinel"
 
-OzyRecon v7.0 evolves from a discovery tool into a **Contextual Intelligence Agent**. It doesn't just find assets; it understands their role and business impact.
+OzyRecon v7.3 solidifies its position as a high-fidelity intelligence platform.
 
-### 1. 🌐 Contextual Enrichment
-Automatic **ASN and Organization lookup** (via Team Cymru) and Cloud detection. Every asset is enriched with its infrastructure "DNA" from the first second.
+### 1. 🧤 Refined Chameleon Stealth
+Advanced **User-Agent rotation and header injection** for all tools (httpx, subfinder, nuclei). Identity is protected with safe shell quoting to bypass modern WAFs.
 
-### 2. 🧠 Semantic Inference
-The engine labels assets based on their functional role (`gate_admin`, `api_surface`, `cms_surface`) and assigns **Business Impact** scores using hybrid passive/active analysis.
+### 2. 🔍 Takeover Hunter
+Automated **Subdomain Takeover detection** integrated into the primary flow. The motor tracks DNS lineages (CNAME) and validates exposure using surgical Nuclei templates.
 
-### 3. 🕒 Hunter's Memory (Snapshot-Based)
-True **differential reconnaissance**. Every scan is a persistent snapshot. The motor remembers the past, detects novelties, and alerts on critical infrastructure changes.
+### 3. 🧾 Technical Evidence Layer
+Every finding is backed by **HTTP evidence**. The engine captures response headers, titles, and performance metrics (ms) using a structured JSON-first pipeline.
 
-### 4. 🗺️ Relationship Graph v7
-Data is modeled as a **Knowledge Graph**. Query relationships between domains, IPs, ports, and technologies through a modernized API.
+### 4. 🌐 Contextual Enrichment
+Automatic **ASN and Organization lookup** (via Team Cymru) and Cloud detection.
 
-### 5. 🎯 Adaptive Recon Planner
-Dynamic execution profiles. The engine chooses the best tool mix based on the target type (IP, Domain, CIDR) and operational intent.
+### 5. 🧠 Semantic Inference
+Functional role labeling (`gate_admin`, `api_surface`, `cms_surface`) and **Business Impact** scoring.
 
 ---
 

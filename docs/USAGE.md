@@ -29,7 +29,9 @@ OzyRecon v7 enriches every asset with business and infrastructure context:
 
 - **Infrastructure**: ASN, ISP/Organization, Cloud Provider (AWS, GCP, Azure).
 - **Semantics**: Functional roles (admin panels, APIs, transactional) and Impact Level (CRITICAL, HIGH, LOW).
-- **Novelty**: Automatic detection of new assets or technology changes between runs.
+- **Evidence**: Capture of HTTP headers and response time for auditable intelligence.
+- **Takeovers**: Automatic monitoring of DNS CNAME chains to detect vulnerable services.
+- **Novelty**: Automatic detection of new assets, technology changes, or **version shifts** between runs.
 
 
 ---
