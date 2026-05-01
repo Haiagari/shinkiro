@@ -47,6 +47,9 @@ class NucleiProvider(BaseProvider):
             "-bulk-size", str(max(1, rate_limit // 5))
         ]
         
+        # Inyectar Chameleon Stealth Flags v7.2
+        cmd.extend(self._get_stealth_flags())
+        
         # --- FILTRADO DE FALSOS POSITIVOS ---
         from src.intelligence.false_positive_memory import false_positive_memory
         avoid_templates = false_positive_memory.get_avoid_list(tool="nuclei")

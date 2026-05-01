@@ -3,6 +3,21 @@ tools:
     executable: subfinder
     adapter: SubfinderProvider
     categories: ["asset_discovery"]
+    cmd_template: "{bin} -d {target} -silent {stealth_flags}"
+    enabled: true
+
+  - name: assetfinder
+    executable: assetfinder
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} --subs-only {target} {stealth_flags} > {out}"
+    categories: ["asset_discovery"]
+    enabled: true
+
+  - name: amass
+    executable: amass
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} enum -passive -timeout 2 -d {target} {stealth_flags} -o {out}"
+    categories: ["asset_discovery"]
     enabled: true
 
   - name: assetfinder
@@ -34,8 +49,22 @@ tools:
   - name: httpx
     executable: httpx
     adapter: GenericDiscoveryProvider
-    cmd_template: "{bin} -l {target} -silent -status-code -title -tech-detect -ip -o {out} -threads {threads}"
+    cmd_template: "{bin} -l {target} -silent -json {stealth_flags} -o {out} -threads {threads}"
     categories: ["live_detection"]
+    enabled: true
+
+  - name: dnsx
+    executable: dnsx
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} -l {target} -silent {stealth_flags} -o {out} -t {threads}"
+    categories: ["dns_resolution"]
+    enabled: true
+
+  - name: nuclei
+    executable: nuclei
+    adapter: NucleiProvider
+    cmd_template: "{bin} -target {target} -silent -json {stealth_flags} -o {out}"
+    categories: ["template_scan"]
     enabled: true
 
   - name: dnsx

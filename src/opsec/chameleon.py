@@ -87,5 +87,18 @@ class ChameleonEngine:
             platform=profile["platform"]
         )
 
-# Instancia global para v6.0
+    def get_random_ua(self) -> str:
+        """Retorna solo un User-Agent aleatorio para herramientas externas."""
+        return random.choice(self.profiles)["ua"]
+
+    def get_stealth_flags(self, tool_name: str) -> List[str]:
+        """Genera flags de sigilo para herramientas de CLI (httpx, nuclei, etc)."""
+        ua = self.get_random_ua()
+        if tool_name.lower() == "httpx":
+            return ["-H", f"User-Agent: {ua}", "-H", "Accept-Language: en-US,en;q=0.9"]
+        if tool_name.lower() == "nuclei":
+            return ["-H", f"User-Agent: {ua}"]
+        return []
+
+# Instancia global para v7.2
 chameleon = ChameleonEngine()

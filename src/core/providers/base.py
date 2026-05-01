@@ -28,6 +28,11 @@ class BaseProvider(abc.ABC):
     def is_available(self) -> bool:
         return bool(self.path)
 
+    def _get_stealth_flags(self) -> List[str]:
+        """Obtiene los flags de Chameleon para esta herramienta."""
+        from src.opsec.chameleon import chameleon
+        return chameleon.get_stealth_flags(self.name)
+
     @abc.abstractmethod
     def execute(self, target: Any, **kwargs) -> Any:
         pass

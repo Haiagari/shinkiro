@@ -46,11 +46,22 @@ class NoveltyAlerter:
                 "entity": f"{port['host']}:{port['port']}"
             })
 
-        # 3. Alert on Technology Changes
+        # 3. Alert on Technology and Version Changes
         for change in diff.changed_subdomains:
             domain = change["domain"]
             metadata_changes = change["changes"]
             
+            # Alerta de Cambio de Versión (v7.1)
+            if "version_shifts" in metadata_changes:
+                for shift in metadata_changes["version_shifts"]:
+                    alerts.append({
+                        "type": "VERSION_SHIFT",
+                        "priority": self.HIGH,
+                        "message": f"Version change on {domain}: {shift['technology']} {shift['from']} -> {shift['to']}",
+                        "entity": domain,
+                        "metadata": shift
+                    })
+
             if "technologies" in metadata_changes:
                 added = metadata_changes["technologies"]["added"]
                 if added:

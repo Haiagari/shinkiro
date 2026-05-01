@@ -94,7 +94,7 @@ class DiffEngine:
         report.new_subdomains = list(curr_set - prev_set)
         report.removed_subdomains = list(prev_set - curr_set)
 
-        # Detectar cambios en metadatos para dominios existentes
+        # Detectar cambios en metadatos y VERSIONES (v7.1)
         for domain in (curr_set & prev_set):
             c = curr_map[domain]
             p = prev_map[domain]
@@ -102,23 +102,54 @@ class DiffEngine:
             changes = {}
             if c.ip != p.ip: changes["ip"] = {"old": p.ip, "new": c.ip}
             if c.title != p.title: changes["title"] = {"old": p.title, "new": c.title}
-            if c.asn != p.asn: changes["asn"] = {"old": p.asn, "new": c.asn}
-            if c.cloud_provider != p.cloud_provider: changes["cloud"] = {"old": p.cloud_provider, "new": c.cloud_provider}
             
-            # Comparar tecnologías (listas)
-            c_tech = set(c.technologies or [])
-            p_tech = set(p.technologies or [])
-            if c_tech != p_tech:
-                changes["technologies"] = {
-                    "added": list(c_tech - p_tech),
-                    "removed": list(p_tech - c_tech)
-                }
+            # Comparar tecnologías y versiones (Deep Compare)
+            c_tech = c.technologies or []
+            p_tech = p.technologies or []
+            
+            # Detectar si una tecnología cambió de versión (ej: WordPress:6.9 -> WordPress:7.0)
+            version_changes = self._detect_version_shifts(p_tech, c_tech)
+            if version_changes:
+                changes["version_shifts"] = version_changes
+
+            # Tecnologías agregadas/borradas
+            added = list(set(c_tech) - set(p_tech))
+            removed = list(set(p_tech) - set(c_tech))
+            if added or removed:
+                changes["technologies"] = {"added": added, "removed": removed}
 
             if changes:
                 report.changed_subdomains.append({
                     "domain": domain,
                     "changes": changes
                 })
+
+    def _detect_version_shifts(self, old_techs: list, new_techs: list) -> list:
+        """Compara versiones de tecnologías con formato 'Name:Version'."""
+        shifts = []
+        old_map = self._tech_list_to_map(old_techs)
+        new_map = self._tech_list_to_map(new_techs)
+
+        for name, new_ver in new_map.items():
+            if name in old_map and old_map[name] != new_ver:
+                shifts.append({
+                    "technology": name,
+                    "from": old_map[name],
+                    "to": new_ver
+                })
+        return shifts
+
+    @staticmethod
+    def _tech_list_to_map(tech_list: list) -> dict:
+        """Convierte ['WordPress:6.9', 'PHP'] en {'WordPress': '6.9', 'PHP': None}."""
+        result = {}
+        for t in tech_list:
+            if ":" in t:
+                name, ver = t.split(":", 1)
+                result[name.strip()] = ver.strip()
+            else:
+                result[t.strip()] = None
+        return result
 
     def _diff_ports(self, curr_id: int, prev_id: int, report: DiffReport):
         from src.storage.models import Port

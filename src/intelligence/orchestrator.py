@@ -1,5 +1,6 @@
 import re
 import socket
+import json
 from sqlalchemy.orm import Session
 from src.storage.models import Subdomain, Port
 from src.core.tool_manager import tool_manager
@@ -159,57 +160,41 @@ class DiscoveryOrchestrator:
             resolved_domains = {}
             
             for line in results:
-                # Parsing mejorado: httpx devuelve algo como:
-                # http://domain [status] [title] [tech1,tech2]
-                parts = line.strip().split(" ")
-                if not parts: continue
+                # Parsing Estructurado v7.1 (JSON)
+                try:
+                    raw_data = json.loads(line.strip())
+                except json.JSONDecodeError:
+                    continue
                 
-                url = parts[0]
+                # Extraer dominio del input o de la URL
+                url = raw_data.get("url", "")
                 from urllib.parse import urlparse
                 parsed = urlparse(url)
                 domain = parsed.netloc.split(':')[0]
-                if not domain and parsed.path:
-                    domain = parsed.path.split('/')[0].split(':')[0]
-                
                 if not domain: continue
 
-                res_data = {"is_live": 1}
+                res_data = {
+                    "is_live": 1,
+                    "http_status": raw_data.get("status_code"),
+                    "title": raw_data.get("title"),
+                    "technologies": raw_data.get("tech", []),
+                    "ip": raw_data.get("ip"),
+                    "http_headers": raw_data.get("header", {}),
+                    "response_time_ms": int(raw_data.get("time", "0ms").replace("ms", "")) if "ms" in str(raw_data.get("time")) else 0
+                }
                 
-                # Extraer Status Code [200]
-                status_match = re.search(r"\[(\d{3})\]", line)
-                if status_match:
-                    res_data["http_status"] = int(status_match.group(1))
-
-                # Extraer IP (httpx con -ip devuelve [0.0.0.0])
-                ip_match = re.search(r"\[(\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b)\]", line)
-                if ip_match:
-                    ip = ip_match.group(1)
-                    res_data["ip"] = ip
-                    
-                    # ENRIQUECIMIENTO v7 (Phase 2)
-                    infra = infra_enricher.enrich_ip(ip)
+                # Enriquecimiento de Infraestructura
+                if res_data["ip"]:
+                    infra = infra_enricher.enrich_ip(res_data["ip"])
                     res_data["asn"] = infra.get("asn")
                     res_data["asn_organization"] = infra.get("asn_organization")
                     res_data["cloud_provider"] = infra.get("cloud_provider")
 
-                # Extraer Título (entre los corchetes después del status/ip)
-                # El formato suele ser: [status] [ip] [title] [tech]
-                all_brackets = re.findall(r"\[(.*?)\]", line)
-                # El título suele ser el primero que no es status ni IP
-                potential_titles = [b for b in all_brackets if not re.match(r"^\d{3}$", b) and not re.match(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$", b)]
-                if potential_titles:
-                    res_data["title"] = potential_titles[0]
-                
-                # Extraer Tecnologías (el último si hay varios y no es lo anterior)
-                if len(potential_titles) >= 2:
-                    techs = [t.strip() for t in potential_titles[-1].split(",")]
-                    res_data["technologies"] = techs
-
-                # CLASIFICACIÓN SEMÁNTICA v7 (Phase 5 & 7)
+                # CLASIFICACIÓN SEMÁNTICA (Enriquecida con Título y Tech reales)
                 analysis = semantic_classifier.classify_asset({
                     "domain": domain,
-                    "title": res_data.get("title", ""),
-                    "technologies": res_data.get("technologies", [])
+                    "title": res_data["title"] or "",
+                    "technologies": res_data["technologies"]
                 })
                 res_data["semantic_labels"] = analysis.get("labels")
                 res_data["business_impact"] = analysis.get("impact")

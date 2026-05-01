@@ -52,9 +52,14 @@ class OzyHTTPClient:
         headers: Optional[Dict[str, str]] = None,
         impersonate: Optional[str] = None,
         verify: Optional[Union[bool, str]] = None,
+        rotate_identity: bool = True, # Rotar por defecto v7.2
         **kwargs
     ) -> Any:
         self._wait_for_rate_limit()
+        
+        # Rotación de Identidad v7.2
+        if rotate_identity:
+            self.identity = chameleon.generate_identity()
         
         request_headers = self.identity.headers.copy()
         if headers:

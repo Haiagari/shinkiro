@@ -28,7 +28,8 @@ class GenericDiscoveryProvider(BaseProvider):
             bin=self.path, 
             target=target, 
             out=out_file,
-            threads=kwargs.get("threads", 50)
+            threads=kwargs.get("threads", 50),
+            stealth_flags=" ".join(self._get_stealth_flags())
         )
         
         logger.info(f"Running {self.name} on {target}")

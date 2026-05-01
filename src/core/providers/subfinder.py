@@ -32,6 +32,9 @@ class SubfinderProvider(BaseProvider):
         
         cmd = [self.path, "-d", target, "-silent", "-all", "-o", str(output_file), "-t", str(threads)]
         
+        # Inyectar Chameleon Stealth Flags v7.2
+        cmd.extend(self._get_stealth_flags())
+        
         # Si la intención es ruido bajo, evitamos el flag "-all"
         if kwargs.get("noise") == "low":
             if "-all" in cmd: cmd.remove("-all")

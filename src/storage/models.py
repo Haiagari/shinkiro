@@ -131,6 +131,10 @@ class Subdomain(Base):
     semantic_labels = Column(JSON, nullable=True)
     business_impact = Column(String(20), default="LOW")
     
+    # Evidence & Performance (v7.1 - Phase 6)
+    http_headers = Column(JSON, nullable=True)
+    response_time_ms = Column(Integer, nullable=True)
+    
     # Timestamps
     discovered_at = Column(DateTime, default=datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.utcnow)
