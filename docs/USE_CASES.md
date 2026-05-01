@@ -1,42 +1,73 @@
 # 📖 OzyRecon: Use Cases & Operational Scenarios
 
-OzyRecon v7.5 is a **controlled reconnaissance and review engine**.
- This document describes practical scenarios for discovery, correlation, evidence collection, and safe validation.
+OzyRecon v8.3.2 is a controlled reconnaissance and review engine. This document describes practical scenarios for discovery, correlation, evidence collection, and safe validation.
 
----
+## Core scenarios
 
-## 1. Controlled Discovery Under Defensive Controls
-When a target has aggressive rate limiting or filtering, use OzyRecon to keep the workflow explicit and reviewable.
-*   **Activity**: Run the engine with the approved validation policy and observe the normalized output.
-*   **Outcome**: Maintain controlled discovery without bypass-oriented language or hidden execution paths.
+### 1. Controlled discovery under defensive controls
 
-## 2. Cross-Asset Correlation
-Logic and exposure patterns often span multiple assets that automated scanners see as isolated.
-*   **Activity**: Correlate findings across subdomains, ports, and historical scans.
-*   **Outcome**: Surface review priorities and relationships that are useful for remediation.
+Use OzyRecon when a target needs explicit, reviewable discovery rather than opaque background scanning.
 
-## 3. Evidence-Based Validation
-Reduce false positives by validating only the findings allowed by policy.
-*   **Activity**: Let gated validators confirm exposure or report evidence for review.
-*   **Outcome**: A final report with reproducible proofs and traceable evidence.
+- Run the engine with the approved validation policy
+- Review the normalized output and session trace
+- Keep the run inside the authorized scope
 
-## 4. Continuous Surface Monitoring
-Maintain a live, relationship-based map of your infrastructure.
-*   **Activity**: Run continuous discovery against approved targets and keep the session trace for audit.
-*   **Outcome**: Detect new exposures or configuration drift before they create operational risk.
+### 2. Cross-asset correlation
 
----
+The engine is useful when findings are spread across multiple assets and need relationship-based review.
 
-## 🛠️ Specialized v7.5 Pillars:
+- Correlate subdomains, services, and historical sessions
+- Use the graph output to surface review priorities
+- Treat the result as a triage layer, not as an exploit path
 
-### A. Controlled Request Identity
-Every request can use a consistent identity profile so repeated runs stay comparable and auditable.
+### 3. Evidence-based validation
 
-### B. Graph-Derived Hypotheses
-The engine doesn't just scan ports; it generates review hypotheses based on the **Knowledge Graph**'s relationship data.
+Use the signed evidence layer when you need reproducible proof of exposure.
 
-### C. Cryptographically Signed Evidence
-All findings in the evidence layer are digitally signed with Ed25519, providing an immutable audit trail for review and compliance.
+- Collect Ed25519-signed findings
+- Preserve session context for audit
+- Use the narrative analysis for remediation context
 
----
-*For more technical details, see the [Architecture Guide](architecture.md).*
+### 4. Continuous surface monitoring
+
+Use the engine as a repeatable review loop for approved assets.
+
+- Run scheduled hunts on allowed targets
+- Compare new sessions against prior traces
+- Track drift with `GET /sessions/{session_id}/trace`
+
+### 5. Operator-facing review
+
+Use the API when a dashboard or platform needs to present the same session state the CLI sees.
+
+- `POST /hunt` to start a session
+- `POST /sessions/{session_id}/cancel` to stop a run
+- `GET /sessions/{session_id}/analyze` for narrative findings
+- `GET /health` for engine status metrics
+
+## What the engine is good at
+
+- Relationship-first review
+- Scoping through hashed API keys and scopes
+- Narrative summaries for business and technical follow-up
+- Non-blocking hunts with cancellation
+- Signed outputs that support audit and tamper detection
+
+## What it is not
+
+- A replacement for an authorized penetration test
+- A tool for blind exploitation
+- A source of truth for secrets or private keys
+- A substitute for human review
+
+## Technical anchors
+
+- Local entrypoint: [`ozy.py`](../ozy.py)
+- API runtime: [`src/core/api.py`](../src/core/api.py)
+- Bootstrap: [`src/core/bootstrap.py`](../src/core/bootstrap.py)
+- Auth registry: [`src/auth/key_store.py`](../src/auth/key_store.py)
+- Runtime contract: [`RUNTIME_CONTRACT.md`](RUNTIME_CONTRACT.md)
+
+## Practical note
+
+If you are updating this document, keep the wording aligned with the live runtime contract rather than the historical phase notes in `docs/archive/`.

@@ -1,9 +1,8 @@
 # 🗺️ OzyRecon Strategic Roadmap
 
-OzyRecon is an evolving platform. Our mission is to build the most intelligent, surgical, and professional reconnaissance engine in the open-source ecosystem.
+OzyRecon is an evolving platform. The current product reality is the v8.3.2 Enterprise Baseline, and the active work is focused on runtime stability, contract closure, and documentation alignment rather than inventing new core phases.
 
-Current operational work is focused on hardening and contract closure for the v8.3.2 engine.
- The product roadmap below remains the source of truth for feature phases.
+This roadmap is kept as the historical evolution of the engine plus the next planned horizon.
 
 ## 🏁 Phase 1: Foundations (v1.0 - v5.0) - [COMPLETED]
 - [x] Basic subdomain discovery and service fingerprinting.
@@ -40,10 +39,17 @@ Current operational work is focused on hardening and contract closure for the v8
 - [x] **Storage Management**: Automated TTL cleanup and log rotation.
 
 ## 🚀 Phase 7: Hyperscale Ecosystem (v9.0) - [PLANNED]
-- [ ] **Distributed Infrastructure**: Migration to PostgreSQL and Redis-based Task Queue (Celery/RQ).
+- [ ] **Distributed Infrastructure**: Migration to PostgreSQL and Redis-based task queue support.
 - [ ] **Multi-Node Swarm**: Synchronized discovery across multiple Sentinel nodes.
 - [ ] **SIEM Push Gateway**: Proactive alerting via webhooks and native SIEM connectors.
 - [ ] **Forensic Dashboard**: Advanced UI for verifiable evidence audit and bundle validation.
+
+## Current Focus
+
+- Keep the v8.3.2 runtime stable
+- Preserve the bootstrap/auth/session lifecycle contract
+- Keep docs and implementation in sync
+- Treat archive docs as historical references, not active plans
 
 ---
 *Want to help? Check out our [Contributing Guide](../CONTRIBUTING.md).*
