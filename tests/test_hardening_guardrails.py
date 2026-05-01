@@ -16,7 +16,7 @@ def _read(path: str) -> str:
 
 
 def test_contract_field_sets_are_stable_and_unique():
-    assert CONTRACT_VERSION == "scan-result.v1"
+    assert CONTRACT_VERSION == "ozy.runtime.v1"
 
     for fields in (MODE_ENVELOPE_FIELDS, SCAN_RESULT_FIELDS, SESSION_TRACE_FIELDS):
         assert fields

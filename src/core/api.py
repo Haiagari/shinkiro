@@ -15,23 +15,23 @@ from src.intelligence.learning_orchestrator import learning_orchestrator
 from src.intelligence.sync_manager import sync_manager
 from src.core.tool_manager import tool_manager
 from src.core.config import config
-from src.storage.models import Hypothesis, Evidence, Target, Port, Subdomain
+from src.storage.models import Hypothesis, Evidence, Target, Port, Subdomain, Scan
 from src.workflow.states import WorkflowState, Actor
 
 from src.gate.manager import gate_manager
 from src.intelligence.autonomy import build_autonomy_plan
 from src.intelligence.graph_builder import graph_builder
 
-app = FastAPI(title="OzyRecon API", version="6.0.0-alpha.1")
+app = FastAPI(title="OzyRecon API", version="7.0.0-alpha.1")
 
 @app.get("/health")
 def health_check():
     """Endpoint para validación de salud del motor."""
-    return {"status": "ok", "engine": "OzyRecon", "version": "6.0.0-alpha.1"}
+    return {"status": "ok", "engine": "OzyRecon", "version": "7.0.0-alpha.1"}
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "platform": "OzyRecon", "version": "6.0.0-alpha.1"}
+    return {"status": "online", "platform": "OzyRecon", "version": "7.0.0-alpha.1"}
 
 @app.get("/intelligence/status")
 def get_intel_status():

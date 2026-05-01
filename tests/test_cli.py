@@ -48,7 +48,7 @@ class TestOzyCLI:
         from cli.ozy import cli
         result = runner.invoke(cli, ['--version'])
         assert result.exit_code == 0
-        assert '6.0.0' in result.output
+        assert '7.0.0' in result.output
 
     def test_cli_global_debug_option(self, runner):
         """Test 2.2: Opción global --debug debe existir"""
@@ -68,7 +68,7 @@ class TestOzyCLI:
         """Test 2.5: Banner debe contener versión"""
         from cli.ozy import get_banner
         banner = get_banner()
-        assert '6.0.0' in banner
+        assert '7.0.0' in banner
 
     def test_banner_is_cyan_bold(self, runner):
         """Test 2.5: Banner debe usar formato Rich"""

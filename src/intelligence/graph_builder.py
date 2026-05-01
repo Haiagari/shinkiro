@@ -97,19 +97,25 @@ class GraphBuilder:
 
     def _add_node(self, nodes: List[Dict], seen: Set, id: str, label: str, type: str, metadata: Dict = None):
         if id not in seen:
+            # Wrap in 'data' for Cytoscape.js and legacy compatibility
             nodes.append({
-                "id": id,
-                "label": label,
-                "type": type,
-                "metadata": metadata or {}
+                "data": {
+                    "id": id,
+                    "label": label,
+                    "type": type,
+                    "metadata": metadata or {}
+                }
             })
             seen.add(id)
 
     def _add_edge(self, edges: List[Dict], source: str, target: str, relation: str):
+        # Wrap in 'data' for Cytoscape.js and legacy compatibility
         edges.append({
-            "source": source,
-            "target": target,
-            "relation": relation
+            "data": {
+                "source": source,
+                "target": target,
+                "relation": relation
+            }
         })
 
 # Global Instance

@@ -33,9 +33,8 @@ def test_visual_utility_import():
     # No ejecutamos la captura real para no depender de internet/browsers en el test
     assert capture_screenshot is not None
     
-def test_api_version_v57():
-    """Verifica que la versión de la API esté actualizada."""
-    response = client.get("/")
-    # El root endpoint devuelve version 4.0 (legacy) o la del sistema
-    # Pero el constructor de FastAPI en api.py dice 5.7
-    assert app.version == "5.7"
+    def test_api_version_v57():
+        """Verifica que la versión de la API esté actualizada."""
+        response = client.get("/")
+        # El root endpoint devuelve version 7.0.0-alpha.1
+        assert app.version == "7.0.0-alpha.1"

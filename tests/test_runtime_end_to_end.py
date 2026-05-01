@@ -81,12 +81,14 @@ def test_runtime_hunt_mode_publishes_latest_scan_contract():
          patch("src.modes.base.SessionLocal", SessionFactory), \
          patch("src.core.api.SessionLocal", return_value=session), \
          patch("src.opsec.manager.OPSECManager") as mock_opsec_manager_cls, \
-         patch("src.opsec.kill_switch.kill_switch") as mock_kill_switch, \
+         patch("src.modes.base.kill_switch") as mock_kill_switch_base, \
+         patch("src.modes.hunt.kill_switch") as mock_kill_switch_hunt, \
          patch("src.intelligence.logic_analyzer.LogicAnalyzer") as mock_logic_analyzer_cls, \
          patch("src.modes.hunt.run_intelligence") as mock_run_intelligence, \
          patch("src.intelligence.orchestrator.tool_manager") as mock_tool_manager:
 
-        mock_kill_switch.reset.return_value = None
+        mock_kill_switch_base.reset.return_value = None
+        mock_kill_switch_hunt.reset.return_value = None
 
         mock_opsec = mock_opsec_manager_cls.return_value
         mock_opsec.get_operational_params.return_value = {"noise": "low", "jitter": 0}
@@ -203,7 +205,7 @@ def test_runtime_hunt_mode_persists_session_and_trace():
         latest = get_latest_scan("e2e.example.com")
 
     assert result["status"] == "completed"
-    assert result["contract_version"] == "scan-result.v1"
+    assert result["contract_version"] == "ozy.runtime.v1"
     assert result["observability"]["session_id"] == session_id
     assert result["observability"]["is_terminal"] is True
     assert trace["session"]["session_id"] == session_id

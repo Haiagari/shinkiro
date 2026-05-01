@@ -261,7 +261,8 @@ def test_dashboard_endpoint():
 def test_api_version_v57():
     """Verifica que la versión de la API esté actualizada."""
     response = client.get("/")
-    assert app.version == "5.7"
+    assert response.status_code == 200
+    assert response.json()["version"] == "7.0.0-alpha.1"
 
 
 # =============================================================================

@@ -297,9 +297,9 @@ class TestModeIntegration:
     def test_scan_result_contract_version_present(self):
         """Verifica que el contrato normalizado expone una versión explícita."""
         from src.export.schema import ScanResult
-
+        
         result = ScanResult()
-        assert result.contract_version == "scan-result.v1"
+        assert result.contract_version == "ozy.runtime.v1"
         assert result.to_dict()["contract_version"] == "scan-result.v1"
 
 
