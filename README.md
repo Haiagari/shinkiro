@@ -4,6 +4,12 @@
 >
 > Fresh clones bootstrap their mutable runtime files from tracked seeds: `config/config.example.yaml`, `config/api_keys.example.json`, and the local Ed25519 evidence key when missing.
 
+## Start Here
+
+- [Current status](docs/STATUS.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Archive index](docs/archive/README.md)
+
 <div align="center">
 
 <img src="assets/banner-ozyrecon-paradigm.png" alt="OzyRecon Banner" width="100%"/>
