@@ -287,6 +287,7 @@ Follow the instructions in the [WeasyPrint documentation](https://doc.courtbouil
 - 🧪 [Use Cases](docs/USE_CASES.md)
 - 📊 [Benchmarks](docs/BENCHMARKS.md)
 - 🛣️ [Roadmap](docs/ROADMAP.md)
+- 🧭 [Status](docs/STATUS.md)
 - 🤝 [Contributing](CONTRIBUTING.md)
 - 📖 [Usage](docs/USAGE.md)
 

@@ -49,6 +49,7 @@ This roadmap is kept as the historical evolution of the engine plus the next pla
 - Keep the v8.3.2 runtime stable
 - Preserve the bootstrap/auth/session lifecycle contract
 - Keep docs and implementation in sync
+- Use [`docs/STATUS.md`](STATUS.md) as the quick current-state pointer
 - Treat archive docs as historical references, not active plans
 
 ---
