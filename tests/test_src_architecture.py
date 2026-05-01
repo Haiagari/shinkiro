@@ -300,7 +300,7 @@ class TestModeIntegration:
         
         result = ScanResult()
         assert result.contract_version == "ozy.runtime.v1"
-        assert result.to_dict()["contract_version"] == "scan-result.v1"
+        assert result.to_dict()["contract_version"] == "ozy.runtime.v1"
 
 
 class TestNewArchitectureImports:

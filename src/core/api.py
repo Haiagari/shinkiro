@@ -24,10 +24,18 @@ from src.intelligence.graph_builder import graph_builder
 
 app = FastAPI(title="OzyRecon API", version="7.0.0-alpha.1")
 
+# Montar archivos estáticos para el dashboard
+static_path = Path(__file__).parent / "static"
+app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
+
 @app.get("/health")
 def health_check():
     """Endpoint para validación de salud del motor."""
     return {"status": "ok", "engine": "OzyRecon", "version": "7.0.0-alpha.1"}
+
+@app.get("/dashboard")
+async def get_dashboard():
+    return FileResponse(str(static_path / "index.html"))
 
 @app.get("/")
 def read_root():

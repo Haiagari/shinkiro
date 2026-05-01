@@ -35,7 +35,7 @@ def test_runtime_latest_scan_round_trip_returns_normalized_contract():
     session.flush()
 
     session.add_all([
-        Subdomain(scan_id=scan.id, domain="api.roundtrip.example.com", is_live=1, ip="127.0.0.1"),
+        Subdomain(scan_id=scan.id, domain="api.roundtrip.example.com", is_live=1, ip="0.0.0.0"),
         Port(scan_id=scan.id, host="api.roundtrip.example.com", port=443, service="https", state="open"),
         Vulnerability(
             scan_id=scan.id,
@@ -98,10 +98,12 @@ def test_runtime_hunt_mode_publishes_latest_scan_contract():
         mock_logic_analyzer.analyze_graph.return_value = []
 
         def side_effect(capability, target, **kwargs):
+            import json
             if capability == "asset_discovery":
                 return ["API.E2E.example.com", "api.e2e.example.com "]
             if capability == "live_detection":
-                return ["https://api.e2e.example.com [200]"]
+                # v7.1 expects JSON output
+                return [json.dumps({"url": "https://api.e2e.example.com", "status_code": 200})]
             if capability == "service_discovery":
                 return [{"host": target, "port": 443, "service": "https", "state": "open"}]
             return []
@@ -169,7 +171,7 @@ def test_runtime_hunt_mode_persists_session_and_trace():
         session.add(scan)
         session.flush()
         session.add_all([
-            Subdomain(scan_id=scan.id, domain="api.e2e.example.com", is_live=1, ip="127.0.0.1"),
+            Subdomain(scan_id=scan.id, domain="api.e2e.example.com", is_live=1, ip="0.0.0.0"),
             Port(scan_id=scan.id, host="api.e2e.example.com", port=443, service="https", state="open"),
             Vulnerability(
                 scan_id=scan.id,

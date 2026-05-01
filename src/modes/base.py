@@ -16,6 +16,7 @@ from src.storage.models import Session as ScanSession, WorkflowStep
 from src.storage.diff import DiffEngine, DiffReport
 from src.intelligence.novelty import novelty_alerter
 from src.notifications.notifier import Notifier
+from src.opsec.kill_switch import kill_switch
 from src.export.normalizer import NormalizedExporter, ScanResult
 
 class BaseMode(ABC):

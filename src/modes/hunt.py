@@ -10,6 +10,7 @@ from src.core.tool_manager import tool_manager
 from src.core.logging import get_logger
 from src.intelligence.intelligence import run_intelligence
 from src.intelligence.planner import recon_planner
+from src.opsec.kill_switch import kill_switch
 
 logger = get_logger('mode.hunt')
 
@@ -29,7 +30,6 @@ class HuntMode(BaseMode):
         logger.info(f"[HUNT] Plan generated: {plan['type']} target, capabilities: {plan['capabilities']}")
 
         # 1. Reset Kill-Switch for a fresh run
-        from src.opsec.kill_switch import kill_switch
         kill_switch.reset()
         
         # 2. OPSEC Check
