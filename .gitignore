@@ -35,6 +35,7 @@ reports/
 evidence/
 data/
 runtime/
+runs/
 scopes/
 *.log
 *.pdf
@@ -42,6 +43,9 @@ scopes/
 !docs/**/*.html
 agent_reasoning.log
 llm_usage.json
+json*.txt
+load_*.json
+run*.json
 
 # JUnit y Testing
 junit/
