@@ -12,7 +12,7 @@
 
 <div align="center">
 
-<img src="assets/banner-ozyrecon-paradigm.png" alt="OzyRecon Banner" width="100%"/>
+<img src="assets/NEw-version.png" alt="OzyRecon Banner" width="100%"/>
 
 <br/>
 
