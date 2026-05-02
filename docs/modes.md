@@ -15,7 +15,7 @@ OzyRecon introduces **assisted validation** across all operational intents, tran
 ozy hunt -t target.com
 ```
 
-### Workflow
+### Pipeline
 1. **Asset Discovery**: Full enumeration of subdomains and assets.
 2. **Intelligence Correlation**: Cross-referencing ports, services, and tech stack.
 3. **Hypothesis Generation**: The system proposes review candidates based on correlation.
@@ -25,7 +25,7 @@ ozy hunt -t target.com
 ### Use Cases
 - New targets with no prior history.
 - Audits requiring full control over the technical noise generated.
-- Human-in-the-loop validation workflows.
+- Human-in-the-loop validation flows.
 
 ---
 
@@ -38,7 +38,7 @@ ozy hunt -t target.com
 ozy continuous -t target.com
 ```
 
-### v8.3.2 Workflow
+### v8.3.2 Pipeline
 1. Periodic differential scanning.
 2. Detection of new assets or service drift.
 3. Policy-approved validation of low-risk hypotheses (e.g., version disclosure).

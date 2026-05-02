@@ -1,4 +1,7 @@
-# Plan Completo de OzyRecon
+# Plan Completo de OzyRecon (HISTORICAL / ARCHIVED)
+
+> **NOTA**: Este documento es un plan histórico. El baseline actual y operativo es **v8.3.2**.
+> Para el estado actual, ver [`docs/STATUS.md`](../docs/STATUS.md).
 
 Este documento define la arquitectura objetivo y el plan de trabajo para dejar `OzyRecon` como un motor completo, autonomo y consumible por `ozy-platform` sin llamadas falsas ni logica de motor duplicada en la plataforma.
 
@@ -33,7 +36,7 @@ Lo que ya existe y vale:
 - `cli/commands/verify.py` como verificacion de capacidades y smoke.
 - `src/core/api.py` como API runtime local.
 - `src/export/normalizer.py` como export normalizado.
-- `src/workflow/orchestrator.py` como capa de aprobacion y validacion.
+- `src/intelligence/orchestrator.py` como capa de aprobacion y validacion.
 - `src/core/tool_manager.py` como resolutor de capacidades.
 
 Lo que aun debe endurecerse:
@@ -61,7 +64,7 @@ Usuario
 - `cli/ozy.py`
 - `src/core/api.py`
 - `src/export/normalizer.py`
-- `src/workflow/orchestrator.py`
+- `src/intelligence/orchestrator.py`
 - `src/core/tool_manager.py`
 - `docs/BRIDGE_CONTRACT.md`
 - `docs/RUNTIME_CONTRACT.md`

@@ -46,4 +46,5 @@ The following content is historical and should not be treated as the active plan
 
 ## Practical pointer
 
-If you are resuming work from this repository, read this file first, then review `README.md` and `docs/ROADMAP.md`.
+If you are resuming work from this repository, read this file first, then review `README.md`.
+For historical evolution or future horizon plans, review `docs/ROADMAP.md` separately.

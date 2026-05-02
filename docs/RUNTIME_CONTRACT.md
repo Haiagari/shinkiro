@@ -14,7 +14,7 @@ This document defines the local engine contract for this repository.
 - Frozen contract constants: [`src/core/contracts.py`](../src/core/contracts.py)
 - Context and observability: [`src/core/context.py`](../src/core/context.py)
 - Auth registry: [`src/auth/key_store.py`](../src/auth/key_store.py)
-- Workflow orchestration: [`src/workflow/orchestrator.py`](../src/workflow/orchestrator.py)
+- Intelligence orchestration: [`src/intelligence/orchestrator.py`](../src/intelligence/orchestrator.py)
 - Normalized export: [`src/export/normalizer.py`](../src/export/normalizer.py)
 - Mode envelope: [`src/modes/base.py`](../src/modes/base.py)
 - Session trace API: `GET /sessions/{session_id}/trace`
@@ -71,7 +71,7 @@ Each run should expose:
 - a context timeline
 - error count and event count
 - a consolidated session trace
-- workflow steps
+- intelligence steps
 - evidence records
 - decisions
 - health metrics for the current runtime window

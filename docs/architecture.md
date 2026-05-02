@@ -17,33 +17,41 @@ OzyRecon v8.3.2 is a resilient intelligence engine organized around four live la
 
 ---
 
+## Operational Pipeline
+
+OzyRecon processes targets through a sequential intelligence pipeline:
+
+1. **Discovery**: `DiscoveryOrchestrator` identifies assets and services.
+2. **Validation**: `target_validator.py` applies OPSEC and SSRF Pro shields.
+3. **Enrichment**: `classifier.py` infers roles, `scoring_engine.py` assesses impact.
+4. **Correlation**: `graph_builder.py` maps relationships; `autonomy.py` builds memory.
+5. **Evidence**: Findings are signed via Ed25519; `feedback_engine.py` refines future runs.
+6. **Export**: `normalizer.py` packages the result into `ScanResult` schema.
+7. **Traceability**: `session_manager.py` tracks the full lifecycle; `trace` endpoints expose it.
+
+This pipeline ensures that every byte of data passes through a controlled, auditable, and increasingly intelligent execution flow.
+
 ## Architectural Pillars
 
 ### 1. Identity & Control
+- Hashed API key registry (`src/auth/key_store.py`)
+- Scope-based authorization (`admin:*`, `sessions:read`, `hunt:run`)
+- Local materialization of mutable runtime files
 
-- Hashed API key registry
-- Scope-based authorization
-- Seeded defaults in `config/api_keys.example.json`
-- Local materialization of `config/api_keys.json` when missing
-
-### 2. Operational Hardening
-
-- Anti-SSRF validation before probe execution
-- Session cancellation for long-running hunts
-- Structured trace output for each run
-- Log cleanup and blocked-path visibility
+### 2. OPSEC & Hardening
+- Anti-SSRF and DNS-Rebinding protection (`src/security/target_validator.py`)
+- Session cancellation (`POST /sessions/{id}/cancel`)
+- JSONL structured logging with rotation
 
 ### 3. Forensic Integrity
+- Ed25519 signatures for evidence (`resources/keys/evidence_key.priv`)
+- Contextual metadata (`session_id`, `contract_version`)
+- Tamper detection via forensic mode
 
-- Ed25519 signatures for evidence and findings
-- Contextual metadata such as `session_id` and timestamp
-- Tamper detection against stored findings
-
-### 4. Smart Graph Intelligence
-
-- Graph output with prioritization
-- `is_truncated` flag when output is a prioritized slice
-- Narrative layer to explain business impact and technical guidance
+### 4. Intelligence Core
+- Semantic classification and scoring (`src/intelligence/`)
+- Smart Graph with prioritization and `is_truncated` flag
+- Narrative analysis (`/sessions/{id}/analyze`)
 
 ---
 
@@ -60,10 +68,9 @@ These files are intentionally excluded from version control because they are ope
 ---
 
 ## Project Status
-
-- Phase 5: Elite Intelligence - completed
-- Phase 7: Operational Hardening - completed
-- Phase 8: Enterprise Baseline v8.3.2 - completed
+- Elite Intelligence - completed
+- Operational Hardening - completed
+- Enterprise Baseline v8.3.2 - completed
 
 Classification: Enterprise-grade security intelligence platform
 

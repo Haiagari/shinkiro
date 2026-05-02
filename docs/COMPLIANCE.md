@@ -54,4 +54,4 @@ OzyRecon is built to help operators collect reviewable evidence for security pro
 
 ## Practical Note
 
-OzyRecon supports validation and analysis workflows. It should be used only with authorization and within the scope of the engagement or environment being reviewed.
+OzyRecon supports validation and analysis operations. It should be used only with authorization and within the scope of the engagement or environment being reviewed.
