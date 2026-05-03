@@ -1,8 +1,6 @@
-# 🧠 OzyRecon v8.3.2 — *The Enterprise Sentinel*
+# 🧠 OzyRecon v9.0 — *Ghost Intelligence Edition*
 
-> **Professional intelligence platform for controlled reconnaissance, session-based hunting, cryptographic chain of custody, AI narrative analysis, and operational resilience.**
->
-> Fresh clones bootstrap their mutable runtime files from tracked seeds: `config/config.example.yaml`, `config/api_keys.example.json`, and the local Ed25519 evidence key when missing.
+> **Professional offensive intelligence platform for high-scale reconnaissance, AI-powered triage, extreme stealth, and cloud infrastructure leak detection.**
 
 ## Start Here
 
@@ -16,296 +14,59 @@
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-v8.3.2-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
-[![Status](https://img.shields.io/badge/status-ENTERPRISE--READY-00ff88?style=flat-square&labelColor=0a0f1a)]()
+[![Version](https://img.shields.io/badge/version-v9.0.0-00d4ff?style=flat-square&labelColor=0a0f1a)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/status-GHOST--MODE-ff00ff?style=flat-square&labelColor=0a0f1a)]()
 [![Contract](https://img.shields.io/badge/contract-ozy.runtime.v1-00ff88?style=flat-square&labelColor=0a0f1a)]()
 
 </div>
 
 ---
 
-## 🎭 What v8.3.2 Gives You
+## 🎭 What v9.0 Gives You (The Elite Arsenal)
 
-OzyRecon v8.3.2 is a hardened intelligence engine. The release centers on five operational guarantees:
+OzyRecon v9.0 is an advanced persistent reconnaissance platform designed for modern attack surfaces.
 
-### 1. 🔐 Multi-Key RBAC
-Fine-grained access control now uses hashed API keys and scopes.
+### 1. 👻 StealthClient & JA3 Evasion
+Complete network-level deception using `curl_cffi` to impersonate real browsers (Chrome, Safari, Firefox). Bypasses JA3/JA4 TLS fingerprinting used by Cloudflare, Akamai, and AWS Shield.
 
-- `admin:*` for full operator actions
-- `sessions:read` for dashboard and read-only inspection
-- `hunt:run` for controlled execution flows
+### 2. 📸 Visual Recon (Headless Discovery)
+Automated screenshotting of discovered assets using a smart-detected headless Chromium engine. View what the target looks like before ever opening a browser.
 
-The versioned seed lives in `config/api_keys.example.json`, which materializes `config/api_keys.json` at runtime when missing. The default seed includes a full-access `master-admin` key and a read-only `auditor-externo` key.
+### 3. ☁️ Cloud Leak Detection
+Predictive scanning for exposed S3 buckets, Azure Blobs, and Google Cloud Storage related to the target domain. Detects public infrastructure before attackers do.
 
-### 2. 🛡️ Security Gates
-The engine validates targets before execution and blocks unsafe internal scanning patterns such as DNS rebinding and private-range abuse.
+### 4. 🧠 AI-Powered Triage (Gemini 1.5)
+The intelligence layer uses real-world AI to verify hardcoded secrets, reduce false positives (Entropy Analysis > 3.8), and suggest exploits for the detected tech stack.
 
-### 3. 🧾 Forensic Chain of Custody
-Every finding is signed with Ed25519 and carries structured context such as `session_id`, timestamp, and schema version.
+### 5. 🕒 Differential Intelligence
+The `watch` command now performs real-time HTTP content diffing. Get notified exactly WHAT changed in a file (e.g., a new developer token added to `app.js`).
 
-### 4. 🧠 Narrative Analysis
-The analysis layer converts session output into business impact and technical recommendations for operators.
-
-### 5. 🧱 Managed Lifecycles
-Hunts are non-blocking, cancellable, and observable. Sessions can be cancelled, traced, and inspected without stopping the engine.
+### 6. 📊 Elite Reporting
+Generates professional Jinja2-based HTML reports including executive summaries, risk charts, cloud exposure maps, and actionable remediation plans.
 
 ---
 
-## 🏗️ Runtime Surface
+## 🏗️ CLI Surface
 
-OzyRecon exposes a local engine surface that can be consumed directly or through the platform bridge:
+OzyRecon is a CLI-first platform. Direct, fast, and powerful:
 
-- **Local entrypoint**: [`ozy.py`](ozy.py)
-- **CLI commands**: [`cli/`](cli)
-- **API runtime**: [`src/core/api.py`](src/core/api.py)
-- **Bootstrap**: [`src/core/bootstrap.py`](src/core/bootstrap.py)
-- **Auth store**: [`src/auth/key_store.py`](src/auth/key_store.py)
-- **Normalized export**: [`src/export/normalizer.py`](src/export/normalizer.py)
-- **Runtime trace**: `GET /sessions/{session_id}/trace`
-- **Bridge contract**: [`docs/BRIDGE_CONTRACT.md`](docs/BRIDGE_CONTRACT.md)
-
-### Bootstrap & Runtime Files
-
-On first run, the engine materializes the mutable files it needs to operate:
-
-- `config/config.yaml` from `config/config.example.yaml`
-- `config/api_keys.json` from `config/api_keys.example.json`
-- `resources/keys/evidence_key.priv` as a local Ed25519 keypair seed
-
-That keeps the repo portable without checking secrets or private keys into Git.
-
-### Authentication & Scopes
-
-The API expects the `X-API-KEY` header on protected routes.
-
-```bash
-curl -H "X-API-KEY: <your-key>" http://localhost:8000/health
-```
-
-Use the default `master-admin` seed for full access or `auditor-externo` for read-only dashboard access until you rotate your own keys.
-
-### Session Lifecycle
-
-Hunts are asynchronous and return a `session_id` immediately.
-
-- `POST /hunt` starts a session and returns the session handle
-- `POST /sessions/{session_id}/cancel` stops an active scan
-- `GET /sessions/{session_id}/analyze` returns narrative findings
-- `GET /sessions/{session_id}/trace` exposes the runtime trace for review
-
-### Integrity & Graph Output
-
-- Findings can be verified externally with the Sentinel public key and Ed25519 signatures.
-- Smart Graph v8 includes `is_truncated`; when that flag is present, the UI should warn that the graph is a prioritized slice of the full data.
-
-### Observability
-
-`GET /health` returns runtime metrics such as:
-
-- `scans_total`
-- `scans_failed`
-- `active_concurrency`
-
-Map those values to the engine status widget or any operator dashboard that consumes the API.
-
----
-
-## 🧠 Graph-First Intelligence
-
-OzyRecon does not scan targets only to dump raw output. It builds relationships.
-
-- Assets become nodes
-- Connections become edges
-- Weak signals become review priorities
-
-<div align="center">
-  <img src="assets/knowledge-graph-v5.png" alt="Knowledge Graph Visualization" width="900">
-  <br/>
-<sub><i>Knowledge Graph correlating infrastructure into reviewable relationships.</i></sub>
-</div>
-
----
-
-## 🔥 Why OzyRecon Is Different
-
-### 🧩 Correlation Engine
-
-Findings are validated through relationships, not isolated signals.
-
-`open port` ≠ `vulnerability`
-
-`correlated evidence` = `review candidate`
-
-### 📉 Noise Reduction
-
-Evidence-based scoring filters irrelevant data and promotes only the meaningful paths.
-
-- No correlation → ignored
-- Multi-signal validation → escalated
-
-### 🧑‍💻 Human-in-the-Loop Security
-
-No blind execution.
-
-```text
-Review Candidate → PENDING_APPROVAL → Controlled Execution
-```
-
-You decide when and what runs.
-
-### 🔐 Cryptographic Evidence Layer
-
-Every finding is:
-
-- Digitally signed with Ed25519
-- Timestamped
-- Audit-ready
-
-Built for compliance, trust, and forensic reproducibility.
-
----
-
-## ⚙️ Architecture Snapshot
-
-| Layer | Stack |
-| --- | --- |
-| Core | Python 3.11 (strict typing) |
-| API | FastAPI |
-| Visualization | Jinja2 + D3.js |
-| Security | Bandit (SAST) |
-| Storage | Volatile + persistent separation |
-| Engine | Graph-based inference |
-
----
-
-## ⚡ Quick Start
-
-### 1. Unified Execution
-
-Start the local engine runtime from this repository:
-
-```bash
-python ozy.py verify
-python ozy.py hunt target.com
-```
-
-The first invocation also bootstraps the runtime files listed above if they are missing.
-
-### 2. Available Modes
-
-OzyRecon operates in different modes depending on the objective:
-
-- **hunt**: Full discovery and baseline mapping
-- **continuous**: Differential monitoring for changes
-- **research**: Deep dive into specific assets
-- **forensic**: Post-compromise or evidence recovery
-
-### 3. Runtime Verification
-
-Use `verify` to check the engine contract and tool availability:
-
-```bash
-python ozy.py verify
-```
-
-### 4. Engine API
-
-OzyRecon exposes a FastAPI service for remote orchestration:
-
-```bash
-python -c "from src.core.api import start_api; start_api()"
-```
-
-The API follows the `ozy.runtime.v1` contract. Protected endpoints require the `X-API-KEY` header. For full access, use a key with `admin:*`; for read-only dashboard access, use `sessions:read`.
+- `python ozy.py hunt <target>`: Start an intelligent adaptive hunt.
+- `python ozy.py secrets <target> --verify`: Scan for JS secrets with AI verification.
+- `python ozy.py screenshot <target>`: Capture visual evidence of assets.
+- `python ozy.py exploits <target>`: AI-based exploit advisor for the tech stack.
+- `python ozy.py inventory assets <target>`: Manage the discovered attack surface.
+- `python ozy.py report <target>`: Generate the professional intelligence report.
+- `python ozy.py watch <target>`: Real-time certificate and content monitoring.
 
 ---
 
 ## 🛠️ System Requirements
 
 - **Python 3.11+**
-- **pip** and a working virtual environment are recommended for the install flow below
-- **Go binaries** in `tools/go/bin/` or on `PATH`:
-  - `subfinder`, `assetfinder`, `amass`
-  - `httpx`, `dnsx`
-  - `naabu`, `nmap`
-  - `nuclei`
+- **Chromium/Chrome** (For Visual Recon)
+- **Go binaries** in `tools/go/bin/`:
+  - `subfinder`, `assetfinder`, `amass`, `httpx`, `dnsx`, `nuclei`, `katana`, `gowitness`, `wafw00f`.
 
----
-
-## 🛠️ System Dependencies
-
-### WeasyPrint
-
-To generate PDF reports, OzyRecon requires `WeasyPrint`, which depends on several system libraries for graphics and text layout:
-
-- **Debian/Ubuntu**
-
-```bash
-sudo apt-get install libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 libpangocairo-1.0-0
-```
-
-- **macOS**
-
-```bash
-brew install pango
-```
-
-- **Windows**
-
-Follow the instructions in the [WeasyPrint documentation](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#windows).
-
-### Optional runtime notes
-
-- The repo ships a seed registry for API keys in `config/api_keys.example.json`.
-- The mutable files are generated locally and ignored by Git.
-
----
-
-## 🧱 Repository Layout
-
-- `cli/` command-line entrypoint and command registration
-- `src/` core engine, auth, API, and export logic
-- `tests/` verification and regression coverage
-- `config/` runtime config seeds and mutable generated config
-- `resources/` shared runtime assets and key material
-- `docs/` operator docs, contracts, and usage notes
-- `assets/` banners and visual assets
-
----
-
-## 📚 Documentation
-
-### Primary docs
-
-- 🧭 [Status](docs/STATUS.md)
-- 📜 [Runtime Contract](docs/RUNTIME_CONTRACT.md)
-- 🗺️ [Roadmap](docs/ROADMAP.md)
-
-### Historical docs
-
-- 🧾 [Phase 0 Audit](docs/archive/OZYRECON_PHASE0_AUDIT.md)
-- 🧰 [Hardening Plan](docs/archive/OZYRECON_HARDENING_PLAN.md)
-- 🧪 [Improvement Plan](docs/archive/OZYRECON_IMPROVEMENT_PLAN.md)
-- 🪧 [Operational Plan](docs/archive/OZYRECON_OPERATIONAL_PLAN.md)
-
-### Supporting docs
-
-- 🧪 [Use Cases](docs/USE_CASES.md)
-- 📜 [Runtime Contract](docs/RUNTIME_CONTRACT.md)
-- 🤝 [Bridge Contract](docs/BRIDGE_CONTRACT.md)
-
-### General docs
-
-- 📦 [Installation](docs/INSTALL.md)
-- 📊 [Benchmarks](docs/BENCHMARKS.md)
-- 🤝 [Contributing](CONTRIBUTING.md)
-- 📖 [Usage](docs/USAGE.md)
-
-### Runtime notes
-
-- [`config/api_keys.example.json`](config/api_keys.example.json) is the tracked key seed
-- [`config/config.example.yaml`](config/config.example.yaml) is the runtime config seed
-- [`src/core/bootstrap.py`](src/core/bootstrap.py) materializes mutable runtime files on demand
 
 ---
 

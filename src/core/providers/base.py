@@ -16,14 +16,8 @@ class BaseProvider(abc.ABC):
         self.path = self._find_binary()
 
     def _find_binary(self) -> str:
-        import shutil
-        path = shutil.which(self.binary)
-        if not path:
-            # Check local tools path
-            local_path = Path("tools/go/bin") / self.binary
-            if local_path.exists():
-                return str(local_path.absolute())
-        return path if path else ""
+        from src.core.path_resolver import path_resolver
+        return path_resolver.resolve(self.binary)
 
     def is_available(self) -> bool:
         return bool(self.path)

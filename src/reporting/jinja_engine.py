@@ -19,6 +19,7 @@ from src.storage.database import SessionLocal
 from src.storage.models import Finding as DBFinding, Scan, Target, Hypothesis
 from src.intelligence.scoring_engine import get_scoring_engine
 from src.intelligence.logic_analyzer import LogicAnalyzer
+from src.discovery.cloud_buckets import cloud_scanner
 from src.reporting.schemas import (
     ReportData, ScanInfo, Finding, ScoringItem, AttackPath,
     create_report_data
@@ -288,7 +289,15 @@ class Jinja2ReportEngine:
                 logger.warning(f"Failed to get attack paths: {e}")
                 report_data["attack_paths"] = []  # Empty list, not None
 
-            # 5. Calculate summary statistics
+            # 5. Get Cloud Exposure
+            try:
+                cloud_buckets = cloud_scanner.scan_domain(target)
+                report_data["cloud_exposure"] = cloud_buckets
+            except Exception as e:
+                logger.warning(f"Failed to get cloud data: {e}")
+                report_data["cloud_exposure"] = []
+
+            # 6. Calculate summary statistics
             total_findings = sum(len(findings_by_severity[s]) for s in findings_by_severity)
 
             # Calculate risk score (weighted average)
@@ -419,6 +428,7 @@ class Jinja2ReportEngine:
             }),
             "charts": report_data.get("charts", {}),
             "custom": report_data.get("custom", {}),
+            "cloud_exposure": report_data.get("cloud_exposure", []),
         }
 
         # Ensure findings structure is correct

@@ -332,6 +332,7 @@ class Evidence(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
     
     data = Column(Text) # Contenido o path a archivo
+    storage_type = Column(String(20), default="database") # database, local, s3
     metadata_json = Column(JSON, nullable=True)
     hash_sha256 = Column(String(64), nullable=True)
     digital_signature = Column(Text, nullable=True) # v7.5 - Ed25519 signature

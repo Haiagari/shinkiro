@@ -33,6 +33,8 @@ runtime/db/*.db
 output/
 reports/
 evidence/
+storage/evidence/
+watch_history/
 data/
 runtime/
 runs/
@@ -56,6 +58,9 @@ htmlcov/
 # Binarios de herramientas
 tools/go/bin/
 tools/go/pkg/
+tools/bin/
+tools/python_bins.txt
+
 
 # API keys y Config Sensible
 config/config.yaml

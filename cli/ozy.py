@@ -90,16 +90,22 @@ def _create_mode_command(mode_name: str, mode_class: type) -> click.Command:
     @click.argument('target')
     @click.option('--threads', default=None, type=int, help='Number of threads')
     @click.option('--speed', default='normal', type=click.Choice(['slow', 'normal', 'fast']), help='Speed mode')
-    @click.option('--depth', default='standard', type=click.Choice(['shallow', 'standard', 'deep']), help='Depth level')
+    @click.option('--depth', 'depth_level', default=1, type=int, help='Recursion depth for recon (steroids)')
+    @click.option('--intent', default='balanced', type=click.Choice(['passive', 'balanced', 'aggressive']), help='Operational intent')
+    @click.option('--steroids/--no-steroids', default=True, help='Enable/Disable steroids recon')
+    @click.option('--ghost', is_flag=True, default=False, help='Ghost Mode: Route traffic through Tor (Idea 4)')
     @click.option('--dry-run', is_flag=True, default=False, help='Plan only, do not execute')
     @click.option('--json', 'json_output', is_flag=True, default=False, help='Output in JSON format')
     @ensure_config_loaded()
-    def command(target: str, threads: int, speed: str, depth: str, dry_run: bool, json_output: bool):
+    def command(target: str, threads: int, speed: str, depth_level: int, intent: str, steroids: bool, ghost: bool, dry_run: bool, json_output: bool):
         """Execute {mode_name} mode on TARGET."""
         options = {
             'threads': threads, 
             'speed': speed, 
-            'depth': depth, 
+            'depth_level': depth_level, 
+            'intent': intent,
+            'steroids': steroids,
+            'ghost': ghost,
             'dry_run': dry_run,
             'json': json_output
         }
@@ -145,8 +151,8 @@ def get_banner() -> str:
 ██║     ██║  ██║██║  ██║╚██████╔╝██║  ██║   ██║   
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
 [/bold cyan]
-[bold]OzyRecon[/bold] - Advanced Persistent Reconnaissance [bold red](Enterprise Sentinel v8.3.2)[/bold red]
-[dim]Version {version}[/dim]
+[bold]OzyRecon[/bold] - Advanced Persistent Reconnaissance [bold red](CLI Elite Edition v8.3.2)[/bold red]
+[dim]Pure Engineering - No GUI - Intelligence First[/dim]
 """.format(version=version)
     
     return banner
@@ -284,13 +290,110 @@ def register_runtime_commands() -> None:
     except ImportError:
         pass
 
-    # v8.1: Registrar subcomando de gestión de llaves
+    # v8.3.2: Registrar comando inventory
     try:
-        from cli.commands.keys import keys
-        if keys.name not in cli.commands:
-            cli.add_command(keys)
+        from cli.commands.inventory import inventory
+        if inventory.name not in cli.commands:
+            cli.add_command(inventory)
     except ImportError:
         pass
+
+    # v8.3.2: Registrar comando analyze
+    try:
+        from cli.commands.analyze import analyze
+        if analyze.name not in cli.commands:
+            cli.add_command(analyze)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando export
+    try:
+        from cli.commands.export import export_data
+        if export_data.name not in cli.commands:
+            cli.add_command(export_data)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando paths
+    try:
+        from cli.commands.paths import paths
+        if paths.name not in cli.commands:
+            cli.add_command(paths)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando watch
+    try:
+        from cli.commands.watch import watch
+        if watch.name not in cli.commands:
+            cli.add_command(watch)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando secrets
+    try:
+        from cli.commands.secrets import secrets
+        if secrets.name not in cli.commands:
+            cli.add_command(secrets)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando audit
+    try:
+        from cli.commands.audit import audit
+        if audit.name not in cli.commands:
+            cli.add_command(audit)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando exploits
+    try:
+        from cli.commands.exploits import exploits
+        if exploits.name not in cli.commands:
+            cli.add_command(exploits)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando screenshot
+    try:
+        from cli.commands.screenshot import screenshot
+        if screenshot.name not in cli.commands:
+            cli.add_command(screenshot)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar comando exploits
+    try:
+        @click.command(name="exploits")
+        @click.argument("target")
+        @click.option("--tech", multiple=True, help="Manual tech stack (e.g. --tech Apache --tech PHP)")
+        def exploits_cmd(target, tech):
+            """Suggest 3 relevant CVEs for a TARGET or specified technologies."""
+            from src.intelligence.exploit_advisor import exploit_advisor
+            from cli.shared import console
+            
+            # Si no pasan tech, podríamos sacarlo del inventario (pero para el comando simple, usamos --tech o simulamos)
+            tech_list = list(tech)
+            if not tech_list:
+                console.print(f"[yellow]No se especificaron tecnologías para {target}. Usando stack genérico de reconocimiento...[/yellow]")
+                tech_list = ["Apache", "PHP", "MySQL"] # Placeholder
+            
+            results = exploit_advisor.suggest_exploits(tech_list)
+            
+            if not results:
+                console.print("[red]No se encontraron exploits relevantes. ¡Tenés suerte, por ahora![/red]")
+                return
+
+            console.print(f"\n[bold red]🔥 Exploit Advisor Findings for {target}:[/bold red]")
+            for ex in results:
+                console.print(f"[bold]• {ex.get('cve')}[/bold]: {ex.get('description')}")
+                console.print(f"  [dim]Impact: {ex.get('impact')}[/dim]\n")
+
+        if exploits_cmd.name not in cli.commands:
+            cli.add_command(exploits_cmd)
+    except Exception as e:
+        console.print(f"[yellow]Warning: Could not load exploits command: {e}[/yellow]")
+
 
 
 # Alias para pyproject entry point

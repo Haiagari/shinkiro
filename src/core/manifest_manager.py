@@ -31,11 +31,12 @@ class ManifestManager:
         return ToolManifest(**data)
 
     def validate_binaries(self, manifest: ToolManifest) -> None:
-        """Verifica si los binarios existen en el PATH. Deshabilita si no."""
+        """Verifica si los binarios existen en el PATH o en tools_path (v8.3.2 Fix)."""
+        from src.core.path_resolver import path_resolver
         for tool in manifest.tools:
             if tool.enabled:
-                if not shutil.which(tool.executable):
-                    logger.warning(f"Binario '{tool.executable}' no encontrado en PATH. Deshabilitando '{tool.name}'.")
+                if not path_resolver.resolve(tool.executable):
+                    logger.warning(f"Binario '{tool.executable}' no encontrado. Deshabilitando '{tool.name}'.")
                     tool.enabled = False
 
     def get_available_tools(self, path: str = "resources/manifest.yaml") -> List[ToolEntry]:

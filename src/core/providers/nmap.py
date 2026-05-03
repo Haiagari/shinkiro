@@ -56,6 +56,9 @@ class NmapProvider(BaseProvider):
         
         cmd.extend(["-T4", "-v"])
         
+        # Inyectar Chameleon Stealth Flags v8.3.2
+        cmd.extend(self._get_stealth_flags())
+        
         logger.info(f"Running nmap: {' '.join(cmd)}")
         
         try:

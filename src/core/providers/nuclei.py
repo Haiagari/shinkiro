@@ -16,7 +16,7 @@ class NucleiProvider(BaseProvider):
     def __init__(self):
         super().__init__("nuclei", "nuclei")
 
-    def execute(self, target_list_file: str, **kwargs) -> List[Dict[str, Any]]:
+    def execute(self, target: str, **kwargs) -> List[Dict[str, Any]]:
         if not self.is_available():
             logger.error("Nuclei binary not found")
             return []
@@ -37,9 +37,12 @@ class NucleiProvider(BaseProvider):
         if noise == "low":
             severity = "critical,high"
         
+        # v8.3.2 Fix: Detect if target is a file or a single domain
+        target_flag = "-l" if Path(target).exists() else "-u"
+        
         cmd = [
             self.path, 
-            "-l", target_list_file, 
+            target_flag, target, 
             "-severity", severity, 
             "-o", str(output_file), 
             "-json", "-silent", 
@@ -71,7 +74,7 @@ class NucleiProvider(BaseProvider):
             logger.info("Updating nuclei templates...")
             subprocess.run([self.path, "-update-templates", "-silent"])
 
-        logger.info(f"Running nuclei on {target_list_file}")
+        logger.info(f"Running nuclei on {target}")
         try:
             subprocess.run(cmd, check=True, capture_output=True)
             results = []

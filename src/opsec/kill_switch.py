@@ -18,7 +18,6 @@ class KillSwitch:
     _instance: Optional['KillSwitch'] = None
     
     def __new__(cls):
-        print(">>> DEBUG: KillSwitch.__new__ start")
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance.triggered = False
@@ -26,14 +25,11 @@ class KillSwitch:
             cls._instance.reason = ""
             cls._instance.callbacks = []
             cls._instance._initialized = False
-        print(">>> DEBUG: KillSwitch.__new__ end")
         return cls._instance
     
     def __init__(self):
-        print(">>> DEBUG: KillSwitch.__init__ start")
         # Desactivado para evitar bloqueos en entornos restringidos
         self._initialized = True
-        print(">>> DEBUG: KillSwitch.__init__ end")
     
     def _signal_handler(self, signum, frame):
         """Maneja señales de terminate."""

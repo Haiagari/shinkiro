@@ -14,3 +14,4 @@ curl_cffi>=0.7.0
 jinja2>=3.1
 weasyprint>=62.0
 cryptography>=42.0
+google-generativeai>=0.8.0

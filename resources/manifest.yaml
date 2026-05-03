@@ -79,3 +79,43 @@ tools:
     adapter: NucleiProvider
     categories: ["template_scan"]
     enabled: true
+
+  - name: gau
+    executable: gau
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} --subs {target} {stealth_flags} > {out}"
+    categories: ["endpoint_discovery"]
+    enabled: true
+
+  - name: waybackurls
+    executable: waybackurls
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} {target} > {out}"
+    categories: ["endpoint_discovery"]
+    enabled: true
+
+  - name: dnsx_brute
+    executable: dnsx
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} -d {target} -w resources/wordlists/subdomains.txt -silent {stealth_flags} -o {out}"
+    categories: ["dns_bruteforce"]
+    enabled: true
+
+  - name: katana
+    executable: katana
+    adapter: GenericDiscoveryProvider
+    cmd_template: "{bin} -u {target} -silent -jc -o {out}"
+    categories: ["spidering"]
+    enabled: true
+
+  - name: gowitness
+    executable: gowitness
+    adapter: GowitnessProvider
+    categories: ["visual_recon"]
+    enabled: true
+
+  - name: wafw00f
+    executable: wafw00f
+    adapter: WafProvider
+    categories: ["waf_fingerprinting"]
+    enabled: true

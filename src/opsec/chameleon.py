@@ -56,6 +56,21 @@ class ChameleonEngine:
             }
         ]
 
+    def _generate_waf_bypass_headers(self) -> Dict[str, str]:
+        """Genera headers para intentar evadir bloqueos de nivel WAF/IP."""
+        fake_ip = ".".join(map(str, (random.randint(1, 254) for _ in range(4))))
+        return {
+            "X-Forwarded-For": fake_ip,
+            "X-Real-IP": fake_ip,
+            "X-Client-IP": fake_ip,
+            "X-Forwarded-Host": "localhost",
+            "X-Originating-IP": fake_ip,
+            "X-Remote-IP": fake_ip,
+            "X-Remote-Addr": fake_ip,
+            "True-Client-IP": fake_ip,
+            "Client-IP": fake_ip
+        }
+
     def generate_identity(self) -> ChameleonIdentity:
         """Genera una identidad aleatoria consistente."""
         profile = random.choice(self.profiles)
@@ -72,6 +87,9 @@ class ChameleonEngine:
             "Sec-Fetch-User": "?1",
             "Connection": "keep-alive"
         }
+        
+        # Inyectar WAF Bypass Headers
+        headers.update(self._generate_waf_bypass_headers())
         
         # Inyectar Client-Hints si el perfil lo soporta (Chrome/Chromium)
         if profile["ch_ua"]:
@@ -93,13 +111,21 @@ class ChameleonEngine:
 
     def get_stealth_flags(self, tool_name: str) -> List[str]:
         """Genera flags de sigilo para herramientas de CLI (httpx, nuclei, etc)."""
+        from src.opsec.proxy_rotator import proxy_rotator
+        
         ua = self.get_random_ua()
+        flags = []
+        
+        # 1. User Agent & Headers
         if tool_name.lower() == "httpx":
-            # Usamos comillas simples para proteger los espacios en el User-Agent
-            return ["-H", f"'User-Agent: {ua}'", "-H", "'Accept-Language: en-US,en;q=0.9'"]
-        if tool_name.lower() == "nuclei":
-            return ["-H", f"'User-Agent: {ua}'"]
-        return []
+            flags.extend(["-H", f"User-Agent: {ua}", "-H", "Accept-Language: en-US,en;q=0.9"])
+        elif tool_name.lower() == "nuclei":
+            flags.extend(["-H", f"User-Agent: {ua}"])
+            
+        # 2. Proxy Rotation (v8.3.2 - Idea 3)
+        flags.extend(proxy_rotator.get_tool_flags(tool_name))
+        
+        return flags
 
 # Instancia global para v7.2
 chameleon = ChameleonEngine()

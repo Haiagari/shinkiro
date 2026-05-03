@@ -24,17 +24,39 @@ class GenericDiscoveryProvider(BaseProvider):
         out_file = get_temp_dir() / f"{self.name}_{safe_filename(target)}.txt"
         out_file.parent.mkdir(parents=True, exist_ok=True)
         
-        cmd = self.cmd_template.format(
-            bin=self.path, 
-            target=target, 
-            out=out_file,
-            threads=kwargs.get("threads", 50),
-            stealth_flags=" ".join(self._get_stealth_flags())
-        )
+        # Preparar el comando base (sin redirección shell)
+        template = self.cmd_template
+        use_redirection = " > " in template
+        if use_redirection:
+            template = template.split(" > ")[0]
+
+        # Manejo robusto de placeholders (v8.3.2 Fix)
+        # 1. Resolver placeholders simples
+        cmd_str = template.replace("{bin}", self.path)
+        cmd_str = cmd_str.replace("{target}", target)
+        cmd_str = cmd_str.replace("{out}", str(out_file))
+        cmd_str = cmd_str.replace("{threads}", str(kwargs.get("threads", 50)))
         
-        logger.info(f"Running {self.name} on {target}")
+        # 2. Parsear el comando base con shlex
+        import shlex
+        cmd_args = shlex.split(cmd_str)
+        
+        # 3. Inyectar stealth_flags como lista (evita problemas de quoting)
+        if "{stealth_flags}" in cmd_args:
+            idx = cmd_args.index("{stealth_flags}")
+            cmd_args[idx:idx+1] = self._get_stealth_flags()
+        else:
+            # Si no está explícito en el template, los agregamos al final
+            cmd_args.extend(self._get_stealth_flags())
+        
+        logger.info(f"Running {self.name} on {target} (Safe Mode)")
         try:
-            subprocess.run(cmd, shell=True, check=True, capture_output=True)
+            if use_redirection:
+                with open(out_file, "w") as f_out:
+                    subprocess.run(cmd_args, stdout=f_out, stderr=subprocess.PIPE, check=True)
+            else:
+                subprocess.run(cmd_args, capture_output=True, check=True)
+
             if out_file.exists():
                 with open(out_file) as f:
                     results = [line.strip() for line in f if line.strip()]

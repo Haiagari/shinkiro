@@ -65,8 +65,11 @@ class DiscoveryOrchestrator:
     def _upsert_assets(self, assets: list[dict]):
         """
         Inserta activos (subdominios) vinculados al scan actual.
-        Para la v7, permitimos múltiples registros del mismo dominio para trackear historial.
         """
+        from src.core.context import get_context
+        ctx = get_context()
+        
+        new_count = 0
         for asset_data in assets:
             domain = asset_data.get("domain")
             if not domain:
@@ -77,8 +80,6 @@ class DiscoveryOrchestrator:
             if self.scan_id is not None:
                 asset_data["scan_id"] = self.scan_id
 
-            # En la v7 buscamos si ya existe EN ESTE SCAN para evitar duplicados internos,
-            # pero no pisamos los de scans anteriores.
             existing = self.db.query(Subdomain).filter_by(
                 domain=domain, 
                 scan_id=self.scan_id
@@ -91,8 +92,14 @@ class DiscoveryOrchestrator:
             else:
                 new_asset = Subdomain(**asset_data)
                 self.db.add(new_asset)
+                new_count += 1
         
         self.db.commit()
+        
+        # v8.3.2 Fix: Sync context counter for accurate reports
+        if ctx:
+            ctx.subdomains_found += new_count
+
 
     def _upsert_services(self, services: list[dict]):
         """
@@ -144,50 +151,58 @@ class DiscoveryOrchestrator:
         
         self.db.commit()
 
-    def passive_discovery(self, target: str):
+    def passive_discovery(self, target: str, depth: int = 1):
         """
-        Fase 1: Descubrimiento pasivo.
-        Usa ToolManager para obtener proveedores de la categoría 'asset_discovery'.
+        Fase 1: Descubrimiento pasivo con esteroides (v8.3.2).
+        Soporta recursión para encontrar subdominios de subdominios.
         """
-        log(f"Starting passive discovery for {target}", level="info")
-        # Obtener subdominios de fuentes pasivas
-        subdomains = tool_manager.run_capability("asset_discovery", target, all_providers=True)
+        log(f"Starting passive discovery for {target} (Depth: {depth})", level="info")
         
-        if not subdomains:
+        all_found = set()
+        to_scan = [target]
+        
+        for d in range(depth):
+            current_level_found = set()
+            for t in to_scan:
+                log(f"   Scanning {t} at depth {d+1}", level="debug")
+                subdomains = tool_manager.run_capability("asset_discovery", t, all_providers=True)
+                if subdomains:
+                    current_level_found.update(s.lower().strip() for s in subdomains if s)
+            
+            # Filtrar solo nuevos y que pertenezcan al dominio principal
+            new_assets_list = list(current_level_found - all_found)
+            if not new_assets_list:
+                break
+                
+            all_found.update(new_assets_list)
+            
+            # Guardar progreso parcial (v8.3.2 Fix: Persistence during recursion)
+            partial_assets = []
+            for s in new_assets_list:
+                analysis = semantic_classifier.classify_asset({"domain": s})
+                partial_assets.append({
+                    "domain": s,
+                    "semantic_labels": analysis.get("labels"),
+                    "business_impact": analysis.get("impact"),
+                    "inference_trace": analysis.get("trace"),
+                    "evidence_signature": evidence_signer.sign_data({
+                        "domain": s,
+                        "context": {"session_id": self.session_id, "timestamp": datetime.now().isoformat()}
+                    })
+                })
+            self._upsert_assets(partial_assets)
+            
+            # Para el siguiente nivel, solo usamos los que tengan pinta de tener más hijos
+            to_scan = [s for s in new_assets_list if len(s.split('.')) < (target.count('.') + 3 + d)]
+
+        if not all_found:
             log(f"No subdomains found for {target}", level="warn")
             return []
             
-        # Deduplicar y preparar para upsert
-        unique_subs = list(set(s.lower().strip() for s in subdomains if s))
-        assets = []
-        for s in unique_subs:
-            # CLASIFICACIÓN SEMÁNTICA v7.5 (Trazable)
-            analysis = semantic_classifier.classify_asset({"domain": s})
-            
-            asset_payload = {
-                "domain": s,
-                "semantic_labels": analysis.get("labels"),
-                "business_impact": analysis.get("impact"),
-                "inference_trace": analysis.get("trace")
-            }
-            
-            # Firmar evidencia digitalmente con contexto completo (v8.3.2)
-            asset_payload["evidence_signature"] = evidence_signer.sign_data({
-                "domain": s,
-                "semantic_labels": analysis.get("labels"),
-                "business_impact": analysis.get("impact"),
-                "context": {
-                    "session_id": self.session_id,
-                    "timestamp": datetime.now().isoformat(),
-                    "engine": "OzyRecon v8.3.2"
-                }
-            })
-            
-            assets.append(asset_payload)
-        
-        self._upsert_assets(assets)
-        log(f"Passive discovery finished. {len(assets)} assets identified/updated.", level="success")
-        return unique_subs
+        log(f"Passive discovery finished. {len(all_found)} assets identified/updated in total.", level="success")
+        return list(all_found)
+
+
 
     def active_resolution(self):
         """
@@ -222,17 +237,20 @@ class DiscoveryOrchestrator:
             resolved_domains = {}
             
             for line in results:
-                # Parsing Estructurado v7.1 (JSON)
-                try:
-                    raw_data = json.loads(line.strip())
-                except json.JSONDecodeError:
+                # Parsing Estructurado Robusto v8.3.2
+                from src.utils.parsers import clean_json_line, parse_duration_ms, normalize_ip
+                raw_data = clean_json_line(line)
+                if not raw_data:
                     continue
                 
-                # Extraer dominio del input o de la URL
-                url = raw_data.get("url", "")
-                from urllib.parse import urlparse
-                parsed = urlparse(url)
-                domain = parsed.netloc.split(':')[0]
+                # Extraer dominio del input (v8.3.2 Fix: More reliable than parsing URL)
+                domain = raw_data.get("input", "").lower().strip()
+                if not domain:
+                    url = raw_data.get("url", "")
+                    from urllib.parse import urlparse
+                    parsed = urlparse(url)
+                    domain = parsed.netloc.split(':')[0]
+                
                 if not domain: continue
 
                 res_data = {
@@ -240,10 +258,10 @@ class DiscoveryOrchestrator:
                     "http_status": raw_data.get("status_code"),
                     "title": raw_data.get("title"),
                     "technologies": raw_data.get("tech", []),
-                    "ip": raw_data.get("ip"),
+                    "ip": normalize_ip(raw_data.get("host_ip") or raw_data.get("ip")),
                     "cname": raw_data.get("cname", [])[0] if raw_data.get("cname") else None,
                     "http_headers": raw_data.get("header", {}),
-                    "response_time_ms": int(raw_data.get("time", "0ms").replace("ms", "")) if "ms" in str(raw_data.get("time")) else 0
+                    "response_time_ms": parse_duration_ms(raw_data.get("time"))
                 }
                 
                 # Enriquecimiento de Infraestructura
@@ -295,6 +313,34 @@ class DiscoveryOrchestrator:
                 
         log(f"Active resolution finished. {len(resolved_domains)} hosts confirmed live.", level="success")
         return list(resolved_domains.keys())
+
+    def endpoint_recon(self, target: str):
+        """
+        Idea: Steroids Recon (Endpoint Discovery).
+        Encuentra URLs y endpoints históricos.
+        """
+        log(f"Starting endpoint discovery for {target}", level="info")
+        results = tool_manager.run_capability("endpoint_discovery", target, all_providers=True)
+        if results:
+            log(f"   Found {len(results)} historical endpoints/URLs", level="success")
+            # Podríamos persistirlos en una tabla de 'endpoints' en el futuro
+            return results
+        return []
+
+    def dns_bruteforce(self, target: str):
+        """
+        Idea: Steroids Recon (DNS Bruteforce).
+        Fuerza bruta recursiva para encontrar subdominios no indexados.
+        """
+        log(f"Starting DNS brute-force for {target}", level="info")
+        results = tool_manager.run_capability("dns_bruteforce", target, all_providers=True)
+        if results:
+            log(f"   DNS brute-force found {len(results)} additional subdomains", level="success")
+            # Upsert found subdomains
+            assets = [{"domain": s.lower().strip()} for s in results if s]
+            self._upsert_assets(assets)
+            return results
+        return []
 
     def service_analysis(self):
         """
@@ -406,3 +452,80 @@ class DiscoveryOrchestrator:
         finally:
             if os.path.exists(temp_path):
                 os.remove(temp_path)
+
+    def autonomous_tactical_loop(self, max_depth: int = 2):
+        """
+        Idea 1: Orquestación Autónoma (Modo Piloto Automático).
+        Analiza los assets actuales y dispara acciones tácticas automáticas.
+        """
+        from src.intelligence.autonomy_engine import autonomy_engine
+        from src.workflow.states import WorkflowState
+        
+        log(f"Starting Autonomous Tactical Loop (Max Depth: {max_depth})", level="info")
+        
+        for cycle in range(max_depth):
+            # 1. Obtener activos del scan actual que tengan etiquetas semánticas
+            assets = self.db.query(Subdomain).filter(
+                Subdomain.scan_id == self.scan_id,
+                Subdomain.semantic_labels != None
+            ).all()
+            
+            assets_dicts = [
+                {"domain": a.domain, "semantic_labels": a.semantic_labels}
+                for a in assets
+            ]
+            
+            # 2. Decidir acciones basadas en inteligencia
+            actions = autonomy_engine.evaluate_assets(assets_dicts)
+            
+            if not actions:
+                log(f"No autonomous actions recommended in cycle {cycle+1}.", level="info")
+                break
+                
+            log(f"🤖 Autonomous Engine recommended {len(actions)} tactical actions (Cycle {cycle+1})", level="info")
+            
+            new_findings_count = 0
+            for action in actions:
+                log(f"⚡ Executing Tactical Action: {action.capability} on {action.target}", level="warn")
+                log(f"   Reason: {action.reason}", level="debug")
+                
+                try:
+                    # Ejecutar la capacidad (ej: template_scan)
+                    results = tool_manager.run_capability(action.capability, action.target)
+                    
+                    if results and action.capability == "template_scan":
+                        for res in results:
+                            # Procesar hallazgo de vulnerabilidad
+                            vuln_name = res.get("info", {}).get("name", "Autonomous Finding")
+                            severity = res.get("info", {}).get("severity", "medium")
+                            
+                            from src.storage.queries import DBQueries
+                            queries = DBQueries(self.db)
+                            queries.add_vulnerability(
+                                scan_id=self.scan_id,
+                                name=vuln_name,
+                                severity=severity,
+                                host=action.target,
+                                description=res.get("info", {}).get("description", "Found via autonomous tactician"),
+                                payload=res.get("matched-at"),
+                                evidence=res.get("template-id")
+                            )
+                            
+                            # v8.3.2 - Idea 5: Intelligent Notifications
+                            if severity.lower() in ["critical", "high"]:
+                                from src.notifications.notifier import notifier
+                                notifier.send_alert(
+                                    f"Critical Autonomous Finding: {vuln_name}",
+                                    f"Target: {action.target}\nSeverity: {severity.upper()}\nDescription: {res.get('info', {}).get('description')}",
+                                    severity=severity.lower()
+                                )
+                            
+                            new_findings_count += 1
+                except Exception as e:
+                    log(f"❌ Autonomous action failed for {action.target}: {e}", level="error")
+            
+            log(f"Cycle {cycle+1} completed. New findings generated: {new_findings_count}", level="success")
+            if new_findings_count == 0:
+                # Si no encontramos nada nuevo que genere más bardo, cortamos
+                break
+

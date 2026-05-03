@@ -64,6 +64,12 @@ labels:
     weight: 0.4
     impact: "HIGH"
     priority: 7
+  leaked_data_surface:
+    patterns: [".git", ".env", ".bak", "config.json", "backup", "db_dump", ".sql", ".zip"]
+    signals: ["title", "domain", "headers"]
+    weight: 0.6
+    impact: "CRITICAL"
+    priority: 11
 
 # Multi-Signal Promotion Rules
 promotion_rules:

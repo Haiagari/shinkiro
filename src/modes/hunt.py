@@ -32,6 +32,11 @@ class HuntMode(BaseMode):
         # 1. Reset Kill-Switch for a fresh run
         kill_switch.reset()
         
+        # 1.5. Ghost Mode Activation (Idea 4)
+        if self.options.get("ghost"):
+            from src.opsec.proxy_rotator import proxy_rotator
+            proxy_rotator.set_ghost_mode(True)
+        
         # 2. OPSEC Check
         from src.opsec.manager import OPSECManager
         opsec = OPSECManager(self.target, self.db_session)
@@ -49,8 +54,13 @@ class HuntMode(BaseMode):
         
         passive_subdomains = []
         if "asset_discovery" in plan["capabilities"]:
-            passive_subdomains = orchestrator.passive_discovery(self.target) or []
+            passive_subdomains = orchestrator.passive_discovery(self.target, depth=self.options.get("depth_level", 1)) or []
         
+        # Steroids Recon (v8.3.2)
+        if self.options.get("steroids", True):
+            orchestrator.dns_bruteforce(self.target)
+            orchestrator.endpoint_recon(self.target)
+
         active_hosts = []
         if "live_detection" in plan["capabilities"]:
             active_hosts = orchestrator.active_resolution() or []
@@ -61,6 +71,11 @@ class HuntMode(BaseMode):
         # Phase 3.5: Takeover Detection (v7.3)
         if "takeover_detection" in plan["capabilities"] or plan["intent"] == "aggressive":
             orchestrator.takeover_detection()
+
+        # Phase 3.6: Autonomous Tactical Loop (Idea 1 - Pilot Mode)
+        # v8.3.2 - New: Dynamic decisions based on findings
+        if self.options.get("autonomous", True):
+            orchestrator.autonomous_tactical_loop(max_depth=self.options.get("auto_depth", 2))
 
         # Phase 4: Scoring & Prioritization (v6.0)
         logger.info("[HUNT] Phase 4: Asset Scoring & Prioritization")
@@ -152,6 +167,14 @@ class HuntMode(BaseMode):
         
         # run_intelligence will handle internal persistence to Hypothesis table
         intel_results = run_intelligence(self.target, out_dir, self.options, context=intel_context)
+
+        # 5.5. Learning Phase (Idea 6 - Long-term Memory)
+        # v8.3.2 - New: Persist insights for future sessions
+        try:
+            from src.intelligence.learning_engine import run_learning
+            run_learning(self.db_session, self.target, self.runtime_scan.id)
+        except Exception as e:
+            logger.error(f"Learning phase failed: {e}")
 
         # 6. Final Status Update & Artifact Generation (v7.7.2 Handled in BaseMode finally)
         self.context.mark_completed()

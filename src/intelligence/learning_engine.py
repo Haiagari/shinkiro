@@ -1,113 +1,84 @@
 """
-Learning Engine — Análisis Estadístico Cross-Target
-Calcula efectividad de herramientas por stack tecnológico.
-Restricciones: Lock en DB + Min Observations (5).
-Migrado de backend/modules/learning_engine.py
+OzyRecon Learning Engine (v8.3.2 - Idea 6)
+Persists long-term insights and detects surface drift.
 """
 
-from datetime import datetime, timedelta, timezone
-from typing import Dict, Any
-from sqlalchemy.orm import Session
-from src.storage.models import AgentLock, AgentMemory
-from src.storage.database import SessionLocal
-from src.core.logging import get_logger
-from src.agent.config_writer import save_scoring_weights
+import logging
+from datetime import datetime
+from typing import List, Dict, Any, Optional
+from src.storage.queries import DBQueries
+from src.storage.models import Scan, Subdomain, Port, Vulnerability
 
-logger = get_logger("learning_engine")
-
-MIN_OBSERVATIONS = 5
-
+logger = logging.getLogger("intelligence.learning")
 
 class LearningEngine:
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self, db_session):
+        self.db = DBQueries(db_session)
+        self.db_session = db_session
 
-    def acquire_lock(self, mode: str, timeout_mins: int = 60) -> bool:
-        """Adquiere un lock en la DB con TTL."""
-        now = datetime.now(timezone.utc).replace(tzinfo=None)  # DB naive compat
-        lock = self.db.query(AgentLock).filter(AgentLock.mode == mode).first()
+    def process_scan_completion(self, target: str, scan_id: int):
+        """
+        Analyzes a finished scan and updates long-term memory.
+        """
+        scan = self.db_session.query(Scan).get(scan_id)
+        if not scan: return
+
+        logger.info(f"🧠 Learning Engine processing scan {scan_id} for {target}")
+
+        # 1. Update Host Reputation (Frequency of findings)
+        vulns = self.db_session.query(Vulnerability).filter_by(scan_id=scan_id).all()
+        vuln_list = [{"host": v.host, "severity": v.severity} for v in vulns]
         
-        if lock:
-            if lock.expires_at > now:
-                return False  # Lock activo
-            else:
-                # Lock expirado, lo tomamos
-                lock.locked_at = now
-                lock.expires_at = now + timedelta(minutes=timeout_mins)
-        else:
-            new_lock = AgentLock(
-                mode=mode,
-                locked_at=now,
-                expires_at=now + timedelta(minutes=timeout_mins)
-            )
-            self.db.add(new_lock)
+        from src.intelligence.priority import PriorityEngine
+        pe = PriorityEngine(self.db_session)
+        pe.update_reputation(target, vuln_list)
+
+        # 2. Track Technology Drift
+        self._learn_tech_stack(target, scan_id)
+
+        # 3. Identify "Gold Assets" (Static, high-value assets)
+        self._identify_gold_assets(target, scan_id)
+
+    def _learn_tech_stack(self, target: str, scan_id: int):
+        """Remembers what technologies were seen on which hosts."""
+        assets = self.db_session.query(Subdomain).filter_by(scan_id=scan_id).all()
         
-        try:
-            self.db.commit()
-            return True
-        except Exception:
-            self.db.rollback()
-            return False
+        memory_key = "known_tech_stack"
+        existing_mem = self.db.get_agent_memory(target, memory_key)
+        stack = existing_mem.value if existing_mem else {}
 
-    def release_lock(self, mode: str):
-        """Libera el lock manualmente."""
-        lock = self.db.query(AgentLock).filter(AgentLock.mode == mode).first()
-        if lock:
-            lock.expires_at = datetime.now(timezone.utc).replace(tzinfo=None)
-            self.db.commit()
-
-    def analyze_and_update(self) -> Dict[str, Any]:
-        """Analiza la efectividad histórica y sugiere nuevos pesos."""
-        if not self.acquire_lock("aprendizaje"):
-            logger.warning("Otro modo activo o lock presente, posponiendo APRENDIZAJE")
-            return {}
-
-        try:
-            logger.info("Iniciando analisis de patrones cross-target...")
-            new_weights = {}
+        changes = []
+        for asset in assets:
+            host = asset.domain
+            new_tech = asset.technologies or []
             
-            # 1. Obtener todos los tech_stacks detectados en la memoria
-            mems = self.db.query(AgentMemory).filter(AgentMemory.key == "tech_stack").all()
+            if host in stack:
+                old_tech = stack[host]
+                if set(new_tech) != set(old_tech):
+                    changes.append(f"Tech shift on {host}: {old_tech} -> {new_tech}")
             
-            # Agrupar targets por stack
-            stacks: Dict[str, list] = {}
-            for m in mems:
-                if not m.value:
-                    continue
-                # Asegurar que stack_list sea una lista de strings
-                stack_list = m.value if isinstance(m.value, list) else [m.value]
-                
-                for s in stack_list:
-                    # Robustez: Solo procesar si el stack es un string
-                    if not isinstance(s, str):
-                        continue
-                    
-                    if s not in stacks:
-                        stacks[s] = []
-                    stacks[s].append(m.target)
+            stack[host] = new_tech
 
-            # 2. Analizar cada stack
-            for tech, targets in stacks.items():
-                observation_count = len(set(targets))
-                
-                if observation_count < MIN_OBSERVATIONS:
-                    logger.info(f"Stack {tech}: {observation_count} obs, requiere {MIN_OBSERVATIONS}. Saltando.")
-                    continue
+        self.db.set_agent_memory(target, memory_key, stack)
+        if changes:
+            logger.info(f"Detected {len(changes)} tech stack shifts.")
+            self.db.set_agent_memory(target, "last_drift_report", {"timestamp": datetime.now().isoformat(), "changes": changes})
 
-                logger.info(f"Calculando pesos para {tech} ({observation_count} observaciones)...")
-                
-                # Calcular efectividad (simplificado para el test)
-                # En prod: cruzaria hallazgos reales por herramienta
-                new_weights[tech] = {
-                    "nuclei": 0.9,
-                    "dalfox": 0.8 if tech.lower() in ["wordpress", "php"] else 0.4
-                }
+    def _identify_gold_assets(self, target: str, scan_id: int):
+        """Identifies assets that are always live and have high impact."""
+        # Simple heuristic: live assets with 'gate_admin' or 'api_surface'
+        assets = self.db_session.query(Subdomain).filter_by(scan_id=scan_id, is_live=1).all()
+        
+        gold_assets = []
+        for asset in assets:
+            labels = asset.semantic_labels or []
+            if any(l in ["gate_admin", "api_surface", "leaked_data_surface"] for l in labels):
+                gold_assets.append(asset.domain)
 
-            if new_weights:
-                save_scoring_weights(new_weights, confidence=0.85)
-                logger.info("Archivo config/scoring.yaml actualizado con exito.")
-            
-            return new_weights
+        if gold_assets:
+            self.db.set_agent_memory(target, "gold_assets", list(set(gold_assets)))
 
-        finally:
-            self.release_lock("aprendizaje")
+# Global Instance helper
+def run_learning(db_session, target: str, scan_id: int):
+    le = LearningEngine(db_session)
+    le.process_scan_completion(target, scan_id)

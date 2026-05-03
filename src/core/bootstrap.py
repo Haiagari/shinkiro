@@ -88,6 +88,11 @@ def bootstrap_runtime_files(base_dir: Optional[Path] = None) -> dict[str, bool]:
     """
     Ensures mutable runtime files exist, seeding them from tracked examples.
     """
+    # Ensure runtime directories exist (v8.3.2)
+    for d in ["evidence", "runs", "runtime", "exports"]:
+        dir_path = _project_path(d, base_dir=base_dir)
+        dir_path.mkdir(parents=True, exist_ok=True)
+
     return {
         "config": ensure_config_file(base_dir=base_dir),
         "api_keys": ensure_api_key_registry(base_dir=base_dir),

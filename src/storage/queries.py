@@ -199,6 +199,31 @@ class DBQueries:
         self.db.commit()
         return vuln
     
+    def add_evidence(self, hypothesis_id: str, type: str, content: bytes, extension: str = "bin", metadata: Optional[Dict] = None) -> Evidence:
+        """
+        Agrega una evidencia guardándola físicamente (v8.3.2) y referenciándola en la DB.
+        """
+        from src.storage.evidence_manager import evidence_manager
+        import uuid
+        
+        # Guardar en disco (Content-Addressable Storage)
+        rel_path, sha256 = evidence_manager.store(content, extension)
+        
+        # Guardar en DB
+        evidence = Evidence(
+            id=str(uuid.uuid4()),
+            hypothesis_id=hypothesis_id,
+            type=type,
+            data=rel_path,
+            storage_type="local",
+            hash_sha256=sha256,
+            metadata_json=metadata
+        )
+        self.db.add(evidence)
+        self.db.commit()
+        self.db.refresh(evidence)
+        return evidence
+    
     # ══════════════════════════════════════════════════════════════════════════════
     # SESSIONS
     # ══════════════════════════════════════════════════════════════════════════════
@@ -280,6 +305,7 @@ class DBQueries:
                         "type": evidence.type,
                         "timestamp": evidence.timestamp.isoformat() if evidence.timestamp else None,
                         "data": evidence.data,
+                        "storage_type": evidence.storage_type,
                         "metadata": evidence.metadata_json or {},
                         "hash": evidence.hash_sha256,
                     }
