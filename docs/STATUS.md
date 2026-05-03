@@ -5,10 +5,11 @@ It replaces the old session-note style of tracking and points to the live baseli
 
 ## Current baseline
 
-- Version: `v8.3.2`
-- Runtime: stable local engine with bootstrap, auth, lifecycle control, and narrative analysis
-- API auth: `X-API-KEY` with hashed keys and scopes
-- Mutable runtime files: bootstrapped locally from tracked seeds when missing
+- Version: `v9.0.0`
+- Edition: Ghost Intelligence Edition
+- Runtime: Stable CLI-first engine with extreme stealth, visual recon, and cloud discovery.
+- API auth: Granular RBAC ready, transition to pure CLI tactical focus.
+- Mutable runtime files: Handled via `PathResolver` and local tool management.
 
 ## Live surfaces
 
@@ -18,7 +19,7 @@ It replaces the old session-note style of tracking and points to the live baseli
 - [`docs/RUNTIME_CONTRACT.md`](RUNTIME_CONTRACT.md)
 - [`docs/architecture.md`](architecture.md)
 - [`src/core/bootstrap.py`](../src/core/bootstrap.py)
-- [`src/core/api.py`](../src/core/api.py)
+- [`src/core/stealth_client.py`](../src/core/stealth_client.py)
 
 ## Archived material
 

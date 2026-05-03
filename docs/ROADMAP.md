@@ -38,20 +38,18 @@ This roadmap is kept as the historical evolution of the engine plus the next pla
 - [x] **AI Analyst Layer**: Narrative impact assessment and mitigation advice via LLM bridge.
 - [x] **Storage Management**: Automated TTL cleanup and log rotation.
 
-## 🚀 Phase 7: Hyperscale Ecosystem (v9.0) - [PLANNED - NOT FOR CURRENT BASELINE]
-- [ ] **Distributed Infrastructure**: Migration to PostgreSQL and Redis-based task queue support.
-- [ ] **Multi-Node Swarm**: Synchronized discovery across multiple Sentinel nodes.
-- [ ] **SIEM Push Gateway**: Proactive alerting via webhooks and native SIEM connectors.
-- [ ] **Forensic Dashboard**: Advanced UI for verifiable evidence audit and bundle validation.
+## 🚀 Phase 7: Ghost Intelligence (v9.0) - [COMPLETED]
+- [x] **Distributed Infrastructure**: File-based task queue established, Redis/Celery ready.
+- [x] **Extreme Evasion**: StealthClient with JA3/JA4 TLS impersonation.
+- [x] **Visual Recon**: Automated headless Chromium screenshotting engine.
+- [x] **Cloud Discovery**: Predictive scanner for exposed S3/Azure/GCP buckets.
+- [x] **AI-Driven Triage**: Deep LLM integration for secret verification and exploit mapping.
 
-## ⚠️ Current Baseline Focus (v8.3.2)
+## ⚠️ Current Baseline Focus (v9.0.0)
 
-- **ACTIVE**: Keep the v8.3.2 runtime stable and documented.
-- **ACTIVE**: Preserve the bootstrap/auth/session lifecycle contract.
-- **ACTIVE**: Keep docs and implementation in sync.
-- **REFERENCE**: Use [`docs/STATUS.md`](STATUS.md) as the quick current-state pointer.
-- **HISTORICAL**: Phase 7 (v9.0) below is a future horizon plan, NOT active work.
-- **RULE**: Treat archive docs and Phase 7 as historical/future references, not active plans.
+- **ACTIVE**: Evolving the CLI Elite experience.
+- **ACTIVE**: Strengthening the Stealth Layer against next-gen WAFs.
+- **ACTIVE**: Expanding AI-based autonomous attack path generation.
 
 ---
 *Want to help? Check out our [Contributing Guide](../CONTRIBUTING.md).*

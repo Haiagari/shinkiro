@@ -5,11 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [9.0.0] - 2026-05-03
+### Added
+- **Ghost Intelligence Edition**: Major architectural upgrade focusing on extreme stealth and deep discovery.
+- **StealthClient v9.0**: Advanced network deception using `curl_cffi` for JA3/JA4 TLS impersonation (Bypasses Cloudflare/Akamai/AWS).
+- **Visual Recon Module**: Automated headless Chromium screenshotting engine with smart system-wide detection (Gowitness integration).
+- **Cloud Leak Discovery**: Predictive scanner for exposed S3, Azure Blobs, and Google Cloud Storage buckets.
+- **AI Analyst v2**: Real-world LLM integration (Gemini 1.5) for secret verification, entropy analysis (>3.8), and automated exploit mapping.
+- **Differential Watch Engine**: Real-time content diffing for the `watch` command; detects changes in JS files and configurations.
+- **Elite CLI Suite**: 5 new commands (`audit`, `exploits`, `screenshot`, `inventory`, `report-v2`).
+- **Smart Fuzzing**: Technology-aware wordlist generation (PHP, Java, Node.js contextual paths).
+- **OzyCluster Foundation**: Distributed task queue architecture (File-based/Redis ready).
+- **Security Hardening**: Expanded `.gitignore` and OPSEC pre-commit filters for sensitive IP/Data detection.
+
 ### Changed
-- Expanded the README to cover runtime bootstrap, auth scopes, session lifecycle, integrity, observability, and repository layout.
-- Aligned the operational docs (`INSTALL.md`, `USAGE.md`, `RUNTIME_CONTRACT.md`, `architecture.md`) with the current v8.3.2 runtime contract.
-- Refreshed `COMPLIANCE.md` and `CONTRIBUTING.md` to match the live engine baseline and contribution flow.
+- Refactored `SecretFinder` with Shannon Entropy calculation and aggressive framework-specific blacklists.
+- Integrated Cloud Discovery and Attack Paths into the professional Jinja2 reporting engine.
+- Purged legacy web layer and mock scripts to focus on a high-fidelity CLI experience.
+
+## [Unreleased]
 
 ## [8.3.2] - 2026-05-01
 ### Added
