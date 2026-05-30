@@ -1,51 +1,22 @@
-# OzyRecon Status
+# Status
 
-This document is the current lightweight status note for the repository.
-It replaces the old session-note style of tracking and points to the live baseline instead of the archive history.
+- Version: `9.0.1`
+- Runtime: audit-ready ASM pipeline
+- CLI: staged output enabled across core commands
 
-## Current baseline
+## Current state
 
-- Version: `v9.0.0`
-- Edition: Ghost Intelligence Edition
-- Runtime: Stable CLI-first engine with extreme stealth, visual recon, and cloud discovery.
-- API auth: Granular RBAC ready, transition to pure CLI tactical focus.
-- Mutable runtime files: Handled via `PathResolver` and local tool management.
+- scope validation is enforced
+- FLOW and AUDIT modes are operational
+- diff tracking is live
+- collaboration manifests are written per session
+- AI analysis supports multiple providers with fallback
+- payload generation is excluded by design
 
-## Live surfaces
+## Key docs
 
-- [`README.md`](../README.md)
-- [`docs/INSTALL.md`](INSTALL.md)
-- [`docs/USAGE.md`](USAGE.md)
-- [`docs/RUNTIME_CONTRACT.md`](RUNTIME_CONTRACT.md)
-- [`docs/architecture.md`](architecture.md)
-- [`src/core/bootstrap.py`](../src/core/bootstrap.py)
-- [`src/core/stealth_client.py`](../src/core/stealth_client.py)
-
-## Archived material
-
-The following content is historical and should not be treated as the active plan:
-
-- [`docs/archive/README.md`](archive/README.md)
-- `docs/archive/OZYRECON_PHASE0_AUDIT.md`
-- `docs/archive/OZYRECON_HARDENING_PLAN.md`
-- `docs/archive/OZYRECON_IMPROVEMENT_PLAN.md`
-- `docs/archive/OZYRECON_OPERATIONAL_PLAN.md`
-- `docs/archive/trayecto.md`
-
-## What is current work
-
-- Keep the runtime contract aligned with implementation
-- Keep docs in sync with the live baseline
-- Keep generated artifacts and secrets out of version control
-- Preserve the bootstrap/auth/session lifecycle behavior
-
-## What is not current work
-
-- Reopening archived phase plans as active work
-- Reintroducing old v7.x wording into operator docs
-- Treating archive text as source of truth
-
-## Practical pointer
-
-If you are resuming work from this repository, read this file first, then review `README.md`.
-For historical evolution or future horizon plans, review `docs/ROADMAP.md` separately.
+- `README.md`
+- `docs/USAGE.md`
+- `docs/architecture.md`
+- `docs/EXCLUSIONS.md`
+- `docs/RUNTIME_CONTRACT.md`

@@ -1,5 +1,5 @@
 """
-Tests for OzyRecon CLI - v8.3.2 Alignment
+Tests for OzyRecon CLI - v9.0.1 Alignment
 """
 
 import pytest
@@ -18,7 +18,7 @@ def runner():
     return CliRunner()
 
 class TestOzyCLI:
-    """Tests for cli/ozy.py - v8.3.2 Entry point"""
+    """Tests for cli/ozy.py - v9.0.1 Entry point"""
 
     def test_cli_exists(self, runner):
         from cli.ozy import cli
@@ -31,16 +31,16 @@ class TestOzyCLI:
         assert 'OzyRecon' in result.output
 
     def test_cli_version(self, runner):
-        """Validates version 8.3.2 as per definitive baseline."""
+        """Validates version 9.0.1 as per definitive baseline."""
         from cli.ozy import cli
         result = runner.invoke(cli, ['--version'])
         assert result.exit_code == 0
-        assert '8.3.2' in result.output
+        assert '9.0.1' in result.output
 
     def test_banner_contains_version(self, runner):
         from cli.ozy import get_banner
         banner = get_banner()
-        assert '8.3.2' in banner
+        assert '9.0.1' in banner
 
     def test_hunt_subcommand_exists(self, runner):
         from cli.ozy import cli
@@ -49,7 +49,7 @@ class TestOzyCLI:
         assert 'hunt' in result.output.lower()
 
 class TestCliVerifyCommand:
-    """Tests for the hardened v8.3.2 verify command."""
+    """Tests for the hardened v9.0.1 verify command."""
 
     def test_verify_command_exists(self, runner):
         from cli.ozy import cli, register_runtime_commands

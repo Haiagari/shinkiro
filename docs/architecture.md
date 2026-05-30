@@ -1,77 +1,52 @@
-# OzyRecon v8.3.2 Architecture - The Enterprise Baseline
+# OzyRecon Architecture (v9.0.1)
 
-## Overview
+OzyRecon v9.0.1 is built on the **Hexagonal Architecture** (Ports & Adapters) pattern. This ensures that the core security logic is independent of external tools, databases, or interfaces.
 
-OzyRecon v8.3.2 is a resilient intelligence engine organized around four live layers: identity, runtime bootstrap, inference, and forensic evidence.
+## 🏗️ Layer Structure
 
----
+### 1. Domain Layer (`src/domain/`)
+The "Heart" of the system. Contains pure Python entities with no external dependencies.
+- **Models**: `Asset`, `Service`, `Finding`, `Evidence`, `Scan`.
+- **Services**: `EvidenceService` (Hashing and Digital Signatures).
+- **Events**: `AssetDiscovered`, `FindingDetected`.
 
-## Runtime Surface
+### 2. Application Layer (`src/application/`)
+Orchestrates the business logic by connecting the Domain Layer with the Ports.
+- **Use Cases**: `OzyOrchestratorV10` (The Conductor).
+- **Artifact Studio**: Packaging and compression of audit bundles.
+- **Ports (Interfaces)**: 
+    - `IAssetRepository`: Persistence interface.
+    - `IToolProvider`: Execution interface for scanners.
 
-1. `ozy.py` - canonical local entrypoint
-2. `src/core/api.py` - API protected by `X-API-KEY`
-3. `src/auth/` - hashed key registry and RBAC
-4. `src/core/bootstrap.py` - mutable runtime file bootstrap
-5. `GET /sessions/{session_id}/analyze` - narrative analysis surface
-6. `GET /health` - runtime metrics surface
+### 3. Adapters Layer (`src/adapters/`)
+Concrete implementations of the Ports.
+- **Storage**: `SQLiteAssetRepository` (SQLAlchemy).
+- **Tools**: `NmapAdapter`, `NucleiAdapter`, `SubfinderAdapter`.
+- **Events**: `WebhookEventAdapter`.
 
----
+## ⚡ Concurrency & Execution Model
 
-## Operational Pipeline
+OzyRecon optimiza las operaciones intensivas de I/O a través de paralelismo nativo en Python.
 
-OzyRecon processes targets through a sequential intelligence pipeline:
+1. **Paralelismo de Red (`ThreadPoolExecutor`)**: 
+   - Los módulos de escaneo intensivo (como `ffuf` y `SecretFinder`) agrupan sus cargas de trabajo.
+   - Utilizan un `ThreadPoolExecutor` acotado (ej. `max_workers=3`) para ejecutar tareas concurrentemente sin sobrecargar el hardware local o generar bloqueos en la red.
+2. **Subprocesos Inteligentes (`subprocess`)**:
+   - Se orquestan binarios externos escritos en lenguajes de alto rendimiento (Go) como `ffuf` o `subfinder`, limitando el impacto del Global Interpreter Lock (GIL) en el proceso principal.
+3. **Manejo Seguro de Estados**:
+   - Se utiliza `threading.Lock()` de manera granular (ej. en `RateLimiter`) garantizando *thread-safety* al modificar estados compartidos como variables de control o colecciones (`list.extend()`).
 
-1. **Discovery**: `DiscoveryOrchestrator` identifies assets and services.
-2. **Validation**: `target_validator.py` applies OPSEC and SSRF Pro shields.
-3. **Enrichment**: `classifier.py` infers roles, `scoring_engine.py` assesses impact.
-4. **Correlation**: `graph_builder.py` maps relationships; `autonomy.py` builds memory.
-5. **Evidence**: Findings are signed via Ed25519; `feedback_engine.py` refines future runs.
-6. **Export**: `normalizer.py` packages the result into `ScanResult` schema.
-7. **Traceability**: `session_manager.py` tracks the full lifecycle; `trace` endpoints expose it.
+## 🔐 Trust Layer & Security
 
-This pipeline ensures that every byte of data passes through a controlled, auditable, and increasingly intelligent execution flow.
+OzyRecon v9.0.1 implements a cryptographic Trust Layer to ensure data integrity:
+1. **Hashing**: Every `Evidence` content is hashed using **SHA256**.
+2. **Signature**: The content hash is signed using an **RSA/ECDSA** private key.
+3. **Traceability**: Findings are linked to signed evidence, providing audit-ready artifacts.
 
-## Architectural Pillars
+## 🔄 Execution Flow (v9.0.1)
 
-### 1. Identity & Control
-- Hashed API key registry (`src/auth/key_store.py`)
-- Scope-based authorization (`admin:*`, `sessions:read`, `hunt:run`)
-- Local materialization of mutable runtime files
-
-### 2. OPSEC & Hardening
-- Anti-SSRF and DNS-Rebinding protection (`src/security/target_validator.py`)
-- Session cancellation (`POST /sessions/{id}/cancel`)
-- JSONL structured logging with rotation
-
-### 3. Forensic Integrity
-- Ed25519 signatures for evidence (`resources/keys/evidence_key.priv`)
-- Contextual metadata (`session_id`, `contract_version`)
-- Tamper detection via forensic mode
-
-### 4. Intelligence Core
-- Semantic classification and scoring (`src/intelligence/`)
-- Smart Graph with prioritization and `is_truncated` flag
-- Narrative analysis (`/sessions/{id}/analyze`)
-
----
-
-## Mutable Runtime Files
-
-The engine bootstraps three mutable files at runtime:
-
-- `config/config.yaml`
-- `config/api_keys.json`
-- `resources/keys/evidence_key.priv`
-
-These files are intentionally excluded from version control because they are operational state, not source code.
-
----
-
-## Project Status
-- Elite Intelligence - completed
-- Operational Hardening - completed
-- Enterprise Baseline v8.3.2 - completed
-
-Classification: Enterprise-grade security intelligence platform
-
-Last updated: 2026-05-01
+1. `CLI` invokes `OrchestratorV10`.
+2. `ToolAdapters` execute and return `Domain Entities`.
+3. `EvidenceService` signs the results.
+4. `Repository` persists data.
+5. `EventBus` broadcasts findings to the ecosystem.

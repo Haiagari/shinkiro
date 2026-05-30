@@ -1,5 +1,5 @@
 """
-Smoke Tests for OzyRecon v5.7 Features - v8.3.2 Alignment
+Smoke Tests for OzyRecon v5.7 Features - v9.0.1 Alignment
 """
 
 import pytest
@@ -30,5 +30,5 @@ def test_visual_utility_import():
     assert capture_screenshot is not None
     
 def test_api_version_baseline():
-    """Verifica que la versión de la API sea la del baseline v8.3.2."""
-    assert app.version == "8.3.2"
+    """Verifica que la versión de la API sea la del baseline v9.0.1."""
+    assert app.version == "9.0.1"

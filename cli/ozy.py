@@ -11,6 +11,7 @@ from typing import Any, Optional, List, Callable
 from functools import wraps
 
 import click
+from cli import __version__
 from cli.shared import console, ensure_config_loaded, handle_exception
 
 # Task 2.10: Importar config al inicio (línea 1 después de docstring)
@@ -136,25 +137,23 @@ def _create_mode_command(mode_name: str, mode_class: type) -> click.Command:
 def get_banner() -> str:
     """
     Genera el banner de OzyRecon con ASCII art.
-    
+
     Returns:
         Markup de Rich con el banner formateado.
     """
-    version = "8.3.2"
-    
-    banner = r"""
+    banner = f"""
 [bold cyan]
 ███████╗ █████╗ ██████╗  ██████╗ ██████╗ ██╗   ██╗
 ██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔══██╗╚██╗ ██╔╝
-█████╗  ███████║██████╔╝██║   ██║██████╔╝ ╚████╔╝ 
-██╔══╝  ██╔══██║██╔══██╗██║   ██║██╔══██╗  ╚██╔╝  
-██║     ██║  ██║██║  ██║╚██████╔╝██║  ██║   ██║   
-╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+█████╗  ███████║██████╔╝██║   ██║██████╔╝ ╚████╔╝
+██╔══╝  ██╔══██║██╔══██╗██║   ██║██╔══██╗  ╚██╔╝
+██║     ██║  ██║██║  ██║╚██████╔╝██║  ██║   ██║
+╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝
 [/bold cyan]
-[bold]OzyRecon[/bold] - Advanced Persistent Reconnaissance [bold red](CLI Elite Edition v8.3.2)[/bold red]
+[bold]OzyRecon[/bold] - Advanced Persistent Reconnaissance [bold red](CLI Elite Edition v{__version__})[/bold red]
 [dim]Pure Engineering - No GUI - Intelligence First[/dim]
-""".format(version=version)
-    
+"""
+
     return banner
 
 
@@ -273,15 +272,6 @@ def register_runtime_commands() -> None:
         if _debug:
             console.print(f"[yellow]Warning: Could not load dynamic modes: {e}[/yellow]")
 
-    # Task 6.4: Registrar subcomando de reportes
-    try:
-        from cli.commands.report import report
-
-        if report.name not in cli.commands:
-            cli.add_command(report)
-    except ImportError:
-        pass
-
     # Task 6.5: Registrar subcomando de verificación
     try:
         from cli.commands.verify import verify
@@ -362,6 +352,78 @@ def register_runtime_commands() -> None:
     except ImportError:
         pass
 
+    # v9.0.1: Registrar comando doctor
+    try:
+        from cli.commands.doctor import doctor
+        if doctor.name not in cli.commands:
+            cli.add_command(doctor)
+    except ImportError:
+        pass
+
+    # v9.0.1: Registrar comando self-test
+    try:
+        from cli.commands.self_test import self_test
+        if self_test.name not in cli.commands:
+            cli.add_command(self_test)
+    except ImportError:
+        pass
+
+    # v9.0.1: Registrar comando init
+    try:
+        from cli.commands.init import init
+        if init.name not in cli.commands:
+            cli.add_command(init)
+    except ImportError:
+        pass
+
+    # v9.0.1: Registrar comando compliance-check
+    try:
+        from cli.commands.compliance_check import compliance_check
+        if compliance_check.name not in cli.commands:
+            cli.add_command(compliance_check)
+    except ImportError:
+        pass
+
+    # v9.0.1: Registrar comando diff (change detection)
+    try:
+        from cli.commands.diff import diff
+        if diff.name not in cli.commands:
+            cli.add_command(diff)
+    except ImportError:
+        pass
+
+    # v9.0.1: Registrar comando schedule (scheduler)
+    try:
+        from cli.commands.schedule import schedule
+        if schedule.name not in cli.commands:
+            cli.add_command(schedule)
+    except ImportError:
+        pass
+
+    # v9.0.1: Registrar comando serve (API server)
+    try:
+        from cli.commands.serve import serve
+        if serve.name not in cli.commands:
+            cli.add_command(serve)
+    except ImportError:
+        pass
+
+    # v8.3.2: Registrar launcher end-to-end
+    try:
+        from cli.commands.flow import flow
+        if flow.name not in cli.commands:
+            cli.add_command(flow)
+    except ImportError:
+        pass
+
+    # v9.1.0: Registrar comando scope
+    try:
+        from cli.commands.scope import scope
+        if scope.name not in cli.commands:
+            cli.add_command(scope)
+    except ImportError:
+        pass
+
     # v8.3.2: Registrar comando exploits
     try:
         @click.command(name="exploits")
@@ -398,3 +460,6 @@ def register_runtime_commands() -> None:
 
 # Alias para pyproject entry point
 __all__ = ['cli', 'main', 'get_banner', 'console', 'register_mode_commands', 'register_runtime_commands', 'ensure_config_loaded', 'handle_exception']
+
+if __name__ == '__main__':
+    sys.exit(main())

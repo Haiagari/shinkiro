@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ozyrecon"
-version = "8.3.2"
-description = "OzyRecon - Enterprise Sentinel: Secure relationship-first intelligence engine."
+version = "9.0.1"
+description = "OzyRecon - Professional attack surface evaluation and reconnaissance platform"
 readme = "README.md"
-requires-python = ">=3.11" # We updated to 3.11 for v8
+requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
     {name = "SamBleed", email = "sam@example.com"}
 ]
-keywords = ["reconnaissance", "intelligence", "offensive-security", "RBAC", "stealth", "forensics"]
+keywords = ["reconnaissance", "intelligence", "audit", "assessment", "scanning", "security"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Information Technology",

@@ -3,27 +3,18 @@ Strict Anti-Hype Verification for OzyRecon v7.5
 Ensures all systems (Inference, Evidence, Graph, API) are functional.
 """
 
-import os
 import sys
 import json
 import shutil
 from pathlib import Path
-from datetime import datetime, timezone
-from typing import Dict, Any, List
 
 import click
 import requests
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
 
-from src.core.config import config
 from src.intelligence.classifier import semantic_classifier
 from src.utils.crypto import evidence_signer
-from src.intelligence.graph_builder import graph_builder
-from src.intelligence.scoring_engine import get_scoring_engine
 
-console = Console()
+from cli.shared import console, render_outcome, render_panel
 
 REQUIRED_FOLDERS = [
     "runs",
@@ -124,13 +115,13 @@ def check_api_contract() -> bool:
 @click.option("--json", "json_output", is_flag=True, default=False, help="Output results in JSON format")
 def verify(allow_degraded, json_output):
     """
-    STRICT ANTI-HUMO VERIFICATION (v8.3.2)
+    STRICT ANTI-HUMO VERIFICATION (v9.0.1)
     Checks Python, Folders, Binaries, Contracts, and Engines.
     """
     # Si se pide JSON, generamos un resumen mudo
     if json_output:
         summary = {
-            "version": "8.3.2",
+            "version": "9.0.1",
             "status": "ready", # We assume ready if it reached here
             "engines": ["semantic", "crypto", "graph"]
         }
@@ -138,7 +129,7 @@ def verify(allow_degraded, json_output):
         click.echo(json.dumps(summary))
         sys.exit(0)
 
-    console.print(Panel("[bold cyan]OZYRECON v8.3.2 - SYSTEM INTEGRITY AUDIT[/bold cyan]", border_style="cyan"))
+    render_panel("[bold cyan]OZYRECON v9.0.1 - SYSTEM INTEGRITY AUDIT[/bold cyan]", border_style="cyan")
     
     steps = [
         check_python_version(),
@@ -150,14 +141,14 @@ def verify(allow_degraded, json_output):
     
     success = all(steps)
     if success:
-        console.print(Panel("[bold green]VERIFICATION SUCCESSFUL: ALL SYSTEMS GREEN[/bold green]", border_style="green"))
+        render_outcome("VERIFICATION SUCCESSFUL: ALL SYSTEMS GREEN")
         sys.exit(0)
     else:
         if allow_degraded:
-            console.print(Panel("[bold yellow]VERIFICATION DEGRADED: SOME TOOLS MISSING BUT ALLOWED[/bold yellow]", border_style="yellow"))
+            render_outcome("VERIFICATION DEGRADED: SOME TOOLS MISSING BUT ALLOWED", border_style="yellow")
             sys.exit(0)
         else:
-            console.print(Panel("[bold red]VERIFICATION FAILED: SYSTEM INTEGRITY COMPROMISED[/bold red]", border_style="red"))
+            render_outcome("VERIFICATION FAILED: SYSTEM INTEGRITY COMPROMISED", border_style="red")
             sys.exit(1)
 
 if __name__ == "__main__":
