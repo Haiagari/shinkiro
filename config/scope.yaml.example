@@ -1,0 +1,25 @@
+# OzyRecon Scope Configuration
+# Copy this file to config/scope.yaml and customize
+
+target: example.com
+
+allowed_domains:
+  - example.com
+  - "*.example.com"
+
+forbidden_patterns:
+  - test
+  - internal
+  - staging
+  - dev
+
+profiles_allowed:
+  - passive
+  - safe-active
+
+authorization:
+  type: academic  # academic, client, internal
+  reference: "Project identifier or client name"
+  date: "2026-01-01"
+  authorized_by: "Name of person or entity"
+

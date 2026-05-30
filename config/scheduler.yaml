@@ -1,0 +1,10 @@
+tasks:
+- consecutive_failures: 0
+  created_at: '2026-05-06T17:46:24.010891+00:00'
+  enabled: true
+  id: task_example.com_20260506174624
+  interval_hours: 12
+  last_run: null
+  next_run: null
+  profile: safe-active
+  target: example.com

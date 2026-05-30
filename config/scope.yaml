@@ -1,0 +1,19 @@
+target: example.com
+allowed_domains:
+- example.com
+- '*.example.com'
+- test.com
+- '*.test.com'
+forbidden_patterns:
+- internal
+- staging
+- dev
+profiles_allowed:
+- passive
+- safe-active
+- authorized
+authorization:
+  type: bug-bounty
+  reference: Example program
+  date: '2026-05-30'
+  authorized_by: Program Owner
