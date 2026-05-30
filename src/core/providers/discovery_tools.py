@@ -48,14 +48,16 @@ class GenericDiscoveryProvider(BaseProvider):
         else:
             # Si no está explícito en el template, los agregamos al final
             cmd_args.extend(self._get_stealth_flags())
+
+        capability = kwargs.get("capability")
         
         logger.info(f"Running {self.name} on {target} (Safe Mode)")
         try:
             if use_redirection:
                 with open(out_file, "w") as f_out:
-                    subprocess.run(cmd_args, stdout=f_out, stderr=subprocess.PIPE, check=True)
+                    self._run_tool(cmd_args, timeout=180, capability=capability, capture=False, check=True, retries=1, stdout=f_out, stderr=subprocess.PIPE)
             else:
-                subprocess.run(cmd_args, capture_output=True, check=True)
+                self._run_tool(cmd_args, timeout=180, capability=capability, capture=True, check=True, retries=1)
 
             if out_file.exists():
                 with open(out_file) as f:

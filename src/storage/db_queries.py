@@ -3,18 +3,19 @@ Query Helper Functions para SQLite DB
 Provee funciones de consulta para diffing y reporting.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from .models import Target, Scan, Subdomain, Port, Vulnerability
 from .database import SessionLocal
+from src.core.target_normalizer import normalize_lookup_target
 
 
 def get_latest_scan(db: Session, target_domain: str) -> Optional[Scan]:
     """
     Returns the most recent scan for a target.
     """
-    target = db.query(Target).filter(Target.domain == target_domain).first()
+    target = db.query(Target).filter(Target.domain == normalize_lookup_target(target_domain)).first()
     if not target:
         return None
     return db.query(Scan).filter(Scan.target_id == target.id).order_by(Scan.id.desc()).first()
@@ -24,10 +25,10 @@ def get_scan_history(db: Session, target_domain: str, days: int = 30) -> List[Sc
     """
     Returns all scans within the last N days.
     """
-    target = db.query(Target).filter(Target.domain == target_domain).first()
+    target = db.query(Target).filter(Target.domain == normalize_lookup_target(target_domain)).first()
     if not target:
         return []
-    cutoff = datetime.utcnow() - timedelta(days=days)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     return db.query(Scan).filter(
         Scan.target_id == target.id,
         Scan.start_time >= cutoff
@@ -38,12 +39,12 @@ def get_new_findings(db: Session, target_domain: str, since_days: int = 7) -> Li
     """
     Returns vulnerabilities found in the last N days.
     """
-    target = db.query(Target).filter(Target.domain == target_domain).first()
+    target = db.query(Target).filter(Target.domain == normalize_lookup_target(target_domain)).first()
     if not target:
         return []
     
     # Get all scans in the period
-    cutoff = datetime.utcnow() - timedelta(days=since_days)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=since_days)
     recent_scans = db.query(Scan).filter(
         Scan.target_id == target.id,
         Scan.start_time >= cutoff
@@ -76,7 +77,7 @@ def get_critical_findings(db: Session, target_domain: Optional[str] = None) -> L
     """
     query = db.query(Vulnerability).filter(Vulnerability.severity == 'CRITICAL')
     if target_domain:
-        target = db.query(Target).filter(Target.domain == target_domain).first()
+        target = db.query(Target).filter(Target.domain == normalize_lookup_target(target_domain)).first()
         if target:
             scan_ids = [s.id for s in db.query(Scan).filter(Scan.target_id == target.id).all()]
             query = query.filter(Vulnerability.scan_id.in_(scan_ids))
@@ -88,11 +89,11 @@ def get_new_subdomains(db: Session, target_domain: str) -> List[Subdomain]:
     Returns subdomains not seen in previous scans.
     Returns the diff between latest scan and the one before it.
     """
-    target = db.query(Target).filter(Target.domain == target_domain).first()
+    target = db.query(Target).filter(Target.domain == normalize_lookup_target(target_domain)).first()
     if not target:
         return []
     
-    latest_scan = get_latest_scan(db, target_domain)
+    latest_scan = get_latest_scan(db, normalize_lookup_target(target_domain))
     if not latest_scan:
         return []
     
@@ -120,11 +121,11 @@ def get_new_ports(db: Session, target_domain: str) -> List[Port]:
     """
     Returns ports not seen in previous scans.
     """
-    target = db.query(Target).filter(Target.domain == target_domain).first()
+    target = db.query(Target).filter(Target.domain == normalize_lookup_target(target_domain)).first()
     if not target:
         return []
     
-    latest_scan = get_latest_scan(db, target_domain)
+    latest_scan = get_latest_scan(db, normalize_lookup_target(target_domain))
     if not latest_scan:
         return []
     
@@ -150,11 +151,11 @@ def get_scan_diff(db: Session, target_domain: str) -> dict:
     """
     Returns a diff dictionary comparing latest scan with previous one.
     """
-    latest_scan = get_latest_scan(db, target_domain)
+    latest_scan = get_latest_scan(db, normalize_lookup_target(target_domain))
     if not latest_scan:
         return {"new_subdomains": [], "new_ports": [], "new_vulns": [], "is_first_run": True}
     
-    target = db.query(Target).filter(Target.domain == target_domain).first()
+    target = db.query(Target).filter(Target.domain == normalize_lookup_target(target_domain)).first()
     if not target:
         return {"error": "Target not found"}
     
@@ -200,7 +201,7 @@ def get_target_stats(db: Session, target_domain: str) -> dict:
     """
     Returns aggregated statistics for a target.
     """
-    latest_scan = get_latest_scan(db, target_domain)
+    latest_scan = get_latest_scan(db, normalize_lookup_target(target_domain))
     if not latest_scan:
         return {"error": "No scans found"}
     

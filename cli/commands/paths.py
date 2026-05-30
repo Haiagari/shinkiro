@@ -5,11 +5,10 @@ Analyzes and visualizes critical attack paths in the terminal.
 
 import click
 from rich.table import Table
-from rich.panel import Panel
 from rich.tree import Tree
 from src.storage.database import SessionLocal
 from src.intelligence.path_analyzer import get_attack_paths
-from src.core.logging import console
+from cli.shared import console, render_outcome, render_panel
 
 @click.command(name="paths")
 @click.argument("target_domain")
@@ -17,11 +16,11 @@ def paths(target_domain):
     """Analyze critical attack vectors and lateral movement paths."""
     db = SessionLocal()
     try:
-        console.print(f"[bold blue]🧬 Simulating Attack Paths for {target_domain}...[/bold blue]")
+        render_panel(f"[bold blue]🧬 Simulating Attack Paths for {target_domain}...[/bold blue]", border_style="blue")
         attack_paths = get_attack_paths(db, target_domain)
         
         if not attack_paths:
-            console.print("[green]No clear lateral movement paths identified from current findings.[/green]")
+            render_outcome("No clear lateral movement paths identified from current findings.")
             return
 
         for p in attack_paths:
@@ -45,7 +44,8 @@ def paths(target_domain):
             if 'description' in p:
                 vector.add(f"[dim]{p['description']}[/dim]")
 
-            console.print(Panel(tree, border_style=risk_color))
+            console.print(tree)
+            console.print()
 
     finally:
         db.close()

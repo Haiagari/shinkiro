@@ -2,7 +2,7 @@
 Workflow Engine - Gestión de estados y trazabilidad v5.0
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List
 from src.storage.database import SessionLocal
 from src.storage.models import Hypothesis, WorkflowStep, Target
@@ -30,7 +30,7 @@ class WorkflowEngine:
             
             # Si se aprueba, seteamos el timestamp
             if new_state == WorkflowState.APPROVED:
-                hypo.approved_at = datetime.utcnow()
+                hypo.approved_at = datetime.now(timezone.utc)
 
             # Registrar el paso
             step = WorkflowStep(

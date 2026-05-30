@@ -6,7 +6,7 @@ Fase 2: Aprendizaje Reflexivo
 import uuid
 import ast
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
 from src.storage.database import SessionLocal
 from sqlalchemy import Column, Integer, String, DateTime, JSON, Text, text
@@ -33,7 +33,7 @@ class Decision:
     target: str = ""
     context: Dict[str, Any] = field(default_factory=dict)
     reason: str = ""
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     
     reputation_weight: float = 0.5
     novelty_weight: float = 0.3

@@ -8,6 +8,7 @@ import logging
 from typing import Dict, Any, Optional
 from curl_cffi import requests
 from src.opsec.chameleon import chameleon
+from src.opsec.proxy_rotator import ProxyRotator
 
 logger = logging.getLogger("core.stealth_client")
 
@@ -18,6 +19,7 @@ class StealthClient:
     
     def __init__(self):
         self.session = requests.Session()
+        self.proxy_rotator = ProxyRotator()
 
     def request(self, method: str, url: str, **kwargs) -> Optional[requests.Response]:
         """
@@ -34,8 +36,10 @@ class StealthClient:
         if "headers" in kwargs:
             headers.update(kwargs.pop("headers"))
             
-        # 4. Configurar Proxy si está disponible (vía Ghost Mode)
-        # TODO: Integrar con ProxyRotator
+        # 4. Configurar Proxy si está disponible (vía ProxyRotator)
+        proxy = self.proxy_rotator.get_proxy()
+        if proxy:
+            kwargs["proxies"] = {"http": proxy, "https": proxy}
         
         try:
             logger.debug(f"Stealth Request [{impersonate}]: {method} {url}")

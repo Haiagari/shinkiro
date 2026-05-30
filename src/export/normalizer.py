@@ -38,7 +38,8 @@ class NormalizedExporter:
         include_services: bool = True,
         include_findings: bool = True,
         include_diff: bool = False,
-        previous_session_id: Optional[str] = None
+        previous_session_id: Optional[str] = None,
+        minimal: bool = False
     ) -> ScanResult:
         """
         Exporta un scan en formato normalizado.
@@ -52,10 +53,13 @@ class NormalizedExporter:
             include_findings: Incluir vulnerabilidades
             include_diff: Incluir diferencias con scan anterior
             previous_session_id: Session ID anterior para diff
-        
-        Returns:
-            ScanResult en formato normalizado
+            minimal: Si es True, omite metadatos pesados (Quiet mode logic)
         """
+        if minimal:
+            include_diff = False
+            include_assets = False
+            include_services = False
+            include_findings = False
         # Crear resultado base
         result = ScanResult(
             session_id=session_id,
@@ -67,6 +71,7 @@ class NormalizedExporter:
                 'threads': config.threads,
                 'timeout': config.timeout,
                 'rate_limit': config.rate_limit,
+                'quiet': minimal,
             }
         )
         

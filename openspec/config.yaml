@@ -2,10 +2,10 @@
 schema: spec-driven
 
 context: |
-  Tech stack: Python 3.10+, SQLAlchemy 2.0, FastAPI, Rich, Click
-  Architecture: Modular (src/core, src/modes, src/intelligence, src/opsec, src/validation)
-  Testing: pytest 9.0.3 + pytest-asyncio
-  Style: ruff (linting), black (formatting)
+  Tech stack: Python 3.11+ (running 3.14.4), SQLAlchemy 2.0, FastAPI, Rich, Click, Jinja2, WeasyPrint
+  Architecture: Modular monolith (src/core, src/modes, src/intelligence, src/validation, src/storage)
+  Testing: pytest 9.0.3 (158 tests across 38 files)
+  Style: ruff + black (in pyproject.toml but NOT in venv)
 
 strict_tdd: true
 
@@ -35,11 +35,12 @@ rules:
 testing:
   Test Runner: pytest 9.0.3
   Test Layers:
-    - Unit: AVAILABLE
-    - Integration: AVAILABLE (pytest + httpx/re-requests-mock)
-    - E2E: NOT INSTALLED (no playwright in pyproject.toml)
-  Coverage: NOT INSTALLED (no pytest-cov in dependencies)
+    - Unit: AVAILABLE (tests/core/, tests/discovery/, tests/export/, tests/reporting/)
+    - Integration: AVAILABLE (tests/integration/, tests/test_api_integration.py)
+    - E2E: AVAILABLE (tests/test_runtime_end_to_end.py)
+  Coverage: NOT INSTALLED in venv (CI installs pytest-cov dynamically)
   Quality Tools:
-    - Linter: ruff AVAILABLE
-    - Type checker: mypy (NOT INSTALLED)
-    - Formatter: black IN PROJECT but NOT INSTALLED in venv
+    - Linter: ruff (in pyproject.toml but NOT in venv)
+    - Type checker: mypy NOT INSTALLED
+    - Formatter: black (in pyproject.toml but NOT in venv)
+  CI/CD: GitHub Actions (installs pytest-cov, bandit in pipeline)

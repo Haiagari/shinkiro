@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -27,8 +27,8 @@ def test_export_scan_builds_normalized_contract():
         timestamp="2026-04-26T10:00:00",
         status="completed",
         mode="hunt",
-        start_time=datetime.utcnow() - timedelta(minutes=15),
-        end_time=datetime.utcnow() - timedelta(minutes=10),
+        start_time=datetime.now(timezone.utc) - timedelta(minutes=15),
+        end_time=datetime.now(timezone.utc) - timedelta(minutes=10),
     )
     session.add(previous_scan)
     session.flush()
@@ -41,8 +41,8 @@ def test_export_scan_builds_normalized_contract():
         timestamp="2026-04-26T11:00:00",
         status="completed",
         mode="hunt",
-        start_time=datetime.utcnow() - timedelta(minutes=5),
-        end_time=datetime.utcnow(),
+        start_time=datetime.now(timezone.utc) - timedelta(minutes=5),
+        end_time=datetime.now(timezone.utc),
         errors="timeout on port 443\n",
     )
     session.add(current_scan)

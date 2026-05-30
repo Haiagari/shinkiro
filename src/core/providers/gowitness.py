@@ -3,7 +3,6 @@ Gowitness Provider para Visual Reconnaissance
 Toma screenshots de los targets encontrados.
 """
 
-import subprocess
 from pathlib import Path
 from typing import List, Any
 from src.core.providers.base import BaseProvider
@@ -60,10 +59,11 @@ class GowitnessProvider(BaseProvider):
         
         # Flags de Chameleon para no ser tan ruidosos
         cmd.extend(self._get_stealth_flags())
+        capability = kwargs.get("capability")
 
         logger.info(f"Capturando evidencia visual para {target}")
         try:
-            subprocess.run(cmd, check=True, capture_output=True)
+            self._run_tool(cmd, timeout=600, capability=capability, capture=True, check=True, retries=1)
             logger.info(f"Screenshots guardadas en {self.output_dir}")
             return str(self.output_dir)
         except Exception as e:

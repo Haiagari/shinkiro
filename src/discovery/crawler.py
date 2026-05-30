@@ -1,24 +1,61 @@
 from pathlib import Path
-from urllib.parse import urlparse
-from src.core.providers.http_clients import http_client
 import hashlib
-from src.utils import log, run_cmd, read_lines, write_lines, dedupe, check_tools, save_json
+
+from src.core.providers.http_clients import http_client
+from src.core.target_normalizer import first_token, extract_target_host, normalize_base_target
+from src.utils import log, run_cmd, read_lines, dedupe, check_tools, save_json
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
 REQUIRED_TOOLS = ["waybackurls", "gau", "katana", "hakrawler", "ffuf"]
 
 INTERESTING_EXTENSIONS = {
-    ".js", ".json", ".xml", ".yaml", ".yml", ".env",
-    ".bak", ".backup", ".old", ".sql", ".log", ".conf", ".config",
-    ".php", ".asp", ".aspx", ".jsp"
+    ".js",
+    ".json",
+    ".xml",
+    ".yaml",
+    ".yml",
+    ".env",
+    ".bak",
+    ".backup",
+    ".old",
+    ".sql",
+    ".log",
+    ".conf",
+    ".config",
+    ".php",
+    ".asp",
+    ".aspx",
+    ".jsp",
 }
 
 INTERESTING_PARAMS = [
-    "url", "redirect", "next", "return", "returnurl", "return_url",
-    "file", "path", "page", "include", "doc", "document", "id",
-    "uid", "user_id", "account", "key", "token", "api_key", "secret",
-    "debug", "admin", "callback", "jsonp", "load", "fetch",
+    "url",
+    "redirect",
+    "next",
+    "return",
+    "returnurl",
+    "return_url",
+    "file",
+    "path",
+    "page",
+    "include",
+    "doc",
+    "document",
+    "id",
+    "uid",
+    "user_id",
+    "account",
+    "key",
+    "token",
+    "api_key",
+    "secret",
+    "debug",
+    "admin",
+    "callback",
+    "jsonp",
+    "load",
+    "fetch",
 ]
 
 
@@ -32,11 +69,9 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
     # Normalizar hosts a URLs completas
     urls = []
     for h in hosts:
-        h = h.split()[0] if h else ""
-        if not h.startswith("http"):
-            h = f"https://{h}"
-        urls.append(h.split("?")[0].rstrip("/"))
-    
+        h = first_token(h)
+        urls.append(normalize_base_target(h))
+
     urls = dedupe(urls)
 
     if not urls:
@@ -46,7 +81,7 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
     log(f"Descubriendo URLs en {len(urls)} host(s)...", "info")
 
     # Extraer dominio base para Wayback/GAU
-    domains = dedupe([urlparse(u).netloc for u in urls])
+    domains = dedupe([host for host in (extract_target_host(u) for u in urls) if host])
     all_urls = []
 
     # ── Wayback Machine ────────────────────────────────────────
@@ -66,10 +101,7 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
         log("Consultando fuentes con gau...", "info")
         gau_out = out_dir / "gau.txt"
         for domain in domains[:5]:
-            run_cmd(
-                f"gau --threads {args.threads} --o {gau_out} {domain}",
-                timeout=180
-            )
+            run_cmd(f"gau --threads {args.threads} --o {gau_out} {domain}", timeout=180)
         gau_urls = read_lines(gau_out)
         log(f"gau → {len(gau_urls)} URLs", "success")
         all_urls.extend(gau_urls)
@@ -84,7 +116,7 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
             run_cmd(
                 f"katana -u {url} -silent -d 3 -jc -kf all "
                 f"-c {args.threads} -timeout {args.timeout} -o {kata_out}",
-                timeout=300
+                timeout=300,
             )
         kata_urls = read_lines(kata_out)
         log(f"katana → {len(kata_urls)} URLs", "success")
@@ -97,10 +129,7 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
         log("Crawl con hakrawler...", "info")
         hak_out = out_dir / "hakrawler.txt"
         urls_str = "\n".join(urls[:20])
-        run_cmd(
-            f"echo '{urls_str}' | hakrawler -d 2 -t {args.threads} >> {hak_out}",
-            timeout=200
-        )
+        run_cmd(f"echo '{urls_str}' | hakrawler -d 2 -t {args.threads} >> {hak_out}", timeout=200)
         hak_urls = read_lines(hak_out)
         log(f"hakrawler → {len(hak_urls)} URLs", "success")
         all_urls.extend(hak_urls)
@@ -115,57 +144,59 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
             ffuf_out = out_dir / "ffuf"
             ffuf_out.mkdir(exist_ok=True)
             for url in urls[:5]:
-                domain_safe = urlparse(url).netloc.replace(".", "_")
+                domain_safe = extract_target_host(url).replace(".", "_")
                 run_cmd(
                     f"ffuf -u {url}/FUZZ -w {wordlist} -mc 200,201,301,302,401,403 "
                     f"-t {args.threads} -timeout {args.timeout} -silent "
                     f"-o {ffuf_out}/{domain_safe}.json -of json",
-                    timeout=300
+                    timeout=300,
                 )
             log("ffuf → fuzzing completado", "success")
         else:
             log("wordlist no encontrada (resources/wordlists/common.txt) — saltando ffuf", "warn")
 
     # ── Deduplicar y clasificar ─────────────────────────────────
-    all_urls = dedupe([u.strip() for u in all_urls if u.startswith("http")])
-    
+    all_urls = dedupe([first_token(u) for u in all_urls if first_token(u).startswith("http")])
+
     # Filtrar por extensiones e inyecciones interesantes
     interesting = [
-        u for u in all_urls
+        u
+        for u in all_urls
         if any(u.lower().endswith(ext) for ext in INTERESTING_EXTENSIONS)
         or any(f"?{p}=" in u.lower() or f"&{p}=" in u.lower() for p in INTERESTING_PARAMS)
     ]
-    
+
     # Separar JS files
     js_files = [u for u in all_urls if u.split("?")[0].lower().endswith(".js")]
 
     # ── Descargar archivos JS ───────────────────────────────
     js_dir = out_dir / "downloaded_js"
+    js_dir.mkdir(parents=True, exist_ok=True)
     downloaded = []
-    
+
     if js_files:
         log(f"Descargando {len(js_files[:20])} archivos JS...", "info")
         for js_url in js_files[:20]:
             try:
                 fname = hashlib.md5(js_url.encode()).hexdigest() + ".js"
                 fpath = js_dir / fname
-                
+
                 r = http_client.get(js_url, timeout=15)
                 if r.status_code == 200:
                     fpath.write_bytes(r.content)
                     downloaded.append(str(fpath))
             except Exception as e:
                 log(f"  Error descargando {js_url[:30]}: {e}", "warn")
-        
+
         if downloaded:
             log(f"  {len(downloaded)} archivos JS descargados en {js_dir}", "success")
 
     results = {
-        "all_urls":    all_urls,
+        "all_urls": all_urls,
         "interesting": interesting,
-        "js_files":    js_files,
+        "js_files": js_files,
         "downloaded_js": downloaded,
-        "out_dir":     str(out_dir),
+        "out_dir": str(out_dir),
     }
 
     # Persistencia JSON para Sprint 1

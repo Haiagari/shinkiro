@@ -5,7 +5,7 @@ Fase 2: Aprendizaje Reflexivo
 
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 from src.core.runtime_paths import get_config_dir
@@ -96,7 +96,7 @@ class FalsePositiveMemory:
         if pattern_id in self.patterns:
             # Incrementar frecuencia
             self.patterns[pattern_id].frequency += 1
-            self.patterns[pattern_id].last_seen = datetime.utcnow().isoformat()
+            self.patterns[pattern_id].last_seen = datetime.now(timezone.utc).isoformat()
         else:
             # Nuevo patrón
             self.patterns[pattern_id] = FalsePositivePattern(
@@ -104,8 +104,8 @@ class FalsePositiveMemory:
                 pattern_type=pattern_type,
                 pattern_value=pattern_value,
                 tool=tool,
-                first_seen=datetime.utcnow().isoformat(),
-                last_seen=datetime.utcnow().isoformat()
+                first_seen=datetime.now(timezone.utc).isoformat(),
+                last_seen=datetime.now(timezone.utc).isoformat()
             )
         
         self._save_patterns()
@@ -183,7 +183,7 @@ class FalsePositiveMemory:
         """
         Limpia entradas antiguas (no vistas en X días).
         """
-        cutoff = datetime.utcnow() - timedelta(days=days)
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
         to_remove = []
         
         for pid, pattern in self.patterns.items():

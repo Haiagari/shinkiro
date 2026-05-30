@@ -4,7 +4,7 @@ Maneja el estado y metadata de cada ejecución.
 """
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import uuid
@@ -19,7 +19,7 @@ class ScanContext:
     mode: str = "hunt"  # hunt, continuous, campaign, research, forensic, servicio
     
     # Timestamps
-    started_at: datetime = field(default_factory=datetime.now)
+    started_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     finished_at: Optional[datetime] = None
     
     # Estado
@@ -41,6 +41,7 @@ class ScanContext:
     user_agent: str = ""
     rate_limit: int = 50
     threads: int = 10
+    timeout_policy: Dict[str, int] = field(default_factory=dict)
     
     # Resultados (se填充an durante ejecución)
     results: Dict[str, Any] = field(default_factory=dict)
@@ -50,7 +51,7 @@ class ScanContext:
     def record_event(self, stage: str, message: str, **data: Any):
         """Agrega un evento a la línea de tiempo del scan."""
         event = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "stage": stage,
             "message": message,
         }
@@ -67,21 +68,21 @@ class ScanContext:
     def mark_completed(self):
         """Marca el scan como completado."""
         self.status = "completed"
-        self.finished_at = datetime.now()
+        self.finished_at = datetime.now(timezone.utc)
         self.progress = 100.0
         self.record_event("status", "scan marked as completed", progress=self.progress)
     
     def mark_failed(self, error: str):
         """Marca el scan como fallido."""
         self.status = "failed"
-        self.finished_at = datetime.now()
+        self.finished_at = datetime.now(timezone.utc)
         self.errors.append(error)
         self.record_event("status", "scan marked as failed", error=error)
     
     def mark_interrupted(self):
         """Marca el scan como interrumpido."""
         self.status = "interrupted"
-        self.finished_at = datetime.now()
+        self.finished_at = datetime.now(timezone.utc)
         self.record_event("status", "scan marked as interrupted")
     
     def update_progress(self, step: str, progress: float):
@@ -146,7 +147,7 @@ class TargetProfile:
     """Perfil de un target específico."""
     
     domain: str
-    added_at: datetime = field(default_factory=datetime.now)
+    added_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     last_scan: Optional[datetime] = None
     
     # Scope

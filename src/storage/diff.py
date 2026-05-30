@@ -6,6 +6,7 @@ Compara estados entre ejecuciones para detectar cambios en la superficie de ataq
 from typing import List, Dict, Any, Optional, Set
 from dataclasses import dataclass, field, asdict
 from src.core.logging import get_logger
+from src.core.target_normalizer import normalize_lookup_target
 
 logger = get_logger('diff_engine')
 
@@ -31,8 +32,10 @@ class DiffReport:
     def summary(self) -> str:
         parts = []
         if self.new_subdomains: parts.append(f"+{len(self.new_subdomains)} subdomains")
+        if self.removed_subdomains: parts.append(f"-{len(self.removed_subdomains)} subdomains")
         if self.changed_subdomains: parts.append(f"*{len(self.changed_subdomains)} metadata changes")
         if self.new_ports: parts.append(f"+{len(self.new_ports)} ports")
+        if self.closed_ports: parts.append(f"-{len(self.closed_ports)} ports")
         if self.changed_services: parts.append(f"*{len(self.changed_services)} services")
         if self.new_findings: parts.append(f"!{len(self.new_findings)} findings")
         return ", ".join(parts) or "No changes detected"
@@ -74,7 +77,7 @@ class DiffEngine:
     def _get_last_successful_scan_id(self, target: str, current_id: int) -> Optional[int]:
         from src.storage.models import Scan, Target
         res = self.db.query(Scan.id).join(Target).filter(
-            Target.domain == target,
+            Target.domain == normalize_lookup_target(target),
             Scan.id < current_id,
             Scan.status == 'completed'
         ).order_by(Scan.id.desc()).first()

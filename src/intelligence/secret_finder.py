@@ -9,7 +9,7 @@ import logging
 import requests
 from src.core.stealth_client import stealth_client
 from typing import List, Dict, Any, Set
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 logger = logging.getLogger("intelligence.secrets")
 
@@ -98,6 +98,25 @@ class SecretFinder:
         except Exception as e:
             logger.warning(f"Failed to scan URL {url}: {e}")
         return []
+
+    def scan_urls_concurrently(self, urls: List[str]) -> List[Dict[str, str]]:
+        """Scans multiple URLs concurrently using ThreadPoolExecutor."""
+        all_secrets = []
+        if not urls:
+            return all_secrets
+            
+        logger.info(f"Escaneando {len(urls)} URLs en paralelo para buscar secretos...")
+        with ThreadPoolExecutor(max_workers=self.threads) as executor:
+            futures = {executor.submit(self.scan_url, url): url for url in urls}
+            for future in as_completed(futures):
+                try:
+                    result = future.result()
+                    if result:
+                        all_secrets.extend(result)
+                except Exception as e:
+                    url = futures[future]
+                    logger.warning(f"Error concurrentemente escaneando {url}: {e}")
+        return all_secrets
 
 # Global Instance helper
 secret_finder = SecretFinder()

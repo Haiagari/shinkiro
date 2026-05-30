@@ -4,17 +4,20 @@ Provides a professional terminal-based inventory of discovered assets.
 """
 
 import click
+from sqlalchemy import or_
 from rich.table import Table
-from rich.console import Console
-from rich.panel import Panel
+
+from cli.shared import console, render_outcome, render_panel
+from src.core.target_normalizer import normalize_lookup_target
 from src.storage.database import SessionLocal
 from src.storage.models import Subdomain, Vulnerability, Target
-from src.core.logging import console
+
 
 @click.group(name="inventory")
 def inventory():
     """Manage and view discovered assets inventory."""
     pass
+
 
 @inventory.command(name="assets")
 @click.argument("target_domain")
@@ -24,15 +27,21 @@ def list_assets(target_domain, live, limit):
     """Lists subdomains and assets for a specific target."""
     db = SessionLocal()
     try:
-        target = db.query(Target).filter(Target.domain == target_domain).first()
+        lookup_target = normalize_lookup_target(target_domain)
+        target = db.query(Target).filter(Target.domain == lookup_target).first()
         if not target:
-            console.print(f"[red]Target '{target_domain}' not found in database.[/red]")
+            render_outcome(f"Target '{target_domain}' not found in database.", border_style="red")
             return
 
-        query = db.query(Subdomain).filter(Subdomain.domain.like(f"%{target_domain}"))
+        query = db.query(Subdomain).filter(
+            or_(
+                Subdomain.domain == lookup_target,
+                Subdomain.domain.like(f"%.{lookup_target}"),
+            )
+        )
         if live:
             query = query.filter(Subdomain.is_live == 1)
-        
+
         assets = query.limit(limit).all()
 
         table = Table(title=f"Asset Inventory: {target_domain}", border_style="blue")
@@ -44,19 +53,27 @@ def list_assets(target_domain, live, limit):
 
         for a in assets:
             status = "[green]LIVE[/green]" if a.is_live else "[dim]DEAD[/dim]"
-            impact_color = "red" if a.business_impact == "CRITICAL" else "orange1" if a.business_impact == "HIGH" else "white"
-            
+            impact_color = (
+                "red"
+                if a.business_impact == "CRITICAL"
+                else "orange1"
+                if a.business_impact == "HIGH"
+                else "white"
+            )
+
             table.add_row(
                 a.domain,
                 status,
                 a.ip or "-",
                 ", ".join(a.technologies or []),
-                f"[{impact_color}]{a.business_impact}[/{impact_color}]"
+                f"[{impact_color}]{a.business_impact}[/{impact_color}]",
             )
-        
+
+        render_panel(f"Asset Inventory: {target_domain}", border_style="blue")
         console.print(table)
     finally:
         db.close()
+
 
 @inventory.command(name="vulns")
 @click.argument("target_domain")
@@ -64,10 +81,20 @@ def list_vulns(target_domain):
     """Lists identified vulnerabilities for a target."""
     db = SessionLocal()
     try:
-        vulns = db.query(Vulnerability).filter(Vulnerability.host.like(f"%{target_domain}")).all()
+        lookup_target = normalize_lookup_target(target_domain)
+        vulns = (
+            db.query(Vulnerability)
+            .filter(
+                or_(
+                    Vulnerability.host == lookup_target,
+                    Vulnerability.host.like(f"%.{lookup_target}"),
+                )
+            )
+            .all()
+        )
 
         if not vulns:
-            console.print(f"[green]No vulnerabilities found for {target_domain}.[/green]")
+            render_outcome(f"No vulnerabilities found for {target_domain}.")
             return
 
         table = Table(title=f"Vulnerability Registry: {target_domain}", border_style="red")
@@ -80,17 +107,13 @@ def list_vulns(target_domain):
             "critical": "[bold red]CRITICAL[/bold red]",
             "high": "[bold orange1]HIGH[/bold orange1]",
             "medium": "[bold yellow]MEDIUM[/bold yellow]",
-            "low": "[bold blue]LOW[/bold blue]"
+            "low": "[bold blue]LOW[/bold blue]",
         }
 
         for v in vulns:
-            table.add_row(
-                sev_map.get(v.severity.lower(), v.severity),
-                v.name,
-                v.host,
-                v.status
-            )
-        
+            table.add_row(sev_map.get(v.severity.lower(), v.severity), v.name, v.host, v.status)
+
+        render_panel(f"Vulnerability Registry: {target_domain}", border_style="red")
         console.print(table)
     finally:
         db.close()

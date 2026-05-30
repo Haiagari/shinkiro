@@ -2,7 +2,6 @@
 Proveedores para Escaneo de Vulnerabilidades
 """
 
-import subprocess
 from pathlib import Path
 from typing import List, Dict, Any
 from src.core.providers.base import BaseProvider
@@ -21,9 +20,10 @@ class FuzzingProvider(BaseProvider):
         
         # Ejemplo simplificado para dalfox
         cmd = [self.path, "file", target_file, "--silence", "--no-color", "-o", str(out_file)]
+        capability = kwargs.get("capability")
         
         try:
-            subprocess.run(cmd, check=True, capture_output=True)
+            self._run_tool(cmd, timeout=300, capability=capability, capture=True, check=True, retries=1)
             results = []
             for line in read_lines(out_file):
                 if "[V]" in line or "[G]" in line:
@@ -41,9 +41,10 @@ class DBProbeProvider(BaseProvider):
         
         # Modo batch seguro
         cmd = [self.path, "-u", url, "--batch", "--level", "1", "--risk", "1"]
+        capability = kwargs.get("capability")
         
         try:
-            res = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+            res = self._run_tool(cmd, timeout=180, capability=capability, capture=True, retries=1)
             if "injectable" in res.stdout.lower() or "vulnerable" in res.stdout.lower():
                 return [{"type": "sqli", "severity": "critical", "url": url}]
         except:

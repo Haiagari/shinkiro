@@ -4,12 +4,13 @@ OzyRecon Mode Base - Definición de Contratos Operativos
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 import re
 from src.core.config import config
 from src.core.contracts import MODE_ENVELOPE_FIELDS, validate_required_fields
 from src.core.context import ScanContext, set_context
+from src.scope.profiles import get_profile
 from src.storage.database import SessionLocal, init_db
 from src.storage.queries import DBQueries
 from src.storage.models import Session as ScanSession, WorkflowStep
@@ -45,6 +46,9 @@ class BaseMode(ABC):
             mode=mode_name,
             threads=self.options.get('threads', config.threads)
         )
+        profile = get_profile(self.options.get("scan_profile", "safe-active"))
+        if profile:
+            self.context.timeout_policy = dict(profile.timeout_policy)
         set_context(self.context)
         self.context.record_event("mode", "mode initialized", mode=mode_name, target=target)
         
@@ -298,7 +302,7 @@ class BaseMode(ABC):
             }
 
         if status in {"success", "failed"}:
-            session.ended_at = self.context.finished_at or datetime.utcnow()
+            session.ended_at = self.context.finished_at or datetime.now(timezone.utc)
             if self.context.duration is not None:
                 session.duration = self.context.duration
             session.error_summary = error_summary

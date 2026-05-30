@@ -31,7 +31,10 @@ runtime/db/*.db
 
 # Output y Evidencia (OPSEC)
 output/
-reports/
+reports/*
+!reports/README.md
+!reports/pruebas/
+!reports/pruebas/**
 evidence/
 storage/evidence/
 watch_history/
@@ -78,3 +81,7 @@ graph_preview.html
 # Legacy removal (keeping src clean)
 # UI/Legacy files moved to src or intended for inclusion
 # NO IGNORAR agent.py o tui.py si son funcionales
+# Local Pi runtime state
+.atl/
+# CocoIndex Code (ccc)
+/.cocoindex_code/

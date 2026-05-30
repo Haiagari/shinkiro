@@ -1,42 +1,27 @@
-# OzyRecon Bridge Contract
+# Bridge Contract
 
-This repo is the engine side of the contract.
+This document defines the compatibility closure between the OzyRecon runtime surface and any external platform bridge.
 
-## Runtime entrypoint
+## Scope
 
-- Canonical local entrypoint: [`ozy.py`](../ozy.py)
-- API runtime: [`src/core/api.py`](../src/core/api.py)
-- Normalized export source of truth: [`src/export/normalizer.py`](../src/export/normalizer.py)
+- `src/core/contracts.py` is the frozen runtime contract source of truth.
+- The bridge must preserve the published envelope and trace shapes.
+- Compatibility closure means bridge adapters may translate transport details, but they MUST NOT rename or drop frozen runtime fields.
 
-## Canonical output shape
+## Required runtime anchors
 
-The normalized scan export uses [`ScanResult`](../src/export/schema.py) with:
+- `GET /sessions/{session_id}/trace`
+- `GET /sessions/{session_id}/analyze`
+- `GET /health`
+- `POST /hunt`
 
-- `session_id`
-- `target`
-- `mode`
-- `assets`
-- `services`
-- `findings`
-- `diff`
-- `stats`
-- `config`
-- `errors`
+## Contract rules
 
-The frozen runtime envelope and session-trace fields are defined in [`src/core/contracts.py`](../src/core/contracts.py).
+- The bridge MUST consume the same `CONTRACT_VERSION` exported by `src/core/contracts.py`.
+- The bridge MUST preserve normalized session trace payloads.
+- The bridge SHOULD remain a thin adapter over the local runtime API.
+- The bridge MAY add transport metadata, but it MUST NOT alter runtime semantics.
 
-## Bridge boundary
+## Notes
 
-The platform-facing adapter is maintained in the Ozy Platform repo, not in this tree.
-That means this repo can define and validate the contract, but adapter code changes
-must be applied where the platform bridge actually lives.
-
-## Compatibility closure
-
-This tree freezes the local contract fields and verifies them through tests.
-The remaining compatibility work in the platform repo should consume the same field set without inventing a different runtime shape.
-
-## Legacy export helpers
-
-The raw artifact exporter was removed from this tree. New code should use the
-normalized exporter and the platform-specific exporters from this package.
+This file exists to keep the repository and any external bridge aligned without relying on implicit coupling.

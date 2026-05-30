@@ -1,6 +1,6 @@
 # Resources
 
-Carpeta para recursos compartidos que no son código.
+Shared non-code resources used by the runtime.
 
-- `templates/`: templates personalizados de nuclei y material reutilizable de detección.
-- `wordlists/`: wordlists locales usadas por el crawler, ffuf y el fuzzing contextual.
+- `templates/` — reusable detection/report templates
+- `wordlists/` — local wordlists for discovery and fuzzing

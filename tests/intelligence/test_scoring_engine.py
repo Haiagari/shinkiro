@@ -236,6 +236,18 @@ class TestGetSummaryTable:
         assert all(isinstance(row, dict) for row in table_data)
 
 
+class TestResetScores:
+    """Tests for cache reset behavior."""
+
+    def test_reset_scores_clears_cache(self, engine):
+        engine.score_asset({"service_type": "apache_php", "identifier": "h1", "details": {}})
+        assert len(engine._scores_cache) == 1
+
+        engine.reset_scores()
+
+        assert engine._scores_cache == []
+
+
 class TestScenarioSpecifications:
     """Tests based on spec scenarios (Section 5 of SPEC.md)."""
     

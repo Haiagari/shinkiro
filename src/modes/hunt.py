@@ -14,6 +14,33 @@ from src.opsec.kill_switch import kill_switch
 
 logger = get_logger('mode.hunt')
 
+
+def _get_top_critical_ports(db_session, scan_id: int | None, limit: int = 5):
+    from src.storage.models import Port
+
+    query = db_session.query(Port)
+    if scan_id is not None:
+        query = query.filter_by(scan_id=scan_id)
+    return query.order_by(Port.criticality_index.desc()).limit(limit).all()
+
+
+def _get_scoped_subdomains(db_session, scan_id: int | None):
+    from src.storage.models import Subdomain
+
+    query = db_session.query(Subdomain)
+    if scan_id is not None:
+        query = query.filter_by(scan_id=scan_id)
+    return query.all()
+
+
+def _get_scoped_ports(db_session, scan_id: int | None):
+    from src.storage.models import Port
+
+    query = db_session.query(Port)
+    if scan_id is not None:
+        query = query.filter_by(scan_id=scan_id)
+    return query.all()
+
 class HuntMode(BaseMode):
     def __init__(self, target: str, options: Dict[str, Any] = None):
         super().__init__(target, "hunt", options)
@@ -52,6 +79,9 @@ class HuntMode(BaseMode):
             scan_id=self.runtime_scan.id if self.runtime_scan else None,
         )
         
+        # v9.0.1 Fix: Seed the target host/IP to ensure pipeline continuity
+        orchestrator.seed_target(self.target)
+        
         passive_subdomains = []
         if "asset_discovery" in plan["capabilities"]:
             passive_subdomains = orchestrator.passive_discovery(self.target, depth=self.options.get("depth_level", 1)) or []
@@ -79,12 +109,14 @@ class HuntMode(BaseMode):
 
         # Phase 4: Scoring & Prioritization (v6.0)
         logger.info("[HUNT] Phase 4: Asset Scoring & Prioritization")
-        from src.storage.models import Port
         from rich.table import Table
         from rich.panel import Panel
         from src.core.logging import console
         
-        top_critical = self.db_session.query(Port).order_by(Port.criticality_index.desc()).limit(5).all()
+        top_critical = _get_top_critical_ports(
+            self.db_session,
+            self.runtime_scan.id if self.runtime_scan else None,
+        )
         
         if top_critical:
             table = Table(title="[bold red]Top 5 Critical Targets Identified[/bold red]", show_header=True, header_style="bold magenta")
@@ -144,9 +176,14 @@ class HuntMode(BaseMode):
         out_dir = Path(self.options.get("output") or f"runtime/scans/{self.target}/{self.session_id}")
         
         # Recuperar datos de la DB para el motor de inteligencia (ya persistidos por el orquestador)
-        from src.storage.models import Subdomain, Port
-        db_subdomains = self.db_session.query(Subdomain).all()
-        db_ports = self.db_session.query(Port).all()
+        db_subdomains = _get_scoped_subdomains(
+            self.db_session,
+            self.runtime_scan.id if self.runtime_scan else None,
+        )
+        db_ports = _get_scoped_ports(
+            self.db_session,
+            self.runtime_scan.id if self.runtime_scan else None,
+        )
         
         intel_context = {
             "config": self.options,

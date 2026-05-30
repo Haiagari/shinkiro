@@ -3,7 +3,6 @@ WAF Fingerprinting Provider
 Identifica firewalls de aplicaciones web usando wafw00f.
 """
 
-import subprocess
 import json
 from pathlib import Path
 from typing import List, Dict, Any
@@ -30,10 +29,11 @@ class WafProvider(BaseProvider):
         
         # Inyectar Chameleon Stealth Flags
         cmd.extend(self._get_stealth_flags())
+        capability = kwargs.get("capability")
 
         logger.info(f"Fingerprinting WAF para {target}")
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True)
+            result = self._run_tool(cmd, timeout=60, capability=capability, capture=True, retries=1)
             output = result.stdout
             
             # Heurística simple para el reporte
@@ -53,6 +53,6 @@ class WafProvider(BaseProvider):
                 "raw_output": output
             }
         except Exception as e:
-            logger.error(f"wafw00f falló: {e}")
+            logger.debug(f"wafw00f skipped/failed: {e}")
             
         return {}

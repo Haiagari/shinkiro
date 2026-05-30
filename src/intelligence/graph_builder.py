@@ -26,7 +26,7 @@ class GraphBuilder:
         MAX_NODES = 500
         is_truncated = False
 
-        scan = db.query(Scan).get(scan_id)
+        scan = db.get(Scan, scan_id)
         if not scan:
             return {"nodes": [], "edges": []}
 

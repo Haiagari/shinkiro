@@ -410,6 +410,7 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
     # ══════════════════════════════════════════════════════════════════════════════
     from src.storage.database import SessionLocal
     from src.storage.models import Hypothesis, Target
+    from src.core.target_normalizer import normalize_lookup_target
     from src.workflow.engine import workflow_engine
     from src.workflow.states import WorkflowState
     import uuid
@@ -417,7 +418,7 @@ def run_intelligence(target: str, out_dir: Path, args, context: dict = {}) -> di
     db = SessionLocal()
     try:
         # Obtener target_id
-        target_obj = db.query(Target).filter(Target.domain == target).first()
+        target_obj = db.query(Target).filter(Target.domain == normalize_lookup_target(target)).first()
         t_id = target_obj.id if target_obj else None
         
         for h_data in hypotheses:

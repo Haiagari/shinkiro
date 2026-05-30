@@ -3,7 +3,6 @@ Wrapper para Nmap (Network Scanner)
 Provee fingerprinting y escaneo detallado de servicios.
 """
 
-import subprocess
 import re
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -58,11 +57,12 @@ class NmapProvider(BaseProvider):
         
         # Inyectar Chameleon Stealth Flags v8.3.2
         cmd.extend(self._get_stealth_flags())
+        capability = kwargs.get("capability")
         
         logger.info(f"Running nmap: {' '.join(cmd)}")
         
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+            result = self._run_tool(cmd, timeout=600, capability=capability, capture=True, retries=1)
             if result.returncode not in [0, 1]:
                 raise ToolExecutionError(f"Nmap error: {result.stderr}")
             return self._parse_xml_output(result.stdout)

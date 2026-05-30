@@ -289,6 +289,10 @@ class ScoringEngine:
             List of CriticalityScore objects
         """
         return [self.score_asset(service) for service in services]
+
+    def reset_scores(self) -> None:
+        """Clear the in-memory score cache for a fresh scan/run."""
+        self._scores_cache.clear()
     
     def get_priority_queue(self, limit: int = 10) -> list[CriticalityScore]:
         """

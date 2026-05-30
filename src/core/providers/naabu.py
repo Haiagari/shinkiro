@@ -3,7 +3,6 @@ Wrapper para Naabu (Port Scanner)
 Provee una interfaz unificada para escaneo de puertos.
 """
 
-import subprocess
 import json
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -54,16 +53,13 @@ class NaabuProvider(BaseProvider):
         
         if self.config.auto_rate_limit_enabled:
             cmd.extend(["-c", str(self.config.max_requests_per_min)])
+
+        capability = kwargs.get("capability")
         
         logger.info(f"Running naabu: {' '.join(cmd)}")
         
         try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=300
-            )
+            result = self._run_tool(cmd, timeout=300, capability=capability, capture=True, retries=1)
             
             if result.returncode not in [0, 1]:
                 raise ToolExecutionError(f"Naabu error: {result.stderr}")

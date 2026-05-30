@@ -8,6 +8,7 @@ import logging
 import json
 import yaml
 import re
+import time
 from pathlib import Path
 from typing import List, Any, Dict
 
@@ -76,20 +77,50 @@ def load_json(path: Path) -> Any:
     return {}
 
 
-def run_cmd(cmd: List[str], timeout: int = 30, capture: bool = True) -> subprocess.CompletedProcess:
-    """Ejecuta un comando shell."""
-    try:
-        result = subprocess.run(
-            cmd,
-            capture_output=capture,
-            text=True,
-            timeout=timeout,
-            cwd=Path(__file__).resolve().parents[2]
-        )
-        return result
-    except subprocess.TimeoutExpired:
-        _logger.error(f"Timeout executing: {' '.join(cmd)}")
-        raise
+def run_cmd(
+    cmd: List[str],
+    timeout: int = 30,
+    capture: bool = True,
+    check: bool = False,
+    retries: int = 0,
+    backoff: float = 1.5,
+    stdout: Any | None = None,
+    stderr: Any | None = None,
+) -> subprocess.CompletedProcess:
+    """Ejecuta un comando shell con reintentos ante timeout."""
+    attempts = max(0, retries) + 1
+    last_exc: subprocess.TimeoutExpired | None = None
+
+    for attempt in range(1, attempts + 1):
+        try:
+            run_kwargs = {
+                "text": True,
+                "timeout": timeout,
+                "check": check,
+                "cwd": Path(__file__).resolve().parents[2],
+            }
+            if stdout is not None or stderr is not None:
+                run_kwargs["stdout"] = stdout
+                run_kwargs["stderr"] = stderr
+            else:
+                run_kwargs["capture_output"] = capture
+
+            return subprocess.run(cmd, **run_kwargs)
+        except subprocess.TimeoutExpired as exc:
+            last_exc = exc
+            if attempt >= attempts:
+                _logger.error(f"Timeout executing: {' '.join(cmd)}")
+                raise
+
+            wait_seconds = backoff ** (attempt - 1)
+            _logger.warning(
+                f"Timeout executing: {' '.join(cmd)} (attempt {attempt}/{attempts}); retrying in {wait_seconds:.1f}s"
+            )
+            time.sleep(wait_seconds)
+
+    if last_exc:
+        raise last_exc
+    raise RuntimeError("run_cmd() exited without a result")
 
 
 def read_lines(path: Path) -> List[str]:
@@ -167,4 +198,3 @@ def anonymize_target(target: str) -> str:
     if len(parts) > 2:
         return f"target-xxx.{'.'.join(parts[-2:])}"
     return f"target-xxx.{parts[-1]}"
-

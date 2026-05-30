@@ -2,7 +2,6 @@
 Subfinder Provider para Asset Discovery
 """
 
-import subprocess
 from pathlib import Path
 from typing import List
 from src.core.providers.base import BaseProvider
@@ -38,10 +37,12 @@ class SubfinderProvider(BaseProvider):
         # Si la intención es ruido bajo, evitamos el flag "-all"
         if kwargs.get("noise") == "low":
             if "-all" in cmd: cmd.remove("-all")
+
+        capability = kwargs.get("capability")
         
         logger.info(f"Running subfinder on {target}")
         try:
-            subprocess.run(cmd, check=True, capture_output=True)
+            self._run_tool(cmd, timeout=120, capability=capability, capture=True, check=True, retries=1)
             if output_file.exists():
                 with open(output_file) as f:
                     results = [line.strip() for line in f if line.strip()]

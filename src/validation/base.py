@@ -4,7 +4,7 @@ Base Validator - Interfaz para validación de hipótesis v5.0
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any, List
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 class ValidationResult:
@@ -14,7 +14,7 @@ class ValidationResult:
         self.confidence_after = confidence
         self.evidence = evidence or []
         self.notes = notes
-        self.timestamp = datetime.utcnow()
+        self.timestamp = datetime.now(timezone.utc)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -44,7 +44,7 @@ class BaseValidator(ABC):
         return {
             "id": f"ev_{uuid.uuid4().hex[:8]}",
             "type": type,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "data": str(data),
             "metadata": metadata or {}
         }

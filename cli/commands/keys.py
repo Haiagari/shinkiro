@@ -4,8 +4,7 @@ CLI Commands for API Key Management - OzyRecon v8.1
 
 import click
 from rich.table import Table
-from rich.panel import Panel
-from cli.shared import console
+from cli.shared import console, render_outcome, render_panel
 from src.auth.key_store import key_store
 
 @click.group(name="keys")
@@ -23,21 +22,21 @@ def create_key(name, scopes, limit, prefix):
     scope_list = [s.strip() for s in scopes.split(",")]
     name, api_key = key_store.create_key(name, scope_list, rate_limit=limit, prefix=prefix)
     
-    console.print(Panel(
+    render_panel(
         f"[bold green]API Key Created Successfully![/bold green]\n\n"
         f"Name: [cyan]{name}[/cyan]\n"
         f"Scopes: [yellow]{', '.join(scope_list)}[/yellow]\n\n"
         f"SECRET KEY: [bold white]{api_key}[/bold white]\n\n"
         f"[bold red]WARNING: Save this key now. It will NEVER be shown again.[/bold red]",
-        border_style="green"
-    ))
+        border_style="green",
+    )
 
 @keys.command(name="list")
 def list_keys():
     """Lists all active API keys."""
     all_keys = key_store.list_keys()
     if not all_keys:
-        console.print("[yellow]No API keys found.[/yellow]")
+        render_outcome("No API keys found.", border_style="yellow")
         return
 
     table = Table(title="OzyRecon API Key Registry")
@@ -67,6 +66,6 @@ def revoke_key(name):
     """Permanently revokes an API key."""
     if click.confirm(f"Are you sure you want to revoke key '{name}'?"):
         if key_store.revoke_key(name):
-            console.print(f"[green]Key '{name}' revoked successfully.[/green]")
+            render_outcome(f"Key '{name}' revoked successfully.")
         else:
-            console.print(f"[red]Key '{name}' not found.[/red]")
+            render_outcome(f"Key '{name}' not found.", border_style="red")

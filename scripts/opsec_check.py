@@ -53,8 +53,21 @@ def check_file(filepath, patterns, allowed_files):
             matches = re.finditer(pattern, content, re.IGNORECASE)
             for match in matches:
                 val = match.group()
-                # --- EXCEPCIONES PARA INFRAESTRUCTURA LOCAL ---
+                # --- EXCEPCIONES PARA INFRAESTRUCTURA LOCAL Y TEST ---
+                # RFC 1918 (private), RFC 5737 (documentation), loopback, public DNS
                 if val in ['0.0.0.0', '127.0.0.1', '8.8.8.8', '1.1.1.1']:
+                    continue
+                # RFC 1918 ranges (10.x.x.x, 192.168.x.x, 172.16-31.x.x)
+                if val.startswith('10.') or val.startswith('192.168.') or val.startswith('172.'):
+                    continue
+                # RFC 5737 documentation ranges (192.0.2.x, 198.51.100.x, 203.0.113.x)
+                if val.startswith('192.0.2.') or val.startswith('198.51.100.') or val.startswith('203.0.113.'):
+                    continue
+                # Link-local (169.254.x.x)
+                if val.startswith('169.254.'):
+                    continue
+                # Loopback range (127.x.x.x)
+                if val.startswith('127.'):
                     continue
                 
                 print(f"❌ OPSEC ALERT: Pattern '{pattern}' found in '{filepath}' (Value: {val})")

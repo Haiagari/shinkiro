@@ -1,93 +1,53 @@
-# 📖 OzyRecon: Operating Guide
+# Usage
 
-OzyRecon is designed for controlled reconnaissance and review. This guide focuses on the live engine contract, API usage, session lifecycle, and the output surfaces operators should expect.
+OzyRecon runs as a staged, scoped workflow.
 
-## 🕹️ Daily Flow
+## Standard flow
 
-### 1. Verify the runtime
+1. `python ozy.py init`
+2. `python ozy.py doctor`
+3. `python ozy.py flow <target> --profile safe-active`
+4. `python ozy.py diff <target>`
 
-```bash
-python ozy.py verify
-```
+## Scope management
 
-### 2. Run a hunt
+- `python ozy.py scope list --json`
+- `python ozy.py scope add example.com *.example.com`
+- `python ozy.py scope remove example.com *.example.com`
+- `python ozy.py scope import targets.txt`
 
-```bash
-python ozy.py hunt target.com
-```
+## Profiles
 
-### 3. Inspect the result
+| Profile | Purpose |
+|---|---|
+| `passive` | Public-source discovery only |
+| `safe-active` | Low-impact validation |
+| `authorized` | Full authorized runtime |
 
-- Session trace: `GET /sessions/{session_id}/trace`
-- Narrative analysis: `GET /sessions/{session_id}/analyze`
-- Health metrics: `GET /health`
+## What `flow` does
 
-## 🔐 Identity & Access Control
+- preflight verification
+- scope and authorization checks
+- adaptive discovery and scoring
+- analysis snapshot generation
+- report generation
+- diff comparison against prior sessions
 
-OzyRecon uses multi-key RBAC with hashed API keys.
+## Artifacts
 
-### Key management
+- `runs/<session_id>/analysis.md`
+- `runs/<session_id>/analysis.json`
+- `runs/<session_id>/collaboration.json`
+- `reports/reales/...`
 
-```bash
-python ozy.py keys create analyst-name --scopes sessions:read,analysis:read
-python ozy.py keys list
-python ozy.py keys revoke analyst-name
-```
+## API notes
 
-The default runtime seed lives in `config/api_keys.example.json`. On a fresh checkout, `python ozy.py` materializes `config/api_keys.json` automatically if it is missing.
+- session trace is exposed for every run
+- `GET /health`
+- `POST /hunt`
+- `GET /sessions/{session_id}/trace`
+- `GET /sessions/{session_id}/analyze`
 
-### Operational scopes
+## Quiet mode
 
-- `hunt:run`: execute active reconnaissance
-- `sessions:read`: list and view session results
-- `analysis:read`: access AI narrative reports
-- `admin:*`: unrestricted access
-
-## 🔌 API Usage
-
-Protected endpoints expect the `X-API-KEY` header:
-
-```bash
-curl -H "X-API-KEY: <your-key>" http://localhost:8000/health
-```
-
-Use the `master-admin` seed for full access (`admin:*`) or the `auditor-externo` seed for read-only dashboard access (`sessions:read`) until you rotate your own keys.
-
-### Lifecycle operations
-
-- `POST /hunt` starts a session and returns a `session_id`
-- `POST /sessions/{session_id}/cancel` stops an active scan
-- `GET /sessions/{session_id}/analyze` returns the narrative layer
-- `GET /sessions/{session_id}/trace` exposes the runtime trace
-
-## 📊 Enterprise Baseline v8.3.2
-
-The current baseline provides:
-
-- Anti-SSRF validation before execution
-- Ed25519 signatures for findings
-- Non-blocking hunts with cancel support
-- Smart Graph output with `is_truncated`
-- Health metrics with `scans_total`, `scans_failed`, and `active_concurrency`
-
-## 🔐 Safety & OPSEC
-
-- `Ctrl+C` stops the local CLI flow
-- Low-risk checks run automatically
-- Sensitive auth/panel checks remain gated
-- Blocked hypotheses stay visible in logs and traces
-
-## 🧩 Capability Matrix
-
-| Tool | Capability | Role | If missing |
-| --- | --- | --- | --- |
-| `subfinder` | `asset_discovery` | required | Passive subdomain breadth shrinks |
-| `dnsx` | `dns_resolution` | required | Discovery normalization keeps raw assets only |
-| `httpx` | `live_detection` | required | Live-host confirmation degrades |
-| `amass` | `asset_discovery` | optional | Passive breadth drops |
-| `assetfinder` | `asset_discovery` | optional | Passive breadth drops |
-| `nmap` | `service_discovery` | optional | Service fingerprinting drops |
-| `naabu` | `port_scan` | optional | Port enumeration drops |
-| `nuclei` | `template_scan` | optional | Template-based findings drop |
-
-The verifier surfaces this matrix directly with `python ozy.py verify`.
+Use `--json` when you need machine-readable output. Human-oriented panels are suppressed in that mode.

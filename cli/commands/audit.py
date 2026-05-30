@@ -1,10 +1,8 @@
 import click
-from rich.console import Console
 from rich.table import Table
 from src.storage.db_manager import db
-from src.intelligence.ai_analyzer import ai_analyst
 
-console = Console()
+from cli.shared import console, render_outcome, render_panel
 
 @click.command()
 @click.argument('target')
@@ -13,14 +11,14 @@ def audit(target, finding_type):
     """
     Manually triage and verify findings for a target.
     """
-    console.print(f"[bold blue]OzyRecon Audit Mode[/bold blue] - Target: [yellow]{target}[/yellow]")
+    render_panel(f"[bold blue]OzyRecon Audit Mode[/bold blue] - Target: [yellow]{target}[/yellow]", border_style="blue")
     
     # Simular recuperación de hallazgos desde el Storage
     # En una implementación real, leeríamos de la DB CAS o del inventario
     findings = db.get_assets(target) # Placeholder
     
     if not findings:
-        console.print("[red]No findings found for this target.[/red]")
+        render_outcome("No findings found for this target.", border_style="red")
         return
 
     table = Table(title=f"Auditing {finding_type.capitalize()} Findings")
@@ -36,7 +34,7 @@ def audit(target, finding_type):
         table.add_row(str(i), finding.get('type', 'Unknown'), str(finding.get('match', '...')), verdict)
     
     console.print(table)
-    console.print("\n[bold]Use 'ozy analyze <host>' for a full AI-driven narrative report.[/bold]")
+    render_panel("Use 'ozy analyze <host>' for a full AI-driven narrative report.", border_style="cyan")
 
 if __name__ == "__main__":
     audit()

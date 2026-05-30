@@ -4,15 +4,16 @@ Escaneo de Puertos basado en Capacidades
 
 from pathlib import Path
 from typing import Any, Optional
+
+from src.core.target_normalizer import extract_target_host, first_token
 from src.utils import log, dedupe, save_json
 from src.core.tool_manager import tool_manager
 from src.core.config import config
 
 # Asegurar registro de proveedores
-import src.core.providers.naabu
-import src.core.providers.nmap
 
 TOP_PORTS = "80,443,8080,8443,8000,8888,3000,4000,5000,7000,9000,9090,9200,6379,27017,3306,5432,21,22,25,53,110,143,993,995"
+
 
 def _resolve_max_hosts(args: Any, context: dict, total_hosts: int) -> int:
     candidates = [
@@ -29,12 +30,12 @@ def _resolve_max_hosts(args: Any, context: dict, total_hosts: int) -> int:
 def run_ports(hosts: list, out_dir: Path, args, context: Optional[dict] = None) -> dict:
     context = context or {}
     out_dir.mkdir(parents=True, exist_ok=True)
-    
+
     clean_hosts = []
     for h in hosts:
-        h = h.split()[0] if h else ""
-        h = h.replace("https://", "").replace("http://", "").split("/")[0].split(":")[0]
-        if h: clean_hosts.append(h)
+        h = extract_target_host(first_token(h)) if h else ""
+        if h:
+            clean_hosts.append(h)
     clean_hosts = dedupe(clean_hosts)
 
     if not clean_hosts:
@@ -44,13 +45,14 @@ def run_ports(hosts: list, out_dir: Path, args, context: Optional[dict] = None) 
     selected_hosts = clean_hosts[:max_hosts]
 
     log(f"Escaneando puertos en {len(selected_hosts)} host(s)...", "info")
-    
+
     # 1. Capacidad: port_scan (Ej: Naabu)
     log("Iniciando capacidad: port_scan", "info")
     open_ports_results = []
     for host in selected_hosts:
         res = tool_manager.run_capability("port_scan", host, ports=TOP_PORTS)
-        if res: open_ports_results.extend(res)
+        if res:
+            open_ports_results.extend(res)
 
     log(f"Puertos abiertos encontrados: {len(open_ports_results)}", "success")
 
@@ -59,7 +61,7 @@ def run_ports(hosts: list, out_dir: Path, args, context: Optional[dict] = None) 
     log("Iniciando capacidad: service_discovery", "info")
     services = {}
     unique_hosts = dedupe([r.host for r in open_ports_results])
-    
+
     for host in unique_hosts[:10]:
         # Filtrar puertos de este host
         host_ports = ",".join([str(r.port) for r in open_ports_results if r.host == host])
@@ -71,8 +73,8 @@ def run_ports(hosts: list, out_dir: Path, args, context: Optional[dict] = None) 
     results = {
         "open_ports": [f"{r.host}:{r.port}" for r in open_ports_results],
         "services": services,
-        "out_dir": str(out_dir)
+        "out_dir": str(out_dir),
     }
-    
+
     save_json(out_dir / "port_results.json", results)
     return results

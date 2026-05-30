@@ -3,7 +3,6 @@ Fuzzer Provider para OzyRecon v8.3.2
 Fuzzing inteligente basado en el stack tecnológico.
 """
 
-import subprocess
 import os
 from pathlib import Path
 from typing import List, Any, Dict
@@ -70,10 +69,11 @@ class FuzzerProvider(BaseProvider):
         
         # Stealth flags
         cmd.extend(self._get_stealth_flags())
+        capability = kwargs.get("capability")
 
         logger.info(f"Fuzzing target: {target} (Wordlist: {Path(wordlist).name})")
         try:
-            subprocess.run(cmd, check=False) # ffuf suele devolver non-zero si encuentra algo
+            self._run_tool(cmd, timeout=900, capability=capability, capture=True, check=False, retries=1)
             
             if output_file.exists():
                 import json

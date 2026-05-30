@@ -3,7 +3,7 @@ Modelos de Datos para la Base de Datos (SQLAlchemy)
 OzyRecon Storage Layer - Modelos optimizados.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Float, Index, JSON
 from sqlalchemy.orm import relationship, declarative_base
 
@@ -33,7 +33,7 @@ class AgentMemory(Base):
     key = Column(String(100))  # tech_stack, attack_surface, priority_reason
     value = Column(JSON)  # el razonamiento estructurado
     confidence = Column(Float, default=1.0)  # 0.0 a 1.0
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     expires_at = Column(DateTime, nullable=True)
 
 
@@ -41,7 +41,7 @@ class AgentLock(Base):
     """Lock para evitar ejecuciones concurrentes del agente."""
     __tablename__ = "agent_locks"
     mode = Column(String(50), primary_key=True)
-    locked_at = Column(DateTime, default=datetime.utcnow)
+    locked_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     expires_at = Column(DateTime)
 
 
@@ -55,7 +55,7 @@ class Target(Base):
     
     id = Column(Integer, primary_key=True)
     domain = Column(String(255), unique=True, nullable=False, index=True)
-    added_at = Column(DateTime, default=datetime.utcnow)
+    added_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     last_scan = Column(DateTime, nullable=True)
     
     # Metadata
@@ -84,7 +84,7 @@ class Scan(Base):
     mode = Column(String(50))  # hunt, continuous, campaign, research, forensic, servicio
     
     # Tiempos
-    start_time = Column(DateTime, default=datetime.utcnow)
+    start_time = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     end_time = Column(DateTime, nullable=True)
     
     # Resultados
@@ -141,8 +141,8 @@ class Subdomain(Base):
     cname = Column(String(500), nullable=True)
     
     # Timestamps
-    discovered_at = Column(DateTime, default=datetime.utcnow)
-    last_seen = Column(DateTime, default=datetime.utcnow)
+    discovered_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    last_seen = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     
     scan = relationship("Scan", back_populates="subdomains")
 
@@ -220,7 +220,7 @@ class Session(Base):
     mode = Column(String(50))
     
     # Tiempos
-    started_at = Column(DateTime, default=datetime.utcnow)
+    started_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     ended_at = Column(DateTime, nullable=True)
     duration = Column(Float, nullable=True)  # segundos
     
@@ -269,8 +269,8 @@ class Finding(Base):
     
     # Estado
     status = Column(String(20), default="new")  # new, confirmed, false_positive, duplicate, resolved
-    first_seen = Column(DateTime, default=datetime.utcnow)
-    last_seen = Column(DateTime, default=datetime.utcnow)
+    first_seen = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    last_seen = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     seen_count = Column(Integer, default=1)
     
     # Relaciones
@@ -281,7 +281,7 @@ class WeightHistory(Base):
     __tablename__ = 'weight_history'
     
     id = Column(Integer, primary_key=True)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     reputation = Column(Float)
     novelty = Column(Float)
     diff = Column(Float)
@@ -329,7 +329,7 @@ class Evidence(Base):
     hypothesis_id = Column(String(100), ForeignKey('hypotheses.id'))
     
     type = Column(String(50)) # http_response, screenshot, console_output, hash
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     
     data = Column(Text) # Contenido o path a archivo
     storage_type = Column(String(20), default="database") # database, local, s3
@@ -350,7 +350,7 @@ class WorkflowStep(Base):
     target_id = Column(Integer, ForeignKey('targets.id'), nullable=True)
     
     state = Column(String(50)) # DISCOVERED, ENUMERATED, ANALYZED, HYPOTHESIZED, ...
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     actor = Column(String(50)) # system, user, ai
     notes = Column(Text, nullable=True)
     

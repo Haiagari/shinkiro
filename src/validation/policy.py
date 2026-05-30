@@ -8,9 +8,21 @@ This module makes the probing contract explicit:
 """
 
 from dataclasses import dataclass
-from typing import Dict, Any
+from typing import Any, Dict
 from urllib.parse import urlparse
-import ipaddress
+
+from src.scope import host_in_allowed_domains
+from src.security.target_validator import is_safe_target
+
+
+def normalize_target_url(raw_url: str) -> str:
+    """Normalize a raw target into an HTTP(S) URL."""
+    value = raw_url.strip()
+    if not value:
+        return value
+    if "://" in value:
+        return value
+    return f"https://{value.lstrip('/')}"
 
 
 @dataclass(frozen=True)
@@ -73,27 +85,29 @@ class ValidationPolicy:
             return scope_decision
 
         if h_type in self.BLOCKED_TYPES:
-            return ValidationPolicyDecision("blocked", f"{h_type} is not allowed in the default flow")
+            return ValidationPolicyDecision(
+                "blocked", f"{h_type} is not allowed in the default flow"
+            )
 
         if h_type in self.SAFE_TYPES:
             return ValidationPolicyDecision("safe", f"{h_type} is safe to validate automatically")
 
         if h_type in self.GATE_REQUIRED_TYPES:
-            return ValidationPolicyDecision("gate_required", f"{h_type} should remain explicitly gated")
+            return ValidationPolicyDecision(
+                "gate_required", f"{h_type} should remain explicitly gated"
+            )
 
         if h_type.endswith("_PANEL") or "AUTH" in h_type or "CONFIG" in h_type:
-            return ValidationPolicyDecision("gate_required", f"{h_type} is a sensitive validation path")
+            return ValidationPolicyDecision(
+                "gate_required", f"{h_type} is a sensitive validation path"
+            )
 
-        return ValidationPolicyDecision("safe", f"{h_type} can run under the default controlled probing flow")
-
-    def _normalize_url(self, raw_url: str) -> str:
-        value = raw_url.strip()
-        if "://" not in value:
-            value = f"https://{value.lstrip('/')}"
-        return value
+        return ValidationPolicyDecision(
+            "safe", f"{h_type} can run under the default controlled probing flow"
+        )
 
     def scope_decision(self, raw_url: str) -> ValidationPolicyDecision:
-        normalized = self._normalize_url(raw_url)
+        normalized = normalize_target_url(raw_url)
         parsed = urlparse(normalized)
         host = parsed.hostname
 
@@ -103,15 +117,22 @@ class ValidationPolicy:
         if not host:
             return ValidationPolicyDecision("blocked", "missing hostname in target url")
 
-        if host in {"localhost"} or host.endswith(".local"):
-            return ValidationPolicyDecision("blocked", f"{host} is not allowed in the default scope")
+        from pathlib import Path
+        import yaml
 
-        try:
-            ip = ipaddress.ip_address(host)
-            if any([ip.is_private, ip.is_loopback, ip.is_link_local, ip.is_reserved, ip.is_multicast]):
-                return ValidationPolicyDecision("blocked", f"{host} is not allowed in the default scope")
-        except ValueError:
-            pass
+        scope_file = Path("config/scope.yaml")
+        if scope_file.exists():
+            with open(scope_file) as f:
+                scope = yaml.safe_load(f) or {}
+                allowed = scope.get("allowed_domains", [])
+                if host_in_allowed_domains(host, allowed):
+                    return ValidationPolicyDecision(
+                        "safe", f"{host} is explicitly allowed in scope.yaml"
+                    )
+
+        is_safe, reason = is_safe_target(host)
+        if not is_safe:
+            return ValidationPolicyDecision("blocked", reason)
 
         return ValidationPolicyDecision("safe", f"{host} is within the default controlled scope")
 

@@ -4,10 +4,14 @@ Persists long-term insights and detects surface drift.
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from collections import defaultdict
 from typing import List, Dict, Any, Optional
 from src.storage.queries import DBQueries
-from src.storage.models import Scan, Subdomain, Port, Vulnerability
+from src.storage.models import Scan, Subdomain, Port, Vulnerability, AgentMemory, AgentLock
+from src.agent.config_writer import save_scoring_weights
+
+MIN_OBSERVATIONS = 5
 
 logger = logging.getLogger("intelligence.learning")
 
@@ -16,11 +20,68 @@ class LearningEngine:
         self.db = DBQueries(db_session)
         self.db_session = db_session
 
+    def acquire_lock(self, mode: str, timeout_mins: int = 60) -> bool:
+        now = datetime.now(timezone.utc)
+        lock = self.db_session.query(AgentLock).filter(AgentLock.mode == mode).first()
+        if lock and lock.expires_at:
+            expires_at = lock.expires_at
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+            if expires_at > now:
+                return False
+
+        if lock:
+            self.db_session.delete(lock)
+
+        self.db_session.add(AgentLock(mode=mode, locked_at=now, expires_at=now + timedelta(minutes=timeout_mins)))
+        self.db_session.commit()
+        return True
+
+    def release_lock(self, mode: str):
+        lock = self.db_session.query(AgentLock).filter(AgentLock.mode == mode).first()
+        if lock:
+            self.db_session.delete(lock)
+            self.db_session.commit()
+
+    def analyze_and_update(self) -> Dict[str, Any]:
+        if not self.acquire_lock("aprendizaje", timeout_mins=60):
+            return {}
+
+        try:
+            memories = self.db_session.query(AgentMemory).filter(AgentMemory.key == "tech_stack").all()
+            if len(memories) < MIN_OBSERVATIONS:
+                return {}
+
+            grouped: Dict[str, int] = defaultdict(int)
+            for mem in memories:
+                value = mem.value or []
+                if isinstance(value, list):
+                    for tech in value:
+                        grouped[str(tech)] += 1
+
+            results: Dict[str, Dict[str, float]] = {}
+            for tech, count in grouped.items():
+                if count < MIN_OBSERVATIONS:
+                    continue
+                tech_key = tech.strip()
+                results[tech_key] = {
+                    "nuclei": 0.9,
+                    "dalfox": 0.8 if tech_key.lower() in {"wordpress", "wp", "wordpress core"} else 0.4,
+                }
+
+            if results:
+                confidence = min(1.0, len(memories) / 10.0)
+                save_scoring_weights(results, confidence=confidence)
+
+            return results
+        finally:
+            self.release_lock("aprendizaje")
+
     def process_scan_completion(self, target: str, scan_id: int):
         """
         Analyzes a finished scan and updates long-term memory.
         """
-        scan = self.db_session.query(Scan).get(scan_id)
+        scan = self.db_session.get(Scan, scan_id)
         if not scan: return
 
         logger.info(f"🧠 Learning Engine processing scan {scan_id} for {target}")

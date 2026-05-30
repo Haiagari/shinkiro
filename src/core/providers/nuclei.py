@@ -2,7 +2,6 @@
 Nuclei Provider para Template-based Scanning
 """
 
-import subprocess
 import json
 from pathlib import Path
 from typing import List, Dict, Any
@@ -72,11 +71,11 @@ class NucleiProvider(BaseProvider):
         # Opcionales
         if kwargs.get("update_templates", False):
             logger.info("Updating nuclei templates...")
-            subprocess.run([self.path, "-update-templates", "-silent"])
+            self._run_tool([self.path, "-update-templates", "-silent"], timeout=300, capability=kwargs.get("capability"), capture=True, retries=1)
 
         logger.info(f"Running nuclei on {target}")
         try:
-            subprocess.run(cmd, check=True, capture_output=True)
+            self._run_tool(cmd, timeout=300, capability=kwargs.get("capability"), capture=True, check=True, retries=1)
             results = []
             if output_file.exists():
                 with open(output_file) as f:
