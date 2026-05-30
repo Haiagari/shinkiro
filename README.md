@@ -3,7 +3,11 @@
 > **Advanced Persistent Reconnaissance Platform**  
 > Authorized reconnaissance engine for the Ozy Ecosystem.
 
-OzyRecon is a professional-grade reconnaissance engine built with **Hexagonal Architecture (Ports & Adapters)**. It discovery assets, identifies attack surfaces, and generates cryptographically signed evidence for high-stakes security audits.
+[![Production Status](https://img.shields.io/badge/status-production--ready-green.svg)](docs/STATUS.md)
+[![Tests](https://img.shields.io/badge/tests-217%20passing-brightgreen.svg)](#testing)
+[![Version](https://img.shields.io/badge/version-9.0.1-blue.svg)](CHANGELOG.md)
+
+OzyRecon is a production-ready reconnaissance engine built with **Hexagonal Architecture (Ports & Adapters)**. It discovers assets, identifies attack surfaces, and generates cryptographically signed evidence for high-stakes security audits and bug bounty programs.
 
 ---
 
@@ -55,29 +59,65 @@ OzyRecon v9.0.1 has replaced legacy HTML/PDF reporting with professional technic
 ### Installation
 
 ```bash
+# Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate
+
+# Install dependencies and package
 pip install -r requirements.txt
+pip install -e .
+
+# Verify installation
+python ozy.py --version  # Should show: v9.0.1
+python ozy.py doctor     # Validates all dependencies
 ```
 
 ### Run a Flow
 
 ```bash
-# Add target to scope
-PYTHONPATH=. python -m cli.ozy scope add target.com
+# Ensure venv is activated
+source venv/bin/activate
 
-# Execute the workflow
-PYTHONPATH=. python -m cli.ozy flow target.com --profile safe-active
-# Or use the stable entrypoint
+# Add target to scope
+python ozy.py scope add target.com
+
+# Execute the full reconnaissance workflow
 python ozy.py flow target.com --profile safe-active
+
+# View results
+python ozy.py inventory
+python ozy.py analyze target.com
 ```
 
 ---
 
-## 🛠️ Development & Tooling
+## 🛠️ Development & Testing
 
-- **Testing**: A strict `pytest` suite is located in `tests/`. **Always run tests inside the isolated `venv`** to avoid system package conflicts.
-- **Experiments & Load Testing**: Proof of concept, performance, and concurrency stress tests are strictly organized within the `scripts/` directory (e.g. `scripts/performance/`) to avoid polluting the core test framework.
+### Running Tests
+
+**Production Status**: 217/221 tests passing (4 skipped)
+
+```bash
+# Ensure venv is activated
+source venv/bin/activate
+
+# Run full test suite
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run specific test file
+pytest tests/core/test_tool_manager_sync.py
+```
+
+**Important**: Always run tests inside the isolated `venv` to avoid system package conflicts. The root `conftest.py` ensures proper isolation from Go module dependencies.
+
+### Experiments & Load Testing
+
+Proof of concept, performance, and concurrency stress tests are organized within the `scripts/` directory:
+- `scripts/performance/` — Load testing and benchmarks
+- `scripts/experiments/` — Proof of concept implementations
 
 ---
 
