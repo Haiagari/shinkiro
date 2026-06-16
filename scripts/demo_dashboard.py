@@ -2,9 +2,9 @@
 Simulación de aprendizaje para demostración del Dashboard.
 """
 
-from src.intelligence.learning_orchestrator import learning_orchestrator
-from src.intelligence.dashboard import show_dashboard
-from src.intelligence.decision_log import DecisionRepository
+from src.intelligence.learning.learning_orchestrator import learning_orchestrator
+from src.intelligence.autonomy.dashboard import show_dashboard
+from src.intelligence.learning.decision_log import DecisionRepository
 from src.storage.database import SessionLocal, init_db
 
 def simulate():

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
-from src.intelligence.autonomy import AutonomyPlanner
+from src.intelligence.autonomy.autonomy import AutonomyPlanner
 from src.storage.queries import DBQueries
 
 

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import re
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -38,9 +39,11 @@ from src.scope import host_in_allowed_domains
 from src.scope.profiles import get_profile
 from src.storage.database import SessionLocal
 from src.storage.models import Scan, Subdomain, Target
+from src.storage.queries import DBQueries
 from src.storage.diff import DiffEngine
 from src.core.target_normalizer import normalize_lookup_target
 from src.core.tool_manager import tool_manager
+from src.plugins.hooks import dispatch_hook
 
 # OzyRecon v1.2: Hexagonal Architecture Components
 from src.application.use_cases.orchestrator_v10 import OzyOrchestratorV10
@@ -152,7 +155,7 @@ def _collect_verification(allow_degraded: bool) -> Dict[str, Any]:
     }
 
 
-def _run_hunt(target: str, **options: Any) -> Dict[str, Any]:
+def _run_hunt(target: str, session_id: str, **options: Any) -> Dict[str, Any]:
     # OzyRecon v1.2 Wiring: Dependency Injection
     # ---------------------------------------------------------
     event_bus = InMemoryEventBus()
@@ -178,22 +181,7 @@ def _run_hunt(target: str, **options: Any) -> Dict[str, Any]:
     # but the core execution is now governed by v10 logic.
     v12_orchestrator.execute_recon(target)
 
-    db = SessionLocal()
-    try:
-        lookup_target = normalize_lookup_target(target)
-        scan_obj = (
-            db.query(Scan)
-            .filter(
-                Scan.target_id
-                == db.query(Target.id).filter(Target.domain == lookup_target).scalar_subquery()
-            )
-            .order_by(Scan.id.desc())
-            .first()
-        )
-        session_id = scan_obj.session_id if scan_obj else "legacy-session"
-        return {"status": "completed", "session_id": session_id}
-    finally:
-        db.close()
+    return {"status": "completed", "session_id": session_id}
 
 
 def _build_analysis_snapshot(
@@ -364,6 +352,16 @@ def execute_flow(
     if not profile:
         raise click.ClickException(f"Invalid profile: {scan_profile}")
 
+    # Set up scan context with profile timeout_policy
+    from src.core.context import ScanContext, set_context
+    scan_ctx = ScanContext(
+        target=target,
+        mode="flow",
+        rate_limit=profile.rate_limit,
+        timeout_policy=dict(profile.timeout_policy),
+    )
+    set_context(scan_ctx)
+
     # Check scope file (required for all scans)
     scope_file = Path("config/scope.yaml")
     if not scope_file.exists():
@@ -435,78 +433,115 @@ def execute_flow(
             "Launching discovery, enrichment, scoring and intelligence loops.",
         )
 
-    hunt_result = _run_hunt(
-        target,
-        threads=threads,
-        speed=speed,
-        depth_level=depth_level,
-        intent=intent,
-        steroids=steroids,
-        ghost=ghost,
-        scan_profile=scan_profile,
-        auth_file=auth_file,
-    )
-    session_id = str(hunt_result.get("session_id", "legacy-session"))
-
-    if ui_enabled:
-        render_stage(
-            "4/5",
-            "Analysis snapshot",
-            "Building local analysis artifacts and recommendations from the session data.",
-        )
-
-    safe_target = _safe_segment(target)
-    session_dir = Path(output) / safe_target / session_id
-    analysis_snapshot = _build_analysis_snapshot(target, session_id, analyze_host=analyze_host)
-    artifact_paths = _write_analysis_files(session_dir, analysis_snapshot)
-    report_path = _generate_dummy_report(session_dir, analysis_snapshot)
-
-    db = SessionLocal()
+    session_id = str(uuid.uuid4())
+    scan_id: Optional[int] = None
+    db_session = SessionLocal()
     try:
-        scan_obj = db.query(Scan).filter(Scan.session_id == session_id).first()
-        if scan_obj:
-            scan_obj.out_dir = str(session_dir)
-            db.commit()
+        db_queries = DBQueries(db_session)
+        scan_record = db_queries.create_scan(
+            target,
+            session_id,
+            mode="flow",
+            status="running",
+            start_time=datetime.now(timezone.utc),
+        )
+        scan_id = scan_record.id
     finally:
-        db.close()
+        db_session.close()
 
-    if ui_enabled:
-        _render_data_summary(
-            {"target": target, "analysis": analysis_snapshot, "session_dir": str(session_dir)}
+    try:
+        hunt_result = _run_hunt(
+            target,
+            session_id,
+            threads=threads,
+            speed=speed,
+            depth_level=depth_level,
+            intent=intent,
+            steroids=steroids,
+            ghost=ghost,
+            scan_profile=scan_profile,
+            auth_file=auth_file,
         )
-        render_stage(
-            "5/5",
-            "Diff intelligence",
-            "Comparing this run against the previous baseline and summarizing changes.",
+
+        if scan_id is not None:
+            db_session = SessionLocal()
+            try:
+                db_queries = DBQueries(db_session)
+                db_queries.update_scan_status(scan_id, "completed")
+            finally:
+                db_session.close()
+
+        if ui_enabled:
+            render_stage(
+                "4/5",
+                "Analysis snapshot",
+                "Building local analysis artifacts and recommendations from the session data.",
+            )
+
+        safe_target = _safe_segment(target)
+        session_dir = Path(output) / safe_target / session_id
+        analysis_snapshot = _build_analysis_snapshot(target, session_id, analyze_host=analyze_host)
+        artifact_paths = _write_analysis_files(session_dir, analysis_snapshot)
+        report_path = _generate_dummy_report(session_dir, analysis_snapshot)
+
+        db = SessionLocal()
+        try:
+            scan_obj = db.query(Scan).filter(Scan.session_id == session_id).first()
+            if scan_obj:
+                scan_obj.out_dir = str(session_dir)
+                db.commit()
+        finally:
+            db.close()
+
+        if ui_enabled:
+            _render_data_summary(
+                {"target": target, "analysis": analysis_snapshot, "session_dir": str(session_dir)}
+            )
+            render_stage(
+                "5/5",
+                "Diff intelligence",
+                "Comparing this run against the previous baseline and summarizing changes.",
+            )
+
+        summary = {
+            "status": "completed"
+            if hunt_result.get("status") == "completed"
+            else hunt_result.get("status", "unknown"),
+            "target": target,
+            "session_id": session_id,
+            "session_dir": str(session_dir),
+            "verification": verification,
+            "hunt": hunt_result,
+            "analysis": analysis_snapshot,
+            "timing": tool_manager.get_timing_summary(),
+            "artifacts": {
+                **artifact_paths,
+                "report": report_path,
+            },
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+        session_dir.mkdir(parents=True, exist_ok=True)
+        (session_dir / "flow_summary.json").write_text(
+            json.dumps(summary, indent=2, default=str) + "\n", encoding="utf-8"
         )
 
-    summary = {
-        "status": "completed"
-        if hunt_result.get("status") == "completed"
-        else hunt_result.get("status", "unknown"),
-        "target": target,
-        "session_id": session_id,
-        "session_dir": str(session_dir),
-        "verification": verification,
-        "hunt": hunt_result,
-        "analysis": analysis_snapshot,
-        "timing": tool_manager.get_timing_summary(),
-        "artifacts": {
-            **artifact_paths,
-            "report": report_path,
-        },
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-    }
+        if ui_enabled:
+            render_timing_summary(summary["timing"])
+            render_outcome("OzyRecon v1.2 Flow complete: artifacts and diff summary are ready.")
 
-    session_dir.mkdir(parents=True, exist_ok=True)
-    (session_dir / "flow_summary.json").write_text(
-        json.dumps(summary, indent=2, default=str) + "\n", encoding="utf-8"
-    )
+        dispatch_hook("scan_complete", summary)
+        return summary
 
-    if ui_enabled:
-        render_timing_summary(summary["timing"])
-        render_outcome("OzyRecon v1.2 Flow complete: artifacts and diff summary are ready.")
-    return summary
+    except Exception:
+        if scan_id is not None:
+            db_session = SessionLocal()
+            try:
+                db_queries = DBQueries(db_session)
+                db_queries.update_scan_status(scan_id, "failed")
+            finally:
+                db_session.close()
+        raise
 
 
 @click.command(name="flow")

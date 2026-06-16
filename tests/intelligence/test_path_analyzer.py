@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
 
-from src.intelligence.path_analyzer import PathAnalyzer
+from src.intelligence.analysis.path_analyzer import PathAnalyzer
 from src.storage.database import Base
 from src.storage.models import Scan, Subdomain, Target, Vulnerability
 

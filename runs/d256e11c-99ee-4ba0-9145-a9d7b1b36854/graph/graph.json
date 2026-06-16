@@ -1,0 +1,986 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_31",
+        "label": "moewalls.com",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1791",
+        "label": "108.162.192.0/20 (netblock) --> contains --> 108.162.193.68 (ipaddress)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1792",
+        "label": "173.245.58.0/23 (netblock) --> contains --> 173.245.59.68 (ipaddress)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1793",
+        "label": "mail.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1794",
+        "label": "arch.ns.cloudflare.com (fqdn) --> aaaa_record --> 2a06:98c1:50::ac40:2144 (ipaddress)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1795",
+        "label": "webmail.moewalls.com",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:management"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "webmail",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1796",
+        "label": "cpcontacts.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1797",
+        "label": "172.64.0.0/18 (netblock) --> contains --> 172.64.33.68 (ipaddress)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1798",
+        "label": "webdisk.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1799",
+        "label": "moewalls.com (fqdn) --> ns_record --> arch.ns.cloudflare.com (fqdn)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1800",
+        "label": "cpanel.moewalls.com",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:management"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "cpanel",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "panel",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1801",
+        "label": "13335 (asn) --> announces --> 2a06:98c1:50::/46 (netblock)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1802",
+        "label": "uploader.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1803",
+        "label": "cpcalendars.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1804",
+        "label": "2a06:98c1:50::/46 (netblock) --> contains --> 2a06:98c1:50::ac40:2144 (ipaddress)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1805",
+        "label": "13335 (asn) --> managed_by --> cloudflarenet - cloudflare, inc. (rirorganization)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1806",
+        "label": "13335 (asn) --> announces --> 173.245.58.0/23 (netblock)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1807",
+        "label": "moewalls.com (fqdn) --> ns_record --> miki.ns.cloudflare.com (fqdn)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1808",
+        "label": "go1.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1809",
+        "label": "dc-b73f01e185d1.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1810",
+        "label": "13335 (asn) --> announces --> 2803:f800:50::/45 (netblock)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1811",
+        "label": "arch.ns.cloudflare.com (fqdn) --> a_record --> 108.162.193.68 (ipaddress)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1812",
+        "label": "13335 (asn) --> announces --> 172.64.0.0/18 (netblock)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1813",
+        "label": "_dc-mx.97c319288f69.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1814",
+        "label": "arch.ns.cloudflare.com (fqdn) --> aaaa_record --> 2803:f800:50::6ca2:c144 (ipaddress)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1815",
+        "label": "test.moewalls.com",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "test",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "test",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1816",
+        "label": "arch.ns.cloudflare.com (fqdn) --> a_record --> 173.245.59.68 (ipaddress)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1817",
+        "label": "go.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1818",
+        "label": "13335 (asn) --> announces --> 108.162.192.0/20 (netblock)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1819",
+        "label": "moewalls.com (fqdn) --> mx_record --> mx3.zoho.com (fqdn)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1820",
+        "label": "moewalls.com (fqdn) --> mx_record --> mx2.zoho.com (fqdn)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1821",
+        "label": "arch.ns.cloudflare.com (fqdn) --> aaaa_record --> 2606:4700:58::adf5:3b44 (ipaddress)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1822",
+        "label": "13335 (asn) --> announces --> 2606:4700:50::/44 (netblock)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1823",
+        "label": "moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1824",
+        "label": "www.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1825",
+        "label": "2803:f800:50::/45 (netblock) --> contains --> 2803:f800:50::6ca2:c144 (ipaddress)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1826",
+        "label": "arch.ns.cloudflare.com (fqdn) --> a_record --> 172.64.33.68 (ipaddress)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "cloud",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1827",
+        "label": "static.moewalls.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [
+            "static_asset"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "static_asset",
+              "pattern": "static",
+              "priority": 2,
+              "contribution": 0.1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1828",
+        "label": "moewalls.com (fqdn) --> mx_record --> mx.zoho.com (fqdn)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1829",
+        "label": "2606:4700:50::/44 (netblock) --> contains --> 2606:4700:58::adf5:3b44 (ipaddress)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1791",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1792",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1793",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1794",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1795",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1796",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1797",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1798",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1799",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1800",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1801",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1802",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1803",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1804",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1805",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1806",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1807",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1808",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1809",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1810",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1811",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1812",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1813",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1814",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1815",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1816",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1817",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1818",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1819",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1820",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1821",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1822",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1823",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1824",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1825",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1826",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1827",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1828",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_31",
+        "target": "sub_1829",
+        "relation": "has_subdomain"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 39,
+    "nodes_returned": 40,
+    "schema_version": "1.2"
+  }
+}

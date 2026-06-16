@@ -5,7 +5,7 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 from src.storage.database import SessionLocal, engine, Base
 from src.storage.models import Target, Scan, Subdomain
-from src.intelligence.orchestrator import DiscoveryOrchestrator
+from src.intelligence.pipeline.orchestrator import DiscoveryOrchestrator
 
 # Setup DB
 Base.metadata.create_all(bind=engine)

@@ -7,7 +7,7 @@ import click
 from rich.table import Table
 from rich.tree import Tree
 from src.storage.database import SessionLocal
-from src.intelligence.path_analyzer import get_attack_paths
+from src.intelligence.analysis.path_analyzer import get_attack_paths
 from cli.shared import console, render_outcome, render_panel
 
 @click.command(name="paths")

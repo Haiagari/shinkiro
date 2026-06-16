@@ -1,6 +1,6 @@
 import socket
 
-from src.intelligence.enrichment import enrich_hosts
+from src.intelligence.enrichment.enrichment import enrich_hosts
 
 
 def test_enrich_hosts_normalizes_url_inputs(monkeypatch):

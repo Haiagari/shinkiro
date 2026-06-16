@@ -1,4 +1,4 @@
-.PHONY: install wordlists tools check check-layout clean help
+.PHONY: install wordlists tools check check-layout clean help export-oby import-oby bounty
 
 PYTHON := python3
 PIP    := pip3
@@ -85,3 +85,23 @@ clean:
 
 prune:
 	@./scripts/prune_scans.sh 5
+
+## ── OzyBounty Integration ─────────────────────────────────
+
+OZYBOUNTY_DIR ?= ../Música/ozy-bty/ozybounty-operator-os-foundation
+EXPORT_DIR   ?= /tmp/ozybounty-import
+TARGET       ?= example.com
+
+export-oby:
+	@echo "[*] Exportando datos de OzyRecon para OzyBounty..."
+	source venv/bin/activate && python scripts/export_for_ozybounty.py "$(TARGET)" --output "$(EXPORT_DIR)"
+	@echo "[+] Export listo en $(EXPORT_DIR)/"
+
+import-oby:
+	@echo "[*] Importando en OzyBounty (asegúrate de haber exportado primero)..."
+	cd "$(OZYBOUNTY_DIR)" && source .venv/bin/activate && \
+		python scripts/import_from_ozyrecon.py "$(EXPORT_DIR)/"
+	@echo "[+] Importación completada en .ozybounty/$(TARGET)/"
+
+bounty: export-oby import-oby
+	@echo "[+] Pipeline OzyRecon → OzyBounty completado"

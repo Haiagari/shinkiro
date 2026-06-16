@@ -1,8 +1,8 @@
 
 import json
-from src.intelligence.classifier import semantic_classifier
+from src.intelligence.core.classifier import semantic_classifier
 from src.utils.crypto import evidence_signer
-from src.intelligence.exporter import siem_exporter
+from src.intelligence.export.exporter import siem_exporter
 
 # 1. Mock de un activo altamente sensible (Shadow IT + Admin Panel)
 mock_asset = {

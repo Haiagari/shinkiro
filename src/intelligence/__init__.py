@@ -3,8 +3,8 @@ OzyRecon Intelligence Module
 Análisis de severidad, deduplicación, correlación y detección de novedades.
 """
 
-# Fase 1: Inteligencia adaptativa
-from .analyzer import (
+# core
+from .core.analyzer import (
     SeverityAnalyzer,
     SeverityResult,
     Deduplicator,
@@ -17,93 +17,176 @@ from .analyzer import (
     analyze_severity,
     deduplicate_findings,
 )
+from .core.intelligence import run_intelligence
+from .core.classifier import semantic_classifier
 
-# Fase 2: Aprendizaje reflexivo
-from .learning_orchestrator import (
+# scoring
+from .scoring.scoring_engine import get_scoring_engine, ScoringEngine, CriticalityScore
+from .scoring.priority import PriorityEngine
+from .scoring.feedback_engine import (
+    FeedbackEngine,
+    ScoringWeights,
+    feedback_engine,
+)
+
+# learning
+from .learning.learning_engine import LearningEngine, MIN_OBSERVATIONS, run_learning
+from .learning.learning_orchestrator import (
     LearningOrchestrator,
     LearningMetrics,
     learning_orchestrator,
     record_learned_decision,
     evaluate_and_learn,
 )
-
-from .decision_log import (
+from .learning.decision_log import (
     DecisionRepository,
     DecisionType,
     Decision,
     log_decision,
 )
-
-from .outcome_evaluator import (
+from .learning.outcome_evaluator import (
     OutcomeEvaluator,
     OutcomeType,
     DecisionOutcome,
     outcome_evaluator,
 )
-
-from .feedback_engine import (
-    FeedbackEngine,
-    ScoringWeights,
-    feedback_engine,
-)
-
-from .false_positive_memory import (
+from .learning.false_positive_memory import (
     FalsePositiveMemory,
     FalsePositivePattern,
     false_positive_memory,
 )
+from .learning.sync_manager import SyncManager
 
-from .autonomy import (
+# enrichment
+from .enrichment.enrichment import enrich_hosts
+from .enrichment.infrastructure import InfraEnricher, infra_enricher
+from .enrichment.secret_finder import SecretFinder, secret_finder
+from .enrichment.exploit_advisor import ExploitAdvisor, exploit_advisor
+
+# analysis
+from .analysis.ai_analyzer import ai_analyst, AIAnalyst
+from .analysis.logic_analyzer import LogicAnalyzer
+from .analysis.path_analyzer import PathAnalyzer, get_attack_paths
+from .analysis.graph_builder import GraphBuilder, graph_builder
+from .analysis.evidence_linker import EvidenceLinker, evidence_linker
+
+# autonomy
+from .autonomy.autonomy import (
     AutonomyPlanner,
     AutonomyPlan,
     build_autonomy_plan,
 )
+from .autonomy.autonomy_engine import AutonomyEngine, autonomy_engine
+from .autonomy.planner import ReconPlanner, recon_planner
+from .autonomy.recommendations import generate_arch_recommendations
+from .autonomy.brief import generate_intelligence, IntelligenceBrief, IntelligenceGenerator
+from .autonomy.dashboard import show_dashboard, IntelligenceDashboard
+
+# pipeline
+from .pipeline.orchestrator import DiscoveryOrchestrator
+from .pipeline.novelty import NoveltyAlerter, novelty_alerter
+from .pipeline.collaboration import (
+    write_collaboration_manifest,
+    append_collaboration_operator,
+    read_collaboration_manifest,
+)
+
+# export
+from .export.exporter import SIEMExporter, siem_exporter
 
 __all__ = [
-    # ===== FASE 1: Inteligencia Adaptativa =====
-    # Severity
+    # core/analyzer
     'SeverityAnalyzer',
     'SeverityResult',
     'severity_analyzer',
     'analyze_severity',
-    # Deduplication
     'Deduplicator',
     'deduplicator',
     'deduplicate_findings',
-    # Correlation
     'CorrelationEngine',
     'correlation_engine',
-    # Novelty
     'NoveltyDetector',
     'novelty_detector',
-    
-    # ===== FASE 2: Aprendizaje Reflexivo =====
-    # Orchestrator
+    # core/intelligence
+    'run_intelligence',
+    # core/classifier
+    'semantic_classifier',
+
+    # scoring
+    'get_scoring_engine',
+    'ScoringEngine',
+    'CriticalityScore',
+    'PriorityEngine',
+    'FeedbackEngine',
+    'ScoringWeights',
+    'feedback_engine',
+
+    # learning
+    'LearningEngine',
+    'MIN_OBSERVATIONS',
+    'run_learning',
     'LearningOrchestrator',
     'LearningMetrics',
     'learning_orchestrator',
     'record_learned_decision',
     'evaluate_and_learn',
-    # Decision Log
     'DecisionRepository',
     'DecisionType',
     'Decision',
     'log_decision',
-    # Outcome Evaluator
     'OutcomeEvaluator',
     'OutcomeType',
     'DecisionOutcome',
     'outcome_evaluator',
-    # Feedback Engine
-    'FeedbackEngine',
-    'ScoringWeights',
-    'feedback_engine',
-    # False Positive Memory
     'FalsePositiveMemory',
     'FalsePositivePattern',
     'false_positive_memory',
-    # ===== FASE 4: Autonomía Segura =====
+    'SyncManager',
+
+    # enrichment
+    'enrich_hosts',
+    'InfraEnricher',
+    'infra_enricher',
+    'SecretFinder',
+    'secret_finder',
+    'ExploitAdvisor',
+    'exploit_advisor',
+
+    # analysis
+    'ai_analyst',
+    'AIAnalyst',
+    'LogicAnalyzer',
+    'PathAnalyzer',
+    'get_attack_paths',
+    'GraphBuilder',
+    'graph_builder',
+    'EvidenceLinker',
+    'evidence_linker',
+
+    # autonomy
     'AutonomyPlanner',
     'AutonomyPlan',
     'build_autonomy_plan',
+    'AutonomyEngine',
+    'autonomy_engine',
+    'ReconPlanner',
+    'recon_planner',
+    'generate_arch_recommendations',
+    'generate_intelligence',
+    'IntelligenceBrief',
+    'IntelligenceGenerator',
+    'show_dashboard',
+    'IntelligenceDashboard',
+
+    # pipeline
+    'DiscoveryOrchestrator',
+    'NoveltyAlerter',
+    'novelty_alerter',
+    'write_collaboration_manifest',
+    'append_collaboration_operator',
+    'read_collaboration_manifest',
+
+    # export
+    'SIEMExporter',
+    'siem_exporter',
 ]

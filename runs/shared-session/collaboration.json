@@ -1,0 +1,14 @@
+{
+  "session_id": "shared-session",
+  "target": "example.com",
+  "scan_id": 1,
+  "status": "shared",
+  "operators": [
+    "alice"
+  ],
+  "artifacts": [
+    "raw",
+    "normalized"
+  ],
+  "updated_at": "2026-06-15T20:47:20.462835+00:00"
+}

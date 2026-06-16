@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_36",
+        "label": "10.129.58.38",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2512",
+        "label": "10.129.58.38",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:management"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "dashboard",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_10.129.58.38",
+        "label": "10.129.58.38",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": null,
+          "org": "Unknown"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_12",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_bootstrap",
+        "label": "Bootstrap",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_36",
+        "target": "sub_2512",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2512",
+        "target": "ip_10.129.58.38",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_36",
+        "target": "port_12",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_12",
+        "target": "tech_bootstrap",
+        "relation": "runs"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 1,
+    "nodes_returned": 5,
+    "schema_version": "1.2"
+  }
+}

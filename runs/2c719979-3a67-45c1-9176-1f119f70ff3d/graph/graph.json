@@ -1,0 +1,439 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_32",
+        "label": "colegiointegridad.edu.pe",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2432",
+        "label": "cpcalendars.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_149.56.147.198",
+        "label": "149.56.147.198",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16276,
+          "org": "OVH, FR"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2433",
+        "label": "webmail.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "gate_auth",
+            "role:management",
+            "role:auth"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "webmail",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "AUTH",
+              "signal": "domain/title",
+              "match": "login",
+              "contribution": 0.3
+            },
+            {
+              "type": "label_match",
+              "rule": "gate_auth",
+              "pattern": "login",
+              "priority": 8,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2434",
+        "label": "www.aula.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_51.161.45.249",
+        "label": "51.161.45.249",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16276,
+          "org": "OVH, FR"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2435",
+        "label": "cpanel.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "gate_auth",
+            "role:management",
+            "role:auth"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "cpanel",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "panel",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "AUTH",
+              "signal": "domain/title",
+              "match": "login",
+              "contribution": 0.3
+            },
+            {
+              "type": "label_match",
+              "rule": "gate_auth",
+              "pattern": "login",
+              "priority": 8,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2436",
+        "label": "www.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_colegiointegridad.edu.pe",
+        "label": "colegiointegridad.edu.pe",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2437",
+        "label": "autodiscover.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2438",
+        "label": "cpcontacts.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2439",
+        "label": "webdisk.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2440",
+        "label": "mail.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2441",
+        "label": "colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2442",
+        "label": "aula.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2432",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2432",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2433",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2433",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2434",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2434",
+        "target": "ip_51.161.45.249",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2435",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2435",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2436",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2436",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2436",
+        "target": "cname_colegiointegridad.edu.pe",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2437",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2437",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2438",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2438",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2439",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2439",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2440",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2440",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2440",
+        "target": "cname_colegiointegridad.edu.pe",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2441",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2441",
+        "target": "ip_149.56.147.198",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2442",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2442",
+        "target": "ip_51.161.45.249",
+        "relation": "resolves_to"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 11,
+    "nodes_returned": 15,
+    "schema_version": "1.2"
+  }
+}

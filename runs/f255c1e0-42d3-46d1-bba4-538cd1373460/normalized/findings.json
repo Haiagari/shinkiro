@@ -1,0 +1,296 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "f255c1e0-42d3-46d1-bba4-538cd1373460",
+  "target": "colegiointegridad.edu.pe",
+  "mode": "hunt",
+  "timestamp": "2026-05-04T19:44:48.065485",
+  "started_at": "2026-05-04T19:39:49.357927",
+  "ended_at": null,
+  "duration_seconds": null,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "colegiointegridad.edu.pe (fqdn) --> ns_record --> h3-ns3.hostinga1.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "autodiscover.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aula.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webmail.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpcontacts.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "colegiointegridad.edu.pe (fqdn) --> ns_record --> h3-ns1.hostinga1.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "colegiointegridad.edu.pe (fqdn) --> ns_record --> h3-ns2.hostinga1.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpanel.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webdisk.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.aula.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpcalendars.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    }
+  ],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

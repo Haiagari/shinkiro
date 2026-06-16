@@ -1,10 +1,14 @@
 """
 OzyRecon Scheduler - Scheduled and recurring scans.
 Enables periodic attack surface monitoring.
+
+Supports optional Redis-backed distributed queue via OZY_REDIS_URL env var.
 """
 
+import json
+import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from dataclasses import dataclass, field
 from typing import Any, Optional
 from pathlib import Path
@@ -14,6 +18,16 @@ import yaml
 from src.core.logging import get_logger
 
 logger = get_logger("scheduler")
+
+HAS_REDIS = bool(os.environ.get("OZY_REDIS_URL"))
+if HAS_REDIS:
+    try:
+        from src.core.queue import task_queue
+    except ImportError:
+        task_queue = None
+        HAS_REDIS = False
+else:
+    task_queue = None
 
 
 @dataclass
@@ -159,6 +173,35 @@ class Scheduler:
         
         return pending
     
+    def run_pending_distributed(self) -> list[dict]:
+        """
+        Enqueue pending tasks to Redis for distributed workers.
+        Falls back to local execution if Redis is not configured.
+        """
+        pending = self.get_pending_tasks()
+        if not pending:
+            return [{"status": "skipped", "message": "No pending tasks"}]
+
+        results = []
+        if HAS_REDIS and task_queue is not None:
+            for task in pending:
+                payload = {
+                    "task_id": task.id,
+                    "target": task.target,
+                    "profile": task.profile,
+                }
+                task_queue.enqueue("ozy:scans", payload)
+                now = datetime.now(timezone.utc)
+                task.last_run = now.isoformat()
+                task.next_run = (now + timedelta(hours=task.interval_hours)).isoformat()
+                results.append({"status": "queued", "task_id": task.id, "target": task.target})
+            self._save_tasks()
+            logger.info(f"Queued {len(pending)} tasks to Redis for distributed workers")
+        else:
+            for task in pending:
+                results.append(self.run_task(task.id))
+        return results
+
     def run_task(self, task_id: str) -> dict[str, Any]:
         """Execute a scheduled task."""
         task = self.get_task(task_id)

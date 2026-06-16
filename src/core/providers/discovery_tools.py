@@ -55,9 +55,9 @@ class GenericDiscoveryProvider(BaseProvider):
         try:
             if use_redirection:
                 with open(out_file, "w") as f_out:
-                    self._run_tool(cmd_args, timeout=180, capability=capability, capture=False, check=True, retries=1, stdout=f_out, stderr=subprocess.PIPE)
+                    self._run_tool(cmd_args, timeout=30, capability=capability, capture=False, check=False, retries=0, stdout=f_out, stderr=subprocess.PIPE)
             else:
-                self._run_tool(cmd_args, timeout=180, capability=capability, capture=True, check=True, retries=1)
+                self._run_tool(cmd_args, timeout=30, capability=capability, capture=True, check=False, retries=0)
 
             if out_file.exists():
                 with open(out_file) as f:

@@ -29,7 +29,7 @@ class ContinuousMode(BaseMode):
 
     def execute(self) -> Dict[str, Any]:
         logger.info(f"[CONTINUOUS] Starting monitoring cycle for {self.target}")
-        from src.intelligence.orchestrator import DiscoveryOrchestrator
+        from src.intelligence.pipeline.orchestrator import DiscoveryOrchestrator
         
         intent = self.get_operational_intent()
         intent["noise"] = "low"

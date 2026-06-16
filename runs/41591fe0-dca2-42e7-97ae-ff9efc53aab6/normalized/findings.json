@@ -1,0 +1,29 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "41591fe0-dca2-42e7-97ae-ff9efc53aab6",
+  "target": "192.168.0.38",
+  "mode": "hunt",
+  "timestamp": "2026-05-06T13:06:31.802918",
+  "started_at": "2026-05-06T18:04:23.640866",
+  "ended_at": "2026-05-06T18:06:31.787910",
+  "duration_seconds": 128.147044,
+  "assets": [],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

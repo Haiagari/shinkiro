@@ -1,0 +1,18 @@
+{
+  "session_id": "fc3578f7-b76c-4831-a996-3ba133e41ce2",
+  "target": "insforge.dev",
+  "scan_id": 160,
+  "status": "shared",
+  "operators": [
+    "engine",
+    "orchestrator"
+  ],
+  "artifacts": [
+    "raw",
+    "normalized",
+    "evidence",
+    "graph",
+    "reports"
+  ],
+  "updated_at": "2026-06-15T19:58:52.845512+00:00"
+}

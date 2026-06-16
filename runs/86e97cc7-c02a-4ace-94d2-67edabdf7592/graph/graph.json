@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_36",
+        "label": "10.129.58.38",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2511",
+        "label": "10.129.58.38",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_10.129.58.38",
+        "label": "10.129.58.38",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": null,
+          "org": null
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_36",
+        "target": "sub_2511",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2511",
+        "target": "ip_10.129.58.38",
+        "relation": "resolves_to"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 1,
+    "nodes_returned": 3,
+    "schema_version": "1.2"
+  }
+}

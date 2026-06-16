@@ -8,8 +8,8 @@ from pathlib import Path
 from src.modes.base import BaseMode
 from src.core.tool_manager import tool_manager
 from src.core.logging import get_logger
-from src.intelligence.intelligence import run_intelligence
-from src.intelligence.planner import recon_planner
+from src.intelligence.core.intelligence import run_intelligence
+from src.intelligence.autonomy.planner import recon_planner
 from src.opsec.kill_switch import kill_switch
 
 logger = get_logger('mode.hunt')
@@ -73,7 +73,7 @@ class HuntMode(BaseMode):
         intent.update(opsec.get_operational_params())
 
         # 3. Discovery & Analysis Phase (Adaptive Orchestration)
-        from src.intelligence.orchestrator import DiscoveryOrchestrator
+        from src.intelligence.pipeline.orchestrator import DiscoveryOrchestrator
         orchestrator = DiscoveryOrchestrator(
             self.db_session,
             scan_id=self.runtime_scan.id if self.runtime_scan else None,
@@ -102,7 +102,27 @@ class HuntMode(BaseMode):
         if "takeover_detection" in plan["capabilities"] or plan["intent"] == "aggressive":
             orchestrator.takeover_detection()
 
-        # Phase 3.6: Autonomous Tactical Loop (Idea 1 - Pilot Mode)
+        # Phase 3.5: Subdomain Permutations (NEW)
+        if self.options.get("steroids", True):
+            orchestrator.subdomain_permutations(self.target)
+
+        # Phase 3.6: JS Endpoint Extraction (NEW)
+        if self.options.get("steroids", True) and active_hosts:
+            js_endpoints = orchestrator.js_endpoint_extraction()
+
+        # Phase 3.7: Parameter Discovery (NEW)
+        if self.options.get("steroids", True):
+            orchestrator.param_discovery()
+
+        # Phase 3.8: S3 Bucket Scan (NEW)
+        if self.options.get("steroids", True):
+            orchestrator.s3_scan(self.target)
+
+        # Phase 3.9: Google Dorking (NEW)
+        if self.options.get("steroids", True):
+            orchestrator.google_dork(self.target)
+
+        # Phase 3.10: Autonomous Tactical Loop (Idea 1 - Pilot Mode)
         # v8.3.2 - New: Dynamic decisions based on findings
         if self.options.get("autonomous", True):
             orchestrator.autonomous_tactical_loop(max_depth=self.options.get("auto_depth", 2))
@@ -147,7 +167,7 @@ class HuntMode(BaseMode):
         
         # 4.5. v6.0 Logic Pattern Analysis
         logger.info("[HUNT] Phase 2.5: v6.0 Logic Pattern Analysis")
-        from src.intelligence.logic_analyzer import LogicAnalyzer
+        from src.intelligence.analysis.logic_analyzer import LogicAnalyzer
         logic_brain = LogicAnalyzer()
         
         # Mapear datos para el cerebro usando los activos ya persistidos
@@ -208,7 +228,7 @@ class HuntMode(BaseMode):
         # 5.5. Learning Phase (Idea 6 - Long-term Memory)
         # v8.3.2 - New: Persist insights for future sessions
         try:
-            from src.intelligence.learning_engine import run_learning
+            from src.intelligence.learning.learning_engine import run_learning
             run_learning(self.db_session, self.target, self.runtime_scan.id)
         except Exception as e:
             logger.error(f"Learning phase failed: {e}")

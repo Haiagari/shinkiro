@@ -19,7 +19,7 @@ def test_concurrency():
         
         def run_mock_discovery(session_id, target):
             from src.storage.database import SessionLocal
-            from src.intelligence.orchestrator import DiscoveryOrchestrator
+            from src.intelligence.pipeline.orchestrator import DiscoveryOrchestrator
             from src.storage.models import Target, Scan
             
             db = SessionLocal()

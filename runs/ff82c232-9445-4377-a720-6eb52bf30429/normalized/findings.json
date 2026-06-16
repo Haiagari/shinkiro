@@ -1,0 +1,7573 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "ff82c232-9445-4377-a720-6eb52bf30429",
+  "target": "unitru.edu.pe",
+  "mode": "hunt",
+  "timestamp": "2026-05-03T16:51:57.588182",
+  "started_at": "2026-05-03T16:46:58.887194",
+  "ended_at": null,
+  "duration_seconds": null,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "www.bolsa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cestunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.oia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facbio.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ceua.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "bio.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.eduini.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ant.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.din.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "epgvirtual.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "edusec.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "depidiomas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cepunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facsoc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dda.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "portalpadres.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:auth"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sede-stgochuco.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ogbu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ort.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "epgnew.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pap.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.museozoo.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "edupri.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "usee.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "drt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "agroind.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "lenguayliteratura.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "gestionti-sistemasxxv.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.infounitru.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.fvirtual.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.conimat.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "gpcd.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "asistencia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cci.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ciei.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facder.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "egunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facing.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "capacitaciones.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "encuestas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "agroin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "agri.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "api-uraa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "api_surface",
+          "role:api"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "useder.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "covid19.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "uesc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pg.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "esto.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ccal.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.ccom.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "min.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "turismo.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "orni.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "drsu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cidunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "reservaonline.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.cidunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "far.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sede-huamachuco.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ablogs.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.der.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "din.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "oasis.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "calidad.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.bibliotecasunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pei.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.agrono.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "compite.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "planbic.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mathesc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.diplomas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.fis.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "resoluciones.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "beca18.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facesto.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.editorial.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ffccee.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "use-dpa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.admision.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.conaets.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "hist.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.inf.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pruebas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dsc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ort.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.drsu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.vac.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "tramites-uraa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facagro.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "apps-bkn.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "accf2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aplicaciones.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.bibliotecas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sede-jequetepeque.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ucap.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pagina2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.cicec.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "biblioteca-intra.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.agroin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "faceco.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.ant.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.chanchan.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facedu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.mat.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facagro.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "uniestadistica.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "gri.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "minas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "soc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.mathesc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.sgdunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dipseu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.dic.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.cestunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "tur.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.transparencia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "drni.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pes.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.dspace.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "agro.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facfar.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ind.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "editorial.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mecatronica.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "gcp.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "math.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.osb.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "med.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.oac.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ccifbiperu2021.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cicec.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "depmath.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.qui.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.agric.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.agri.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pedi2050.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pic9.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "repositorio.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "educaunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facmed.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.arque.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "apemerit.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "siplan.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aulavirtualpg.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.admison.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facenf.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "trabajosoc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "untempresa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.econ.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.math.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facder.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ogdae.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.acreditacionmedicina.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ditt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "vtindustrial.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "otcc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "copefi.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "insin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.dirplan.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "depmecanica.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "der.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "disee.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "adm.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.use-dpa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "pesq.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.cont.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ote.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facsoc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "padresapp.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "gpd.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "proyectoremove.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.jornadas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.cepunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "auspicios.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "admisionapps.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "deplengualit.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ccal.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.aula.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dic.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ccom.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "suv.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "museozoo.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.acde.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "infvalle.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "digitalunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "leaked_data_surface"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "transparencia-universitaria.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "eco.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "buscaresoluciones.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "postapps.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "jornadas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mypa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.dipseu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "admision.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "opdi.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.dsic.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "visitas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dsapce.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.agroin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aula.cestunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.revistas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "depestad.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sistemas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "coneimin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "capu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "agrono.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "use.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facenf.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.planbic.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "edusecll.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.oca.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "contact.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.accf.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.solvencia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.qa-solvencias.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "non_prod_env",
+          "role:development"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.agroind.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facing.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "faccfm.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ote.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "bienestarfarm.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sis.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.secgen.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "eduini.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "acreditacionmedicina.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.edupri.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "met.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ind.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sede-otuzco.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cont.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sisgedo.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dspace.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.suv.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arquitectura.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "osb.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "picfedu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "eticaingenieria.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "vac.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dcep.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arq.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "inf2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facbio.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "vin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.aulavirtual.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.est.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ava.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.adm.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "fis.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.picfedu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.agro.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "revistas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "isaca.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.vin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.cepejup.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sete.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ogbu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.bio.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "acmgmat.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.metalurgica.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "transparencia-academica.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.adm.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "siga.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "zoo.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.faccfm.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "materiales.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mathdep.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.acmgmat.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.materiales.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "infounitru.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.aplicaciones.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "oca.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "uraa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.met.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.sga2018.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ucap.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "boletasdepago.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:commerce"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "transparencia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.usee.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facqui.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "osi.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "hfm.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "coteca.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "padressuv.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "elbolivarianonoticias.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ant.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aries.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facmed.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sisav.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aulavirtual2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "enf.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "econ.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "solvencia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aulafacedu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aulavirtual.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.edusec.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ns.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dirplan.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.correo.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ffccee.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sga2018.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "depmorfologia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "bolsa.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cepejup.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ciduntregmat.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "metalurgica.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "bibliotecas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aula.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "docs.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:api"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "chanchan.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.pei.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "fvirtual.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "udifec.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.vtindustrial.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "accf.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.amb.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "conimat.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "bicentenariount.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "iniciativas.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mec.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "matesc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.cci.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dblogs.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "acde.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.cont.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "preford.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "depfis.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.ceua.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sisdef.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "suv2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:api"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.der.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.copefi.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facedu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "industrial.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.enfermeria.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "posgrado.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "prosein.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "qui.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mural.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dsic.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "qa-solvencias.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "non_prod_env",
+          "role:development"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facfar.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.esto.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "inf.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cris.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ugre.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "tsoc.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.facqui.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mat.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.suv2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:api"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.coneimin.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "intranet.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sgdunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "biblioteca.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "msn.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "correo.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "reclamaciones.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "rsu.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.agri.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "secgen.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.inf2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "control.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ogdae.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "chimor.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dga.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.agrono.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "oia.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "est.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "web2.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "agric.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.helpdesk.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "unt2014.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "fastworkshopmathematics.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:commerce"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.mathdep.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cuiciti.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "ccom.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.egunt.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "facest.unitru.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    }
+  ],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

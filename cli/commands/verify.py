@@ -11,7 +11,7 @@ from pathlib import Path
 import click
 import requests
 
-from src.intelligence.classifier import semantic_classifier
+from src.intelligence.core.classifier import semantic_classifier
 from src.utils.crypto import evidence_signer
 
 from cli.shared import console, render_outcome, render_panel

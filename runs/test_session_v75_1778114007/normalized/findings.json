@@ -1,0 +1,53 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "test_session_v75_1778114007",
+  "target": "artifact.test",
+  "mode": "hunt",
+  "timestamp": "2026-05-06T19:33:27.989408",
+  "started_at": "2026-05-07T00:33:27.947681",
+  "ended_at": null,
+  "duration_seconds": null,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "api.artifact.test",
+      "is_live": true,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "api_surface"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    }
+  ],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50,
+    "quiet": false
+  },
+  "errors": []
+}

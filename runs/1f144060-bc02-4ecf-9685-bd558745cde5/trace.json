@@ -1,0 +1,54 @@
+{
+  "session_id": "1f144060-bc02-4ecf-9685-bd558745cde5",
+  "target": "unitru.edu.pe",
+  "mode": "hunt",
+  "scan": {
+    "scan_id": 174,
+    "session_id": "1f144060-bc02-4ecf-9685-bd558745cde5",
+    "target": "unitru.edu.pe",
+    "mode": "hunt",
+    "status": "completed",
+    "started_at": "2026-06-15T21:41:38.981392",
+    "ended_at": "2026-06-15T21:46:25.152073",
+    "duration_seconds": 286.170681,
+    "stats": {
+      "subdomains_found": 382,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": []
+  },
+  "session": {
+    "session_id": "1f144060-bc02-4ecf-9685-bd558745cde5",
+    "target": "unitru.edu.pe",
+    "mode": "hunt",
+    "started_at": "2026-06-15T21:41:38.981392",
+    "ended_at": "2026-06-15T21:46:25.137037",
+    "duration": 286.155645,
+    "status": "success",
+    "exit_code": 0,
+    "counts": {
+      "subdomains": 382,
+      "hosts": 0,
+      "ports": 0,
+      "findings": 0
+    },
+    "error_summary": null,
+    "config_used": {
+      "threads": null,
+      "rate_limit": 50,
+      "mode": "hunt"
+    }
+  },
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

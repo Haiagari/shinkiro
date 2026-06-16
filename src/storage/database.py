@@ -1,45 +1,61 @@
 """
-Gestión de la Base de Datos (SQLite)
+Gestión de la Base de Datos (SQLite / PostgreSQL)
 OzyRecon - Storage Layer
 """
 
+import os
 from datetime import datetime
 from pathlib import Path
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# Importar utilidades
 from src.utils import log, save_json, load_json
 from src.core.runtime_paths import get_runtime_root
 
-# Importar modelos locales
 from .models import Base, Target, Scan, Subdomain, Port, Vulnerability, Finding, AgentMemory, AgentLock, Session, WeightHistory, Hypothesis, Evidence, WorkflowStep
 
-DB_PATH = get_runtime_root() / "db" / "ozyrecon.db"
-DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-DB_URL = f"sqlite:///{DB_PATH}"
+DEFAULT_DB_PATH = get_runtime_root() / "db" / "ozyrecon.db"
+DB_PATH = DEFAULT_DB_PATH  # backward compat
+
+DATABASE_URL = os.environ.get("OZY_DATABASE_URL", "")
+
+if DATABASE_URL:
+    DB_URL = DATABASE_URL
+    connect_args = {}
+    pool_size = 20
+    max_overflow = 40
+else:
+    DEFAULT_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    DB_URL = f"sqlite:///{DEFAULT_DB_PATH}"
+    connect_args = {"check_same_thread": False, "timeout": 60}
+    pool_size = 20
+    max_overflow = 40
 
 engine = create_engine(
-    DB_URL, 
-    connect_args={"check_same_thread": False, "timeout": 60}, # v7.7.1 - Increased timeout
-    pool_size=20,       # v7.7.1 - Handle 20 concurrent scans
-    max_overflow=40     # v7.7.1 - Burst capacity
+    DB_URL,
+    connect_args=connect_args,
+    pool_size=pool_size,
+    max_overflow=max_overflow,
+    pool_pre_ping=True,
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 def init_db():
-    """Inicializa las tablas si no existen y activa modo WAL."""
     from sqlalchemy import text
     Base.metadata.create_all(bind=engine)
-    # Activar modo Write-Ahead Logging para concurrencia API
-    try:
-        with engine.connect() as conn:
-            conn.execute(text("PRAGMA journal_mode=WAL;"))
-            conn.execute(text("PRAGMA synchronous=NORMAL;"))
-            conn.commit()
-    except Exception as e:
-        log(f"Warning: Failed to set WAL mode: {e}", level="warn")
+    if not DATABASE_URL:
+        try:
+            with engine.connect() as conn:
+                conn.execute(text("PRAGMA journal_mode=WAL;"))
+                conn.execute(text("PRAGMA synchronous=NORMAL;"))
+                conn.commit()
+        except Exception as e:
+            log(f"Warning: Failed to set WAL mode: {e}", level="warn")
+    else:
+        log(f"Database: connected to {DB_URL}", level="info")
+
 
 def get_db():
     db = SessionLocal()

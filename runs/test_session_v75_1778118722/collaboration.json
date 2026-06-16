@@ -1,0 +1,18 @@
+{
+  "session_id": "test_session_v75_1778118722",
+  "target": "artifact.test",
+  "scan_id": 144,
+  "status": "shared",
+  "operators": [
+    "engine",
+    "orchestrator"
+  ],
+  "artifacts": [
+    "raw",
+    "normalized",
+    "evidence",
+    "graph",
+    "reports"
+  ],
+  "updated_at": "2026-05-07T01:52:03.019483+00:00"
+}

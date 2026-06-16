@@ -1,0 +1,737 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "fc3578f7-b76c-4831-a996-3ba133e41ce2",
+  "target": "insforge.dev",
+  "mode": "hunt",
+  "timestamp": "2026-06-15T14:58:52.774737",
+  "started_at": "2026-06-15T19:28:54.250974",
+  "ended_at": null,
+  "duration_seconds": null,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "insforge.dev",
+      "is_live": true,
+      "ip": "216.150.1.1",
+      "http_status": 200,
+      "title": "InsForge - The agent-native cloud infrastructure platform",
+      "web_server": null,
+      "technologies": [
+        "HSTS",
+        "Linkedin Ads",
+        "Next.js",
+        "Node.js",
+        "React",
+        "Vercel",
+        "Webpack"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "monitoring-beta.insforge.dev",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "track.insforge.dev",
+      "is_live": true,
+      "ip": "18.189.155.129",
+      "http_status": 200,
+      "title": "Welcome to nginx!",
+      "web_server": null,
+      "technologies": [
+        "Nginx:1.28.0"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "alb-mixpanel-proxy-1231287267.us-east-2.elb.amazonaws.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "b.insforge.dev",
+      "is_live": true,
+      "ip": "172.66.169.73",
+      "http_status": 404,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 13335,
+        "asn_organization": "CLOUDFLARENET - Cloudflare, Inc., US",
+        "cloud_provider": "cloudflare",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "71c6656649197d01b7d9.cf-prod-us-proxy.proxyhog.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "config.insforge.dev",
+      "is_live": true,
+      "ip": "54.230.124.94",
+      "http_status": 403,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "Amazon CloudFront",
+        "Amazon S3",
+        "Amazon Web Services"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "d2m11zcqfkwnng.cloudfront.net"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "development.insforge.dev",
+      "is_live": true,
+      "ip": "216.150.1.193",
+      "http_status": 200,
+      "title": "InsForge - The backend platform for AI-native developers",
+      "web_server": null,
+      "technologies": [
+        "HSTS",
+        "Linkedin Ads",
+        "Next.js",
+        "Node.js",
+        "React",
+        "Vercel",
+        "Webpack"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "04f60aebda4667c8.vercel-dns-016.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "feedback.insforge.dev",
+      "is_live": true,
+      "ip": "104.26.13.52",
+      "http_status": 200,
+      "title": "InsForge Roadmap | Productlane",
+      "web_server": null,
+      "technologies": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "HTTP/3"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 13335,
+        "asn_organization": "CLOUDFLARENET - Cloudflare, Inc., US",
+        "cloud_provider": "cloudflare",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "insforge.customers.productlane.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sudo.insforge.dev",
+      "is_live": true,
+      "ip": "3.15.253.212",
+      "http_status": 200,
+      "title": "InsForge Admin Console",
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env",
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": "alb-platform-admin-console-2126821978.us-east-2.elb.amazonaws.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cdn.insforge.dev",
+      "is_live": true,
+      "ip": "54.230.124.89",
+      "http_status": 403,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "Amazon CloudFront",
+        "Amazon S3",
+        "Amazon Web Services"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "static_asset",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "dgohv8y9hys49.cloudfront.net"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "storage-cdn-beta.insforge.dev",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage",
+          "role:development",
+          "static_asset",
+          "non_prod_env"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "staging.insforge.dev",
+      "is_live": true,
+      "ip": "216.150.16.1",
+      "http_status": 200,
+      "title": "InsForge - The agent-native cloud infrastructure platform",
+      "web_server": null,
+      "technologies": [
+        "HSTS",
+        "Linkedin Ads",
+        "Next.js",
+        "Node.js",
+        "React",
+        "Vercel",
+        "Webpack"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "04f60aebda4667c8.vercel-dns-016.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "docs.insforge.dev",
+      "is_live": true,
+      "ip": "76.76.21.164",
+      "http_status": 308,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "HSTS",
+        "Vercel"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "role:api",
+          "non_prod_env"
+        ],
+        "business_impact": "HIGH",
+        "cname": "cname.vercel-dns.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "api.insforge.dev",
+      "is_live": true,
+      "ip": "3.149.30.52",
+      "http_status": 404,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "HSTS"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "api_surface",
+          "role:api",
+          "non_prod_env"
+        ],
+        "business_impact": "HIGH",
+        "cname": "alb-prod-backend-api-1410285969.us-east-2.elb.amazonaws.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mcp.insforge.dev",
+      "is_live": true,
+      "ip": "3.143.157.182",
+      "http_status": 404,
+      "title": "Error",
+      "web_server": null,
+      "technologies": [
+        "Express",
+        "Node.js"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "alb-mcp-gateway-1193788074.us-east-2.elb.amazonaws.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "storage-cdn-test.insforge.dev",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage",
+          "role:development",
+          "static_asset",
+          "non_prod_env"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "sudo-beta.insforge.dev",
+      "is_live": true,
+      "ip": "184.169.176.210",
+      "http_status": 200,
+      "title": "InsForge Admin Console",
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env",
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": "dev-backend-sudo-1485400273.us-west-1.elb.amazonaws.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "monitoring.insforge.dev",
+      "is_live": true,
+      "ip": "18.119.154.242",
+      "http_status": 302,
+      "title": "302 Found",
+      "web_server": null,
+      "technologies": [
+        "Amazon ELB",
+        "Amazon Web Services"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "alb-grafana-proxy-1597486158.us-east-2.elb.amazonaws.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "api-beta.insforge.dev",
+      "is_live": true,
+      "ip": "13.56.96.97",
+      "http_status": 404,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "HSTS"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "api_surface",
+          "role:api",
+          "non_prod_env"
+        ],
+        "business_impact": "HIGH",
+        "cname": "dev-backend-api-1151716740.us-west-1.elb.amazonaws.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.insforge.dev",
+      "is_live": true,
+      "ip": "216.150.1.129",
+      "http_status": 307,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "HSTS",
+        "Vercel"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "04f60aebda4667c8.vercel-dns-016.com"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "go.insforge.dev",
+      "is_live": true,
+      "ip": "76.76.21.21",
+      "http_status": 200,
+      "title": "GO.INSFORGE.DEV - A Dub Custom Domain | Dub",
+      "web_server": null,
+      "technologies": [
+        "HSTS",
+        "Next.js",
+        "Node.js",
+        "React",
+        "Vercel",
+        "Webpack"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16509,
+        "asn_organization": "AMAZON-02 - Amazon.com, Inc., US",
+        "cloud_provider": "aws",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "cname.dub.co"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "tags.insforge.dev",
+      "is_live": true,
+      "ip": "2600:1900:4041:7c5:8000::",
+      "http_status": 400,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": "Unknown",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": "usu.stape.io"
+      }
+    }
+  ],
+  "services": [
+    {
+      "host": "www.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "go.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "api-beta.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "staging.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "sudo.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "development.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "cdn.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "b.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "api.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "tags.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "feedback.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "monitoring.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "track.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "mcp.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "config.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "sudo-beta.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "docs.insforge.dev",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    }
+  ],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50,
+    "quiet": false
+  },
+  "errors": []
+}

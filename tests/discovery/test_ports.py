@@ -2,7 +2,11 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from src.discovery.services.ports import run_ports
+from src.discovery.services.ports import run_ports, TOP_PORTS
+
+
+def _count_calls(mock, capability: str) -> int:
+    return sum(1 for args, _ in mock.call_args_list if args[0] == capability)
 
 
 def test_run_ports_respects_explicit_max_hosts(tmp_path):
@@ -26,9 +30,10 @@ def test_run_ports_respects_explicit_max_hosts(tmp_path):
 
         result = run_ports(hosts, Path(tmp_path), args, context={"max_hosts": 2})
 
-    assert mock_tool_manager.run_capability.call_count == 4
-    assert mock_tool_manager.run_capability.call_args_list[0].args == ("port_scan", "a.example.com")
-    assert mock_tool_manager.run_capability.call_args_list[1].args == ("port_scan", "b.example.com")
+    assert _count_calls(mock_tool_manager.run_capability, "port_scan") == 2
+    assert _count_calls(mock_tool_manager.run_capability, "service_discovery") == 2
+    mock_tool_manager.run_capability.assert_any_call("port_scan", "a.example.com", ports=TOP_PORTS)
+    mock_tool_manager.run_capability.assert_any_call("port_scan", "b.example.com", ports=TOP_PORTS)
     assert result["open_ports"] == ["a.example.com:80", "b.example.com:443"]
 
 
@@ -40,9 +45,7 @@ def test_run_ports_normalizes_url_inputs(tmp_path):
 
         def side_effect(capability, target, **kwargs):
             if capability == "port_scan":
-                if target == "a.example.com":
-                    return []
-                if target == "b.example.com":
+                if target in ("a.example.com", "b.example.com"):
                     return []
                 raise AssertionError("port_scan called for an unexpected host")
             if capability == "service_discovery":
@@ -53,5 +56,7 @@ def test_run_ports_normalizes_url_inputs(tmp_path):
 
         run_ports(hosts, Path(tmp_path), args, context={})
 
-    assert mock_tool_manager.run_capability.call_args_list[0].args == ("port_scan", "a.example.com")
-    assert mock_tool_manager.run_capability.call_args_list[1].args == ("port_scan", "b.example.com")
+    assert _count_calls(mock_tool_manager.run_capability, "port_scan") == 2
+    assert _count_calls(mock_tool_manager.run_capability, "service_discovery") == 0
+    mock_tool_manager.run_capability.assert_any_call("port_scan", "a.example.com", ports=TOP_PORTS)
+    mock_tool_manager.run_capability.assert_any_call("port_scan", "b.example.com", ports=TOP_PORTS)

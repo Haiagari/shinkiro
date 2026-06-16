@@ -1,0 +1,45 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_1",
+        "label": "artifact.test",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2494",
+        "label": "api.artifact.test",
+        "type": "subdomain",
+        "priority": 80,
+        "is_critical": true,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "api_surface"
+          ],
+          "trace": null
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_1",
+        "target": "sub_2494",
+        "relation": "has_subdomain"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 1,
+    "nodes_returned": 2,
+    "schema_version": "1.2"
+  }
+}

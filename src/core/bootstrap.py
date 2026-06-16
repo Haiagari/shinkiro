@@ -15,6 +15,8 @@ from typing import Optional
 
 from cryptography.hazmat.primitives.asymmetric import ed25519
 
+from src.plugins.loader import plugin_loader
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -92,6 +94,8 @@ def bootstrap_runtime_files(base_dir: Optional[Path] = None) -> dict[str, bool]:
     for d in ["evidence", "runs", "runtime", "exports"]:
         dir_path = _project_path(d, base_dir=base_dir)
         dir_path.mkdir(parents=True, exist_ok=True)
+
+    plugin_loader.discover(["plugins"])
 
     return {
         "config": ensure_config_file(base_dir=base_dir),

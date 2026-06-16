@@ -133,7 +133,7 @@ def test_evidence_linker() -> List[TestResult]:
     """Test evidence linker functionality."""
     results = []
     
-    from src.intelligence.evidence_linker import evidence_linker
+    from src.intelligence.analysis.evidence_linker import evidence_linker
     
     # Test link creation
     link = evidence_linker.link_subdomain_to_httpx(

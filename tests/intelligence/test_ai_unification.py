@@ -1,5 +1,5 @@
 import pytest
-from src.intelligence.ai_analyzer import AIAnalyst
+from src.intelligence.analysis.ai_analyzer import AIAnalyst
 from src.core.config import config
 
 def test_ai_provider_unification_interface():

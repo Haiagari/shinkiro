@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_34",
+        "label": "192.168.0.38",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    }
+  ],
+  "edges": [],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 0,
+    "nodes_returned": 1,
+    "schema_version": "1.2"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "session_id": "fc3578f7-b76c-4831-a996-3ba133e41ce2",
+  "target": "insforge.dev",
+  "mode": "hunt",
+  "scan": {
+    "scan_id": 160,
+    "session_id": "fc3578f7-b76c-4831-a996-3ba133e41ce2",
+    "target": "insforge.dev",
+    "mode": "hunt",
+    "status": "running",
+    "started_at": "2026-06-15T19:28:54.250974",
+    "ended_at": null,
+    "duration_seconds": null,
+    "stats": {
+      "subdomains_found": 0,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": []
+  },
+  "session": {
+    "session_id": "fc3578f7-b76c-4831-a996-3ba133e41ce2",
+    "target": "insforge.dev",
+    "mode": "hunt",
+    "started_at": "2026-06-15T19:28:54.250974",
+    "ended_at": null,
+    "duration": null,
+    "status": "running",
+    "exit_code": 0,
+    "counts": {
+      "subdomains": 0,
+      "hosts": 0,
+      "ports": 0,
+      "findings": 0
+    },
+    "error_summary": null,
+    "config_used": {
+      "threads": null,
+      "rate_limit": 50,
+      "mode": "hunt"
+    }
+  },
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

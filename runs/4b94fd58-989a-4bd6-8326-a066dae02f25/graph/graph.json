@@ -1,0 +1,8021 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_30",
+        "label": "unitru.edu.pe",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_13",
+        "label": "biblioteca-intra.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_14",
+        "label": "www.agric.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_15",
+        "label": "admision.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_16",
+        "label": "ceua.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_17",
+        "label": "www.cci.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_18",
+        "label": "facsoc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_19",
+        "label": "www.acmgmat.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_20",
+        "label": "arquitectura.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_21",
+        "label": "ffccee.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_22",
+        "label": "capacitaciones.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_23",
+        "label": "postapps.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_24",
+        "label": "dda.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_25",
+        "label": "www.facfar.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_26",
+        "label": "edusecll.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_27",
+        "label": "dic.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_28",
+        "label": "www.agro.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_29",
+        "label": "fvirtual.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_30",
+        "label": "admisionapps.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_31",
+        "label": "accf.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_32",
+        "label": "use.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_33",
+        "label": "infvalle.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_34",
+        "label": "agrono.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_35",
+        "label": "www.usee.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_36",
+        "label": "turismo.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_37",
+        "label": "sgdunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_38",
+        "label": "hist.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_39",
+        "label": "www.facbio.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_40",
+        "label": "capu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_41",
+        "label": "dipseu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_42",
+        "label": "www.adm.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_43",
+        "label": "zoo.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_44",
+        "label": "gpd.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_45",
+        "label": "mail.adm.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_46",
+        "label": "suv.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_47",
+        "label": "isaca.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_48",
+        "label": "fis.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_49",
+        "label": "bibliotecas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_50",
+        "label": "boletasdepago.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:commerce"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "COMMERCE",
+              "signal": "domain/title",
+              "match": "pago",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_51",
+        "label": "dirplan.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_52",
+        "label": "transparencia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_53",
+        "label": "chanchan.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_54",
+        "label": "facfar.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_55",
+        "label": "digitalunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "leaked_data_surface"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "leaked_data_surface",
+              "pattern": ".git",
+              "priority": 11,
+              "contribution": 0.6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_56",
+        "label": "preford.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_57",
+        "label": "faceco.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_58",
+        "label": "www.enfermeria.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_59",
+        "label": "www.qa-solvencias.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "qa",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "qa",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_60",
+        "label": "transparencia-universitaria.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_61",
+        "label": "www.faccfm.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_62",
+        "label": "use-dpa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_63",
+        "label": "elbolivarianonoticias.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_64",
+        "label": "sistemas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_65",
+        "label": "ogbu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_66",
+        "label": "www.aulavirtual.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_67",
+        "label": "usee.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_68",
+        "label": "www.use-dpa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_69",
+        "label": "eco.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_70",
+        "label": "soc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_71",
+        "label": "ciduntregmat.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_72",
+        "label": "pei.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_73",
+        "label": "www.infounitru.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_74",
+        "label": "gpcd.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_75",
+        "label": "depmath.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_76",
+        "label": "pagina2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_77",
+        "label": "www.aula.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_78",
+        "label": "www.museozoo.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_79",
+        "label": "web2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_80",
+        "label": "www.dipseu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_81",
+        "label": "faccfm.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_82",
+        "label": "editorial.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_83",
+        "label": "www.cestunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_84",
+        "label": "www.bio.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_85",
+        "label": "www.ant.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_86",
+        "label": "oca.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_87",
+        "label": "ccifbiperu2021.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_88",
+        "label": "mecatronica.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_89",
+        "label": "control.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_90",
+        "label": "www.bolsa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_91",
+        "label": "esto.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_92",
+        "label": "www.correo.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_93",
+        "label": "mypa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_94",
+        "label": "conimat.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_95",
+        "label": "vtindustrial.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_96",
+        "label": "sede-jequetepeque.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_97",
+        "label": "www.chanchan.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_98",
+        "label": "epgvirtual.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_99",
+        "label": "www.econ.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_100",
+        "label": "www.facing.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_101",
+        "label": "www.eduini.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_102",
+        "label": "reservaonline.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_103",
+        "label": "www.facagro.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_104",
+        "label": "min.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_105",
+        "label": "ugre.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_106",
+        "label": "depidiomas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_107",
+        "label": "ind.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_108",
+        "label": "bienestarfarm.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_109",
+        "label": "ciei.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_110",
+        "label": "www.vin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_111",
+        "label": "inf.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_112",
+        "label": "www.sga2018.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_113",
+        "label": "auspicios.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_114",
+        "label": "qa-solvencias.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "qa",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "qa",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_115",
+        "label": "www.diplomas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_116",
+        "label": "www.qui.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_117",
+        "label": "mail.der.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_118",
+        "label": "facenf.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_119",
+        "label": "beca18.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_120",
+        "label": "sisgedo.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_121",
+        "label": "drni.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_122",
+        "label": "planbic.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_123",
+        "label": "epgnew.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_124",
+        "label": "www.suv.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_125",
+        "label": "apps-bkn.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_126",
+        "label": "ant.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_127",
+        "label": "www.ccal.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_128",
+        "label": "materiales.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_129",
+        "label": "www.ind.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_130",
+        "label": "www.oca.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_131",
+        "label": "www.dirplan.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_132",
+        "label": "resoluciones.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_133",
+        "label": "www.aplicaciones.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_134",
+        "label": "sede-huamachuco.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_135",
+        "label": "infounitru.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_136",
+        "label": "museozoo.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_137",
+        "label": "www.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_138",
+        "label": "tsoc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_139",
+        "label": "dcep.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_140",
+        "label": "qui.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_141",
+        "label": "www.metalurgica.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_142",
+        "label": "osi.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_143",
+        "label": "matesc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_144",
+        "label": "ccal.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_145",
+        "label": "coneimin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_146",
+        "label": "fastworkshopmathematics.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:commerce"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "COMMERCE",
+              "signal": "domain/title",
+              "match": "shop",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_147",
+        "label": "biblioteca.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_148",
+        "label": "www.materiales.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_149",
+        "label": "aulavirtual.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_150",
+        "label": "cepejup.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_151",
+        "label": "facagro.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_152",
+        "label": "chimor.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_153",
+        "label": "otcc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_154",
+        "label": "api-uraa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 80,
+        "is_critical": true,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "api_surface",
+            "role:api"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "api",
+              "contribution": 0.4
+            },
+            {
+              "type": "label_match",
+              "rule": "api_surface",
+              "pattern": "api",
+              "priority": 9,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_155",
+        "label": "asistencia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_156",
+        "label": "www.ffccee.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_157",
+        "label": "arq.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_158",
+        "label": "agroin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_159",
+        "label": "facesto.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_160",
+        "label": "mail.agroin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_161",
+        "label": "sga2018.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_162",
+        "label": "agroind.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_163",
+        "label": "www.admison.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_164",
+        "label": "agri.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_165",
+        "label": "www.oia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_166",
+        "label": "mec.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_167",
+        "label": "educaunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_168",
+        "label": "tramites-uraa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_169",
+        "label": "ucap.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_170",
+        "label": "dsapce.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_171",
+        "label": "proyectoremove.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_172",
+        "label": "drsu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_173",
+        "label": "agro.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_174",
+        "label": "trabajosoc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_175",
+        "label": "sisav.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_176",
+        "label": "ditt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_177",
+        "label": "rsu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_178",
+        "label": "pic9.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_179",
+        "label": "padressuv.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_180",
+        "label": "sede-stgochuco.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_181",
+        "label": "siga.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_182",
+        "label": "iniciativas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_183",
+        "label": "facqui.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_184",
+        "label": "dsc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_185",
+        "label": "www.helpdesk.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_186",
+        "label": "mail.agrono.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_187",
+        "label": "edusec.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_188",
+        "label": "eticaingenieria.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_189",
+        "label": "eduini.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_190",
+        "label": "cuiciti.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_191",
+        "label": "www.cicec.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_192",
+        "label": "intranet.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_193",
+        "label": "osb.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_194",
+        "label": "metalurgica.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_195",
+        "label": "www.dsic.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_196",
+        "label": "depestad.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_197",
+        "label": "bio.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_198",
+        "label": "udifec.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_199",
+        "label": "mural.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_200",
+        "label": "disee.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_201",
+        "label": "www.accf.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_202",
+        "label": "www.ote.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_203",
+        "label": "copefi.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_204",
+        "label": "prosein.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_205",
+        "label": "aplicaciones.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_206",
+        "label": "edupri.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_207",
+        "label": "www.ogbu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_208",
+        "label": "med.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_209",
+        "label": "www.vtindustrial.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_210",
+        "label": "www.facqui.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_211",
+        "label": "www.cont.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_212",
+        "label": "orni.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_213",
+        "label": "www.transparencia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_214",
+        "label": "www.drsu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_215",
+        "label": "www.facsoc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_216",
+        "label": "encuestas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_217",
+        "label": "sisdef.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_218",
+        "label": "ava.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_219",
+        "label": "reclamaciones.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_220",
+        "label": "www.conaets.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_221",
+        "label": "ccom.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_222",
+        "label": "gestionti-sistemasxxv.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_223",
+        "label": "drt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_224",
+        "label": "bolsa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_225",
+        "label": "www.din.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_226",
+        "label": "www.bibliotecas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_227",
+        "label": "math.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_228",
+        "label": "transparencia-academica.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_229",
+        "label": "facing.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_230",
+        "label": "uesc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_231",
+        "label": "dsic.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_232",
+        "label": "www.mathesc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_233",
+        "label": "www.agrono.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_234",
+        "label": "egunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_235",
+        "label": "insin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_236",
+        "label": "www.acde.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_237",
+        "label": "facedu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_238",
+        "label": "www.arque.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_239",
+        "label": "www.amb.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_240",
+        "label": "www.edusec.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_241",
+        "label": "sete.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_242",
+        "label": "www.acreditacionmedicina.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_243",
+        "label": "minas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_244",
+        "label": "cci.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_245",
+        "label": "mathesc.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_246",
+        "label": "oasis.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_247",
+        "label": "www.mathdep.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_248",
+        "label": "enf.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_249",
+        "label": "repositorio.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_250",
+        "label": "mail.ccom.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_251",
+        "label": "www.fis.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_252",
+        "label": "www.osb.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_253",
+        "label": "met.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_254",
+        "label": "tur.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_255",
+        "label": "deplengualit.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_256",
+        "label": "untempresa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_257",
+        "label": "padresapp.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_258",
+        "label": "depmecanica.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_259",
+        "label": "far.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_260",
+        "label": "mat.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_261",
+        "label": "cont.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_262",
+        "label": "www.secgen.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_263",
+        "label": "www.copefi.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_264",
+        "label": "www.ccom.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_265",
+        "label": "lenguayliteratura.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_266",
+        "label": "oia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_267",
+        "label": "msn.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_268",
+        "label": "accf2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_269",
+        "label": "aries.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_270",
+        "label": "www.facenf.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_271",
+        "label": "adm.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_272",
+        "label": "www.admision.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_273",
+        "label": "cestunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_274",
+        "label": "aulafacedu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_275",
+        "label": "covid19.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_276",
+        "label": "hfm.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_277",
+        "label": "www.editorial.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_278",
+        "label": "www.pei.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_279",
+        "label": "est.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_280",
+        "label": "www.coneimin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_281",
+        "label": "picfedu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_282",
+        "label": "jornadas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_283",
+        "label": "www.dspace.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_284",
+        "label": "suv2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:api"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "v2",
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_285",
+        "label": "cepunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_286",
+        "label": "www.facder.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_287",
+        "label": "siplan.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_288",
+        "label": "depfis.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_289",
+        "label": "www.ceua.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_290",
+        "label": "din.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_291",
+        "label": "www.picfedu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_292",
+        "label": "aula.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_293",
+        "label": "mail.cont.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_294",
+        "label": "www.solvencia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_295",
+        "label": "inf2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_296",
+        "label": "www.agri.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_297",
+        "label": "www.ogdae.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_298",
+        "label": "calidad.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_299",
+        "label": "ote.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_300",
+        "label": "www.cidunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_301",
+        "label": "www.mat.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_302",
+        "label": "www.dic.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_303",
+        "label": "visitas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_304",
+        "label": "www.esto.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_305",
+        "label": "www.agroind.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_306",
+        "label": "unt2014.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_307",
+        "label": "useder.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_308",
+        "label": "industrial.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_309",
+        "label": "www.cepunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_310",
+        "label": "acde.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_311",
+        "label": "mail.ant.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_312",
+        "label": "facbio.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_313",
+        "label": "sede-otuzco.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_314",
+        "label": "www.vac.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_315",
+        "label": "acmgmat.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_316",
+        "label": "secgen.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_317",
+        "label": "facest.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_318",
+        "label": "docs.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:api"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "docs",
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_319",
+        "label": "www.met.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_320",
+        "label": "uniestadistica.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_321",
+        "label": "pg.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_322",
+        "label": "contact.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_323",
+        "label": "www.ort.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_324",
+        "label": "cidunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_325",
+        "label": "apemerit.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_326",
+        "label": "pap.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_327",
+        "label": "www.jornadas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_328",
+        "label": "depmorfologia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_329",
+        "label": "facder.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_330",
+        "label": "ogdae.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_331",
+        "label": "pruebas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_332",
+        "label": "vac.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_333",
+        "label": "cicec.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_334",
+        "label": "uraa.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_335",
+        "label": "www.math.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_336",
+        "label": "facmed.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_337",
+        "label": "www.conimat.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_338",
+        "label": "www.oac.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_339",
+        "label": "correo.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_340",
+        "label": "acreditacionmedicina.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_341",
+        "label": "cris.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_342",
+        "label": "www.facedu.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_343",
+        "label": "www.ucap.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_344",
+        "label": "www.inf.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_345",
+        "label": "www.est.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_346",
+        "label": "ort.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_347",
+        "label": "econ.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_348",
+        "label": "solvencia.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_349",
+        "label": "dspace.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_350",
+        "label": "aula.cestunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_351",
+        "label": "www.suv2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:api"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "v2",
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_352",
+        "label": "vin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_353",
+        "label": "www.fvirtual.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_354",
+        "label": "dblogs.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_355",
+        "label": "mathdep.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_356",
+        "label": "www.inf2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_357",
+        "label": "www.edupri.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_358",
+        "label": "www.sgdunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_359",
+        "label": "www.bibliotecasunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_360",
+        "label": "opdi.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_361",
+        "label": "der.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_362",
+        "label": "pesq.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_363",
+        "label": "mail.agri.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_364",
+        "label": "www.agroin.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_365",
+        "label": "pedi2050.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_366",
+        "label": "revistas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_367",
+        "label": "www.der.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_368",
+        "label": "www.cepejup.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_369",
+        "label": "ns.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_370",
+        "label": "unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_371",
+        "label": "ablogs.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_372",
+        "label": "www.planbic.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_373",
+        "label": "posgrado.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_374",
+        "label": "www.facmed.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_375",
+        "label": "aulavirtual2.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_376",
+        "label": "agric.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_377",
+        "label": "coteca.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_378",
+        "label": "dga.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_379",
+        "label": "www.revistas.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_380",
+        "label": "pes.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_381",
+        "label": "gcp.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_382",
+        "label": "portalpadres.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:auth"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "AUTH",
+              "signal": "domain/title",
+              "match": "portal",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_383",
+        "label": "www.egunt.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_384",
+        "label": "gri.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_385",
+        "label": "buscaresoluciones.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_386",
+        "label": "compite.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_387",
+        "label": "sis.unitru.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_13",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_14",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_15",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_16",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_17",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_18",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_19",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_20",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_21",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_22",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_23",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_24",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_25",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_26",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_27",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_28",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_29",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_30",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_31",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_32",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_33",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_34",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_35",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_36",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_37",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_38",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_39",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_40",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_41",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_42",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_43",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_44",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_45",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_46",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_47",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_48",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_49",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_50",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_51",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_52",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_53",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_54",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_55",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_56",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_57",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_58",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_59",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_60",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_61",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_62",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_63",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_64",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_65",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_66",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_67",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_68",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_69",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_70",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_71",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_72",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_73",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_74",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_75",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_76",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_77",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_78",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_79",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_80",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_81",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_82",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_83",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_84",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_85",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_86",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_87",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_88",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_89",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_90",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_91",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_92",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_93",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_94",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_95",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_96",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_97",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_98",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_99",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_100",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_101",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_102",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_103",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_104",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_105",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_106",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_107",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_108",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_109",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_110",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_111",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_112",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_113",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_114",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_115",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_116",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_117",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_118",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_119",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_120",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_121",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_122",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_123",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_124",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_125",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_126",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_127",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_128",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_129",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_130",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_131",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_132",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_133",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_134",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_135",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_136",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_137",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_138",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_139",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_140",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_141",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_142",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_143",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_144",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_145",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_146",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_147",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_148",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_149",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_150",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_151",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_152",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_153",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_154",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_155",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_156",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_157",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_158",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_159",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_160",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_161",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_162",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_163",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_164",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_165",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_166",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_167",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_168",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_169",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_170",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_171",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_172",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_173",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_174",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_175",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_176",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_177",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_178",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_179",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_180",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_181",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_182",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_183",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_184",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_185",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_186",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_187",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_188",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_189",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_190",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_191",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_192",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_193",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_194",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_195",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_196",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_197",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_198",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_199",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_200",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_201",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_202",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_203",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_204",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_205",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_206",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_207",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_208",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_209",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_210",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_211",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_212",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_213",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_214",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_215",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_216",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_217",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_218",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_219",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_220",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_221",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_222",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_223",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_224",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_225",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_226",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_227",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_228",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_229",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_230",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_231",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_232",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_233",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_234",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_235",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_236",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_237",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_238",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_239",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_240",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_241",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_242",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_243",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_244",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_245",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_246",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_247",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_248",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_249",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_250",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_251",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_252",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_253",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_254",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_255",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_256",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_257",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_258",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_259",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_260",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_261",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_262",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_263",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_264",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_265",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_266",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_267",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_268",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_269",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_270",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_271",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_272",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_273",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_274",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_275",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_276",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_277",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_278",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_279",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_280",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_281",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_282",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_283",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_284",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_285",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_286",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_287",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_288",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_289",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_290",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_291",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_292",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_293",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_294",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_295",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_296",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_297",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_298",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_299",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_300",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_301",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_302",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_303",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_304",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_305",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_306",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_307",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_308",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_309",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_310",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_311",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_312",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_313",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_314",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_315",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_316",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_317",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_318",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_319",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_320",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_321",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_322",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_323",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_324",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_325",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_326",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_327",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_328",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_329",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_330",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_331",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_332",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_333",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_334",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_335",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_336",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_337",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_338",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_339",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_340",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_341",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_342",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_343",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_344",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_345",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_346",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_347",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_348",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_349",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_350",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_351",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_352",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_353",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_354",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_355",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_356",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_357",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_358",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_359",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_360",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_361",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_362",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_363",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_364",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_365",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_366",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_367",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_368",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_369",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_370",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_371",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_372",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_373",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_374",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_375",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_376",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_377",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_378",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_379",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_380",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_381",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_382",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_383",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_384",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_385",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_386",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_30",
+        "target": "sub_387",
+        "relation": "has_subdomain"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 375,
+    "nodes_returned": 376,
+    "schema_version": "1.2"
+  }
+}

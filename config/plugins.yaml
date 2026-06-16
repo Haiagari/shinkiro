@@ -1,0 +1,5 @@
+enabled_plugins:
+  - example_logger
+
+plugin_paths:
+  - plugins

@@ -1,0 +1,43 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_35",
+        "label": "https://owlperu.com/iestptembladera/",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2469",
+        "label": "owlperu.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": null,
+          "trace": null
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_35",
+        "target": "sub_2469",
+        "relation": "has_subdomain"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 1,
+    "nodes_returned": 2,
+    "schema_version": "1.2"
+  }
+}

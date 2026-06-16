@@ -48,12 +48,25 @@ class NmapProvider(BaseProvider):
 
         cmd = [self.path, "-oX", "-", host]
         
-        if ports: cmd.extend(["-p", ports])
+        if ports:
+            cmd.extend(["-p", ports])
+        else:
+            cmd.extend(["--top-ports", "1000"])
+        
         if service_detection: cmd.append("-sV")
         if os_detection: cmd.append("-O")
         if scripts: cmd.extend(["--script", scripts])
         
-        cmd.extend(["-T4", "-v"])
+        cmd.extend([
+            "-Pn",
+            "--open",
+            "--min-rate", "100",
+            "--max-retries", "2",
+            "--initial-rtt-timeout", "500ms",
+            "--max-rtt-timeout", "2000ms",
+            "--script-timeout", "10s",
+            "-T4", "-v",
+        ])
         
         # Inyectar Chameleon Stealth Flags v8.3.2
         cmd.extend(self._get_stealth_flags())
@@ -62,7 +75,7 @@ class NmapProvider(BaseProvider):
         logger.info(f"Running nmap: {' '.join(cmd)}")
         
         try:
-            result = self._run_tool(cmd, timeout=600, capability=capability, capture=True, retries=1)
+            result = self._run_tool(cmd, timeout=30, capability=capability, capture=True, retries=1)
             if result.returncode not in [0, 1]:
                 raise ToolExecutionError(f"Nmap error: {result.stderr}")
             return self._parse_xml_output(result.stdout)

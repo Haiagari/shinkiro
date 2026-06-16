@@ -1,0 +1,837 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "d256e11c-99ee-4ba0-9145-a9d7b1b36854",
+  "target": "moewalls.com",
+  "mode": "hunt",
+  "timestamp": "2026-05-03T17:56:54.477714",
+  "started_at": "2026-05-03T17:54:55.606679",
+  "ended_at": null,
+  "duration_seconds": null,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "108.162.192.0/20 (netblock) --> contains --> 108.162.193.68 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "173.245.58.0/23 (netblock) --> contains --> 173.245.59.68 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arch.ns.cloudflare.com (fqdn) --> aaaa_record --> 2a06:98c1:50::ac40:2144 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webmail.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpcontacts.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "172.64.0.0/18 (netblock) --> contains --> 172.64.33.68 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webdisk.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "moewalls.com (fqdn) --> ns_record --> arch.ns.cloudflare.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpanel.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "13335 (asn) --> announces --> 2a06:98c1:50::/46 (netblock)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "uploader.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpcalendars.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "2a06:98c1:50::/46 (netblock) --> contains --> 2a06:98c1:50::ac40:2144 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "13335 (asn) --> managed_by --> cloudflarenet - cloudflare, inc. (rirorganization)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "13335 (asn) --> announces --> 173.245.58.0/23 (netblock)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "moewalls.com (fqdn) --> ns_record --> miki.ns.cloudflare.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "go1.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "dc-b73f01e185d1.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "13335 (asn) --> announces --> 2803:f800:50::/45 (netblock)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arch.ns.cloudflare.com (fqdn) --> a_record --> 108.162.193.68 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "13335 (asn) --> announces --> 172.64.0.0/18 (netblock)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "_dc-mx.97c319288f69.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arch.ns.cloudflare.com (fqdn) --> aaaa_record --> 2803:f800:50::6ca2:c144 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "test.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:development",
+          "non_prod_env"
+        ],
+        "business_impact": "MEDIUM",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arch.ns.cloudflare.com (fqdn) --> a_record --> 173.245.59.68 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "go.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "13335 (asn) --> announces --> 108.162.192.0/20 (netblock)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "moewalls.com (fqdn) --> mx_record --> mx3.zoho.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "moewalls.com (fqdn) --> mx_record --> mx2.zoho.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arch.ns.cloudflare.com (fqdn) --> aaaa_record --> 2606:4700:58::adf5:3b44 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "13335 (asn) --> announces --> 2606:4700:50::/44 (netblock)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "2803:f800:50::/45 (netblock) --> contains --> 2803:f800:50::6ca2:c144 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "arch.ns.cloudflare.com (fqdn) --> a_record --> 172.64.33.68 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "data_storage"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "static.moewalls.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "static_asset"
+        ],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "moewalls.com (fqdn) --> mx_record --> mx.zoho.com (fqdn)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "2606:4700:50::/44 (netblock) --> contains --> 2606:4700:58::adf5:3b44 (ipaddress)",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    }
+  ],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

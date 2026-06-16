@@ -1,6 +1,6 @@
 
 import json
-from src.intelligence.classifier import semantic_classifier
+from src.intelligence.core.classifier import semantic_classifier
 
 # Simulamos 100 subdominios de ruido (la mayoría basura o CDNs)
 raw_assets = [f"asset-{i}.target.com" for i in range(100)]

@@ -10,7 +10,7 @@ from rich.table import Table
 from cli.shared import console, render_outcome, render_panel
 from src.core.target_normalizer import normalize_lookup_target
 from src.core.tool_manager import tool_manager
-from src.intelligence.secret_finder import secret_finder
+from src.intelligence.enrichment.secret_finder import secret_finder
 from src.storage.database import SessionLocal
 from src.storage.models import Subdomain
 from src.utils import log
@@ -28,7 +28,7 @@ from src.utils import log
 )
 def secrets(target_domain, limit, threads, verify):
     """Deep Recon: Search for hardcoded secrets in JS files."""
-    from src.intelligence.ai_analyzer import ai_analyst
+    from src.intelligence.analysis.ai_analyzer import ai_analyst
 
     db = SessionLocal()
     try:

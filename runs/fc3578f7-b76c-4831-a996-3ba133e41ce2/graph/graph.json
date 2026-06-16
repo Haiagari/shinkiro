@@ -1,0 +1,2154 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_38",
+        "label": "insforge.dev",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2519",
+        "label": "insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_216.150.1.1",
+        "label": "216.150.1.1",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2520",
+        "label": "monitoring-beta.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2521",
+        "label": "track.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_18.189.155.129",
+        "label": "18.189.155.129",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_alb-mixpanel-proxy-1231287267.us-east-2.elb.amazonaws.com",
+        "label": "alb-mixpanel-proxy-1231287267.us-east-2.elb.amazonaws.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2522",
+        "label": "b.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_172.66.169.73",
+        "label": "172.66.169.73",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 13335,
+          "org": "CLOUDFLARENET - Cloudflare, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_71c6656649197d01b7d9.cf-prod-us-proxy.proxyhog.com",
+        "label": "71c6656649197d01b7d9.cf-prod-us-proxy.proxyhog.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2523",
+        "label": "config.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_54.230.124.94",
+        "label": "54.230.124.94",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_d2m11zcqfkwnng.cloudfront.net",
+        "label": "d2m11zcqfkwnng.cloudfront.net",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2524",
+        "label": "development.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_216.150.1.193",
+        "label": "216.150.1.193",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_04f60aebda4667c8.vercel-dns-016.com",
+        "label": "04f60aebda4667c8.vercel-dns-016.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2525",
+        "label": "feedback.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_104.26.13.52",
+        "label": "104.26.13.52",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 13335,
+          "org": "CLOUDFLARENET - Cloudflare, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_insforge.customers.productlane.com",
+        "label": "insforge.customers.productlane.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2526",
+        "label": "sudo.insforge.dev",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:development",
+            "non_prod_env",
+            "role:management"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "admin",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_3.15.253.212",
+        "label": "3.15.253.212",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_alb-platform-admin-console-2126821978.us-east-2.elb.amazonaws.com",
+        "label": "alb-platform-admin-console-2126821978.us-east-2.elb.amazonaws.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2527",
+        "label": "cdn.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "static_asset",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            },
+            {
+              "type": "label_match",
+              "rule": "static_asset",
+              "pattern": "cdn",
+              "priority": 2,
+              "contribution": 0.1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_54.230.124.89",
+        "label": "54.230.124.89",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_dgohv8y9hys49.cloudfront.net",
+        "label": "dgohv8y9hys49.cloudfront.net",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2528",
+        "label": "storage-cdn-beta.insforge.dev",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage",
+            "role:development",
+            "static_asset",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "storage",
+              "priority": 7,
+              "contribution": 0.4
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            },
+            {
+              "type": "label_match",
+              "rule": "static_asset",
+              "pattern": "cdn",
+              "priority": 2,
+              "contribution": 0.1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2529",
+        "label": "staging.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "staging",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_216.150.16.1",
+        "label": "216.150.16.1",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2530",
+        "label": "docs.insforge.dev",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:development",
+            "role:api",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "docs",
+              "contribution": 0.4
+            },
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_76.76.21.164",
+        "label": "76.76.21.164",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_cname.vercel-dns.com",
+        "label": "cname.vercel-dns.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2531",
+        "label": "api.insforge.dev",
+        "type": "subdomain",
+        "priority": 80,
+        "is_critical": true,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:development",
+            "api_surface",
+            "role:api",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "api",
+              "contribution": 0.4
+            },
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "api_surface",
+              "pattern": "api",
+              "priority": 9,
+              "contribution": 0.4
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_3.149.30.52",
+        "label": "3.149.30.52",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_alb-prod-backend-api-1410285969.us-east-2.elb.amazonaws.com",
+        "label": "alb-prod-backend-api-1410285969.us-east-2.elb.amazonaws.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2532",
+        "label": "mcp.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_3.143.157.182",
+        "label": "3.143.157.182",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_alb-mcp-gateway-1193788074.us-east-2.elb.amazonaws.com",
+        "label": "alb-mcp-gateway-1193788074.us-east-2.elb.amazonaws.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2533",
+        "label": "storage-cdn-test.insforge.dev",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage",
+            "role:development",
+            "static_asset",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "test",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "storage",
+              "priority": 7,
+              "contribution": 0.4
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            },
+            {
+              "type": "label_match",
+              "rule": "static_asset",
+              "pattern": "cdn",
+              "priority": 2,
+              "contribution": 0.1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2534",
+        "label": "sudo-beta.insforge.dev",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:development",
+            "non_prod_env",
+            "role:management"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "admin",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_184.169.176.210",
+        "label": "184.169.176.210",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_dev-backend-sudo-1485400273.us-west-1.elb.amazonaws.com",
+        "label": "dev-backend-sudo-1485400273.us-west-1.elb.amazonaws.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2535",
+        "label": "monitoring.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_18.119.154.242",
+        "label": "18.119.154.242",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_alb-grafana-proxy-1597486158.us-east-2.elb.amazonaws.com",
+        "label": "alb-grafana-proxy-1597486158.us-east-2.elb.amazonaws.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2536",
+        "label": "api-beta.insforge.dev",
+        "type": "subdomain",
+        "priority": 80,
+        "is_critical": true,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:development",
+            "api_surface",
+            "role:api",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "api",
+              "contribution": 0.4
+            },
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "api_surface",
+              "pattern": "api",
+              "priority": 9,
+              "contribution": 0.4
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_13.56.96.97",
+        "label": "13.56.96.97",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_dev-backend-api-1151716740.us-west-1.elb.amazonaws.com",
+        "label": "dev-backend-api-1151716740.us-west-1.elb.amazonaws.com",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2537",
+        "label": "www.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_216.150.1.129",
+        "label": "216.150.1.129",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2538",
+        "label": "go.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_76.76.21.21",
+        "label": "76.76.21.21",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 16509,
+          "org": "AMAZON-02 - Amazon.com, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_cname.dub.co",
+        "label": "cname.dub.co",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2539",
+        "label": "tags.insforge.dev",
+        "type": "subdomain",
+        "priority": 40,
+        "is_critical": false,
+        "metadata": {
+          "impact": "MEDIUM",
+          "labels": [
+            "role:development",
+            "non_prod_env"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "DEVELOPMENT",
+              "signal": "domain/title",
+              "match": "dev",
+              "contribution": 0.2
+            },
+            {
+              "type": "label_match",
+              "rule": "non_prod_env",
+              "pattern": "dev",
+              "priority": 5,
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_2600:1900:4041:7c5:8000::",
+        "label": "2600:1900:4041:7c5:8000::",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": null,
+          "org": "Unknown"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "cname_usu.stape.io",
+        "label": "usu.stape.io",
+        "type": "dns_cname",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_15",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_hsts",
+        "label": "HSTS",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_16",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_17",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_18",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_19",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_unknown",
+        "label": "unknown",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_20",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_21",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_22",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_amazon cloudfront",
+        "label": "Amazon CloudFront",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_23",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_cloudflare",
+        "label": "Cloudflare",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_24",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_25",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_26",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_27",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_amazon elb",
+        "label": "Amazon ELB",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_28",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_nginx:1.28.0",
+        "label": "Nginx:1.28.0",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_29",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_express",
+        "label": "Express",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_30",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_31",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_32",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2519",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2519",
+        "target": "ip_216.150.1.1",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2520",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2521",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2521",
+        "target": "ip_18.189.155.129",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2521",
+        "target": "cname_alb-mixpanel-proxy-1231287267.us-east-2.elb.amazonaws.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2522",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2522",
+        "target": "ip_172.66.169.73",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2522",
+        "target": "cname_71c6656649197d01b7d9.cf-prod-us-proxy.proxyhog.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2523",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2523",
+        "target": "ip_54.230.124.94",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2523",
+        "target": "cname_d2m11zcqfkwnng.cloudfront.net",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2524",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2524",
+        "target": "ip_216.150.1.193",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2524",
+        "target": "cname_04f60aebda4667c8.vercel-dns-016.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2525",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2525",
+        "target": "ip_104.26.13.52",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2525",
+        "target": "cname_insforge.customers.productlane.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2526",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2526",
+        "target": "ip_3.15.253.212",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2526",
+        "target": "cname_alb-platform-admin-console-2126821978.us-east-2.elb.amazonaws.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2527",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2527",
+        "target": "ip_54.230.124.89",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2527",
+        "target": "cname_dgohv8y9hys49.cloudfront.net",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2528",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2529",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2529",
+        "target": "ip_216.150.16.1",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2529",
+        "target": "cname_04f60aebda4667c8.vercel-dns-016.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2530",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2530",
+        "target": "ip_76.76.21.164",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2530",
+        "target": "cname_cname.vercel-dns.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2531",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2531",
+        "target": "ip_3.149.30.52",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2531",
+        "target": "cname_alb-prod-backend-api-1410285969.us-east-2.elb.amazonaws.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2532",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2532",
+        "target": "ip_3.143.157.182",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2532",
+        "target": "cname_alb-mcp-gateway-1193788074.us-east-2.elb.amazonaws.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2533",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2534",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2534",
+        "target": "ip_184.169.176.210",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2534",
+        "target": "cname_dev-backend-sudo-1485400273.us-west-1.elb.amazonaws.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2535",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2535",
+        "target": "ip_18.119.154.242",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2535",
+        "target": "cname_alb-grafana-proxy-1597486158.us-east-2.elb.amazonaws.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2536",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2536",
+        "target": "ip_13.56.96.97",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2536",
+        "target": "cname_dev-backend-api-1151716740.us-west-1.elb.amazonaws.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2537",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2537",
+        "target": "ip_216.150.1.129",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2537",
+        "target": "cname_04f60aebda4667c8.vercel-dns-016.com",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2538",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2538",
+        "target": "ip_76.76.21.21",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2538",
+        "target": "cname_cname.dub.co",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "sub_2539",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2539",
+        "target": "ip_2600:1900:4041:7c5:8000::",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2539",
+        "target": "cname_usu.stape.io",
+        "relation": "cname_pointer"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2537",
+        "target": "port_15",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_15",
+        "target": "tech_hsts",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2538",
+        "target": "port_16",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_16",
+        "target": "tech_hsts",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2536",
+        "target": "port_17",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_17",
+        "target": "tech_hsts",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2529",
+        "target": "port_18",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_18",
+        "target": "tech_hsts",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2526",
+        "target": "port_19",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_19",
+        "target": "tech_unknown",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2524",
+        "target": "port_20",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_20",
+        "target": "tech_hsts",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "target_38",
+        "target": "port_21",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_21",
+        "target": "tech_hsts",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2527",
+        "target": "port_22",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_22",
+        "target": "tech_amazon cloudfront",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2522",
+        "target": "port_23",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_23",
+        "target": "tech_cloudflare",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2531",
+        "target": "port_24",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_24",
+        "target": "tech_hsts",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2539",
+        "target": "port_25",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_25",
+        "target": "tech_unknown",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2525",
+        "target": "port_26",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_26",
+        "target": "tech_cloudflare",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2535",
+        "target": "port_27",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_27",
+        "target": "tech_amazon elb",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2521",
+        "target": "port_28",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_28",
+        "target": "tech_nginx:1.28.0",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2532",
+        "target": "port_29",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_29",
+        "target": "tech_express",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2523",
+        "target": "port_30",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_30",
+        "target": "tech_amazon cloudfront",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2534",
+        "target": "port_31",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_31",
+        "target": "tech_unknown",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2530",
+        "target": "port_32",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_32",
+        "target": "tech_cloudflare",
+        "relation": "runs"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 21,
+    "nodes_returned": 80,
+    "schema_version": "1.2"
+  }
+}

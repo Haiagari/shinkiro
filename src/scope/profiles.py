@@ -65,10 +65,10 @@ PROFILES = {
         timeout=15,
         timeout_policy={
             "default": 45,
-            "asset_discovery": 90,
+            "asset_discovery": 120,
             "dns_resolution": 30,
-            "live_detection": 30,
-            "endpoint_discovery": 60,
+            "live_detection": 120,
+            "endpoint_discovery": 120,
             "port_scan": 120,
             "service_discovery": 120,
             "template_scan": 120,

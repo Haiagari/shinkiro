@@ -4,7 +4,7 @@ OzyRecon Storage Layer - Queries utilitarias.
 """
 
 import ast
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional, Dict, Any
 from sqlalchemy import and_, text
 from sqlalchemy.orm import Session as DbSession
@@ -23,6 +23,7 @@ from src.storage.models import (
     Evidence,
 )
 from src.core.target_normalizer import normalize_lookup_target
+from src.domain.models import Asset as DomainAsset, Finding as DomainFinding
 
 
 class DBQueries:
@@ -519,7 +520,7 @@ class DBQueries:
         """
         Agrega un hallazgo usando inteligencia para deduplicar y trackear historial.
         """
-        from src.intelligence.analyzer import Deduplicator
+        from src.intelligence.core.analyzer import Deduplicator
 
         dedup = Deduplicator(self.db)
         fingerprint = dedup.fingerprint(vuln_data)
@@ -562,3 +563,206 @@ class DBQueries:
             self.db.commit()
             self.db.refresh(finding)
             return finding
+
+    # ══════════════════════════════════════════════════════════════════════════════
+    # SCAN DIFF & HISTORY (unified from db_queries.py)
+    # ══════════════════════════════════════════════════════════════════════════════
+
+    def get_latest_scan(self, target_domain: str) -> Optional[Scan]:
+        target = self.get_target(target_domain)
+        if not target:
+            return None
+        return (
+            self.db.query(Scan)
+            .filter(Scan.target_id == target.id)
+            .order_by(Scan.id.desc())
+            .first()
+        )
+
+    def get_scan_history(self, target_domain: str, days: int = 30) -> List[Scan]:
+        target = self.get_target(target_domain)
+        if not target:
+            return []
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+        return (
+            self.db.query(Scan)
+            .filter(Scan.target_id == target.id, Scan.start_time >= cutoff)
+            .order_by(Scan.id.desc())
+            .all()
+        )
+
+    def get_new_findings(self, target_domain: str, since_days: int = 7) -> List[Vulnerability]:
+        target = self.get_target(target_domain)
+        if not target:
+            return []
+        cutoff = datetime.now(timezone.utc) - timedelta(days=since_days)
+        recent_scans = (
+            self.db.query(Scan)
+            .filter(Scan.target_id == target.id, Scan.start_time >= cutoff)
+            .all()
+        )
+        scan_ids = [s.id for s in recent_scans]
+        if not scan_ids:
+            return []
+        return (
+            self.db.query(Vulnerability)
+            .filter(Vulnerability.scan_id.in_(scan_ids))
+            .order_by(Vulnerability.severity.desc())
+            .all()
+        )
+
+    def get_all_findings_by_severity(self, severity: str) -> List[Vulnerability]:
+        return (
+            self.db.query(Vulnerability)
+            .filter(Vulnerability.severity == severity.upper())
+            .order_by(Vulnerability.scan_id.desc())
+            .all()
+        )
+
+    def get_critical_findings(self, target_domain: Optional[str] = None) -> List[Vulnerability]:
+        query = self.db.query(Vulnerability).filter(Vulnerability.severity == "CRITICAL")
+        if target_domain:
+            target = self.get_target(target_domain)
+            if target:
+                scan_ids = [
+                    s.id
+                    for s in self.db.query(Scan).filter(Scan.target_id == target.id).all()
+                ]
+                query = query.filter(Vulnerability.scan_id.in_(scan_ids))
+        return query.order_by(Vulnerability.id.desc()).all()
+
+    def get_new_subdomains(self, target_domain: str) -> List[Subdomain]:
+        target = self.get_target(target_domain)
+        if not target:
+            return []
+        latest_scan = self.get_latest_scan(target_domain)
+        if not latest_scan:
+            return []
+        prev_scan = (
+            self.db.query(Scan)
+            .filter(Scan.target_id == target.id, Scan.id < latest_scan.id)
+            .order_by(Scan.id.desc())
+            .first()
+        )
+        if not prev_scan:
+            return self.db.query(Subdomain).filter(Subdomain.scan_id == latest_scan.id).all()
+        prev_domains = set(
+            s.domain
+            for s in self.db.query(Subdomain).filter(Subdomain.scan_id == prev_scan.id).all()
+        )
+        current = self.db.query(Subdomain).filter(Subdomain.scan_id == latest_scan.id).all()
+        return [s for s in current if s.domain not in prev_domains]
+
+    def get_new_ports(self, target_domain: str) -> List[Port]:
+        target = self.get_target(target_domain)
+        if not target:
+            return []
+        latest_scan = self.get_latest_scan(target_domain)
+        if not latest_scan:
+            return []
+        prev_scan = (
+            self.db.query(Scan)
+            .filter(Scan.target_id == target.id, Scan.id < latest_scan.id)
+            .order_by(Scan.id.desc())
+            .first()
+        )
+        if not prev_scan:
+            return self.db.query(Port).filter(Port.scan_id == latest_scan.id).all()
+        prev_ports = set(
+            (p.host, p.port)
+            for p in self.db.query(Port).filter(Port.scan_id == prev_scan.id).all()
+        )
+        current = self.db.query(Port).filter(Port.scan_id == latest_scan.id).all()
+        return [p for p in current if (p.host, p.port) not in prev_ports]
+
+    def get_scan_diff(self, target_domain: str) -> dict:
+        latest_scan = self.get_latest_scan(target_domain)
+        if not latest_scan:
+            return {"new_subdomains": [], "new_ports": [], "new_vulns": [], "is_first_run": True}
+        target = self.get_target(target_domain)
+        if not target:
+            return {"error": "Target not found"}
+        prev_scan = (
+            self.db.query(Scan)
+            .filter(Scan.target_id == target.id, Scan.id < latest_scan.id)
+            .order_by(Scan.id.desc())
+            .first()
+        )
+        if not prev_scan:
+            return {
+                "new_subdomains": [s.domain for s in latest_scan.subdomains],
+                "new_ports": [{"host": p.host, "port": p.port} for p in latest_scan.ports],
+                "new_vulns": len(latest_scan.vulnerabilities),
+                "is_first_run": True,
+            }
+        prev_subdomains = set(s.domain for s in prev_scan.subdomains)
+        new_subs = [s for s in latest_scan.subdomains if s.domain not in prev_subdomains]
+        prev_ports = set((p.host, p.port) for p in prev_scan.ports)
+        new_ports_list = [p for p in latest_scan.ports if (p.host, p.port) not in prev_ports]
+        prev_vuln_ids = set((v.type, v.url) for v in prev_scan.vulnerabilities)
+        new_vulns = [
+            v for v in latest_scan.vulnerabilities if (v.type, v.url) not in prev_vuln_ids
+        ]
+        return {
+            "new_subdomains": [{"domain": s.domain, "is_live": s.is_live} for s in new_subs],
+            "new_ports": [
+                {"host": p.host, "port": p.port, "service": p.service} for p in new_ports_list
+            ],
+            "new_vulns": [
+                {"type": v.type, "severity": v.severity, "url": v.url, "cve": v.cve}
+                for v in new_vulns
+            ],
+            "total_vulns": len(latest_scan.vulnerabilities),
+            "is_first_run": False,
+        }
+
+    # ══════════════════════════════════════════════════════════════════════════════
+    # DOMAIN MODEL ADAPTERS (IAssetRepository interface)
+    # ══════════════════════════════════════════════════════════════════════════════
+
+    def save_asset(self, asset: DomainAsset) -> None:
+        lookup_domain = normalize_lookup_target(asset.domain)
+        target = self.db.query(Target).filter(Target.domain == lookup_domain).first()
+        if not target:
+            target = Target(domain=lookup_domain)
+            self.db.add(target)
+        target.tags = asset.tags
+        target.notes = asset.metadata.get("notes")
+        self.db.commit()
+
+    def find_asset_by_domain(self, domain: str) -> Optional[DomainAsset]:
+        target = self.get_target(domain)
+        if not target:
+            return None
+        return DomainAsset(
+            domain=target.domain,
+            type="domain",
+            tags=target.tags or [],
+            metadata={"notes": target.notes} if target.notes else {},
+        )
+
+    def save_finding(self, finding: DomainFinding) -> None:
+        db_finding = Finding(
+            target=finding.asset_id,
+            name=finding.title,
+            severity=finding.severity,
+            description=finding.description,
+            path=finding.path,
+            param=finding.param,
+        )
+        self.db.add(db_finding)
+        self.db.commit()
+
+    def get_findings_by_asset(self, asset_id: str) -> List[DomainFinding]:
+        db_findings = self.db.query(Finding).filter(Finding.target == asset_id).all()
+        return [
+            DomainFinding(
+                title=f.name,
+                severity=f.severity,
+                description=f.description,
+                asset_id=f.target,
+                path=f.path,
+                param=f.param,
+            )
+            for f in db_findings
+        ]

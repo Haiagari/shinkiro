@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-06-15T22:41:59.184693",
+  "method": "GET",
+  "url": "https://ugre.unitru.edu.pe/wp-json/wp/v2/users",
+  "status_code": 200,
+  "response_headers": {
+    "Date": "Mon, 15 Jun 2026 22:41:58 GMT",
+    "Server": "Apache",
+    "X-Robots-Tag": "noindex",
+    "Link": "<https://ugre.unitru.edu.pe/wp-json/>; rel=\"https://api.w.org/\"",
+    "X-Content-Type-Options": "nosniff",
+    "Access-Control-Expose-Headers": "X-WP-Total, X-WP-TotalPages, Link",
+    "Access-Control-Allow-Headers": "Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type",
+    "X-WP-Total": "2",
+    "X-WP-TotalPages": "1",
+    "Allow": "GET",
+    "Vary": "Origin",
+    "Upgrade": "h2,h2c",
+    "Connection": "Upgrade, close",
+    "Transfer-Encoding": "chunked",
+    "Content-Type": "application/json; charset=UTF-8"
+  },
+  "response_body_preview": "[{\"id\":2,\"name\":\"OTI\",\"url\":\"https:\\/\\/ugre.unitru.edu.pe\\/\",\"description\":\"\",\"link\":\"https:\\/\\/ugre.unitru.edu.pe\\/author\\/adminoti\\/\",\"slug\":\"adminoti\",\"avatar_urls\":{\"24\":\"https:\\/\\/secure.gravatar.com\\/avatar\\/7bbad760987555afa26b649977daef1e03c92aa6c5dc2a16dc6c94c31b130d86?s=24&d=retro&r=g\",\"48\":\"https:\\/\\/secure.gravatar.com\\/avatar\\/7bbad760987555afa26b649977daef1e03c92aa6c5dc2a16dc6c94c31b130d86?s=48&d=retro&r=g\",\"96\":\"https:\\/\\/secure.gravatar.com\\/avatar\\/7bbad760987555afa26b649977daef",
+  "curl_command": "curl -X GET 'https://ugre.unitru.edu.pe/wp-json/wp/v2/users'",
+  "screenshot_path": null,
+  "notes": "WP User Enumeration"
+}

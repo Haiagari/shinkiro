@@ -8,7 +8,7 @@ from rich.markdown import Markdown
 
 from cli.shared import console, render_outcome, render_panel
 from src.core.target_normalizer import normalize_lookup_target
-from src.intelligence.ai_analyzer import ai_analyst
+from src.intelligence.analysis.ai_analyzer import ai_analyst
 from src.storage.database import SessionLocal
 from src.storage.models import Subdomain, Vulnerability
 

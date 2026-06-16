@@ -1,0 +1,141 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_1",
+        "label": "e2e.example.com",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_1",
+        "label": "e2e.example.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2",
+        "label": "api.e2e.example.com",
+        "type": "subdomain",
+        "priority": 80,
+        "is_critical": true,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:api",
+            "api_surface"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "api",
+              "contribution": 0.4
+            },
+            {
+              "type": "label_match",
+              "rule": "api_surface",
+              "pattern": "api",
+              "priority": 9,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_1",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_unknown",
+        "label": "unknown",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_2",
+        "label": "443/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "https",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_1",
+        "target": "sub_1",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_1",
+        "target": "sub_2",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2",
+        "target": "port_1",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_1",
+        "target": "tech_unknown",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2",
+        "target": "port_2",
+        "relation": "opens_port"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 2,
+    "nodes_returned": 6,
+    "schema_version": "1.2"
+  }
+}

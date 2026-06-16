@@ -4,7 +4,7 @@ Test de Laboratorio: OzyRecon v6.0 Logic Analyzer
 Simula un Knowledge Graph poblado y verifica que el motor encuentre el Attack Path.
 """
 
-from src.intelligence.logic_analyzer import LogicAnalyzer
+from src.intelligence.analysis.logic_analyzer import LogicAnalyzer
 import json
 
 def test_logic_brain():

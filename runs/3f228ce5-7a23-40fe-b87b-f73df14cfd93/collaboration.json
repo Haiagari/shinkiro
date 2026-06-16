@@ -1,0 +1,18 @@
+{
+  "session_id": "3f228ce5-7a23-40fe-b87b-f73df14cfd93",
+  "target": "10.129.58.38",
+  "scan_id": 152,
+  "status": "shared",
+  "operators": [
+    "engine",
+    "orchestrator"
+  ],
+  "artifacts": [
+    "raw",
+    "normalized",
+    "evidence",
+    "graph",
+    "reports"
+  ],
+  "updated_at": "2026-05-07T13:58:18.829766+00:00"
+}

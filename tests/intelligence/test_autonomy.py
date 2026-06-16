@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from src.storage.models import Base, Target, Scan, Subdomain, Port, Vulnerability
-from src.intelligence.autonomy import AutonomyPlanner
+from src.intelligence.autonomy.autonomy import AutonomyPlanner
 
 
 @pytest.fixture

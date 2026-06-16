@@ -49,7 +49,7 @@ tools:
   - name: httpx
     executable: httpx
     adapter: GenericDiscoveryProvider
-    cmd_template: "{bin} -l {target} -silent -json {stealth_flags} -o {out} -threads {threads}"
+    cmd_template: "{bin} -l {target} -silent -json {stealth_flags} -o {out} -threads {threads} -timeout 5"
     categories: ["live_detection"]
     enabled: true
 
@@ -97,7 +97,7 @@ tools:
   - name: dnsx_brute
     executable: dnsx
     adapter: GenericDiscoveryProvider
-    cmd_template: "{bin} -d {target} -w resources/wordlists/subdomains.txt -silent {stealth_flags} -o {out}"
+    cmd_template: "{bin} -d {target} -w resources/wordlists/subdomains_massive.txt -silent {stealth_flags} -o {out} -t 100"
     categories: ["dns_bruteforce"]
     enabled: true
 

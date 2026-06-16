@@ -1,0 +1,54 @@
+{
+  "session_id": "d8df3430-f3a0-431e-886f-f256edec4cf9",
+  "target": "192.168.0.38",
+  "mode": "hunt",
+  "scan": {
+    "scan_id": 126,
+    "session_id": "d8df3430-f3a0-431e-886f-f256edec4cf9",
+    "target": "192.168.0.38",
+    "mode": "hunt",
+    "status": "completed",
+    "started_at": "2026-05-06T18:01:37.625879",
+    "ended_at": "2026-05-06T18:03:48.833376",
+    "duration_seconds": 131.207497,
+    "stats": {
+      "subdomains_found": 0,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": []
+  },
+  "session": {
+    "session_id": "d8df3430-f3a0-431e-886f-f256edec4cf9",
+    "target": "192.168.0.38",
+    "mode": "hunt",
+    "started_at": "2026-05-06T18:01:37.625879",
+    "ended_at": "2026-05-06T18:03:48.822258",
+    "duration": 131.196379,
+    "status": "success",
+    "exit_code": 0,
+    "counts": {
+      "subdomains": 0,
+      "hosts": 0,
+      "ports": 0,
+      "findings": 0
+    },
+    "error_summary": null,
+    "config_used": {
+      "threads": null,
+      "rate_limit": 50,
+      "mode": "hunt"
+    }
+  },
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

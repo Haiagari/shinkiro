@@ -1,0 +1,18 @@
+{
+  "session_id": "bbea9d45-72ed-4fd6-b866-1d6d3b9002f4",
+  "target": "colegiointegridad.edu.pe",
+  "scan_id": 143,
+  "status": "shared",
+  "operators": [
+    "engine",
+    "orchestrator"
+  ],
+  "artifacts": [
+    "raw",
+    "normalized",
+    "evidence",
+    "graph",
+    "reports"
+  ],
+  "updated_at": "2026-05-07T01:51:44.531814+00:00"
+}

@@ -6,7 +6,7 @@ Compara el performance con Feedback ON vs OFF.
 import time
 from typing import Dict, Any, List
 from src.modes.hunt import HuntMode
-from src.intelligence.feedback_engine import feedback_engine
+from src.intelligence.scoring.feedback_engine import feedback_engine
 from src.utils import log
 
 class LearningBenchmark:

@@ -4,6 +4,9 @@ allowed_domains:
 - '*.example.com'
 - test.com
 - '*.test.com'
+- insforge.dev
+- unitru.edu.pe
+- '*.unitru.edu.pe'
 forbidden_patterns:
 - internal
 - staging

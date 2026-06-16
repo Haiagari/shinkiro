@@ -3,7 +3,7 @@ Tests for ScoringEngine - Phase 5 Intelligent Scoring System
 """
 
 import pytest
-from src.intelligence.scoring_engine import (
+from src.intelligence.scoring.scoring_engine import (
     ScoringEngine,
     CriticalityScore,
     get_scoring_engine,

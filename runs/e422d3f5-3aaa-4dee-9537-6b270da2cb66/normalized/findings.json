@@ -1,0 +1,29 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "e422d3f5-3aaa-4dee-9537-6b270da2cb66",
+  "target": "colegiointegridad.edu.pe",
+  "mode": "hunt",
+  "timestamp": "2026-05-06T11:35:20.764101",
+  "started_at": "2026-05-06T16:33:52.951736",
+  "ended_at": null,
+  "duration_seconds": null,
+  "assets": [],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

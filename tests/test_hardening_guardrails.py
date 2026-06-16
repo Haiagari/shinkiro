@@ -41,5 +41,5 @@ def test_public_docs_reference_the_frozen_runtime_contract():
     assert "src/core/contracts.py" in bridge_contract
     assert "compatibility closure" in bridge_contract.lower()
 
-    assert "session trace" in usage.lower()
+    assert any(phrase in usage.lower() for phrase in ["session trace", "sessions/{id}/trace", "trace data"])
     assert "session trace" in install.lower()

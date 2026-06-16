@@ -364,7 +364,7 @@ class NormalizedExporter:
 
     def save_learning_report(self) -> Path:
         """Genera un reporte del estado de aprendizaje del sistema."""
-        from src.intelligence.learning_orchestrator import learning_orchestrator
+        from src.intelligence.learning.learning_orchestrator import learning_orchestrator
         
         data = learning_orchestrator.get_full_feedback()
         filename = f"learning_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"

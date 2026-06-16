@@ -6,7 +6,7 @@ from typing import Any, cast
 
 from sqlalchemy.orm import Session
 
-from src.intelligence.graph_builder import graph_builder
+from src.intelligence.analysis.graph_builder import graph_builder
 from src.storage.diff import DiffEngine
 from src.storage.models import Scan, Target
 from src.core.target_normalizer import normalize_lookup_target

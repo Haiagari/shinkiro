@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from src.storage.database import SessionLocal, init_db
 from src.storage.models import AgentMemory, AgentLock
-from src.intelligence.learning_engine import LearningEngine, MIN_OBSERVATIONS
+from src.intelligence.learning.learning_engine import LearningEngine, MIN_OBSERVATIONS
 from src.agent.config_writer import save_scoring_weights, load_effective_weights, SCORING_FILE
 
 # Initialize DB for tests
@@ -308,7 +308,7 @@ class TestNewArchitectureImports:
 
     def test_learning_engine_import(self):
         """Verifica import del motor de aprendizaje."""
-        from src.intelligence.learning_engine import LearningEngine
+        from src.intelligence.learning.learning_engine import LearningEngine
         assert LearningEngine is not None
 
     def test_config_writer_import(self):
@@ -319,11 +319,11 @@ class TestNewArchitectureImports:
 
     def test_intelligence_modules_exist(self):
         """Verifica que los módulos de inteligencia están."""
-        from src.intelligence.learning_orchestrator import learning_orchestrator
-        from src.intelligence.decision_log import log_decision
-        from src.intelligence.feedback_engine import feedback_engine
-        from src.intelligence.false_positive_memory import false_positive_memory
-        from src.intelligence.outcome_evaluator import outcome_evaluator
+        from src.intelligence.learning.learning_orchestrator import learning_orchestrator
+        from src.intelligence.learning.decision_log import log_decision
+        from src.intelligence.scoring.feedback_engine import feedback_engine
+        from src.intelligence.learning.false_positive_memory import false_positive_memory
+        from src.intelligence.learning.outcome_evaluator import outcome_evaluator
         
         assert learning_orchestrator is not None
         assert feedback_engine is not None

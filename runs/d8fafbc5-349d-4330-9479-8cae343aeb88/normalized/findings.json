@@ -1,0 +1,174 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "d8fafbc5-349d-4330-9479-8cae343aeb88",
+  "target": "evil-corp.com",
+  "mode": "hunt",
+  "timestamp": "2026-05-03T15:51:01.693214",
+  "started_at": "2026-05-03T15:50:57.251885",
+  "ended_at": "2026-05-03T20:51:01.681587",
+  "duration_seconds": 18004.429702,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "api.evil-corp.com",
+      "is_live": true,
+      "ip": "1.1.1.2",
+      "http_status": 200,
+      "title": "API Index",
+      "web_server": null,
+      "technologies": [
+        "Node.js"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 13335,
+        "asn_organization": "CLOUDFLARENET - Cloudflare, Inc., US",
+        "cloud_provider": "cloudflare",
+        "env_tag": null,
+        "semantic_labels": [
+          "role:api",
+          "api_surface"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.evil-corp.com",
+      "is_live": true,
+      "ip": "1.1.1.3",
+      "http_status": 200,
+      "title": "Welcome",
+      "web_server": null,
+      "technologies": [
+        "Nginx"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 13335,
+        "asn_organization": "CLOUDFLARENET - Cloudflare, Inc., US",
+        "cloud_provider": "cloudflare",
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "admin.evil-corp.com",
+      "is_live": true,
+      "ip": "1.1.1.1",
+      "http_status": 200,
+      "title": "Admin Login",
+      "web_server": null,
+      "technologies": [
+        "PHP",
+        "Apache"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 13335,
+        "asn_organization": "CLOUDFLARENET - Cloudflare, Inc., US",
+        "cloud_provider": "cloudflare",
+        "env_tag": null,
+        "semantic_labels": [
+          "gate_admin",
+          "role:management",
+          "gate_auth",
+          "high_risk_shadow",
+          "role:auth"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    }
+  ],
+  "services": [
+    {
+      "host": "api.artifact.test",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "admin-staging.internal.critical-target.test",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "api.evil-corp.com",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "www.evil-corp.com",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "admin.evil-corp.com",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    }
+  ],
+  "findings": [
+    {
+      "name": "Exposed PHPConfig",
+      "type": "other",
+      "severity": "high",
+      "host": "admin.evil-corp.com",
+      "url": "admin.evil-corp.com",
+      "path": null,
+      "param": null,
+      "description": "Found via autonomous trigger",
+      "payload": "https://admin.evil-corp.com/config.php.bak",
+      "evidence": [
+        {
+          "type": "log",
+          "content": "exposed-backups",
+          "timestamp": null
+        },
+        {
+          "type": "request",
+          "content": "https://admin.evil-corp.com/config.php.bak",
+          "timestamp": null
+        }
+      ],
+      "cvss": null,
+      "cve_id": null,
+      "status": "open"
+    }
+  ],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

@@ -1,29 +1,29 @@
-# AGENTS.md - Coding Standards for OzyRecon
+# Coding Standards for OzyRecon
 
-## Hard Rules (Obligatorias)
-- **Python 3.11+**: Usar características modernas del lenguaje.
-- **Tipado Fuerte**: Usar siempre type hints (`typing`) en firmas de métodos y funciones.
-- **Inmutabilidad en el Dominio**: Usar `dataclass(frozen=True)` para los modelos de dominio.
-- **Funciones Concisas**: Mantener las funciones cortas (idealmente < 30 líneas) con una única responsabilidad.
-- **Docstrings**: Toda función o clase pública debe tener su respectivo docstring (formato Google o Sphinx).
-- **Asincronismo**: Usar `async/await` únicamente para operaciones de I/O (ej. FastAPI, peticiones de red). El dominio puro debe ser síncrono.
-- **Testing**: Los tests deben ubicarse en la carpeta `tests/` y usar `pytest`. Archivos con prefijo `test_*.py`.
+## Hard Rules
+- **Python 3.11+**: Use modern language features.
+- **Strong Typing**: Always use type hints (`typing`) in function and method signatures.
+- **Domain Immutability**: Use `dataclass(frozen=True)` for domain models.
+- **Concise Functions**: Keep functions short (ideally < 30 lines) with a single responsibility.
+- **Docstrings**: Every public function or class must have a docstring (Google or Sphinx format).
+- **Async**: Use `async/await` only for I/O operations (e.g., FastAPI, network requests). Pure domain logic must be synchronous.
+- **Testing**: Tests go in `tests/` using `pytest`. Files prefixed with `test_*.py`.
 
-## Project Standards (Arquitectura)
-- **Arquitectura Hexagonal / Clean Architecture**: Mantener la estricta separación de responsabilidades.
-  - `src/domain/`: Lógica de negocio pura e inmutabilidad. Sin dependencias externas.
-  - `src/application/` y `src/core/`: Casos de uso y orquestación.
-  - `src/adapters/`: Integraciones con el mundo exterior (bases de datos, Nmap, Subfinder, etc.).
-- **Composición sobre Herencia**: Preferir inyectar dependencias y componer comportamientos en lugar de heredar.
-- **Bajo Acoplamiento**: Los módulos no deben conocer la implementación interna de otros módulos.
+## Project Architecture
+- **Hexagonal / Clean Architecture**: Maintain strict separation of concerns.
+  - `src/domain/`: Pure business logic, immutable, no external dependencies.
+  - `src/application/` and `src/core/`: Use cases and orchestration.
+  - `src/adapters/`: External integrations (databases, Nmap, Subfinder, etc.).
+- **Composition over Inheritance**: Prefer dependency injection and composition.
+- **Low Coupling**: Modules must not know each other's internal implementations.
 
-## Strict TDD (Cuando aplique)
-- Cuando se agregue o modifique lógica con tests existentes:
-  - Seguir el ciclo **Red → Green → Refactor**.
-  - El commit debe mostrar evidencia clara de que los tests pasaron (ej. captura o log de `pytest`).
-- No es obligatorio en cambios muy pequeños (UI, config, docs), pero sí en la lógica core/dominio.
+## Strict TDD (When Applicable)
+- When adding or modifying logic with existing tests:
+  - Follow **Red → Green → Refactor** cycle.
+  - Commits must show clear evidence tests pass (e.g., pytest log or screenshot).
+- Not mandatory for small changes (UI, config, docs), but required for core/domain logic.
 
 ## Review Guidelines
-- El código debe ser fácil de entender sin necesidad de leer todo el historial.
-- Preferir cambios pequeños y atómicos (work units).
-- Si el cambio es grande, usar **SDD (Spec-Driven Development)** antes de escribir código.
+- Code must be understandable without reading the full history.
+- Prefer small, atomic changes (work units).
+- For large changes, use **SDD (Spec-Driven Development)** before writing code.

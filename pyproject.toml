@@ -43,6 +43,12 @@ dev = [
     "black>=23.0",
     "ruff>=0.1",
 ]
+postgres = [
+    "psycopg2-binary>=2.9",
+]
+redis = [
+    "redis>=5.0",
+]
 
 [project.scripts]
 ozy = "cli.ozy:main"

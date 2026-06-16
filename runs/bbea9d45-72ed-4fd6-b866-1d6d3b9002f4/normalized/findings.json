@@ -1,0 +1,260 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "bbea9d45-72ed-4fd6-b866-1d6d3b9002f4",
+  "target": "colegiointegridad.edu.pe",
+  "mode": "hunt",
+  "timestamp": "2026-05-06T20:51:44.507345",
+  "started_at": "2026-05-07T01:42:38.049571",
+  "ended_at": "2026-05-07T01:51:44.496769",
+  "duration_seconds": 546.447198,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "www.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "autodiscover.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.aula.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "51.161.45.249",
+      "http_status": 503,
+      "title": "Error",
+      "web_server": null,
+      "technologies": [
+        "HTTP/3",
+        "LiteSpeed",
+        "PHP:7.4.33"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aula.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "51.161.45.249",
+      "http_status": 503,
+      "title": "Error",
+      "web_server": null,
+      "technologies": [
+        "HTTP/3",
+        "LiteSpeed",
+        "PHP:7.4.33"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpcalendars.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpcontacts.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webmail.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpanel.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:management"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webdisk.colegiointegridad.edu.pe",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    }
+  ],
+  "services": [
+    {
+      "host": "aula.colegiointegridad.edu.pe",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "www.aula.colegiointegridad.edu.pe",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    }
+  ],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 10,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50,
+    "quiet": false
+  },
+  "errors": []
+}

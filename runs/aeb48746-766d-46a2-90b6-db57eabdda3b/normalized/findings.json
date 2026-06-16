@@ -1,0 +1,91 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "aeb48746-766d-46a2-90b6-db57eabdda3b",
+  "target": "e2e.example.com",
+  "mode": "hunt",
+  "timestamp": "2026-05-14T16:37:57.902298",
+  "started_at": "2026-05-14T21:37:57.670378",
+  "ended_at": "2026-05-14T21:37:57.891560",
+  "duration_seconds": 0.221182,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "e2e.example.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "api.e2e.example.com",
+      "is_live": true,
+      "ip": null,
+      "http_status": 200,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:api",
+          "api_surface"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    }
+  ],
+  "services": [
+    {
+      "host": "api.e2e.example.com",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "api.e2e.example.com",
+      "port": 443,
+      "protocol": "tcp",
+      "service": "https",
+      "version": "",
+      "state": "open"
+    }
+  ],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 2,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50,
+    "quiet": false
+  },
+  "errors": []
+}

@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from unittest.mock import patch
 
 from src.core.api import get_session_trace
-from src.intelligence.decision_log import Decision, DecisionRepository
+from src.intelligence.learning.decision_log import Decision, DecisionRepository
 from src.storage.models import Base, Target, Scan, Session as ScanSession, Hypothesis, Evidence, WorkflowStep
 
 

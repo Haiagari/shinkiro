@@ -260,9 +260,43 @@ def main() -> int:
         return 1
 
 
+def _autodiscover_commands() -> None:
+    """Discover and register all Click commands from cli/commands/ using pkgutil."""
+    import cli.commands as commands_package
+
+    commands_path = commands_package.__path__
+    if isinstance(commands_path, (list, tuple)):
+        commands_path = commands_path[0] if commands_path else ""
+    commands_path = str(commands_path)
+
+    for importer, modname, ispkg in pkgutil.iter_modules([commands_path]):
+        if modname.startswith('_'):
+            continue
+        try:
+            module = __import__(f"cli.commands.{modname}", fromlist=[modname])
+
+            cmd = None
+            if hasattr(module, modname):
+                attr = getattr(module, modname)
+                if isinstance(attr, click.Command):
+                    cmd = attr
+
+            if cmd is None:
+                for attr_name in dir(module):
+                    attr = getattr(module, attr_name)
+                    if isinstance(attr, click.Command):
+                        cmd = attr
+                        break
+
+            if cmd is not None and cmd.name not in cli.commands:
+                cli.add_command(cmd)
+        except Exception as e:
+            if _debug:
+                console.print(f"[yellow]Warning: Could not load command {modname}: {e}[/yellow]")
+
+
 def register_runtime_commands() -> None:
     """Registers dynamic modes and built-in commands on the main CLI group."""
-    # Task 2.7: Cargar modos dinámicos
     try:
         mode_commands = register_mode_commands()
         for cmd in mode_commands:
@@ -272,189 +306,7 @@ def register_runtime_commands() -> None:
         if _debug:
             console.print(f"[yellow]Warning: Could not load dynamic modes: {e}[/yellow]")
 
-    # Task 6.5: Registrar subcomando de verificación
-    try:
-        from cli.commands.verify import verify
-        if verify.name not in cli.commands:
-            cli.add_command(verify)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando inventory
-    try:
-        from cli.commands.inventory import inventory
-        if inventory.name not in cli.commands:
-            cli.add_command(inventory)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando analyze
-    try:
-        from cli.commands.analyze import analyze
-        if analyze.name not in cli.commands:
-            cli.add_command(analyze)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando export
-    try:
-        from cli.commands.export import export_data
-        if export_data.name not in cli.commands:
-            cli.add_command(export_data)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando paths
-    try:
-        from cli.commands.paths import paths
-        if paths.name not in cli.commands:
-            cli.add_command(paths)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando watch
-    try:
-        from cli.commands.watch import watch
-        if watch.name not in cli.commands:
-            cli.add_command(watch)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando secrets
-    try:
-        from cli.commands.secrets import secrets
-        if secrets.name not in cli.commands:
-            cli.add_command(secrets)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando audit
-    try:
-        from cli.commands.audit import audit
-        if audit.name not in cli.commands:
-            cli.add_command(audit)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando exploits
-    try:
-        from cli.commands.exploits import exploits
-        if exploits.name not in cli.commands:
-            cli.add_command(exploits)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando screenshot
-    try:
-        from cli.commands.screenshot import screenshot
-        if screenshot.name not in cli.commands:
-            cli.add_command(screenshot)
-    except ImportError:
-        pass
-
-    # v9.0.1: Registrar comando doctor
-    try:
-        from cli.commands.doctor import doctor
-        if doctor.name not in cli.commands:
-            cli.add_command(doctor)
-    except ImportError:
-        pass
-
-    # v9.0.1: Registrar comando self-test
-    try:
-        from cli.commands.self_test import self_test
-        if self_test.name not in cli.commands:
-            cli.add_command(self_test)
-    except ImportError:
-        pass
-
-    # v9.0.1: Registrar comando init
-    try:
-        from cli.commands.init import init
-        if init.name not in cli.commands:
-            cli.add_command(init)
-    except ImportError:
-        pass
-
-    # v9.0.1: Registrar comando compliance-check
-    try:
-        from cli.commands.compliance_check import compliance_check
-        if compliance_check.name not in cli.commands:
-            cli.add_command(compliance_check)
-    except ImportError:
-        pass
-
-    # v9.0.1: Registrar comando diff (change detection)
-    try:
-        from cli.commands.diff import diff
-        if diff.name not in cli.commands:
-            cli.add_command(diff)
-    except ImportError:
-        pass
-
-    # v9.0.1: Registrar comando schedule (scheduler)
-    try:
-        from cli.commands.schedule import schedule
-        if schedule.name not in cli.commands:
-            cli.add_command(schedule)
-    except ImportError:
-        pass
-
-    # v9.0.1: Registrar comando serve (API server)
-    try:
-        from cli.commands.serve import serve
-        if serve.name not in cli.commands:
-            cli.add_command(serve)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar launcher end-to-end
-    try:
-        from cli.commands.flow import flow
-        if flow.name not in cli.commands:
-            cli.add_command(flow)
-    except ImportError:
-        pass
-
-    # v9.1.0: Registrar comando scope
-    try:
-        from cli.commands.scope import scope
-        if scope.name not in cli.commands:
-            cli.add_command(scope)
-    except ImportError:
-        pass
-
-    # v8.3.2: Registrar comando exploits
-    try:
-        @click.command(name="exploits")
-        @click.argument("target")
-        @click.option("--tech", multiple=True, help="Manual tech stack (e.g. --tech Apache --tech PHP)")
-        def exploits_cmd(target, tech):
-            """Suggest 3 relevant CVEs for a TARGET or specified technologies."""
-            from src.intelligence.exploit_advisor import exploit_advisor
-            from cli.shared import console
-            
-            # Si no pasan tech, podríamos sacarlo del inventario (pero para el comando simple, usamos --tech o simulamos)
-            tech_list = list(tech)
-            if not tech_list:
-                console.print(f"[yellow]No se especificaron tecnologías para {target}. Usando stack genérico de reconocimiento...[/yellow]")
-                tech_list = ["Apache", "PHP", "MySQL"] # Placeholder
-            
-            results = exploit_advisor.suggest_exploits(tech_list)
-            
-            if not results:
-                console.print("[red]No se encontraron exploits relevantes. ¡Tenés suerte, por ahora![/red]")
-                return
-
-            console.print(f"\n[bold red]🔥 Exploit Advisor Findings for {target}:[/bold red]")
-            for ex in results:
-                console.print(f"[bold]• {ex.get('cve')}[/bold]: {ex.get('description')}")
-                console.print(f"  [dim]Impact: {ex.get('impact')}[/dim]\n")
-
-        if exploits_cmd.name not in cli.commands:
-            cli.add_command(exploits_cmd)
-    except Exception as e:
-        console.print(f"[yellow]Warning: Could not load exploits command: {e}[/yellow]")
+    _autodiscover_commands()
 
 
 

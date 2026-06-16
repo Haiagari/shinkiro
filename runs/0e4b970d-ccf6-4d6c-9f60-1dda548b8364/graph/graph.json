@@ -1,0 +1,157 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_33",
+        "label": "example.com",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2517",
+        "label": "example.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_104.20.23.154",
+        "label": "104.20.23.154",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 13335,
+          "org": "CLOUDFLARENET - Cloudflare, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2518",
+        "label": "www.example.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_13",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "tech_cloudflare",
+        "label": "Cloudflare",
+        "type": "technology",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "port_14",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_33",
+        "target": "sub_2517",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2517",
+        "target": "ip_104.20.23.154",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_33",
+        "target": "sub_2518",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2518",
+        "target": "ip_104.20.23.154",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_2518",
+        "target": "port_13",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_13",
+        "target": "tech_cloudflare",
+        "relation": "runs"
+      }
+    },
+    {
+      "data": {
+        "source": "target_33",
+        "target": "port_14",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "port_14",
+        "target": "tech_cloudflare",
+        "relation": "runs"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 2,
+    "nodes_returned": 7,
+    "schema_version": "1.2"
+  }
+}

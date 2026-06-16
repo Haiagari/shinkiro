@@ -1,28 +1,77 @@
 # Changelog
 
-## [Unreleased]
+## [9.1.0] - 2026-06-16
+
+### Fixed
+- **CVSS v3.1 calculator**: fixed base score calculation — was missing impact multipliers (6.42 for S:U, 7.52 for S:C) and `_roundup` used `round()` instead of `ceil()`. Findings that always returned MEDIUM now correctly score CRITICAL/HIGH.
+- **PDF table separator**: `md_simple_to_html` only detected exact `-`/`---` separators, now accepts any length (`^:?-+:?$`).
+
+### Added
+- **6 new discovery modules**: JS endpoint extraction, subdomain permutations (9 rules), parameter discovery (764 params), S3 bucket scanner (267 combinations), Google dorking (30 dorks), 11k subdomain wordlist. All wired into `ozy hunt --steroids`.
+- **Attack Surface Overview**: replaces flat 390+ asset table (with empty `-` columns) with risk-categorized groups (Web, API, Admin, Internal, Infrastructure) + narrative.
+- **Business Impact section**: each finding now includes contextualized business impact.
+- **Attack Surface Diagram**: draw.io diagram at `docs/diagrams/attack-surface.{drawio,svg,png}` with severity coloring.
+- **Screenshot integration**: inline image support in markdown and PDF reports.
+- **Severity badges**: CSS with colored badges (red CRITICAL, orange HIGH, yellow MEDIUM, blue LOW) in PDF export.
+- **Inline formatting in PDF**: `_render_text()` combines markdown→HTML + severity badges + bold/code/links.
+- **`reports/generated/`**: standard output directory for new reports.
+- **Clean `__init__.py`**: public exports from `src.reporting`.
+
+### Changed
+- **`reports/` organized**: old reports moved to `archive/`, evidence organized under `evidence/http/` and `evidence/screenshots/`.
+- **`ProfessionalReport` constructor**: accepts optional `screenshots_dir` and `diagram_path`.
+- **PDF CSS**: complete redesign with zebra striping, severity badges, image support, page breaks.
+- **Findings classification**: GLPI and admin tools now separate findings with their own CVSS and evidence.
+- **DNS brute-force**: wordlist upgraded from 20 entries to 11,081.
+
+### Removed
+- `scripts/test_report_gen.py` (obsolete, used old inline HTML generation)
+
+## [9.0.2] - 2026-06-15
+
+### Fixed
+- **Nmap timeouts**: replaced sequential nmap with parallel naabu + selective nmap; timeout reduced from 120s to 30s
+- **Flow session_id**: correct UUID generation and persistence in DB, removed "legacy-session"
+- **Amass timeouts**: timeout reduced from 180s to 30s, retry removed, error non-fatal
+- **Duplicate exploits command**: removed second CLI registration
+
+### Refactored
+- **Autodiscovery CLI**: `register_runtime_commands()` simplified from 22 try/except (~150 lines) to pkgutil autodiscovery (~25 lines)
+- **Unified DB queries**: `DBQueries` as single source; `db_queries.py` delegated (227→44 lines); `SQLiteAssetRepository` delegated (78→20 lines)
+- **BaseMode split**: `ModeRunner`, `SessionManager`, `EnvelopeBuilder` extracted; `BaseMode.run()` from 335→184 lines
+- **Intelligence organized**: 30 flat files moved to 8 subdirectories (core, scoring, learning, enrichment, analysis, autonomy, pipeline, export)
+- **Placeholders removed**: `validation/web.py`, `validation/cms.py`, `validation/config.py`, `backend/` (empty)
+
+### Added
+- **Real EventBus**: `src/events/` with `DomainEvent`, `AssetDiscovered`, `FindingDetected`, `ScanCompleted` + `EventBus` singleton
+- **AsyncExecutor**: parallel tool execution with ThreadPoolExecutor in discovery and crawler
+- **Plugin system**: abstract `Plugin`, `PluginLoader`, `dispatch_hook`, example plugin
+- **PostgreSQL support**: configurable via `OZY_DATABASE_URL` env var (SQLite remains default)
+- **Redis task queue**: distributed tasks via `OZY_REDIS_URL` (YAML as fallback)
+- **Log rotation**: audit log auto-rotates at 50 MB, up to 5 backups
+- **96 new tests**: DiffEngine, OPSEC (jitter, kill_switch, rate_limiter), validators, notifier, normalizer
+- **Aggressive .gitignore**: caches, test data, screenshots, config/api_keys.json
+- **Root cleanup**: 24 test/data files removed (`load_*.json`, `json*.txt`, `run*.json`)
+
+### Security
+- **Sensitive data**: `reports/reales/`, `storage/evidence/screenshots/`, `config/api_keys.json` added to .gitignore
 
 ## [9.0.1] - 2026-05-30
 
 ### Added
-- staged CLI progress across core and niche commands
+- Staged CLI progress across core and niche commands
 - AI provider registry with mock, Gemini, OpenAI, and Ollama paths
-- plugin hooks in ToolManager
-- collaboration manifests per session
-- quiet/minimal export mode
-- **Development Tooling**: Created a dedicated `scripts/` directory structure (`scripts/performance/` and `scripts/experiments/`) to isolate proof of concept scripts and load testing tools from the core application, ensuring the testing framework remains clean.
-- root `conftest.py` for pytest test isolation
+- Plugin hooks in ToolManager
+- Collaboration manifests per session
+- Quiet/minimal export mode
+- Root `conftest.py` for pytest test isolation
 
 ### Changed
-- documentation rewritten around the current ASM workflow
-- **Architecture (Concurrency Optimization)**: Completely overhauled the execution model in `src/scanners/web/fuzzer.py`. It now utilizes a native Python `ThreadPoolExecutor` with a bounded worker pool (`max_workers=3`). This allows `ffuf` to run massive wordlists and host scans in parallel, exponentially reducing I/O wait times while preventing local network stack saturation and maintaining thread safety via Python's GIL.
-- **Architecture (Secret Scanner Upgrade)**: Finalized the orphan `ThreadPoolExecutor` logic in `src/intelligence/secret_finder.py` by implementing the `scan_urls_concurrently()` method. The scanner can now process massive lists of URLs asynchronously without blocking the orchestrator's main thread.
-- **Testing & Environment Standards**: Enforced strict environment isolation. The `pytest` test suite and application execution must now explicitly run inside the local virtual environment (`venv`). This resolves critical dependency conflicts (e.g., `opentelemetry` system-level collisions) and standardizes the project's onboarding process.
+- Documentation rewritten around current ASM workflow
+- ThreadPoolExecutor concurrency in fuzzer and secret scanner
+- Enforced venv-based development workflow
 
 ### Fixed
-- unified version management using `pyproject.toml` as single source of truth with `importlib.metadata` fallback
-- removed unimplemented feature references from documentation (OzyRegistryAdapter, OzyPolicyAdapter, REPORT mode, SERVICE mode)
-- aligned all version references to 9.0.1 across codebase and documentation
-
-### Added
-- audit-ready flow, diff, schedule, and serve commands
+- Unified version management using `pyproject.toml`
+- Removed unimplemented feature references from documentation
+- Aligned all version references to 9.0.1 across codebase

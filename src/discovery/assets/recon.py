@@ -2,12 +2,17 @@
 Módulo de Reconocimiento basado en Capacidades (OzyRecon Platform)
 """
 
+import uuid
 from pathlib import Path
 
 from src.core.target_normalizer import first_token, normalize_base_target
+from src.events.bus import event_bus
+from src.events.events import AssetDiscovered, FindingDetected, ScanCompleted
+from src.plugins.hooks import dispatch_hook
 from src.scope import in_scope
 from src.utils import log, dedupe, write_lines
 from src.core.tool_manager import tool_manager
+from src.core.async_executor import async_executor
 
 # Importar proveedores para asegurar registro
 
@@ -18,14 +23,13 @@ def run_recon(target: str, out_dir: Path, args) -> dict:
     """
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Capacidad: asset_discovery (corre todos los providers: subfinder, amass, etc)
+    # 1. Capacidad: asset_discovery (corre todos los providers en paralelo)
     log(f"Iniciando capacidad: asset_discovery para {target}", "info")
-    all_subs = (
-        tool_manager.run_capability(
-            "asset_discovery", target, all_providers=True, threads=args.threads
-        )
-        or []
+    results = async_executor.run_capability_parallel(
+        tool_manager, "asset_discovery", [target],
+        all_providers=True, threads=args.threads,
     )
+    all_subs = results[0]['result'] if results and results[0]['status'] == 'completed' else []
 
     # 2. Deduplicar y normalizar
     target_lower = target.lower()
@@ -82,6 +86,38 @@ def run_recon(target: str, out_dir: Path, args) -> dict:
         )
         or []
     )
+
+    session_id = str(uuid.uuid4())
+    for sub in all_subs:
+        event_bus.publish(AssetDiscovered(domain=sub))
+        dispatch_hook("asset_discovered", {"domain": sub})
+    for host in live_hosts:
+        event_bus.publish(AssetDiscovered(domain=host, ip=first_token(host) if "://" in host else None))
+        dispatch_hook("asset_discovered", {"domain": host, "ip": first_token(host) if "://" in host else None})
+    for to in (takeovers or []):
+        title = to.get("title", to.get("name", "Takeover")) if isinstance(to, dict) else str(to)
+        event_bus.publish(FindingDetected(
+            title=title, severity="high", host=target, description=str(to),
+        ))
+        dispatch_hook("finding_detected", {
+            "title": title, "severity": "high", "host": target, "description": str(to),
+        })
+    event_bus.publish(ScanCompleted(
+        target=target,
+        session_id=session_id,
+        status="completed",
+        summary={
+            "subdomains": len(all_subs), "resolved": len(resolved_subs),
+            "live_hosts": len(live_hosts), "takeovers": len(takeovers or []),
+        },
+    ))
+    dispatch_hook("scan_complete", {
+        "target": target, "session_id": session_id, "status": "completed",
+        "summary": {
+            "subdomains": len(all_subs), "resolved": len(resolved_subs),
+            "live_hosts": len(live_hosts), "takeovers": len(takeovers or []),
+        },
+    })
 
     return {
         "all_subdomains": all_subs,

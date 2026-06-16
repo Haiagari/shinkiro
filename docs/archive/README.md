@@ -5,23 +5,21 @@ These files are kept for reference only and should not be treated as the active 
 
 ## What lives here
 
-- `OZYRECON_PHASE0_AUDIT.md` - early baseline audit and gap analysis
-- `OZYRECON_HARDENING_PLAN.md` - historical hardening plan
-- `OZYRECON_IMPROVEMENT_PLAN.md` - historical improvement roadmap
-- `OZYRECON_OPERATIONAL_PLAN.md` - historical operational plan
-- `CLI_GUIDE.md` - archived CLI guidance
-- `CHECKLIST.md` - archived checklist material
-- `trayecto.md` - historical evolution note
-- `mejoras-por-realizar.md` - historical backlog note
+- `OZYRECON_PHASE0_AUDIT.md` — early baseline audit and gap analysis
+- `OZYRECON_HARDENING_PLAN.md` — historical hardening plan
+- `OZYRECON_IMPROVEMENT_PLAN.md` — historical improvement roadmap
+- `OZYRECON_OPERATIONAL_PLAN.md` — historical operational plan
+- `CLI_GUIDE.md` — archived CLI guidance
+- `CHECKLIST.md` — archived checklist material
+- `trayecto.md` — historical evolution note
+- `mejoras-por-realizar.md` — historical backlog note
 
 ## Current pointers
 
-If you want the live project state, start here:
+For the live project state:
 
-- [`../../README.md`](../../README.md)
-- [`../STATUS.md`](../STATUS.md)
-- [`../ROADMAP.md`](../ROADMAP.md)
-- [`../RUNTIME_CONTRACT.md`](../RUNTIME_CONTRACT.md)
+- [`../../README.md`](../../README.md) — main documentation
+- [`../PLATFORM.md`](../PLATFORM.md) — platform contracts
 
 ## Rule of thumb
 

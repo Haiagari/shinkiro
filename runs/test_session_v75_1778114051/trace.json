@@ -1,0 +1,33 @@
+{
+  "session_id": "test_session_v75_1778114051",
+  "target": "artifact.test",
+  "mode": null,
+  "scan": {
+    "scan_id": 135,
+    "session_id": "test_session_v75_1778114051",
+    "target": "artifact.test",
+    "mode": null,
+    "status": "completed",
+    "started_at": "2026-05-07T00:34:11.992188",
+    "ended_at": null,
+    "duration_seconds": null,
+    "stats": {
+      "subdomains_found": 0,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": []
+  },
+  "session": null,
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

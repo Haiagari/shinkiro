@@ -4,7 +4,7 @@ import time
 from sqlalchemy.orm import Session
 from src.storage.database import SessionLocal, engine, Base
 from src.storage.models import Target, Scan, Subdomain
-from src.intelligence.ai_analyzer import ai_analyst
+from src.intelligence.analysis.ai_analyzer import ai_analyst
 
 # Setup
 db = SessionLocal()

@@ -1,0 +1,332 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_32",
+        "label": "colegiointegridad.edu.pe",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2106",
+        "label": "colegiointegridad.edu.pe (fqdn) --> ns_record --> h3-ns3.hostinga1.com (fqdn)",
+        "type": "subdomain",
+        "priority": 70,
+        "is_critical": false,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "data_storage"
+          ],
+          "trace": [
+            {
+              "type": "label_match",
+              "rule": "data_storage",
+              "pattern": "s3",
+              "priority": 7,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2107",
+        "label": "autodiscover.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2108",
+        "label": "aula.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2109",
+        "label": "webmail.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:management"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "webmail",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2110",
+        "label": "cpcontacts.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2111",
+        "label": "www.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2112",
+        "label": "colegiointegridad.edu.pe (fqdn) --> ns_record --> h3-ns1.hostinga1.com (fqdn)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2113",
+        "label": "colegiointegridad.edu.pe (fqdn) --> ns_record --> h3-ns2.hostinga1.com (fqdn)",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2114",
+        "label": "cpanel.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 90,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "role:management"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "cpanel",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "panel",
+              "contribution": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2115",
+        "label": "webdisk.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2116",
+        "label": "www.aula.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2117",
+        "label": "cpcalendars.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_2118",
+        "label": "mail.colegiointegridad.edu.pe",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2106",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2107",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2108",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2109",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2110",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2111",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2112",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2113",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2114",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2115",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2116",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2117",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "target_32",
+        "target": "sub_2118",
+        "relation": "has_subdomain"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 13,
+    "nodes_returned": 14,
+    "schema_version": "1.2"
+  }
+}

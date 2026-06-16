@@ -4,6 +4,7 @@ import hashlib
 from src.core.providers.http_clients import http_client
 from src.core.target_normalizer import first_token, extract_target_host, normalize_base_target
 from src.utils import log, run_cmd, read_lines, dedupe, check_tools, save_json
+from src.core.async_executor import async_executor
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
@@ -82,78 +83,99 @@ def run_crawler(hosts: list, out_dir: Path, args, context: dict = {}) -> dict:
 
     # Extraer dominio base para Wayback/GAU
     domains = dedupe([host for host in (extract_target_host(u) for u in urls) if host])
-    all_urls = []
 
-    # ── Wayback Machine ────────────────────────────────────────
+    # ── Parallel tool execution ────────────────────────────────
+    tool_tasks = []
+
     if available["waybackurls"]:
         log("Consultando Wayback Machine...", "info")
         wb_out = out_dir / "wayback.txt"
-        for domain in domains[:5]:
-            run_cmd(f"echo '{domain}' | waybackurls >> {wb_out}", timeout=120)
-        wb_urls = read_lines(wb_out)
-        log(f"waybackurls → {len(wb_urls)} URLs", "success")
-        all_urls.extend(wb_urls)
+        def _run_wayback(domains=domains[:5], wb_out=wb_out):
+            for domain in domains:
+                run_cmd(f"echo '{domain}' | waybackurls >> {wb_out}", timeout=120)
+            return read_lines(wb_out)
+        tool_tasks.append({'fn': _run_wayback, 'name': 'waybackurls', 'timeout': 120})
     else:
         log("waybackurls no disponible — saltando", "warn")
 
-    # ── GAU (getallurls) ────────────────────────────────────────
     if available["gau"]:
         log("Consultando fuentes con gau...", "info")
         gau_out = out_dir / "gau.txt"
-        for domain in domains[:5]:
-            run_cmd(f"gau --threads {args.threads} --o {gau_out} {domain}", timeout=180)
-        gau_urls = read_lines(gau_out)
-        log(f"gau → {len(gau_urls)} URLs", "success")
-        all_urls.extend(gau_urls)
+        def _run_gau(domains=domains[:5], gau_out=gau_out):
+            for domain in domains:
+                run_cmd(f"gau --threads {args.threads} --o {gau_out} {domain}", timeout=180)
+            return read_lines(gau_out)
+        tool_tasks.append({'fn': _run_gau, 'name': 'gau', 'timeout': 180})
     else:
         log("gau no disponible — saltando", "warn")
 
-    # ── Katana (crawler activo) ─────────────────────────────────
     if available["katana"]:
         log("Crawl activo con katana...", "info")
         kata_out = out_dir / "katana.txt"
-        for url in urls[:10]:
-            run_cmd(
-                f"katana -u {url} -silent -d 3 -jc -kf all "
-                f"-c {args.threads} -timeout {args.timeout} -o {kata_out}",
-                timeout=300,
-            )
-        kata_urls = read_lines(kata_out)
-        log(f"katana → {len(kata_urls)} URLs", "success")
-        all_urls.extend(kata_urls)
+        def _run_katana(urls=urls[:10], kata_out=kata_out):
+            for url in urls:
+                run_cmd(
+                    f"katana -u {url} -silent -d 3 -jc -kf all "
+                    f"-c {args.threads} -timeout {args.timeout} -o {kata_out}",
+                    timeout=300,
+                )
+            return read_lines(kata_out)
+        tool_tasks.append({'fn': _run_katana, 'name': 'katana', 'timeout': 300})
     else:
         log("katana no disponible — saltando", "warn")
 
-    # ── hakrawler ──────────────────────────────────────────────
     if available["hakrawler"]:
         log("Crawl con hakrawler...", "info")
         hak_out = out_dir / "hakrawler.txt"
-        urls_str = "\n".join(urls[:20])
-        run_cmd(f"echo '{urls_str}' | hakrawler -d 2 -t {args.threads} >> {hak_out}", timeout=200)
-        hak_urls = read_lines(hak_out)
-        log(f"hakrawler → {len(hak_urls)} URLs", "success")
-        all_urls.extend(hak_urls)
+        def _run_hakrawler(urls_str="\n".join(urls[:20]), hak_out=hak_out):
+            run_cmd(f"echo '{urls_str}' | hakrawler -d 2 -t {args.threads} >> {hak_out}", timeout=200)
+            return read_lines(hak_out)
+        tool_tasks.append({'fn': _run_hakrawler, 'name': 'hakrawler', 'timeout': 200})
     else:
         log("hakrawler no disponible — saltando", "warn")
 
-    # ── ffuf para fuzzing de directorios ──────────────────────
     if available["ffuf"]:
-        log("Fuzzing de directorios con ffuf...", "info")
         wordlist = ROOT_DIR / "resources" / "wordlists" / "common.txt"
         if wordlist.exists():
+            log("Fuzzing de directorios con ffuf...", "info")
             ffuf_out = out_dir / "ffuf"
-            ffuf_out.mkdir(exist_ok=True)
-            for url in urls[:5]:
-                domain_safe = extract_target_host(url).replace(".", "_")
-                run_cmd(
-                    f"ffuf -u {url}/FUZZ -w {wordlist} -mc 200,201,301,302,401,403 "
-                    f"-t {args.threads} -timeout {args.timeout} -silent "
-                    f"-o {ffuf_out}/{domain_safe}.json -of json",
-                    timeout=300,
-                )
-            log("ffuf → fuzzing completado", "success")
+            def _run_ffuf(urls=urls[:5], ffuf_out=ffuf_out):
+                ffuf_out.mkdir(exist_ok=True)
+                for url in urls:
+                    domain_safe = extract_target_host(url).replace(".", "_")
+                    run_cmd(
+                        f"ffuf -u {url}/FUZZ -w {wordlist} -mc 200,201,301,302,401,403 "
+                        f"-t {args.threads} -timeout {args.timeout} -silent "
+                        f"-o {ffuf_out}/{domain_safe}.json -of json",
+                        timeout=300,
+                    )
+                return None
+            tool_tasks.append({'fn': _run_ffuf, 'name': 'ffuf', 'timeout': 300})
         else:
             log("wordlist no encontrada (resources/wordlists/common.txt) — saltando ffuf", "warn")
+
+    # Execute all tools in parallel
+    tool_results = async_executor.run_parallel(tool_tasks)
+
+    # Collect URL results
+    all_urls = []
+    for r in tool_results:
+        if r['status'] == 'completed':
+            if r['name'] == 'waybackurls':
+                log(f"waybackurls → {len(r['result'] or [])} URLs", "success")
+            elif r['name'] == 'gau':
+                log(f"gau → {len(r['result'] or [])} URLs", "success")
+            elif r['name'] == 'katana':
+                log(f"katana → {len(r['result'] or [])} URLs", "success")
+            elif r['name'] == 'hakrawler':
+                log(f"hakrawler → {len(r['result'] or [])} URLs", "success")
+            elif r['name'] == 'ffuf':
+                log("ffuf → fuzzing completado", "success")
+
+            if isinstance(r['result'], list):
+                all_urls.extend(r['result'])
+        else:
+            log(f"{r['name']} falló: {r['error']}", "warn")
 
     # ── Deduplicar y clasificar ─────────────────────────────────
     all_urls = dedupe([first_token(u) for u in all_urls if first_token(u).startswith("http")])

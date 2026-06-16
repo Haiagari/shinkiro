@@ -1,0 +1,29 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "ebcf154e-bb84-4ea4-ba9e-987fdebc9aec",
+  "target": "unitru.edu.pe",
+  "mode": "hunt",
+  "timestamp": "2026-05-03T15:54:20.428627",
+  "started_at": "2026-05-03T15:53:44.763422",
+  "ended_at": "2026-05-03T20:54:20.416578",
+  "duration_seconds": 18035.653156,
+  "assets": [],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 0,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

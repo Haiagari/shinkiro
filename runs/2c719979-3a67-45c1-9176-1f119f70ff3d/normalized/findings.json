@@ -1,0 +1,300 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "2c719979-3a67-45c1-9176-1f119f70ff3d",
+  "target": "colegiointegridad.edu.pe",
+  "mode": "hunt",
+  "timestamp": "2026-05-06T12:02:58.091264",
+  "started_at": "2026-05-06T16:47:42.718378",
+  "ended_at": "2026-05-06T17:02:58.082080",
+  "duration_seconds": 915.363702,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "cpcalendars.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 503,
+      "title": "503 Service Unavailable",
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webmail.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 200,
+      "title": "Webmail Login",
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "gate_auth",
+          "role:management",
+          "role:auth"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.aula.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "51.161.45.249",
+      "http_status": 503,
+      "title": "Error",
+      "web_server": null,
+      "technologies": [
+        "HTTP/3",
+        "LiteSpeed",
+        "PHP:7.4.33"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpanel.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 200,
+      "title": "cPanel Login",
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server",
+        "cPanel"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "gate_auth",
+          "role:management",
+          "role:auth"
+        ],
+        "business_impact": "CRITICAL",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 301,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server",
+        "PHP:8.4.20"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": "colegiointegridad.edu.pe"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "autodiscover.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 400,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "cpcontacts.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 503,
+      "title": "503 Service Unavailable",
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "webdisk.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 401,
+      "title": null,
+      "web_server": null,
+      "technologies": [
+        "Basic"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "mail.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 200,
+      "title": "Colegio Integridad | Centrados en Jesucristo",
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server",
+        "MySQL",
+        "PHP:8.4.20",
+        "Twenty Twelve",
+        "WordPress Block Editor",
+        "WordPress:6.9.4",
+        "jQuery",
+        "jQuery Migrate:3.4.1"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": "colegiointegridad.edu.pe"
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "149.56.147.198",
+      "http_status": 200,
+      "title": "Colegio Integridad | Centrados en Jesucristo",
+      "web_server": null,
+      "technologies": [
+        "Apache HTTP Server",
+        "MySQL",
+        "PHP:8.4.20",
+        "Twenty Twelve",
+        "WordPress Block Editor",
+        "WordPress:6.9.4",
+        "jQuery",
+        "jQuery Migrate:3.4.1"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "aula.colegiointegridad.edu.pe",
+      "is_live": true,
+      "ip": "51.161.45.249",
+      "http_status": 503,
+      "title": "Error",
+      "web_server": null,
+      "technologies": [
+        "HTTP/3",
+        "LiteSpeed",
+        "PHP:7.4.33"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 16276,
+        "asn_organization": "OVH, FR",
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    }
+  ],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 11,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": []
+}

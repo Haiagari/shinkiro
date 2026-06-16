@@ -1,0 +1,54 @@
+{
+  "session_id": "d8fafbc5-349d-4330-9479-8cae343aeb88",
+  "target": "evil-corp.com",
+  "mode": "hunt",
+  "scan": {
+    "scan_id": 70,
+    "session_id": "d8fafbc5-349d-4330-9479-8cae343aeb88",
+    "target": "evil-corp.com",
+    "mode": "hunt",
+    "status": "completed",
+    "started_at": "2026-05-03T15:50:57.251885",
+    "ended_at": "2026-05-03T20:51:01.681587",
+    "duration_seconds": 18004.429702,
+    "stats": {
+      "subdomains_found": 0,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": []
+  },
+  "session": {
+    "session_id": "d8fafbc5-349d-4330-9479-8cae343aeb88",
+    "target": "evil-corp.com",
+    "mode": "hunt",
+    "started_at": "2026-05-03T15:50:57.251885",
+    "ended_at": "2026-05-03T15:51:01.672659",
+    "duration": 4.420774,
+    "status": "success",
+    "exit_code": 0,
+    "counts": {
+      "subdomains": 0,
+      "hosts": 0,
+      "ports": 0,
+      "findings": 0
+    },
+    "error_summary": null,
+    "config_used": {
+      "threads": 50,
+      "rate_limit": 50,
+      "mode": "hunt"
+    }
+  },
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

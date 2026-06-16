@@ -1,9 +1,9 @@
 import pytest
-from src.intelligence.orchestrator import DiscoveryOrchestrator
+from src.intelligence.pipeline.orchestrator import DiscoveryOrchestrator
 from src.storage.database import SessionLocal
 from pathlib import Path
 
-from src.intelligence.collaboration import write_collaboration_manifest, read_collaboration_manifest
+from src.intelligence.pipeline.collaboration import write_collaboration_manifest, read_collaboration_manifest
 
 def test_collaborative_artifact_sharing():
     """

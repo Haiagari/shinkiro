@@ -53,7 +53,7 @@ class NucleiProvider(BaseProvider):
         cmd.extend(self._get_stealth_flags())
         
         # --- FILTRADO DE FALSOS POSITIVOS ---
-        from src.intelligence.false_positive_memory import false_positive_memory
+        from src.intelligence.learning.false_positive_memory import false_positive_memory
         avoid_templates = false_positive_memory.get_avoid_list(tool="nuclei")
         if avoid_templates:
             logger.info(f"Filtering {len(avoid_templates)} known false positive templates")

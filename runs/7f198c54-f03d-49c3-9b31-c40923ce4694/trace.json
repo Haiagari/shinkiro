@@ -1,0 +1,54 @@
+{
+  "session_id": "7f198c54-f03d-49c3-9b31-c40923ce4694",
+  "target": "e2e.example.com",
+  "mode": "hunt",
+  "scan": {
+    "scan_id": 1,
+    "session_id": "7f198c54-f03d-49c3-9b31-c40923ce4694",
+    "target": "e2e.example.com",
+    "mode": "hunt",
+    "status": "completed",
+    "started_at": "2026-05-30T22:14:51.667896",
+    "ended_at": "2026-05-30T22:14:51.859928",
+    "duration_seconds": 0.192032,
+    "stats": {
+      "subdomains_found": 2,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": []
+  },
+  "session": {
+    "session_id": "7f198c54-f03d-49c3-9b31-c40923ce4694",
+    "target": "e2e.example.com",
+    "mode": "hunt",
+    "started_at": "2026-05-30T22:14:51.667896",
+    "ended_at": "2026-05-30T22:14:51.849272",
+    "duration": 0.181376,
+    "status": "success",
+    "exit_code": 0,
+    "counts": {
+      "subdomains": 2,
+      "hosts": 0,
+      "ports": 0,
+      "findings": 0
+    },
+    "error_summary": null,
+    "config_used": {
+      "threads": 2,
+      "rate_limit": 50,
+      "mode": "hunt"
+    }
+  },
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

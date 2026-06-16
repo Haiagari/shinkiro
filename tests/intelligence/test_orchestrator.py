@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from src.storage.models import Base, Subdomain, Port, Hypothesis, Target, Scan
-from src.intelligence.orchestrator import DiscoveryOrchestrator
+from src.intelligence.pipeline.orchestrator import DiscoveryOrchestrator
 from src.workflow.orchestrator import WorkflowOrchestrator
 from unittest.mock import MagicMock, patch
 from src.workflow.states import WorkflowState

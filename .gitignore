@@ -1,87 +1,61 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-env/
-.venv/
 *.egg-info/
+venv/
+.venv/
+*.egg
+
+# Build & distribution
 dist/
 build/
 
-# IDEs & AI
+# IDE
 .vscode/
 .idea/
-.codex
-.cursor/
 *.swp
 *.swo
 
 # OS
 .DS_Store
 Thumbs.db
-.directory
 
-# Base de datos
-*.db
-*.sqlite
-runtime/db/*.db
-
-# Output y Evidencia (OPSEC)
-output/
-reports/*
-!reports/README.md
-!reports/pruebas/
-!reports/pruebas/**
-evidence/
-storage/evidence/
-watch_history/
-data/
-runtime/
-runs/
-scopes/
-*.log
-*.pdf
-*.html
-!docs/**/*.html
-agent_reasoning.log
-llm_usage.json
-json*.txt
-load_*.json
-run*.json
-
-# JUnit y Testing
-junit/
+# Caches
+.mypy_cache/
 .pytest_cache/
-.coverage
-htmlcov/
+.ruff_cache/
+__pycache__/
+.cocoindex_code/
 
-# Binarios de herramientas
-tools/go/bin/
-tools/go/pkg/
-tools/bin/
-tools/python_bins.txt
-
-
-# API keys y Config Sensible
-config/config.yaml
-config/api_keys.json
-config/backup_*.yaml
+# Environment
 .env
-resources/keys/api_keys.json
-resources/keys/evidence_key.priv
+.env.local
+config/api_keys.json
 
-# OzyRecon Specific
-.ozyrecon-cli/
-l.txt
-interface_ui_bundle_fixed.zip
-graph_preview.html
-# Legacy removal (keeping src clean)
-# UI/Legacy files moved to src or intended for inclusion
-# NO IGNORAR agent.py o tui.py si son funcionales
-# Local Pi runtime state
+# Runtime data
+runtime/
+data/
+
+# Go toolchain cache
+tools/go/pkg/
+
+# Test artifacts
+load_*.json
+json*.txt
+run*.json
+*.log
+
+# Evidence & screenshots (sensitive)
+storage/evidence/screenshots/
+reports/reales/
+reports/pruebas/
+reports/generated/
+reports/evidence/screenshots/
+
+# Agent configs
+.agents/
 .atl/
-# CocoIndex Code (ccc)
-/.cocoindex_code/
+.codex
+.gga
+.pi-lens/
+.pi/

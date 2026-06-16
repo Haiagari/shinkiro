@@ -1,0 +1,71 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "3a01c284-06c3-48f2-a021-cb05cd4813e2",
+  "target": "e2e.example.com",
+  "mode": "hunt",
+  "timestamp": "2026-05-06T20:52:16.536909",
+  "started_at": "2026-05-07T01:52:16.443517",
+  "ended_at": "2026-05-07T01:52:16.531196",
+  "duration_seconds": 0.087679,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "api.e2e.example.com",
+      "is_live": true,
+      "ip": null,
+      "http_status": 200,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": [
+          "role:api",
+          "api_surface"
+        ],
+        "business_impact": "HIGH",
+        "cname": null
+      }
+    }
+  ],
+  "services": [
+    {
+      "host": "api.e2e.example.com",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "api.e2e.example.com",
+      "port": 443,
+      "protocol": "tcp",
+      "service": "https",
+      "version": "",
+      "state": "open"
+    }
+  ],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 1,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50,
+    "quiet": false
+  },
+  "errors": []
+}

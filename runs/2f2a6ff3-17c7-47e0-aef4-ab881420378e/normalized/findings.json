@@ -1,0 +1,52 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "2f2a6ff3-17c7-47e0-aef4-ab881420378e",
+  "target": "https://owlperu.com/iestptembladera/",
+  "mode": "hunt",
+  "timestamp": "2026-05-06T15:24:37.505737",
+  "started_at": "2026-05-06T20:24:11.205155",
+  "ended_at": "2026-05-06T20:24:37.456522",
+  "duration_seconds": 26.251367,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "owlperu.com",
+      "is_live": false,
+      "ip": null,
+      "http_status": null,
+      "title": null,
+      "web_server": null,
+      "technologies": [],
+      "ports": [],
+      "metadata": {
+        "asn": null,
+        "asn_organization": null,
+        "cloud_provider": null,
+        "env_tag": null,
+        "semantic_labels": null,
+        "business_impact": "LOW",
+        "cname": null
+      }
+    }
+  ],
+  "services": [],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 1,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50
+  },
+  "errors": [
+    "[Errno 13] Permission denied: 'runtime/scans/https:/owlperu.com/iestptembladera'"
+  ]
+}

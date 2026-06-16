@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-06-15T22:41:59.818142",
+  "method": "GET",
+  "url": "https://api-uraa.unitru.edu.pe/_ignition/health-check",
+  "status_code": 200,
+  "response_headers": {
+    "Date": "Mon, 15 Jun 2026 22:41:33 GMT",
+    "Server": "Apache/2.4.52 (Ubuntu)",
+    "Cache-Control": "no-cache, private",
+    "Connection": "close",
+    "Transfer-Encoding": "chunked",
+    "Content-Type": "application/json"
+  },
+  "response_body_preview": "{\"can_execute_commands\":true}",
+  "curl_command": "curl -X GET 'https://api-uraa.unitru.edu.pe/_ignition/health-check'",
+  "screenshot_path": null,
+  "notes": "Ignition debug panel"
+}

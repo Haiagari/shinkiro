@@ -1,0 +1,18 @@
+{
+  "session_id": "4d86a063-3a9e-4603-9859-37d9f92ee622",
+  "target": "unitru.edu.pe",
+  "scan_id": 175,
+  "status": "shared",
+  "operators": [
+    "engine",
+    "orchestrator"
+  ],
+  "artifacts": [
+    "raw",
+    "normalized",
+    "evidence",
+    "graph",
+    "reports"
+  ],
+  "updated_at": "2026-06-15T22:02:48.359085+00:00"
+}

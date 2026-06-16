@@ -1,0 +1,54 @@
+{
+  "session_id": "2c719979-3a67-45c1-9176-1f119f70ff3d",
+  "target": "colegiointegridad.edu.pe",
+  "mode": "hunt",
+  "scan": {
+    "scan_id": 97,
+    "session_id": "2c719979-3a67-45c1-9176-1f119f70ff3d",
+    "target": "colegiointegridad.edu.pe",
+    "mode": "hunt",
+    "status": "completed",
+    "started_at": "2026-05-06T16:47:42.718378",
+    "ended_at": "2026-05-06T17:02:58.082080",
+    "duration_seconds": 915.363702,
+    "stats": {
+      "subdomains_found": 11,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": []
+  },
+  "session": {
+    "session_id": "2c719979-3a67-45c1-9176-1f119f70ff3d",
+    "target": "colegiointegridad.edu.pe",
+    "mode": "hunt",
+    "started_at": "2026-05-06T16:47:42.718378",
+    "ended_at": "2026-05-06T17:02:58.076518",
+    "duration": 915.35814,
+    "status": "success",
+    "exit_code": 0,
+    "counts": {
+      "subdomains": 11,
+      "hosts": 0,
+      "ports": 0,
+      "findings": 0
+    },
+    "error_summary": null,
+    "config_used": {
+      "threads": null,
+      "rate_limit": 50,
+      "mode": "hunt"
+    }
+  },
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

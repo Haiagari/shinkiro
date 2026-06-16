@@ -1,0 +1,92 @@
+{
+  "type": "scan-result",
+  "source": "ozy-recon",
+  "version": "1.0",
+  "contract_version": "ozy.runtime.v1",
+  "session_id": "0e4b970d-ccf6-4d6c-9f60-1dda548b8364",
+  "target": "example.com",
+  "mode": "hunt",
+  "timestamp": "2026-06-14T16:39:10.100362",
+  "started_at": "2026-06-14T21:27:11.653135",
+  "ended_at": "2026-06-14T21:39:10.075416",
+  "duration_seconds": 718.422281,
+  "assets": [
+    {
+      "type": "subdomain",
+      "value": "example.com",
+      "is_live": true,
+      "ip": "104.20.23.154",
+      "http_status": 200,
+      "title": "Example Domain",
+      "web_server": null,
+      "technologies": [
+        "Cloudflare"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 13335,
+        "asn_organization": "CLOUDFLARENET - Cloudflare, Inc., US",
+        "cloud_provider": "cloudflare",
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    },
+    {
+      "type": "subdomain",
+      "value": "www.example.com",
+      "is_live": true,
+      "ip": "104.20.23.154",
+      "http_status": 200,
+      "title": "Example Domain",
+      "web_server": null,
+      "technologies": [
+        "Cloudflare"
+      ],
+      "ports": [],
+      "metadata": {
+        "asn": 13335,
+        "asn_organization": "CLOUDFLARENET - Cloudflare, Inc., US",
+        "cloud_provider": "cloudflare",
+        "env_tag": null,
+        "semantic_labels": [],
+        "business_impact": "LOW",
+        "cname": null
+      }
+    }
+  ],
+  "services": [
+    {
+      "host": "www.example.com",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    },
+    {
+      "host": "example.com",
+      "port": 80,
+      "protocol": "tcp",
+      "service": "http",
+      "version": "",
+      "state": "open"
+    }
+  ],
+  "findings": [],
+  "diff": [],
+  "stats": {
+    "subdomains_found": 2,
+    "hosts_alive": 0,
+    "ports_found": 0,
+    "findings": 0
+  },
+  "config": {
+    "threads": 50,
+    "timeout": 10,
+    "rate_limit": 50,
+    "quiet": false
+  },
+  "errors": []
+}

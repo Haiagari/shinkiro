@@ -1,0 +1,56 @@
+{
+  "session_id": "2f2a6ff3-17c7-47e0-aef4-ab881420378e",
+  "target": "https://owlperu.com/iestptembladera/",
+  "mode": "hunt",
+  "scan": {
+    "scan_id": 128,
+    "session_id": "2f2a6ff3-17c7-47e0-aef4-ab881420378e",
+    "target": "https://owlperu.com/iestptembladera/",
+    "mode": "hunt",
+    "status": "failed",
+    "started_at": "2026-05-06T20:24:11.205155",
+    "ended_at": "2026-05-06T20:24:37.456522",
+    "duration_seconds": 26.251367,
+    "stats": {
+      "subdomains_found": 1,
+      "hosts_alive": 0,
+      "ports_found": 0,
+      "findings": 0
+    },
+    "errors": [
+      "[Errno 13] Permission denied: 'runtime/scans/https:/owlperu.com/iestptembladera'"
+    ]
+  },
+  "session": {
+    "session_id": "2f2a6ff3-17c7-47e0-aef4-ab881420378e",
+    "target": "https://owlperu.com/iestptembladera/",
+    "mode": "hunt",
+    "started_at": "2026-05-06T20:24:11.205155",
+    "ended_at": "2026-05-06T20:24:37.428327",
+    "duration": 26.223172,
+    "status": "failed",
+    "exit_code": 1,
+    "counts": {
+      "subdomains": 1,
+      "hosts": 0,
+      "ports": 0,
+      "findings": 0
+    },
+    "error_summary": "[Errno 13] Permission denied: 'runtime/scans/https:/owlperu.com/iestptembladera'",
+    "config_used": {
+      "threads": null,
+      "rate_limit": 50,
+      "mode": "hunt"
+    }
+  },
+  "workflow_steps": [],
+  "evidence": [],
+  "decisions": [],
+  "summary": {
+    "hypotheses": 0,
+    "workflow_steps": 0,
+    "evidence_items": 0,
+    "decisions": 0,
+    "event_count": 0
+  }
+}

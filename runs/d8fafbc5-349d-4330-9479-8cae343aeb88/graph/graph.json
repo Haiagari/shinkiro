@@ -1,0 +1,317 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "target_29",
+        "label": "evil-corp.com",
+        "type": "target",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {}
+      }
+    },
+    {
+      "data": {
+        "id": "sub_10",
+        "label": "api.evil-corp.com",
+        "type": "subdomain",
+        "priority": 80,
+        "is_critical": true,
+        "metadata": {
+          "impact": "HIGH",
+          "labels": [
+            "role:api",
+            "api_surface"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "API",
+              "signal": "domain/title",
+              "match": "api",
+              "contribution": 0.4
+            },
+            {
+              "type": "label_match",
+              "rule": "api_surface",
+              "pattern": "api",
+              "priority": 9,
+              "contribution": 0.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_1.1.1.2",
+        "label": "1.1.1.2",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 13335,
+          "org": "CLOUDFLARENET - Cloudflare, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_11",
+        "label": "www.evil-corp.com",
+        "type": "subdomain",
+        "priority": 10,
+        "is_critical": false,
+        "metadata": {
+          "impact": "LOW",
+          "labels": [],
+          "trace": []
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_1.1.1.3",
+        "label": "1.1.1.3",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 13335,
+          "org": "CLOUDFLARENET - Cloudflare, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "sub_12",
+        "label": "admin.evil-corp.com",
+        "type": "subdomain",
+        "priority": 100,
+        "is_critical": true,
+        "metadata": {
+          "impact": "CRITICAL",
+          "labels": [
+            "gate_admin",
+            "role:management",
+            "gate_auth",
+            "high_risk_shadow",
+            "role:auth"
+          ],
+          "trace": [
+            {
+              "type": "role_match",
+              "rule": "MANAGEMENT",
+              "signal": "domain/title",
+              "match": "admin",
+              "contribution": 0.3
+            },
+            {
+              "type": "role_match",
+              "rule": "AUTH",
+              "signal": "domain/title",
+              "match": "login",
+              "contribution": 0.3
+            },
+            {
+              "type": "label_match",
+              "rule": "gate_admin",
+              "pattern": "^admin[-.]",
+              "priority": 10,
+              "contribution": 0.5
+            },
+            {
+              "type": "label_match",
+              "rule": "gate_auth",
+              "pattern": "login",
+              "priority": 8,
+              "contribution": 0.4
+            },
+            {
+              "type": "promotion",
+              "rule": "Shadow Admin Panel",
+              "correlation": [
+                "gate_admin"
+              ],
+              "contribution": 0.2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "ip_1.1.1.1",
+        "label": "1.1.1.1",
+        "type": "ip_address",
+        "priority": 0,
+        "is_critical": false,
+        "metadata": {
+          "asn": 13335,
+          "org": "CLOUDFLARENET - Cloudflare, Inc., US"
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_1",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_2",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_3",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_4",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "port_5",
+        "label": "80/tcp",
+        "type": "service",
+        "priority": 50,
+        "is_critical": false,
+        "metadata": {
+          "service": "http",
+          "version": null,
+          "criticality": 50
+        }
+      }
+    },
+    {
+      "data": {
+        "id": "vuln_1",
+        "label": "Exposed PHPConfig",
+        "type": "finding",
+        "priority": 80,
+        "is_critical": true,
+        "metadata": {
+          "severity": "high",
+          "cvss": null
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "source": "target_29",
+        "target": "sub_10",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_10",
+        "target": "ip_1.1.1.2",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_29",
+        "target": "sub_11",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_11",
+        "target": "ip_1.1.1.3",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "target_29",
+        "target": "sub_12",
+        "relation": "has_subdomain"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_12",
+        "target": "ip_1.1.1.1",
+        "relation": "resolves_to"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_10",
+        "target": "port_3",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_11",
+        "target": "port_4",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_12",
+        "target": "port_5",
+        "relation": "opens_port"
+      }
+    },
+    {
+      "data": {
+        "source": "sub_12",
+        "target": "vuln_1",
+        "relation": "vulnerable"
+      }
+    }
+  ],
+  "is_truncated": false,
+  "metadata": {
+    "total_nodes_detected": 3,
+    "nodes_returned": 13,
+    "schema_version": "1.2"
+  }
+}

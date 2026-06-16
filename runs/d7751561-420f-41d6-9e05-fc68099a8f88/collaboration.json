@@ -1,0 +1,18 @@
+{
+  "session_id": "d7751561-420f-41d6-9e05-fc68099a8f88",
+  "target": "e2e.example.com",
+  "scan_id": 1,
+  "status": "shared",
+  "operators": [
+    "engine",
+    "orchestrator"
+  ],
+  "artifacts": [
+    "raw",
+    "normalized",
+    "evidence",
+    "graph",
+    "reports"
+  ],
+  "updated_at": "2026-05-14T23:50:07.177427+00:00"
+}
