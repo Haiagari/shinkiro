@@ -1,5 +1,21 @@
 # Changelog
 
+## [10.0.0] (AI Security Pivot) - 2026-07-02
+
+### Changed
+- **Massive Architectural Pivot**: OzyRecon has transitioned from an Offensive Infrastructure Recon tool to an AI Security Guardrail (Firewall for LLMs).
+- **Core Engine**: Replaced linear scanning engines with an asynchronous EventBus designed to intercept and validate incoming prompts.
+
+### Added
+- **Judge LLM Validator**: Added evaluation layers using a Judge LLM to detect prompt injections, jailbreaks, and malicious intents.
+- **Safe Forwarding**: Added safe forwarding mechanisms that automatically route clean prompts to Target APIs while blocking malicious ones.
+- **Audit Logging**: Added comprehensive tracking and metrics for blocked versus permitted requests.
+
+### Removed
+- **Legacy Recon Tools**: Completely removed network scanning legacy tools including `nmap`, `subfinder`, `nuclei`, `httpx`, `naabu`, etc.
+- **Offensive Discovery Phases**: Removed all recon phases (DNS brute-force, JS endpoint extraction, S3 scanning, Dorking, etc.).
+- **Recon Modes**: Removed hunt, continuous, research, campaign, and forensic modes.
+
 ## [9.1.0] - 2026-06-16
 
 ### Fixed
