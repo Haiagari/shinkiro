@@ -90,3 +90,7 @@ class IJudgeLLM(ABC):
     async def evaluate_response(self, payload: AttackPayload, response: TargetResponse, criteria: dict) -> EvaluationResult:
         pass
 
+    @abstractmethod
+    async def evaluate_prompt(self, payload: AttackPayload) -> EvaluationResult:
+        pass
+

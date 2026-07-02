@@ -34,3 +34,16 @@ class AttackFailed(DomainEvent):
     """Event emitted when the judge determines the attack failed to bypass the guardrail."""
     result: EvaluationResult
     type: str = "attack_failed"
+
+@dataclass(frozen=True, kw_only=True)
+class PromptReceived(DomainEvent):
+    """Event emitted when a prompt is intercepted from user/client."""
+    payload: AttackPayload
+    type: str = "prompt_received"
+
+@dataclass(frozen=True, kw_only=True)
+class AttackBlocked(DomainEvent):
+    """Event emitted when the judge flags a prompt as malicious and blocks it."""
+    payload: AttackPayload
+    reason: str
+    type: str = "attack_blocked"
