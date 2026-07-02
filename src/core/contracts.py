@@ -4,7 +4,10 @@ Runtime contract constants for OzyRecon.
 These values define the stable shape that the local engine exposes.
 """
 
-from typing import Dict, Iterable, Tuple
+from abc import ABC, abstractmethod
+from typing import Dict, Iterable, Tuple, Any, List
+
+from src.domain.models import AttackPayload, TargetResponse, EvaluationResult
 
 CONTRACT_VERSION = "ozy.runtime.v1"
 
@@ -62,3 +65,28 @@ def validate_required_fields(payload: Dict[str, object], required: Iterable[str]
     missing = missing_fields(payload, required)
     if missing:
         raise ValueError(f"Missing contract fields: {', '.join(missing)}")
+
+
+class IAttackerLLM(ABC):
+    """Interface for the Attacker LLM that generates malicious payloads."""
+
+    @abstractmethod
+    async def generate_payload(self, context: dict, previous_responses: list) -> AttackPayload:
+        pass
+
+
+class ITargetAPI(ABC):
+    """Interface for the Target API that receives payloads."""
+
+    @abstractmethod
+    async def send_prompt(self, payload: AttackPayload) -> TargetResponse:
+        pass
+
+
+class IJudgeLLM(ABC):
+    """Interface for the Judge LLM that evaluates responses."""
+
+    @abstractmethod
+    async def evaluate_response(self, payload: AttackPayload, response: TargetResponse, criteria: dict) -> EvaluationResult:
+        pass
+
