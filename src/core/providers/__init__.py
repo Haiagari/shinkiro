@@ -1,5 +1,5 @@
 """
-OzyRecon Providers Layer
+PromptWall Providers Layer
 Infraestructura técnica para ejecución de herramientas.
 """
 

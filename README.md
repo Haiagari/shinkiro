@@ -1,4 +1,4 @@
-# OzyRecon
+# PromptWall
 
 **AI Security Guardrail (Firewall for LLMs)**  
 *Built for safe AI deployments. Engineered for reliability.*
@@ -10,7 +10,7 @@
 
 ---
 
-## What is OzyRecon
+## What is PromptWall
 
 Production-ready AI Security Guardrail. Acts as a firewall for Large Language Models (LLMs), protecting your applications against prompt injections, jailbreaks, and malicious intents. 
 
@@ -20,9 +20,9 @@ User Prompt → EventBus (Intercept) → Judge LLM (Validate) → Clean? → Tar
                                                       Block/Alert
 ```
 
-**Why OzyRecon instead of standard API calls:**
+**Why PromptWall instead of standard API calls:**
 
-| Capability | OzyRecon | Direct LLM Access |
+| Capability | PromptWall | Direct LLM Access |
 |---|---|---|
 | Prompt Injection Defense | Built-in | None |
 | Jailbreak Prevention | Heuristic & LLM Judge | None |
@@ -33,7 +33,7 @@ User Prompt → EventBus (Intercept) → Judge LLM (Validate) → Clean? → Tar
 ## Quick Start
 
 ```bash
-git clone https://github.com/SamBleed/OzyRecon.git && cd OzyRecon
+git clone https://github.com/SamBleed/PromptWall.git && cd PromptWall
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt && pip install -e .
 python ozy.py serve --guardrail    # start the firewall
@@ -74,7 +74,7 @@ api_keys:
 
 ## Architecture
 
-Hexagonal (Ports & Adapters). Business logic has zero dependency on external tools or frameworks. The core of OzyRecon relies on an asynchronous EventBus to intercept, evaluate, and route prompts.
+Hexagonal (Ports & Adapters). Business logic has zero dependency on external tools or frameworks. The core of PromptWall relies on an asynchronous EventBus to intercept, evaluate, and route prompts.
 
 ```
 Domain (Prompt Entities) ← Application (Validation Use Cases) ← Adapters (APIs)

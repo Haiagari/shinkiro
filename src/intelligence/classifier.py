@@ -1,5 +1,5 @@
 """
-Intelligent Inference Engine (OzyRecon v7.5 - Intelligence Formalization Layer)
+Intelligent Inference Engine (PromptWall v7.5 - Intelligence Formalization Layer)
 Converts raw metadata into functional intelligence with full traceability.
 """
 

@@ -1,5 +1,5 @@
 """
-SIEM Exporter (OzyRecon v7.5 - Enterprise Layer)
+SIEM Exporter (PromptWall v7.5 - Enterprise Layer)
 Exports discovery findings and intelligence in structured formats (CEF/JSON).
 """
 
@@ -42,7 +42,7 @@ class SIEMExporter:
         CEF:Timestamp|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|[Extension]
         """
         vendor = "Antigravity"
-        product = "OzyRecon"
+        product = "PromptWall"
         version = "7.5.0"
         sig_id = finding.get("type", "discovery")
         name = finding.get("domain") or finding.get("host") or "finding"

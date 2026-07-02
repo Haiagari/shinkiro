@@ -1,5 +1,5 @@
 """
-Strict Anti-Hype Verification for OzyRecon v7.5
+Strict Anti-Hype Verification for PromptWall v7.5
 Ensures all systems (Inference, Evidence, Graph, API) are functional.
 """
 

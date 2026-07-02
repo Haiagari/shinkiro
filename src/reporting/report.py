@@ -1,6 +1,6 @@
 """
 Professional Security Report Generator.
-Exports OzyRecon + OzyBounty findings to professional-grade reports.
+Exports PromptWall + OzyBounty findings to professional-grade reports.
 """
 
 import json
@@ -162,7 +162,7 @@ class ProfessionalReport:
         _("|-------|-------|")
         _(f"| **Target** | `{self.target}` |")
         _(f"| **Assessment Date** | {self.date} |")
-        _(f"| **Engine** | OzyRecon v9.0.1 + OzyBounty |")
+        _(f"| **Engine** | PromptWall v9.0.1 + OzyBounty |")
         _(f"| **Scope** | {', '.join(scope.get('in_scope_domains', []))} |")
         _(f"| **Assets Discovered** | {len(assets)} |")
         _(f"| **Endpoints Mapped** | {len(endpoints)} |")
@@ -366,7 +366,7 @@ class ProfessionalReport:
         _("| 2. Active Recon | DNS resolution, HTTP probing | DNSx, HTTPx |")
         _("| 3. Fingerprinting | Technology detection, version identification | HTTPx, Wappalyzer |")
         _("| 4. Service Analysis | Port scanning, service version detection | Naabu, Nmap |")
-        _("| 5. Intelligence | Pattern analysis, hypothesis generation | OzyRecon Engine |")
+        _("| 5. Intelligence | Pattern analysis, hypothesis generation | PromptWall Engine |")
         _("| 6. Expert Validation | Manual verification of high-value findings | Analyst |")
         _("")
 

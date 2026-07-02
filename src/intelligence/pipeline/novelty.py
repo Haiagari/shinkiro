@@ -1,5 +1,5 @@
 """
-Novelty Alerter Engine (OzyRecon v7 - Phase 3)
+Novelty Alerter Engine (PromptWall v7 - Phase 3)
 Detects and prioritizes significant changes in the attack surface.
 """
 

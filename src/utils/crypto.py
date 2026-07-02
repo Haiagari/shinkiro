@@ -1,5 +1,5 @@
 """
-Cryptography Utility for Evidence Integrity (OzyRecon v7.5)
+Cryptography Utility for Evidence Integrity (PromptWall v7.5)
 Handles digital signing of discovery artifacts to ensure chain of custody.
 """
 

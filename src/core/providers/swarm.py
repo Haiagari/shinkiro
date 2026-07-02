@@ -13,7 +13,7 @@ logger = get_logger('provider.swarm')
 class SwarmProvider(BaseProvider):
     """
     Proveedor Proxy. No ejecuta binarios locales, 
-    manda la tarea a un nodo de OzyRecon remoto vía API.
+    manda la tarea a un nodo de PromptWall remoto vía API.
     """
     
     def __init__(self, node_url: str, api_key: str = ""):

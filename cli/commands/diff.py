@@ -25,7 +25,7 @@ def _render_diff_header(target: str, scan_id: int | None, previous_scan_id: int 
         "  3. Compute differential changes",
         "  4. Present surface changes",
     ]
-    render_plan("OzyRecon Diff", plan_lines)
+    render_plan("PromptWall Diff", plan_lines)
 
 
 def _render_diff_section(title: str, detail: str, border_style: str = "cyan") -> None:

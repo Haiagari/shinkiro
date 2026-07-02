@@ -1,5 +1,5 @@
 """
-Advanced Target Validator - OzyRecon v9.0.1
+Advanced Target Validator - PromptWall v9.0.1
 Prevents SSRF, DNS Rebinding and internal infrastructure scanning.
 """
 

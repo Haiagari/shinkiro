@@ -22,7 +22,7 @@ def _schedule_plan(action: str, target: str | None = None, profile: str | None =
         "  3. Apply requested change",
         "  4. Confirm next run or state",
     ]
-    render_plan("OzyRecon Schedule", lines, border_style="bright_blue")
+    render_plan("PromptWall Schedule", lines, border_style="bright_blue")
 
 
 def _schedule_stage(step: str, title: str, detail: str, border_style: str = "cyan") -> None:

@@ -1,7 +1,7 @@
 import json
 
 def generate_mock_graph_html():
-    # Estructura compatible con el formato de OzyRecon v5.7
+    # Estructura compatible con el formato de PromptWall v5.7
     data = {
         "nodes": [
             {"data": {"id": "root", "label": "enterprise.com", "type": "domain"}},
@@ -28,7 +28,7 @@ def generate_mock_graph_html():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>OzyRecon Knowledge Graph Preview</title>
+        <title>PromptWall Knowledge Graph Preview</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
         <style>
             body {{ background-color: #040608; color: #00d4ff; font-family: 'Segoe UI', sans-serif; margin: 0; overflow: hidden; }}

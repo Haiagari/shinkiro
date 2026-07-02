@@ -1,5 +1,5 @@
 """
-OzyRecon Export Module
+PromptWall Export Module
 Exporta resultados en formato normalizado para OzyAudit y plataformas de Bug Bounty.
 """
 

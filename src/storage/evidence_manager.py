@@ -1,5 +1,5 @@
 """
-OzyRecon Evidence Manager (v8.3.2)
+PromptWall Evidence Manager (v8.3.2)
 Handles secure storage of artifacts and evidence files on disk.
 """
 

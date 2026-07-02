@@ -1,5 +1,5 @@
 """
-OzyRecon Attack Path Analyzer (v8.3.2 - Idea 1)
+PromptWall Attack Path Analyzer (v8.3.2 - Idea 1)
 Simulates potential lateral movement and critical attack vectors.
 """
 

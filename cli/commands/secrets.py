@@ -1,5 +1,5 @@
 """
-CLI Command: secrets - OzyRecon v8.3
+CLI Command: secrets - PromptWall v8.3
 Finds hardcoded secrets in JS files and discovered assets.
 """
 

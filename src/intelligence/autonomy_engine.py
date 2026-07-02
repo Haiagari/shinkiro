@@ -1,5 +1,5 @@
 """
-OzyRecon Autonomous Engine (v8.3.2 - Pilot Mode)
+PromptWall Autonomous Engine (v8.3.2 - Pilot Mode)
 Decides next tactical actions based on semantic signals.
 """
 

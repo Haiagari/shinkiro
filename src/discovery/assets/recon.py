@@ -1,5 +1,5 @@
 """
-Módulo de Reconocimiento basado en Capacidades (OzyRecon Platform)
+Módulo de Reconocimiento basado en Capacidades (PromptWall Platform)
 """
 
 import uuid

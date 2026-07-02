@@ -1,4 +1,4 @@
-# Filtros OPSEC para OzyRecon
+# Filtros OPSEC para PromptWall
 # Añade aquí patrones que NO deben subirse al repositorio
 
 blocked_patterns:

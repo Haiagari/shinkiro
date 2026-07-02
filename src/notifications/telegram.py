@@ -1,5 +1,5 @@
 """
-Telegram Notification Provider para OzyRecon
+Telegram Notification Provider para PromptWall
 Integración limpia con el sistema de mensajería.
 """
 
@@ -64,7 +64,7 @@ class TelegramNotifier:
         if diff_report.changed_services:
             msg.append(f"• 🔄 `{len(diff_report.changed_services)}` servicios actualizados")
 
-        msg.append(f"\n🚀 *OzyRecon v4.0*")
+        msg.append(f"\n🚀 *PromptWall v4.0*")
         
         return self.send_message("\n".join(msg))
 

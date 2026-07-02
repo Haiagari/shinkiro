@@ -1,5 +1,5 @@
 """
-OzyRecon Secret Finder (v8.3.2 - Deep Recon)
+PromptWall Secret Finder (v8.3.2 - Deep Recon)
 Scans discovered assets and JS files for hardcoded secrets and API keys.
 """
 

@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ozyrecon"
+name = "promptwall"
 version = "9.0.1"
-description = "OzyRecon - Professional attack surface evaluation and reconnaissance platform"
+description = "PromptWall - Professional attack surface evaluation and reconnaissance platform"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
@@ -67,7 +67,7 @@ target-version = "py310"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-cache_dir = "/tmp/OzyRecon/.pytest_cache"
+cache_dir = "/tmp/PromptWall/.pytest_cache"
 norecursedirs = [
     "tools",
     "runtime",

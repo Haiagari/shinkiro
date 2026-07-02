@@ -1,5 +1,5 @@
 import pytest
-from src.core.errors import StealthSSLError, StealthRequestError, OzyReconError
+from src.core.errors import StealthSSLError, StealthRequestError, PromptWallError
 
 def test_stealth_exceptions_exist():
     # Este test fallará porque StealthSSLError y StealthRequestError no existen aún
@@ -10,5 +10,5 @@ def test_stealth_exceptions_exist():
         raise StealthRequestError("Request fail")
 
 def test_stealth_exceptions_inheritance():
-    assert issubclass(StealthSSLError, OzyReconError)
-    assert issubclass(StealthRequestError, OzyReconError)
+    assert issubclass(StealthSSLError, PromptWallError)
+    assert issubclass(StealthRequestError, PromptWallError)

@@ -1,5 +1,5 @@
 """
-AI Analyst Layer (OzyRecon v8.0)
+AI Analyst Layer (PromptWall v8.0)
 Narrative explanation and contextualization for discovered assets.
 Rule: Engine decides, LLM explains, Human approves.
 """

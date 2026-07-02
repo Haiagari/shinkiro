@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Stable root entrypoint for OzyRecon.
+Stable root entrypoint for PromptWall.
 
 This wrapper keeps the runtime contract explicit:
 - `python ozy.py`

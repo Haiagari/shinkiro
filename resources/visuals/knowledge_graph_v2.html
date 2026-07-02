@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OzyRecon // Threat Intelligence Graph</title>
+<title>PromptWall // Threat Intelligence Graph</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
@@ -617,7 +617,7 @@ function closePanel() { document.getElementById('panel').classList.remove('open'
 document.getElementById('close-panel').onclick = closePanel;
 
 // ── CONSOLE LOG ───────────────────────────────────────────────────────────────
-const events = ["[SYS]  OzyRecon Engine v5.7 \u2014 Session initialized", "[SCAN] Resolving DNS records for enterprise.com...", "[INFO] 5 subdomains discovered via Certificate Transparency", "[WARN] TLS 1.0 detected on mail.enterprise.com:443", "[CRIT] Jenkins CVE-2024-23897 \u2014 Remote file read confirmed", "[CRIT] S3 bucket enterprise-backups-prod \u2014 Public ACL active", "[HIGH] Redis instance 127.0.0.1:6379 \u2014 No authentication required", "[HIGH] SQL injection confirmed on /api/users endpoint", "[INFO] Force-graph layout stabilized \u2014 16 nodes rendered", "[SCAN] Initiating port scan on identified IP ranges...", "[WARN] Subdomain cdn.enterprise.com \u2192 dangling CNAME detected", "[HIGH] Subdomain takeover opportunity confirmed", "[INFO] Correlating findings with CVE database...", "[CRIT] Attack path identified: sub3 \u2192 Jenkins \u2192 RCE (CVSS 9.8)", "[SYS]  Generating executive report... standby"];
+const events = ["[SYS]  PromptWall Engine v5.7 \u2014 Session initialized", "[SCAN] Resolving DNS records for enterprise.com...", "[INFO] 5 subdomains discovered via Certificate Transparency", "[WARN] TLS 1.0 detected on mail.enterprise.com:443", "[CRIT] Jenkins CVE-2024-23897 \u2014 Remote file read confirmed", "[CRIT] S3 bucket enterprise-backups-prod \u2014 Public ACL active", "[HIGH] Redis instance 127.0.0.1:6379 \u2014 No authentication required", "[HIGH] SQL injection confirmed on /api/users endpoint", "[INFO] Force-graph layout stabilized \u2014 16 nodes rendered", "[SCAN] Initiating port scan on identified IP ranges...", "[WARN] Subdomain cdn.enterprise.com \u2192 dangling CNAME detected", "[HIGH] Subdomain takeover opportunity confirmed", "[INFO] Correlating findings with CVE database...", "[CRIT] Attack path identified: sub3 \u2192 Jenkins \u2192 RCE (CVSS 9.8)", "[SYS]  Generating executive report... standby"];
 const consoleEl = document.getElementById('console-scroll');
 let evIdx = 0;
 

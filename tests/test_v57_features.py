@@ -1,5 +1,5 @@
 """
-Smoke Tests for OzyRecon v5.7 Features - v9.0.1 Alignment
+Smoke Tests for PromptWall v5.7 Features - v9.0.1 Alignment
 """
 
 import pytest

@@ -1,5 +1,5 @@
 """
-OzyRecon v6.0 — Chameleon Stealth Engine
+PromptWall v6.0 — Chameleon Stealth Engine
 Genera identidades sintéticas completas con consistencia de headers y TLS Fingerprinting.
 """
 

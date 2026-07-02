@@ -1,5 +1,5 @@
 """
-OzyRecon Stealth HTTP Client (v9.0 - Ghost Edition)
+PromptWall Stealth HTTP Client (v9.0 - Ghost Edition)
 Bypasses WAFs (Cloudflare, Akamai) using JA3/JA4 TLS impersonation.
 """
 

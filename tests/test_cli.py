@@ -1,5 +1,5 @@
 """
-Tests for OzyRecon CLI - v9.0.1 Alignment
+Tests for PromptWall CLI - v9.0.1 Alignment
 """
 
 import pytest
@@ -28,7 +28,7 @@ class TestOzyCLI:
         from cli.ozy import cli
         result = runner.invoke(cli, ['--help'])
         assert result.exit_code == 0
-        assert 'OzyRecon' in result.output
+        assert 'PromptWall' in result.output
 
     def test_cli_version(self, runner):
         """Validates version 9.0.1 as per definitive baseline."""

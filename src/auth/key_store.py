@@ -1,5 +1,5 @@
 """
-Advanced Key Store - OzyRecon v8.1
+Advanced Key Store - PromptWall v8.1
 Handles API Key hashing, storage and validation.
 Never stores keys in plaintext.
 """

@@ -1,5 +1,5 @@
 """
-Adaptive Recon Planner (OzyRecon v7 - Phase 8)
+Adaptive Recon Planner (PromptWall v7 - Phase 8)
 Decides the best execution profile based on the target type and operational intent.
 """
 

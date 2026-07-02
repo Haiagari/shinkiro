@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 class IPolicyEngine(ABC):
     """
     Port for the Policy Engine.
-    Governs what OzyRecon can and cannot do based on the target and capability.
+    Governs what PromptWall can and cannot do based on the target and capability.
     """
 
     @abstractmethod

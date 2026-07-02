@@ -1,5 +1,5 @@
 """
-OzyRecon Intelligence Generator
+PromptWall Intelligence Generator
 Produce inteligencia accionable, no solo resultados.
 """
 

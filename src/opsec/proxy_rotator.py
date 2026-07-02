@@ -1,5 +1,5 @@
 """
-OzyRecon Proxy Rotator (v8.3.2)
+PromptWall Proxy Rotator (v8.3.2)
 Manages proxy lists and rotation for stealthy reconnaissance.
 """
 

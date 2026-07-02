@@ -1,5 +1,5 @@
 """
-Kill Switch para OzyRecon
+Kill Switch para PromptWall
 Permite detener inmediatamente todas las operaciones.
 """
 

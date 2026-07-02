@@ -6,7 +6,7 @@ from src.intelligence.export.exporter import siem_exporter
 
 # 1. Mock de un activo altamente sensible (Shadow IT + Admin Panel)
 mock_asset = {
-    "domain": "dev-admin.internal.ozyrecon.test",
+    "domain": "dev-admin.internal.promptwall.test",
     "title": "Control Panel - Restricted Access",
     "technologies": ["WordPress", "PHP"],
     "headers": {"X-Powered-By": "WP Engine", "Server": "Apache"}

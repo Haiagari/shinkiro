@@ -1,5 +1,5 @@
 """
-Structured Logging for OzyRecon v8.3.2
+Structured Logging for PromptWall v8.3.2
 Provides JSONL structured logs with rotation and secret scrubbing.
 """
 
@@ -34,7 +34,7 @@ class JSONFormatter(logging.Formatter):
         return json.dumps(log_entry)
 
 class OzyLogger:
-    """Structured logger for OzyRecon."""
+    """Structured logger for PromptWall."""
     
     _loggers = {}
     
@@ -50,7 +50,7 @@ class OzyLogger:
         if env_dir:
             return Path(env_dir).expanduser()
         
-        home_candidate = Path.home() / ".local" / "state" / "OzyRecon" / "logs"
+        home_candidate = Path.home() / ".local" / "state" / "PromptWall" / "logs"
         return home_candidate
 
     def _setup_logger(self, name: str) -> logging.Logger:

@@ -1,5 +1,5 @@
 """
-OzyRecon v6.0 — Logic Pattern Analyzer (Enhanced)
+PromptWall v6.0 — Logic Pattern Analyzer (Enhanced)
 Correlaciona activos para encontrar fallos de lógica transvseral.
 """
 

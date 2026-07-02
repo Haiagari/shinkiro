@@ -46,7 +46,7 @@ require_dir "$ROOT_DIR/runtime/logs"
 require_dir "$ROOT_DIR/runtime/scans"
 require_dir "$ROOT_DIR/runtime/state"
 
-require_file "$ROOT_DIR/runtime/db/ozyrecon.db"
+require_file "$ROOT_DIR/runtime/db/promptwall.db"
 require_file "$ROOT_DIR/runtime/logs/agent_reasoning.log"
 require_file "$ROOT_DIR/runtime/state/llm_usage.json"
 

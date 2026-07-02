@@ -1,5 +1,5 @@
 """
-Contexto de Ejecución de OzyRecon
+Contexto de Ejecución de PromptWall
 Maneja el estado y metadata de cada ejecución.
 """
 

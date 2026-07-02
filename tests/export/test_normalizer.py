@@ -150,7 +150,7 @@ def test_save_markdown_writes_file(tmp_path):
     assert md_path.suffix == ".md"
     content = md_path.read_text()
     assert "example.com" in content
-    assert "OzyRecon Scan Report" in content
+    assert "PromptWall Scan Report" in content
     session.close()
 
 

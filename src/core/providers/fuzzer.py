@@ -1,5 +1,5 @@
 """
-Fuzzer Provider para OzyRecon v8.3.2
+Fuzzer Provider para PromptWall v8.3.2
 Fuzzing inteligente basado en el stack tecnológico.
 """
 

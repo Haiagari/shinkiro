@@ -1,5 +1,5 @@
 """
-OzyRecon OPSEC Module
+PromptWall OPSEC Module
 Maneja rate limiting, identidad, jitter, WAF y kill switch.
 """
 

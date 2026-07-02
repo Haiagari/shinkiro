@@ -1,5 +1,5 @@
 """
-Utilidades Compartidas de OzyRecon
+Utilidades Compartidas de PromptWall
 Funciones helper para todo el proyecto.
 """
 
@@ -25,7 +25,7 @@ def get_logger(name: str) -> logging.Logger:
         logger.addHandler(handler)
     return logger
 
-_logger = get_logger('ozyrecon')
+_logger = get_logger('promptwall')
 logger = _logger
 
 def log(message: str, level: str = "info"):

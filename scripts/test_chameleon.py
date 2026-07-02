@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test de Laboratorio: OzyRecon v6.0 Chameleon Engine
+Test de Laboratorio: PromptWall v6.0 Chameleon Engine
 Verifica que las identidades sintéticas y la firma TLS sean consistentes.
 """
 

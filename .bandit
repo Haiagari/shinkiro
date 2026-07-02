@@ -1,4 +1,4 @@
-# Bandit configuration for OzyRecon
+# Bandit configuration for PromptWall
 # -------------------------------
 # Certain security risks are accepted as they are part of reconnaissance logic.
 

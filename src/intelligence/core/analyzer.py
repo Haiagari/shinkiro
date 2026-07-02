@@ -1,5 +1,5 @@
 """
-Módulo de Inteligencia de OzyRecon
+Módulo de Inteligencia de PromptWall
 Maneja severidad, correlación, deduplicación y detección de novedades.
 """
 

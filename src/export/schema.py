@@ -1,5 +1,5 @@
 """
-Schema del Export Normalizado de OzyRecon
+Schema del Export Normalizado de PromptWall
 Define el formato estándar para interoperabilidad con OzyAudit.
 """
 

@@ -1,5 +1,5 @@
 """
-API Integration Tests - OzyRecon v9.0.1
+API Integration Tests - PromptWall v9.0.1
 Testing all endpoints with Advanced Auth and Scopes.
 """
 

@@ -4,7 +4,7 @@ from src.validation.policy import ValidationPolicy
 class OzyPolicyAdapter(IPolicyEngine):
     """
     Policy Engine Adapter.
-    Bridges OzyRecon's internal ValidationPolicy to the Governed Citizen port.
+    Bridges PromptWall's internal ValidationPolicy to the Governed Citizen port.
     """
 
     def __init__(self, policy: ValidationPolicy = None):

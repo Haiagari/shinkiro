@@ -1,5 +1,5 @@
 """
-Cloud Bucket Discovery - OzyRecon v9.0
+Cloud Bucket Discovery - PromptWall v9.0
 Scans for exposed S3, Azure Blobs, and Google Cloud Buckets related to the target.
 """
 

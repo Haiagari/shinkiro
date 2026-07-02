@@ -1,4 +1,4 @@
-"""Descubrimiento de parámetros HTTP para OzyRecon."""
+"""Descubrimiento de parámetros HTTP para PromptWall."""
 
 import json
 import time

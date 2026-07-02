@@ -1,5 +1,5 @@
 """
-OzyRecon CLI Entry Point
+PromptWall CLI Entry Point
 Unified CLI con subcomandos, Rich UI, y graceful shutdown.
 """
 
@@ -136,7 +136,7 @@ def _create_mode_command(mode_name: str, mode_class: type) -> click.Command:
 # Task 2.5: Definir función get_banner() con ASCII art cyan bold y versión
 def get_banner() -> str:
     """
-    Genera el banner de OzyRecon con ASCII art.
+    Genera el banner de PromptWall con ASCII art.
 
     Returns:
         Markup de Rich con el banner formateado.
@@ -150,7 +150,7 @@ def get_banner() -> str:
 ██║     ██║  ██║██║  ██║╚██████╔╝██║  ██║   ██║
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝
 [/bold cyan]
-[bold]OzyRecon[/bold] - Advanced Persistent Reconnaissance [bold red](CLI Elite Edition v{__version__})[/bold red]
+[bold]PromptWall[/bold] - Advanced Persistent Reconnaissance [bold red](CLI Elite Edition v{__version__})[/bold red]
 [dim]Pure Engineering - No GUI - Intelligence First[/dim]
 """
 
@@ -202,7 +202,7 @@ def _setup_signal_handlers() -> None:
 @click.pass_context
 def cli(ctx: click.Context, debug: bool, config: Optional[str], version: bool) -> None:
     """
-    OzyRecon - Advanced Persistent Reconnaissance Platform.
+    PromptWall - Advanced Persistent Reconnaissance Platform.
     
     Unified CLI for reconnaissance operations with multiple modes:
     hunt, continuous, campaign, research, forensic, service.

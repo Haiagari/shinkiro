@@ -145,9 +145,9 @@
   <!-- Top right -->
   <polyline points="1280,80 1200,80 1200,50" fill="none" stroke="#00ff8820" stroke-width="1"/>
 
-  <!-- ═══════════ MAIN TITLE: OzyRecon ═══════════ -->
+  <!-- ═══════════ MAIN TITLE: PromptWall ═══════════ -->
   <!-- Shadow/glow layer -->
-  <text x="560" y="270" text-anchor="middle" font-family="'Courier New', monospace" font-size="112" font-weight="900" fill="#00ff88" opacity="0.08" letter-spacing="-2">OzyRecon</text>
+  <text x="560" y="270" text-anchor="middle" font-family="'Courier New', monospace" font-size="112" font-weight="900" fill="#00ff88" opacity="0.08" letter-spacing="-2">PromptWall</text>
   <!-- Main title -->
   <text x="560" y="260" text-anchor="middle" font-family="'Courier New', monospace" font-size="110" font-weight="900" letter-spacing="-2" filter="url(#titleGlow)">
     <tspan fill="#00ff88">Ozy</tspan><tspan fill="#00d4ff">Recon</tspan>
@@ -217,7 +217,7 @@
     <!-- Terminal content -->
     <text x="16" y="52" font-family="monospace" font-size="11" fill="#00ff88">$ python3 src/cli/main.py hunt \</text>
     <text x="16" y="68" font-family="monospace" font-size="11" fill="#00ff88">  -t target.com</text>
-    <text x="16" y="90" font-family="monospace" font-size="11" fill="#4ade80">[*] OzyRecon v4.0 initializing...</text>
+    <text x="16" y="90" font-family="monospace" font-size="11" fill="#4ade80">[*] PromptWall v4.0 initializing...</text>
     <text x="16" y="106" font-family="monospace" font-size="11" fill="#00d4ff">[*] OPSEC: jitter ON | UA rotation ON</text>
     <text x="16" y="122" font-family="monospace" font-size="11" fill="#4ade80">[+] Subdomains discovered: 47</text>
     <text x="16" y="138" font-family="monospace" font-size="11" fill="#4ade80">[+] Open ports: 12 hosts</text>
@@ -234,7 +234,7 @@
   <line x1="100" y1="490" x2="1180" y2="490" stroke="#00ff8820" stroke-width="1"/>
 
   <!-- ═══════════ BOTTOM BAR: credit + stack ═══════════ -->
-  <text x="180" y="520" font-family="monospace" font-size="12" fill="#00ff8860">Built with ❤️ for Bug Hunters · github.com/SamBleed/OzyRecon</text>
+  <text x="180" y="520" font-family="monospace" font-size="12" fill="#00ff8860">Built with ❤️ for Bug Hunters · github.com/SamBleed/PromptWall</text>
 
   <!-- Stack icons text -->
   <text x="180" y="545" font-family="monospace" font-size="11" fill="#00ff8840">Python · SQLite · Nuclei · Dalfox · Shodan · Telegram · Gemini · Claude</text>

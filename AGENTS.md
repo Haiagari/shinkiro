@@ -1,4 +1,4 @@
-# Coding Standards for OzyRecon
+# Coding Standards for PromptWall
 
 ## Hard Rules
 - **Python 3.11+**: Use modern language features.

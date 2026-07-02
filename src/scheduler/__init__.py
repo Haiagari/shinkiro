@@ -1,5 +1,5 @@
 """
-OzyRecon Scheduler - Scheduled and recurring scans.
+PromptWall Scheduler - Scheduled and recurring scans.
 Enables periodic attack surface monitoring.
 
 Supports optional Redis-backed distributed queue via OZY_REDIS_URL env var.
@@ -259,7 +259,7 @@ def init_scheduler_config() -> None:
     
     config_path.parent.mkdir(parents=True, exist_ok=True)
     
-    template = """# OzyRecon Scheduler Configuration
+    template = """# PromptWall Scheduler Configuration
 # Defines scheduled and recurring reconnaissance scans
 
 tasks: []

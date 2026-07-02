@@ -1,5 +1,5 @@
 """
-OzyRecon Mode Base - Definición de Contratos Operativos
+PromptWall Mode Base - Definición de Contratos Operativos
 """
 
 from abc import ABC, abstractmethod
@@ -27,7 +27,7 @@ logger = get_logger('modes.base')
 
 class BaseMode(ABC):
     """
-    Contrato base para todos los modos operativos de OzyRecon.
+    Contrato base para todos los modos operativos de PromptWall.
     Define precondiciones, flujo de ejecución y estructura de salida.
     """
     

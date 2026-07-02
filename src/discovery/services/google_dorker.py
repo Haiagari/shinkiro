@@ -1,5 +1,5 @@
 """
-Google Dorking - OzyRecon v9.0
+Google Dorking - PromptWall v9.0
 Ejecuta Google Dorks sobre un dominio target mediante scraping de resultados.
 Sin depender de la API de Google.
 """

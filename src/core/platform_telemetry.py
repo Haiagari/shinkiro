@@ -7,7 +7,7 @@ import sys
 # The Platform's ingest endpoint
 PLATFORM_LOG_ENDPOINT = os.getenv("OZY_PLATFORM_LOG_URL", "http://127.0.0.1:9080/v1/telemetry/logs")
 SCAN_ID = os.getenv("OZY_SCAN_ID", "standalone")
-ENGINE_NAME = os.getenv("OZY_ENGINE_NAME", "ozyrecon")
+ENGINE_NAME = os.getenv("OZY_ENGINE_NAME", "promptwall")
 
 class PlatformLogHandler(logging.Handler):
     """

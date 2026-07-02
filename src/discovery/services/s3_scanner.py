@@ -1,5 +1,5 @@
 """
-S3 Bucket Scanner - OzyRecon
+S3 Bucket Scanner - PromptWall
 Generates candidate bucket names from a target domain and probes for exposed S3 buckets
 across multiple regions. Detects public vs restricted buckets and attempts to list objects.
 """

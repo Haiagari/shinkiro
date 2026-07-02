@@ -1,5 +1,5 @@
 """
-OzyRecon Storage Module
+PromptWall Storage Module
 Maneja persistencia SQLite, modelos y consultas.
 """
 

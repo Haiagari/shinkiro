@@ -1,5 +1,5 @@
 """
-Bootstrap helpers for OzyRecon runtime files.
+Bootstrap helpers for PromptWall runtime files.
 
 These helpers keep the project portable by seeding mutable runtime files from
 tracked examples when they are missing.

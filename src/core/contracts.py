@@ -1,5 +1,5 @@
 """
-Runtime contract constants for OzyRecon.
+Runtime contract constants for PromptWall.
 
 These values define the stable shape that the local engine exposes.
 """

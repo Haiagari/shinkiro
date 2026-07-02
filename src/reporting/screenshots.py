@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Optional
 
 
-GOWITNESS_PATH = "/home/sam/Proyectos/OzyRecon/tools/go/bin/gowitness"
+GOWITNESS_PATH = "/home/sam/Proyectos/PromptWall/tools/go/bin/gowitness"
 
 
 def capture_screenshot(url: str, output_dir: Path, label: str = "") -> Optional[Path]:

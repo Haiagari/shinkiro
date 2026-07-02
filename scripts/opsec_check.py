@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OzyRecon OPSEC Guard - Pre-commit Hook
+PromptWall OPSEC Guard - Pre-commit Hook
 Detecta dominios, IPs y secretos en archivos antes de permitir el commit.
 """
 

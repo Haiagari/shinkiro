@@ -1,5 +1,5 @@
 """
-CLI Command: analyze - OzyRecon v8.3
+CLI Command: analyze - PromptWall v8.3
 AI-Powered intelligence analysis for targets in the terminal.
 """
 

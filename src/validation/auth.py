@@ -62,7 +62,7 @@ class AuthValidator(BaseValidator):
             # En una versión real, esto sería más específico según la tecnología detectada.
             for user, pwd in self.DEFAULT_CREDS[:2]:
                 # Intentamos un login genérico (esto es un ejemplo, variaría por app)
-                # OzyRecon v5.7 prioriza la detección de la respuesta ante el intento
+                # PromptWall v5.7 prioriza la detección de la respuesta ante el intento
                 auth_res = http_client.post(url, data={"user": user, "pass": pwd}, timeout=5)
                 
                 # Si cambia el comportamiento drásticamente o entramos...

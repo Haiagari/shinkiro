@@ -393,7 +393,7 @@ class DiscoveryOrchestrator:
                         "context": {
                             "session_id": self.session_id,
                             "timestamp": datetime.now().isoformat(),
-                            "engine": "OzyRecon v8.3.2",
+                            "engine": "PromptWall v8.3.2",
                             "schema_version": "1.2",
                         },
                     }

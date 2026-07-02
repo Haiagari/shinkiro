@@ -249,7 +249,7 @@ def filter_assets(assets: list, root_domain: str) -> list:
 
 class ScopeGuard:
     """
-    Main scope validation class for OzyRecon.
+    Main scope validation class for PromptWall.
     """
 
     def __init__(self, root_domain: str):

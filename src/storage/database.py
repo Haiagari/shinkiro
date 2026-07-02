@@ -1,6 +1,6 @@
 """
 Gestión de la Base de Datos (SQLite / PostgreSQL)
-OzyRecon - Storage Layer
+PromptWall - Storage Layer
 """
 
 import os
@@ -15,7 +15,7 @@ from src.core.runtime_paths import get_runtime_root
 
 from .models import Base, Target, Scan, Subdomain, Port, Vulnerability, Finding, AgentMemory, AgentLock, Session, WeightHistory, Hypothesis, Evidence, WorkflowStep
 
-DEFAULT_DB_PATH = get_runtime_root() / "db" / "ozyrecon.db"
+DEFAULT_DB_PATH = get_runtime_root() / "db" / "promptwall.db"
 DB_PATH = DEFAULT_DB_PATH  # backward compat
 
 DATABASE_URL = os.environ.get("OZY_DATABASE_URL", "")

@@ -1,5 +1,5 @@
 """
-Security Audit Logger - OzyRecon v8.1
+Security Audit Logger - PromptWall v8.1
 Records every authenticated action with automatic log rotation.
 """
 

@@ -1,6 +1,6 @@
 """
 Consultas Predefinidas para la Base de Datos
-OzyRecon Storage Layer - Queries utilitarias.
+PromptWall Storage Layer - Queries utilitarias.
 """
 
 import ast

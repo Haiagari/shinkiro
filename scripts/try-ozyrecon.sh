@@ -25,7 +25,7 @@ die() { printf '%b\n' "${RED}[x]${RESET} $*" >&2; exit 1; }
 usage() {
   cat <<'EOF'
 Usage:
-  bash scripts/try-ozyrecon.sh [--yes] [--target domain] [--scope-file file] [--import-only] [--tests]
+  bash scripts/try-promptwall.sh [--yes] [--target domain] [--scope-file file] [--import-only] [--tests]
 
 What it does:
   - creates/uses a virtualenv
@@ -39,8 +39,8 @@ Behavior:
   - `--target` is the only flag that triggers `flow`
   - scope import happens only when `--scope-file` or `--import-only` is used
 
-This helper is LOCAL-ONLY: run it from inside an already cloned OzyRecon repo.
-If you need to clone first, use `bootstrap-ozyrecon.sh`.
+This helper is LOCAL-ONLY: run it from inside an already cloned PromptWall repo.
+If you need to clone first, use `bootstrap-promptwall.sh`.
 EOF
 }
 
@@ -63,7 +63,7 @@ parse_args() {
         exit 0
         ;;
       --repo-url|--clone-dir)
-        die "This helper is local-only. Use bootstrap-ozyrecon.sh for clone/bootstrap flows."
+        die "This helper is local-only. Use bootstrap-promptwall.sh for clone/bootstrap flows."
         ;;
       *)
         die "Unknown argument: $1"

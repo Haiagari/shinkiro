@@ -1,5 +1,5 @@
 """
-CLI Command: paths - OzyRecon v8.3
+CLI Command: paths - PromptWall v8.3
 Analyzes and visualizes critical attack paths in the terminal.
 """
 

@@ -5,7 +5,7 @@ set -Eeuo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 REPO_URL=""
-CLONE_DIR="${CLONE_DIR:-OzyRecon}"
+CLONE_DIR="${CLONE_DIR:-PromptWall}"
 YES_ARGS=()
 
 RED=$'\033[31m'
@@ -22,15 +22,15 @@ die() { printf '%b\n' "${RED}[x]${RESET} $*" >&2; exit 1; }
 usage() {
   cat <<'EOF'
 Usage:
-  bash bootstrap-ozyrecon.sh --repo-url <git-url> [--clone-dir name] [--yes ...]
+  bash bootstrap-promptwall.sh --repo-url <git-url> [--clone-dir name] [--yes ...]
 
 Examples:
-  curl -fsSL <RAW_URL>/bootstrap-ozyrecon.sh | bash -s -- --repo-url https://github.com/org/OzyRecon.git --target example.com --tests
-  bash bootstrap-ozyrecon.sh --repo-url git@github.com:org/OzyRecon.git --clone-dir OzyRecon-dev --yes --import-only
+  curl -fsSL <RAW_URL>/bootstrap-promptwall.sh | bash -s -- --repo-url https://github.com/org/PromptWall.git --target example.com --tests
+  bash bootstrap-promptwall.sh --repo-url git@github.com:org/PromptWall.git --clone-dir PromptWall-dev --yes --import-only
 
 Purpose:
   - clone the repo if needed
-  - delegate to scripts/try-ozyrecon.sh inside the cloned repo
+  - delegate to scripts/try-promptwall.sh inside the cloned repo
 EOF
 }
 
@@ -83,10 +83,10 @@ main() {
     warn "--repo-url ignored because you're already inside a cloned repo."
   fi
 
-  [[ -x "$repo_root/scripts/try-ozyrecon.sh" ]] || chmod +x "$repo_root/scripts/try-ozyrecon.sh"
+  [[ -x "$repo_root/scripts/try-promptwall.sh" ]] || chmod +x "$repo_root/scripts/try-promptwall.sh"
   ok "Bootstrap target ready at $repo_root"
   info "Delegating to local helper..."
-  (cd "$repo_root" && bash scripts/try-ozyrecon.sh "${YES_ARGS[@]}")
+  (cd "$repo_root" && bash scripts/try-promptwall.sh "${YES_ARGS[@]}")
 }
 
 main "$@"

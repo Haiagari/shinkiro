@@ -3,7 +3,7 @@
 ## [10.0.0] (AI Security Pivot) - 2026-07-02
 
 ### Changed
-- **Massive Architectural Pivot**: OzyRecon has transitioned from an Offensive Infrastructure Recon tool to an AI Security Guardrail (Firewall for LLMs).
+- **Massive Architectural Pivot**: PromptWall has transitioned from an Offensive Infrastructure Recon tool to an AI Security Guardrail (Firewall for LLMs).
 - **Core Engine**: Replaced linear scanning engines with an asynchronous EventBus designed to intercept and validate incoming prompts.
 
 ### Added

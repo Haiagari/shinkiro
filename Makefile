@@ -5,7 +5,7 @@ PIP    := pip3
 
 help:
 	@echo ""
-	@echo "  OzyRecon — Comandos disponibles"
+	@echo "  PromptWall — Comandos disponibles"
 	@echo "  ─────────────────────────────────────────"
 	@echo "  make install      Instalar dependencias Python"
 	@echo "  make tools        Instalar herramientas Go (requiere Go instalado)"
@@ -93,15 +93,15 @@ EXPORT_DIR   ?= /tmp/ozybounty-import
 TARGET       ?= example.com
 
 export-oby:
-	@echo "[*] Exportando datos de OzyRecon para OzyBounty..."
+	@echo "[*] Exportando datos de PromptWall para OzyBounty..."
 	source venv/bin/activate && python scripts/export_for_ozybounty.py "$(TARGET)" --output "$(EXPORT_DIR)"
 	@echo "[+] Export listo en $(EXPORT_DIR)/"
 
 import-oby:
 	@echo "[*] Importando en OzyBounty (asegúrate de haber exportado primero)..."
 	cd "$(OZYBOUNTY_DIR)" && source .venv/bin/activate && \
-		python scripts/import_from_ozyrecon.py "$(EXPORT_DIR)/"
+		python scripts/import_from_promptwall.py "$(EXPORT_DIR)/"
 	@echo "[+] Importación completada en .ozybounty/$(TARGET)/"
 
 bounty: export-oby import-oby
-	@echo "[+] Pipeline OzyRecon → OzyBounty completado"
+	@echo "[+] Pipeline PromptWall → OzyBounty completado"

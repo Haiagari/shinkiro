@@ -1,5 +1,5 @@
 """
-Exporta resultados de OzyRecon al formato que OzyBounty espera.
+Exporta resultados de PromptWall al formato que OzyBounty espera.
 Uso: python scripts/export_for_ozybounty.py <target> [--output DIR]
 
 Genera:
@@ -242,12 +242,12 @@ def export(target: str, output_dir: Path) -> dict:
     in_scope = _build_in_scope(target)
 
     manifest = {
-        'source': 'ozyrecon',
+        'source': 'promptwall',
         'target': target,
         'program': target.replace('*.', ''),
         'in_scope_domains': in_scope,
         'out_of_scope_domains': [],
-        'notes': f'Exportado desde OzyRecon para {target}',
+        'notes': f'Exportado desde PromptWall para {target}',
     }
 
     # --- Atomic write ---
@@ -267,7 +267,7 @@ def export(target: str, output_dir: Path) -> dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Exportar OzyRecon → OzyBounty')
+    parser = argparse.ArgumentParser(description='Exportar PromptWall → OzyBounty')
     parser.add_argument('target', help='Target domain (e.g. insforge.dev)')
     parser.add_argument('--output', '-o', default='/tmp/ozybounty-import', help='Output directory')
     args = parser.parse_args()
@@ -283,7 +283,7 @@ def main():
     print(f'Para importar en OzyBounty:')
     print(f'  cd ruta/a/ozybounty')
     print(f'  source .venv/bin/activate')
-    print(f'  python scripts/import_from_ozyrecon.py {result["output"]}/')
+    print(f'  python scripts/import_from_promptwall.py {result["output"]}/')
     return 0
 
 

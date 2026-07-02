@@ -1,5 +1,5 @@
 """
-OzyRecon v6.0 — Advanced OPSEC Orchestrator
+PromptWall v6.0 — Advanced OPSEC Orchestrator
 Coordina identidades sintéticas, evasión de WAF y kill-switch.
 """
 

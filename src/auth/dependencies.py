@@ -1,5 +1,5 @@
 """
-Auth Dependencies & Scopes - OzyRecon v8.1
+Auth Dependencies & Scopes - PromptWall v8.1
 """
 
 from fastapi import HTTPException, Security, Depends, Request

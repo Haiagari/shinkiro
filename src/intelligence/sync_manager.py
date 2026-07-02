@@ -1,6 +1,6 @@
 """
 SyncManager - Gestión de Sincronización de Inteligencia
-Permite exportar e importar el "cerebro" de OzyRecon entre instancias.
+Permite exportar e importar el "cerebro" de PromptWall entre instancias.
 """
 
 import json

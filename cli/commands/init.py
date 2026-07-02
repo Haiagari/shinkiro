@@ -1,5 +1,5 @@
 """
-Init Command - Initialize OzyRecon environment
+Init Command - Initialize PromptWall environment
 Creates necessary directories, config files, and sets up the project.
 """
 
@@ -44,7 +44,7 @@ def create_example_config(path: Path, name: str, content: str) -> bool:
 @click.option("--force", is_flag=True, help="Force reinitialize existing directories")
 def init(force: bool):
     """
-    Initialize OzyRecon environment.
+    Initialize PromptWall environment.
     
     Creates:
     - runs/
@@ -59,9 +59,9 @@ def init(force: bool):
     - .env.example
     - .gitignore
     """
-    render_panel("[bold cyan]OzyRecon Init[/bold cyan] - Environment Setup", border_style="cyan")
+    render_panel("[bold cyan]PromptWall Init[/bold cyan] - Environment Setup", border_style="cyan")
     
-    base = Path("/home/sam/Proyectos/OzyRecon")
+    base = Path("/home/sam/Proyectos/PromptWall")
     dirs_created = 0
     files_created = 0
     
@@ -134,7 +134,7 @@ htmlcov/
     
     # Create example .env
     console.print("\n[bold]Creating .env.example...[/bold]")
-    env_example = """# OzyRecon Environment Configuration
+    env_example = """# PromptWall Environment Configuration
 # Copy this file to .env and fill in your values
 
 # API Keys (optional)
@@ -158,7 +158,7 @@ REPORT_FORMAT=html
     
     # Create example scope file
     console.print("\n[bold]Creating scope.yaml.example...[/bold]")
-    scope_example = """# OzyRecon Scope Configuration
+    scope_example = """# PromptWall Scope Configuration
 # Copy this file to config/scope.yaml and customize
 
 target: example.com

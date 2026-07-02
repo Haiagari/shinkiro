@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# IDEs & AI
+.vscode/
+.idea/
+.codex
+.cursor/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+.directory
+
+# Base de datos
+*.db
+*.sqlite
+runtime/db/*.db
+
+# Output y Evidencia (OPSEC)
+output/
+reports/*
+!reports/README.md
+!reports/pruebas/
+!reports/pruebas/**
+evidence/
+storage/evidence/
+watch_history/
+data/
+runtime/
+runs/
+scopes/
+*.log
+*.pdf
+*.html
+!docs/**/*.html
+agent_reasoning.log
+llm_usage.json
+json*.txt
+load_*.json
+run*.json
+
+# JUnit y Testing
+junit/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Binarios de herramientas
+tools/go/bin/
+tools/go/pkg/
+tools/bin/
+tools/python_bins.txt
+
+
+# API keys y Config Sensible
+config/config.yaml
+config/api_keys.json
+config/backup_*.yaml
+.env
+resources/keys/api_keys.json
+resources/keys/evidence_key.priv
+
+# PromptWall Specific
+.promptwall-cli/
+l.txt
+interface_ui_bundle_fixed.zip
+graph_preview.html
+# Legacy removal (keeping src clean)
+# UI/Legacy files moved to src or intended for inclusion
+# NO IGNORAR agent.py o tui.py si son funcionales
+# Local Pi runtime state
+.atl/
+# CocoIndex Code (ccc)
+/.cocoindex_code/

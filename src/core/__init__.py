@@ -1,12 +1,12 @@
 """
-OzyRecon Core Module
+PromptWall Core Module
 Provee configuración, logging, errores y contexto global.
 """
 
 from .config import config, Config
 from .logging import get_logger, OzyLogger, agent_logger, scan_logger, opsec_logger, recon_logger
 from .errors import (
-    OzyReconError,
+    PromptWallError,
     ConfigError,
     TargetError,
     ScanError,
@@ -37,7 +37,7 @@ __all__ = [
     'opsec_logger',
     'recon_logger',
     # Errors
-    'OzyReconError',
+    'PromptWallError',
     'ConfigError',
     'TargetError',
     'ScanError',

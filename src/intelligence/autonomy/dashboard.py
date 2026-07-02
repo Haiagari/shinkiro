@@ -1,5 +1,5 @@
 """
-OzyRecon Intelligence Dashboard (CLI)
+PromptWall Intelligence Dashboard (CLI)
 Visualiza métricas de aprendizaje y evolución de pesos.
 """
 

@@ -1,5 +1,5 @@
 """
-OzyRecon Modes Module
+PromptWall Modes Module
 Los 6 modos operativos del framework.
 """
 

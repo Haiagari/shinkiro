@@ -55,7 +55,7 @@ class ArtifactStudio:
                 } for e in evidence_list
             ],
             "metadata": {
-                "generated_by": "OzyRecon Conductor v1.2",
+                "generated_by": "PromptWall Conductor v1.2",
                 "format": "OzyAudit-compatible"
             }
         }

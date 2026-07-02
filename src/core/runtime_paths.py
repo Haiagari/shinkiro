@@ -1,5 +1,5 @@
 """
-Runtime path helpers for OzyRecon.
+Runtime path helpers for PromptWall.
 
 Keeps mutable state outside the repository tree unless a caller explicitly
 overrides it with environment variables.
@@ -34,15 +34,15 @@ def get_runtime_root() -> Path:
 
     xdg_state_home = os.getenv("XDG_STATE_HOME")
     if xdg_state_home:
-        candidate = Path(xdg_state_home).expanduser() / "OzyRecon"
+        candidate = Path(xdg_state_home).expanduser() / "PromptWall"
         if _is_writable(candidate.parent):
             return candidate
 
-    home_candidate = Path.home() / ".local" / "state" / "OzyRecon"
+    home_candidate = Path.home() / ".local" / "state" / "PromptWall"
     if _is_writable(home_candidate.parent):
         return home_candidate
 
-    return Path("/tmp") / "OzyRecon"
+    return Path("/tmp") / "PromptWall"
 
 
 def get_temp_dir() -> Path:

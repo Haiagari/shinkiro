@@ -1,5 +1,5 @@
 """
-OzyRecon Path Resolver (v8.3.2)
+PromptWall Path Resolver (v8.3.2)
 Ensures the correct tool binaries are used and verified.
 """
 

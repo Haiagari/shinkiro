@@ -2,7 +2,7 @@ import time
 import random
 
 def run_benchmark(target="example.com"):
-    print(f"🚀 Starting OzyRecon vs Traditional Scanner Benchmark on {target}")
+    print(f"🚀 Starting PromptWall vs Traditional Scanner Benchmark on {target}")
     print("-" * 60)
     
     # Simulate Traditional Scanner
@@ -13,9 +13,9 @@ def run_benchmark(target="example.com"):
     print(f"    - Total Findings: {trad_findings}")
     print(f"    - Potential False Positives: {trad_fp}%")
     
-    print("\n[+] Running OzyRecon Intelligence Layer...")
+    print("\n[+] Running PromptWall Intelligence Layer...")
     time.sleep(2)
-    # Simulation of OzyRecon logic: Correlation -> Hypothesis -> Validation
+    # Simulation of PromptWall logic: Correlation -> Hypothesis -> Validation
     ozy_findings = 15
     ozy_fp = random.randint(1, 5)
     

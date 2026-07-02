@@ -1,7 +1,7 @@
 # Technical Specifications: AI Red Teaming Orchestrator Pivot
 
 ## Executive Summary
-This document outlines the technical specifications for pivoting OzyRecon from a traditional infrastructure reconnaissance framework into a modern AI Red Teaming engine. The core event-driven architecture will be preserved, but domain models, events, and adapters will be re-aligned toward AI interactions (Attacker, Target, Judge).
+This document outlines the technical specifications for pivoting PromptWall from a traditional infrastructure reconnaissance framework into a modern AI Red Teaming engine. The core event-driven architecture will be preserved, but domain models, events, and adapters will be re-aligned toward AI interactions (Attacker, Target, Judge).
 
 ## 1. Domain Models (`src/domain/models.py`)
 The existing models (e.g., `Asset`, `Service`, `Scan`) will be replaced or supplemented by AI-focused entities. All models must remain immutable (`@dataclass(frozen=True)`).

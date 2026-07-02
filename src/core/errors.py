@@ -1,16 +1,16 @@
 """
-Excepciones Personalizadas de OzyRecon
+Excepciones Personalizadas de PromptWall
 Define errores específicos del sistema.
 """
 
 
-class OzyReconError(Exception):
-    """Error base de OzyRecon."""
+class PromptWallError(Exception):
+    """Error base de PromptWall."""
     pass
 
 
 # Errores de Configuración
-class ConfigError(OzyReconError):
+class ConfigError(PromptWallError):
     """Error de configuración."""
     pass
 
@@ -21,7 +21,7 @@ class ConfigNotFoundError(ConfigError):
 
 
 # Errores de Target
-class TargetError(OzyReconError):
+class TargetError(PromptWallError):
     """Error relacionado con el target."""
     pass
 
@@ -37,7 +37,7 @@ class TargetNotFoundError(TargetError):
 
 
 # Errores de Escaneo
-class ScanError(OzyReconError):
+class ScanError(PromptWallError):
     """Error durante el escaneo."""
     pass
 
@@ -53,12 +53,12 @@ class ScanInterruptedError(ScanError):
 
 
 # Errores de OPSEC
-class OPSECError(OzyReconError):
+class OPSECError(PromptWallError):
     """Error relacionado con OPSEC."""
     pass
 
 
-class StealthRequestError(OzyReconError):
+class StealthRequestError(PromptWallError):
     """Error general en peticiones stealth."""
     pass
 
@@ -84,7 +84,7 @@ class KillSwitchTriggeredError(OPSECError):
 
 
 # Errores de Storage
-class StorageError(OzyReconError):
+class StorageError(PromptWallError):
     """Error de almacenamiento."""
     pass
 
@@ -100,7 +100,7 @@ class SessionNotFoundError(StorageError):
 
 
 # Errores de Herramientas
-class ToolError(OzyReconError):
+class ToolError(PromptWallError):
     """Error de herramienta externa."""
     pass
 
@@ -116,19 +116,19 @@ class ToolExecutionError(ToolError):
 
 
 # Errores de Export
-class ExportError(OzyReconError):
+class ExportError(PromptWallError):
     """Error al exportar resultados."""
     pass
 
 
 # Errores de Notificaciones
-class NotificationError(OzyReconError):
+class NotificationError(PromptWallError):
     """Error al enviar notificaciones."""
     pass
 
 
 # Errores de IA
-class AIError(OzyReconError):
+class AIError(PromptWallError):
     """Error del módulo de IA."""
     pass
 

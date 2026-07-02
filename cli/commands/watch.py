@@ -1,5 +1,5 @@
 """
-CLI Command: watch - OzyRecon v8.3
+CLI Command: watch - PromptWall v8.3
 Real-time certificate transparency log monitoring for new assets.
 """
 

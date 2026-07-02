@@ -1,6 +1,6 @@
 """
 Modelos de Datos para la Base de Datos (SQLAlchemy)
-OzyRecon Storage Layer - Modelos optimizados.
+PromptWall Storage Layer - Modelos optimizados.
 """
 
 from datetime import datetime, timezone

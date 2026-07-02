@@ -1,5 +1,5 @@
 """
-CLI Commands for API Key Management - OzyRecon v8.1
+CLI Commands for API Key Management - PromptWall v8.1
 """
 
 import click
@@ -9,7 +9,7 @@ from src.auth.key_store import key_store
 
 @click.group(name="keys")
 def keys():
-    """Manage OzyRecon API Keys and Scopes."""
+    """Manage PromptWall API Keys and Scopes."""
     pass
 
 @keys.command(name="create")
@@ -39,7 +39,7 @@ def list_keys():
         render_outcome("No API keys found.", border_style="yellow")
         return
 
-    table = Table(title="OzyRecon API Key Registry")
+    table = Table(title="PromptWall API Key Registry")
     table.add_column("Name", style="cyan")
     table.add_column("Role", style="magenta")
     table.add_column("Scopes", style="yellow")

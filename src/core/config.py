@@ -1,5 +1,5 @@
 """
-Configuración Centralizada de OzyRecon
+Configuración Centralizada de PromptWall
 Carga y provee acceso a la configuración del sistema.
 """
 
@@ -34,7 +34,7 @@ class Config:
         possible_paths = [
             Path("config/config.yaml"),
             Path(__file__).resolve().parents[2] / "config" / "config.yaml",
-            Path.home() / ".ozyrecon" / "config.yaml",
+            Path.home() / ".promptwall" / "config.yaml",
         ]
         
         for path in possible_paths:
@@ -132,8 +132,8 @@ class Config:
         return self.get('api_keys.censys_secret')
     
     @property
-    def ozyrecon_api_key(self) -> str:
-        return self.get('api_keys.ozyrecon_api_key', 'ozy-secret-key')
+    def promptwall_api_key(self) -> str:
+        return self.get('api_keys.promptwall_api_key', 'ozy-secret-key')
     
     @property
     def alert_level(self) -> str:

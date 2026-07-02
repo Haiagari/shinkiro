@@ -1,5 +1,5 @@
 """
-CLI Command: serve - Start the OzyRecon API server.
+CLI Command: serve - Start the PromptWall API server.
 """
 
 import click
@@ -22,7 +22,7 @@ def _serve_plan(host: str, port: int, scheduler: bool, interval: int) -> None:
         "  3. Start optional scheduler worker",
         "  4. Keep server alive until interrupted",
     ]
-    render_plan("OzyRecon Serve", lines, border_style="bright_cyan")
+    render_plan("PromptWall Serve", lines, border_style="bright_cyan")
 
 
 @click.command(name="serve")
@@ -33,7 +33,7 @@ def _serve_plan(host: str, port: int, scheduler: bool, interval: int) -> None:
 @ensure_config_loaded()
 def serve(host: str, port: int, scheduler: bool, interval: int):
     """
-    Start the OzyRecon API server.
+    Start the PromptWall API server.
     
     Exposes endpoints for:
     - /targets - List all targets
@@ -45,7 +45,7 @@ def serve(host: str, port: int, scheduler: bool, interval: int):
     Use --scheduler to also run the background scheduler worker.
     """
     _serve_plan(host, port, scheduler, interval)
-    render_stage("1/4", "Boot API runtime", f"Preparing OzyRecon API on {host}:{port}.")
+    render_stage("1/4", "Boot API runtime", f"Preparing PromptWall API on {host}:{port}.")
     
     if scheduler:
         render_stage("2/4", "Start scheduler", f"Launching background worker with {interval}s interval.", border_style="yellow")

@@ -1,5 +1,5 @@
 """
-OzyRecon Scoring Engine - Phase 5
+PromptWall Scoring Engine - Phase 5
 Intelligent Scoring System for Discovered Assets
 Assigns Criticality Index (0-100) based on service-specific heuristics.
 """

@@ -222,7 +222,7 @@ def self_test(json_output: bool):
     - External tools (subfinder, nmap, etc.)
     - Real domain scans
     """
-    render_panel("[bold cyan]OzyRecon Self-Test[/bold cyan] - Internal Logic Validation", border_style="cyan")
+    render_panel("[bold cyan]PromptWall Self-Test[/bold cyan] - Internal Logic Validation", border_style="cyan")
     
     all_results = []
     

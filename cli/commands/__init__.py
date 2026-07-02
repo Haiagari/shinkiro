@@ -1,4 +1,4 @@
 # Commands Package
-"""Click commands for OzyRecon CLI."""
+"""Click commands for PromptWall CLI."""
 
 __all__ = []

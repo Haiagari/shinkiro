@@ -1,4 +1,4 @@
-"""Professional report generation for OzyRecon security assessments."""
+"""Professional report generation for PromptWall security assessments."""
 
 from src.reporting.report import ProfessionalReport, Evidence
 from src.reporting.cvss import CVSSVector, severity_from_score, score_finding, FINDING_TEMPLATES

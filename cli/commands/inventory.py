@@ -1,5 +1,5 @@
 """
-CLI Command: inventory - OzyRecon v8.3
+CLI Command: inventory - PromptWall v8.3
 Provides a professional terminal-based inventory of discovered assets.
 """
 

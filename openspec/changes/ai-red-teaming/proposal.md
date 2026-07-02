@@ -1,7 +1,7 @@
-# Proposal: AI Red Teaming Orchestrator Pivot (OzyRecon)
+# Proposal: AI Red Teaming Orchestrator Pivot (PromptWall)
 
 ## Business Problem
-OzyRecon is pivoting from a traditional infrastructure reconnaissance framework into a modern AI Red Teaming engine. The cybersecurity industry urgently needs automated tools to test AI applications (Chatbots, RAG systems, Agents) for vulnerabilities such as Prompt Injections, Jailbreaks, and Data Exfiltration.
+PromptWall is pivoting from a traditional infrastructure reconnaissance framework into a modern AI Red Teaming engine. The cybersecurity industry urgently needs automated tools to test AI applications (Chatbots, RAG systems, Agents) for vulnerabilities such as Prompt Injections, Jailbreaks, and Data Exfiltration.
 
 ## Product Outcome
 An asynchronous, event-driven orchestration engine that pitches a secondary "Attacker" LLM against a Target AI API. The Attacker LLM will dynamically mutate malicious prompts based on responses until a "Judge" LLM confirms that the target's guardrails have been successfully bypassed.

@@ -1,5 +1,5 @@
 """
-Exportador Normalizado de OzyRecon
+Exportador Normalizado de PromptWall
 Genera outputs en formato estándar para OzyAudit.
 """
 
@@ -302,7 +302,7 @@ class NormalizedExporter:
     def _generate_markdown(self, result: ScanResult) -> str:
         """Genera un resumen en Markdown."""
         md = []
-        md.append(f"# OzyRecon Scan Report")
+        md.append(f"# PromptWall Scan Report")
         md.append(f"")
         md.append(f"**Target:** {result.target}")
         md.append(f"**Mode:** {result.mode}")

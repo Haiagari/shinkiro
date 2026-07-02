@@ -1,5 +1,5 @@
 """
-Validation policy for OzyRecon.
+Validation policy for PromptWall.
 
 This module makes the probing contract explicit:
 - safe: low-risk metadata or exposure confirmation

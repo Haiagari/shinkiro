@@ -295,7 +295,7 @@ def compliance_check(
         python ozy.py compliance-check runs/<session_id>
         python ozy.py compliance-check --target example.com
     """
-    render_panel("[bold cyan]OzyRecon Compliance Check[/bold cyan]", border_style="cyan")
+    render_panel("[bold cyan]PromptWall Compliance Check[/bold cyan]", border_style="cyan")
 
     # Find session directory
     session_dir = None

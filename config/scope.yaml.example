@@ -1,4 +1,4 @@
-# OzyRecon Scope Configuration
+# PromptWall Scope Configuration
 # Copy this file to config/scope.yaml and customize
 
 target: example.com

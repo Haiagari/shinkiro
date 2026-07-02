@@ -1,5 +1,5 @@
 """
-Infrastructure Enrichment Engine (OzyRecon v7 - Phase 2)
+Infrastructure Enrichment Engine (PromptWall v7 - Phase 2)
 Handles ASN lookups, Cloud Detection, and Organization identification.
 """
 

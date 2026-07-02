@@ -11,7 +11,7 @@ def audit(target, finding_type):
     """
     Manually triage and verify findings for a target.
     """
-    render_panel(f"[bold blue]OzyRecon Audit Mode[/bold blue] - Target: [yellow]{target}[/yellow]", border_style="blue")
+    render_panel(f"[bold blue]PromptWall Audit Mode[/bold blue] - Target: [yellow]{target}[/yellow]", border_style="blue")
     
     # Simular recuperación de hallazgos desde el Storage
     # En una implementación real, leeríamos de la DB CAS o del inventario

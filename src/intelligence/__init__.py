@@ -1,5 +1,5 @@
 """
-OzyRecon Intelligence Module
+PromptWall Intelligence Module
 Análisis de severidad, deduplicación, correlación y detección de novedades.
 """
 

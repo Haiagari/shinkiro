@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mxfile host="drawio-mcp" modified="2026-06-16T16:32:59.000Z" agent="drawio-mcp/1.0" version="24.7.17" type="device" compressed="false">
-  <diagram name="ozyrecon-architecture" id="89b93b385a9b">
+  <diagram name="promptwall-architecture" id="89b93b385a9b">
     <mxGraphModel dx="1354" dy="981" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
@@ -134,7 +134,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="36" value="OzyRecon — Hexagonal Architecture" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;" parent="1" vertex="1">
+        <mxCell id="36" value="PromptWall — Hexagonal Architecture" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;" parent="1" vertex="1">
           <mxGeometry as="geometry" x="50.0" y="10.0" width="400.0" height="30.0" />
         </mxCell>
         <mxCell id="37" value="Ports &amp; Adapters Pattern" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;fontColor=#666666;" parent="1" vertex="1">

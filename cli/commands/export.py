@@ -1,5 +1,5 @@
 """
-CLI Command: export - OzyRecon v8.3
+CLI Command: export - PromptWall v8.3
 Generates professional data exports (CSV/JSON) for external analysis.
 """
 

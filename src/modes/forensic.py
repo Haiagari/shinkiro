@@ -1,5 +1,5 @@
 """
-Forensic Mode - OzyRecon v7.7
+Forensic Mode - PromptWall v7.7
 Reconstructs and verifies evidence signatures for a past session.
 """
 

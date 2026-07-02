@@ -39,7 +39,7 @@ TECH_CPE_MAP = {
 
 class CVEChecker:
     def __init__(self, cache_dir: Optional[Path] = None):
-        self.cache_dir = cache_dir or Path("/tmp/ozyrecon_cve_cache")
+        self.cache_dir = cache_dir or Path("/tmp/promptwall_cve_cache")
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
     def _nvd_api_url(self, cpe: str, version: str) -> str:
@@ -72,7 +72,7 @@ class CVEChecker:
 
         url = self._nvd_api_url(cpe_key, version)
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "OzyRecon/9.0"})
+            req = urllib.request.Request(url, headers={"User-Agent": "PromptWall/9.0"})
             resp = urllib.request.urlopen(req, timeout=15)
             data = json.loads(resp.read())
             cache_file.write_text(json.dumps(data, indent=2))

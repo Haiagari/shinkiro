@@ -1,5 +1,5 @@
 """
-Notificaciones de OzyRecon
+Notificaciones de PromptWall
 Envía alertas via Telegram y otros canales.
 """
 
@@ -138,7 +138,7 @@ class Notifier:
         
         icon = icons.get(severity, "⚪")
         
-        text = f"{icon} *OzyRecon Alert*\n"
+        text = f"{icon} *PromptWall Alert*\n"
         text += f"*{title}*\n\n"
         text += f"{message}"
         

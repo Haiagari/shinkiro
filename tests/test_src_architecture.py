@@ -1,5 +1,5 @@
 """
-Tests para la nueva arquitectura de OzyRecon v5.7
+Tests para la nueva arquitectura de PromptWall v5.7
 Reemplaza los tests legacy de backend/
 """
 

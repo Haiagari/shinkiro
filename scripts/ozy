@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# OzyRecon CLI Wrapper
+# PromptWall CLI Wrapper
 # Ejecuta python -m cli.ozy pasando todos los argumentos
 #
 

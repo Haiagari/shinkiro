@@ -1,5 +1,5 @@
 """
-OzyRecon v6.0 — Stealth HTTP Client
+PromptWall v6.0 — Stealth HTTP Client
 Implementa TLS Fingerprinting y Camaleón Stealth.
 Resilience Mode: Fallback a requests si curl_cffi no está disponible.
 """

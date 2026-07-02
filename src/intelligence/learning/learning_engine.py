@@ -1,5 +1,5 @@
 """
-OzyRecon Learning Engine (v8.3.2 - Idea 6)
+PromptWall Learning Engine (v8.3.2 - Idea 6)
 Persists long-term insights and detects surface drift.
 """
 

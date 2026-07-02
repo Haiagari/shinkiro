@@ -16,7 +16,7 @@ class EvidenceService:
         """
         self.signer = signer
 
-    def create_evidence(self, finding: Finding, content: Any, source: str = "OzyRecon") -> Evidence:
+    def create_evidence(self, finding: Finding, content: Any, source: str = "PromptWall") -> Evidence:
         """
         Generates signed evidence for a specific finding.
         1. Normalizes content to JSON.

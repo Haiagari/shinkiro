@@ -1,5 +1,5 @@
 """
-Session Manager - OzyRecon v8.2
+Session Manager - PromptWall v8.2
 Tracks active scan tasks and handles global cancellation.
 """
 

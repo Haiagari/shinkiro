@@ -1,5 +1,5 @@
 """
-Shared utilities for OzyRecon CLI.
+Shared utilities for PromptWall CLI.
 Breaks circular imports between main CLI and subcommands.
 """
 

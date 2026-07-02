@@ -1,5 +1,5 @@
 """
-OzyRecon Doctor - Environment Validation Command
+PromptWall Doctor - Environment Validation Command
 Verifies that all dependencies, tools, and configurations are properly set up.
 """
 
@@ -30,7 +30,7 @@ def check_python():
 
 def check_folders():
     """Check required folders."""
-    base = Path("/home/sam/Proyectos/OzyRecon")
+    base = Path("/home/sam/Proyectos/PromptWall")
     folders = [
         ("runs", base / "runs"),
         ("resources/rules", base / "resources/rules"),
@@ -69,7 +69,7 @@ def check_go_binaries():
         path = shutil.which(tool)
         # Check local tools first
         if not path:
-            local_path = Path(f"/home/sam/Proyectos/OzyRecon/tools/go/bin/{tool}")
+            local_path = Path(f"/home/sam/Proyectos/PromptWall/tools/go/bin/{tool}")
             if local_path.exists():
                 path = str(local_path)
         
@@ -156,7 +156,7 @@ def check_database():
 @click.option("--json", "json_output", is_flag=True, help="Output as JSON")
 def doctor(json_output):
     """
-    Validate OzyRecon environment and dependencies.
+    Validate PromptWall environment and dependencies.
     
     Runs a comprehensive check of:
     - Python version
@@ -166,7 +166,7 @@ def doctor(json_output):
     - API keys (optional)
     - Database connection
     """
-    render_panel("[bold cyan]OzyRecon Doctor[/bold cyan] - Environment Validation", border_style="cyan")
+    render_panel("[bold cyan]PromptWall Doctor[/bold cyan] - Environment Validation", border_style="cyan")
     
     all_results = []
     

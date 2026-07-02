@@ -1,5 +1,5 @@
 """
-CLI Command: flow - end-to-end OzyRecon launcher.
+CLI Command: flow - end-to-end PromptWall launcher.
 
 Runs verify -> hunt -> local analysis -> report and stores the outputs in the
 repo-local real reports folder.
@@ -45,7 +45,7 @@ from src.core.target_normalizer import normalize_lookup_target
 from src.core.tool_manager import tool_manager
 from src.plugins.hooks import dispatch_hook
 
-# OzyRecon v1.2: Hexagonal Architecture Components
+# PromptWall v1.2: Hexagonal Architecture Components
 from src.application.use_cases.orchestrator_v10 import OzyOrchestratorV10
 from src.application.ports.event_bus import InMemoryEventBus
 from src.domain.services.evidence_service import EvidenceService
@@ -75,7 +75,7 @@ def _flow_plan(target: str, scan_profile: str, dry_run: bool, allow_degraded: bo
         "  4. Analysis snapshot",
         "  5. Diff comparison and final summary",
     ]
-    render_plan("OzyRecon Flow", plan_lines)
+    render_plan("PromptWall Flow", plan_lines)
 
 
 def _flow_context(
@@ -156,7 +156,7 @@ def _collect_verification(allow_degraded: bool) -> Dict[str, Any]:
 
 
 def _run_hunt(target: str, session_id: str, **options: Any) -> Dict[str, Any]:
-    # OzyRecon v1.2 Wiring: Dependency Injection
+    # PromptWall v1.2 Wiring: Dependency Injection
     # ---------------------------------------------------------
     event_bus = InMemoryEventBus()
     # If a platform URL is configured in env, we could add the WebhookEventAdapter here
@@ -528,7 +528,7 @@ def execute_flow(
 
         if ui_enabled:
             render_timing_summary(summary["timing"])
-            render_outcome("OzyRecon v1.2 Flow complete: artifacts and diff summary are ready.")
+            render_outcome("PromptWall v1.2 Flow complete: artifacts and diff summary are ready.")
 
         dispatch_hook("scan_complete", summary)
         return summary
@@ -609,7 +609,7 @@ def flow(
     scan_profile: str,
     auth_file: Optional[str],
 ):
-    """Run the full OzyRecon workflow in one shot."""
+    """Run the full PromptWall workflow in one shot."""
     try:
         if not json_output:
             _flow_plan(target, scan_profile, dry_run, allow_degraded)

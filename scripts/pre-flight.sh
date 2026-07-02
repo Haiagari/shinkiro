@@ -1,13 +1,13 @@
 #!/bin/bash
 #
-# OzyRecon Pre-Flight Check
+# PromptWall Pre-Flight Check
 # Quick sanity check before starting a reconnaissance session
 #
 # Usage: ./scripts/pre-flight.sh
 
 set -e
 
-echo "🚀 OzyRecon Pre-Flight Check"
+echo "🚀 PromptWall Pre-Flight Check"
 echo "=============================="
 echo ""
 

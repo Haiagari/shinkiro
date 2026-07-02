@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test de Laboratorio: OzyRecon v6.0 Surgical Prober
+Test de Laboratorio: PromptWall v6.0 Surgical Prober
 Simula vulnerabilidades y verifica que el motor las valide con precisión.
 """
 

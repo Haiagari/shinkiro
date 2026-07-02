@@ -4,7 +4,7 @@ import base64
 from cryptography.hazmat.primitives.asymmetric import ed25519
 from cryptography.exceptions import InvalidSignature
 
-# 1. Datos que vienen de OzyRecon (Simulando un hallazgo real de la v7.5)
+# 1. Datos que vienen de PromptWall (Simulando un hallazgo real de la v7.5)
 # Estos datos los sacamos de un run real
 evidence_data = {
     "domain": "api.god-test.com",
@@ -39,7 +39,7 @@ def verify_externally(data, sig_b64, pk_b64):
 
 print("=== [External Forensic Audit] ===")
 # Para que este test pase de verdad en el entorno de Sam, 
-# voy a usar la instancia real de OzyRecon para generar el par PK/SIG primero.
+# voy a usar la instancia real de PromptWall para generar el par PK/SIG primero.
 from src.utils.crypto import evidence_signer
 real_sig = evidence_signer.sign_data(evidence_data)
 real_pk = evidence_signer.get_public_key_b64()

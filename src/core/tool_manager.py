@@ -1,5 +1,5 @@
 """
-OzyRecon Tool Manager & Capabilities system
+PromptWall Tool Manager & Capabilities system
 Abstrae la ejecución de herramientas en capacidades lógicas.
 """
 

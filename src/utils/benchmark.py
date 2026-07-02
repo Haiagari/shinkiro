@@ -1,5 +1,5 @@
 """
-OzyRecon Benchmark Utility
+PromptWall Benchmark Utility
 Compara el performance con Feedback ON vs OFF.
 """
 
@@ -19,7 +19,7 @@ class LearningBenchmark:
         self.results = {}
 
     def run_benchmark(self):
-        log.info(f"=== INICIANDO BENCHMARK OzyRecon en {self.target} ===")
+        log.info(f"=== INICIANDO BENCHMARK PromptWall en {self.target} ===")
         
         # 1. Ejecución con Feedback OFF (Pesos estáticos)
         log.info("[BENCHMARK] Corriendo con Feedback OFF (Static Weights)")

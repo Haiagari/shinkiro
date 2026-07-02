@@ -1,5 +1,5 @@
 """
-OzyRecon Priority Engine - Inteligencia Adaptativa
+PromptWall Priority Engine - Inteligencia Adaptativa
 Calcula la prioridad de los objetivos basándose en memoria histórica y señales de ataque.
 """
 

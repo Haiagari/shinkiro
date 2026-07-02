@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test de Laboratorio: OzyRecon v6.0 Logic Analyzer
+Test de Laboratorio: PromptWall v6.0 Logic Analyzer
 Simula un Knowledge Graph poblado y verifica que el motor encuentre el Attack Path.
 """
 

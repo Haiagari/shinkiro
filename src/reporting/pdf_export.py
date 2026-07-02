@@ -409,7 +409,7 @@ def generate_pdf(markdown_path: Path, output_path: Path) -> Path:
 {html_body}
 <div class="footer">
 <p><strong>CONFIDENTIAL — For Authorized Recipients Only</strong></p>
-<p><em>Security Assessment conducted by OzyRecon v9.0.1 + OzyBounty</em></p>
+<p><em>Security Assessment conducted by PromptWall v9.0.1 + OzyBounty</em></p>
 <p><em>Date: {datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")}</em></p>
 </div>
 </body>

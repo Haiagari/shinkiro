@@ -1,5 +1,5 @@
 """
-OzyRecon Notifications Module
+PromptWall Notifications Module
 Sistema de notificaciones via Telegram.
 """
 

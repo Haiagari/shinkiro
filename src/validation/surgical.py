@@ -1,5 +1,5 @@
 """
-OzyRecon v6.0 — Surgical Exploitation Engine
+PromptWall v6.0 — Surgical Exploitation Engine
 Valida vulnerabilidades mediante sondas mínimas e indetectables.
 """
 

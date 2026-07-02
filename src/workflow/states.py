@@ -1,5 +1,5 @@
 """
-Estados del Workflow OzyRecon v5.0
+Estados del Workflow PromptWall v5.0
 """
 
 class WorkflowState:

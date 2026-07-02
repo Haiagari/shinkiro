@@ -1,5 +1,5 @@
 """
-Local runtime API helpers for OzyRecon.
+Local runtime API helpers for PromptWall.
 
 This module provides the minimal contract used by runtime tests and local
 inspection flows without standing up the HTTP API server.
@@ -28,7 +28,7 @@ from src.core.runtime_session_services import (
 )
 
 
-app = FastAPI(title="OzyRecon", version="9.0.1")
+app = FastAPI(title="PromptWall", version="9.0.1")
 
 _MASTER_KEYS = {
     "ozy-admin-master-777",
@@ -45,7 +45,7 @@ def _require_api_key(x_api_key: Optional[str]) -> None:
 
 @app.get("/")
 def root() -> Dict[str, Any]:
-    return {"name": "OzyRecon", "version": app.version}
+    return {"name": "PromptWall", "version": app.version}
 
 
 @app.get("/health")

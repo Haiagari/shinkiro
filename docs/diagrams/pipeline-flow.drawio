@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mxfile host="drawio-mcp" modified="2026-06-16T16:32:59.000Z" agent="drawio-mcp/1.0" version="24.7.17" type="device" compressed="false">
-  <diagram name="ozyrecon-pipeline" id="13311b47cd8a">
+  <diagram name="promptwall-pipeline" id="13311b47cd8a">
     <mxGraphModel dx="1354" dy="981" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
@@ -95,7 +95,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="26" value="OzyRecon — Reconnaissance Pipeline" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;" parent="1" vertex="1">
+        <mxCell id="26" value="PromptWall — Reconnaissance Pipeline" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;" parent="1" vertex="1">
           <mxGeometry as="geometry" x="50.0" y="10.0" width="400.0" height="30.0" />
         </mxCell>
         <mxCell id="27" value="15-Phase Execution Flow — 5 new enhanced discovery modules" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;fontColor=#666666;" parent="1" vertex="1">

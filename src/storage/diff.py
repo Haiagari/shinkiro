@@ -1,5 +1,5 @@
 """
-OzyRecon Diff Engine - Inteligencia Diferencial
+PromptWall Diff Engine - Inteligencia Diferencial
 Compara estados entre ejecuciones para detectar cambios en la superficie de ataque.
 """
 

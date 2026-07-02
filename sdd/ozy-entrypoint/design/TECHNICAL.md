@@ -1,13 +1,13 @@
 # ozy-entrypoint Design
 
 ## Overview
-- **Change**: `ozy-entrypoint` - CLI Entry Point para OzyRecon
+- **Change**: `ozy-entrypoint` - CLI Entry Point para PromptWall
 - **Type**: Infrastructure / CLI
 - **Status**: DESIGN
 - **Created**: 2026-04-26
 
 ## Goal
-Crear el punto de entrada CLI de OzyRecon usando Click con Rich console, que:
+Crear el punto de entrada CLI de PromptWall usando Click con Rich console, que:
 1. Dispache a los módulos en `src/modes/` dinámicamente
 2. Muestre un banner inicial con Rich
 3. Asegure carga de configuración singleton ANTES de cualquier comando
@@ -39,7 +39,7 @@ cli/
 
 ```python
 """
-OzyRecon CLI Entry Point
+PromptWall CLI Entry Point
  Punto de entrada principal con Click + Rich console.
 """
 import click
@@ -72,7 +72,7 @@ def get_banner():
 @click.pass_context
 def cli(ctx):
     """
-    OzyRecon - Advanced Persistent Reconnaissance Platform.
+    PromptWall - Advanced Persistent Reconnaissance Platform.
     
     Uso: ozy <command> [options]
     

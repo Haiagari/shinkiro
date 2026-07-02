@@ -1,5 +1,5 @@
 """
-Knowledge Graph Builder (OzyRecon v7 - Phase 10)
+Knowledge Graph Builder (PromptWall v7 - Phase 10)
 Assembles a relationship model of the target surface.
 """
 

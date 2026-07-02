@@ -1,5 +1,5 @@
 """
-Rate Limiter - OzyRecon v8.1
+Rate Limiter - PromptWall v8.1
 Controlled access by API Key and IP address.
 """
 

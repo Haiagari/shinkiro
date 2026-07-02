@@ -1,4 +1,4 @@
-# OzyRecon Intelligent Scoring System — Phase 5 Specification
+# PromptWall Intelligent Scoring System — Phase 5 Specification
 
 ## Purpose
 
