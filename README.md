@@ -33,7 +33,7 @@ User Prompt → EventBus (Intercept) → Judge LLM (Validate) → Clean? → Tar
 ## Quick Start
 
 ```bash
-git clone https://github.com/SamBleed/PromptWall.git && cd PromptWall
+git clone https://github.com/Haiagari/PromptWall.git && cd PromptWall
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt && pip install -e .
 python ozy.py serve --guardrail    # start the firewall
