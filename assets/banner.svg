@@ -234,13 +234,13 @@
   <line x1="100" y1="490" x2="1180" y2="490" stroke="#00ff8820" stroke-width="1"/>
 
   <!-- ═══════════ BOTTOM BAR: credit + stack ═══════════ -->
-  <text x="180" y="520" font-family="monospace" font-size="12" fill="#00ff8860">Built with ❤️ for Bug Hunters · github.com/SamBleed/PromptWall</text>
+  <text x="180" y="520" font-family="monospace" font-size="12" fill="#00ff8860">Built with ❤️ for Bug Hunters · github.com/Haiagari/PromptWall</text>
 
   <!-- Stack icons text -->
   <text x="180" y="545" font-family="monospace" font-size="11" fill="#00ff8840">Python · SQLite · Nuclei · Dalfox · Shodan · Telegram · Gemini · Claude</text>
 
   <!-- Bottom right branding -->
-  <text x="1200" y="545" text-anchor="end" font-family="monospace" font-size="12" fill="#00ff8840">@SamBleed</text>
+  <text x="1200" y="545" text-anchor="end" font-family="monospace" font-size="12" fill="#00ff8840">@Haiagari</text>
 
   <!-- Corner decorations -->
   <!-- Top-left bracket -->
