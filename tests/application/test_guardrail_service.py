@@ -62,10 +62,15 @@ def test_parse_verdict_fail_closed_on_missing_or_malformed() -> None:
     assert parse_verdict("").verdict == "blocked"
 
 
-def test_parse_verdict_treats_non_verdict_json_as_safe() -> None:
-    """MockProvider analysis JSON (no verdict field) is allowed by the skeleton."""
+def test_parse_verdict_fail_closed_on_non_verdict_json() -> None:
+    """JSON without an explicit safe verdict must be blocked (AD-8 fail-closed)."""
     verdict = parse_verdict('{"analysis": "mock-analysis", "business_impact": "LOW"}')
-    assert verdict.verdict == "safe"
+    assert verdict.verdict == "blocked"
+    assert verdict.reason == ReasonCode.JUDGE_UNAVAILABLE.value
+    assert parse_verdict("[]").verdict == "blocked"
+    assert parse_verdict('"str"').verdict == "blocked"
+    assert parse_verdict('{"verdict": "unknown"}').verdict == "blocked"
+    assert parse_verdict('{"verdict": "unknown"}').reason == ReasonCode.JUDGE_UNAVAILABLE.value
 
 
 @pytest.mark.asyncio

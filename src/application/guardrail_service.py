@@ -43,12 +43,11 @@ class Decision:
 
 
 def parse_verdict(text: Optional[str]) -> Verdict:
-    """Parse a judge response into a Verdict, failing closed on absence.
+    """Parse a judge response into a Verdict, failing closed on anything unclear.
 
-    A missing, empty or unparseable response yields a blocked verdict with
-    reason ``judge_unavailable``. A well-formed JSON body without a ``verdict``
-    field is treated as safe (MockProvider analysis output; the strict
-    schema-enforcing judge lands in slice 3).
+    Only an explicit ``{"verdict": "safe"}`` is forwarded. Missing, empty,
+    unparseable, non-object or verdict-less JSON all yield a blocked verdict
+    (judge_unavailable) — never a silent allow (AD-8 fail-closed).
     """
     if not text or not text.strip():
         return Verdict(verdict="blocked", reason=ReasonCode.JUDGE_UNAVAILABLE.value, confidence=1.0)
@@ -56,7 +55,12 @@ def parse_verdict(text: Optional[str]) -> Verdict:
         data = json.loads(text)
     except json.JSONDecodeError:
         return Verdict(verdict="blocked", reason=ReasonCode.JUDGE_UNAVAILABLE.value, confidence=1.0)
-    is_blocked = data.get("verdict") == "blocked"
+    if not isinstance(data, dict) or "verdict" not in data:
+        return Verdict(verdict="blocked", reason=ReasonCode.JUDGE_UNAVAILABLE.value, confidence=1.0)
+    verdict_value = data.get("verdict")
+    if verdict_value not in ("safe", "blocked"):
+        return Verdict(verdict="blocked", reason=ReasonCode.JUDGE_UNAVAILABLE.value, confidence=1.0)
+    is_blocked = verdict_value != "safe"
     return Verdict(
         verdict="blocked" if is_blocked else "safe",
         reason=str(data.get("reason") or "no reason"),
