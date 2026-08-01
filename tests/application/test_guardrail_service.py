@@ -12,7 +12,7 @@ import pytest
 
 from src.adapters.llms.provider_base import AIProvider, MockProvider
 from src.application.guardrail_service import GuardrailDecisionService, parse_verdict
-from src.domain.models import IncomingPrompt
+from src.domain.models import IncomingPrompt, Verdict
 from src.domain.reason_codes import ReasonCode
 
 
@@ -28,6 +28,20 @@ class SilentProvider(AIProvider):
 
     def generate_content(self, prompt: str) -> Optional[str]:
         return None
+
+
+class AsyncSafeJudge:
+    """Judge speaking the async IJudgeLLM contract (slice 3: OpenAICompatibleJudge)."""
+
+    async def evaluate_prompt(self, prompt: IncomingPrompt) -> Verdict:
+        return Verdict(verdict="safe", reason="ok", confidence=0.9)
+
+
+class AsyncBlockingJudge:
+    """Async judge that returns a blocked verdict."""
+
+    async def evaluate_prompt(self, prompt: IncomingPrompt) -> Verdict:
+        return Verdict(verdict="blocked", reason="jailbreak", confidence=0.95)
 
 
 def _prompt(content: str = "Hello") -> IncomingPrompt:
@@ -112,3 +126,36 @@ async def test_decide_fail_closed_on_judge_unavailable(tmp_path: Path) -> None:
     entries = _read_audit(tmp_path / "audit.jsonl")
     assert len(entries) == 1
     assert entries[0]["reason_code"] == ReasonCode.JUDGE_UNAVAILABLE.value
+
+
+@pytest.mark.asyncio
+async def test_audit_entry_records_judge_confidence(tmp_path: Path) -> None:
+    """JUDGE-5: the JSONL audit entry must carry the judge's confidence."""
+    service = GuardrailDecisionService(judge=AsyncSafeJudge(), audit_path=tmp_path / "audit.jsonl")
+    decision = await service.decide(_prompt("hello"), _key())
+    assert decision.confidence == 0.9
+    entries = _read_audit(tmp_path / "audit.jsonl")
+    assert entries[0]["confidence"] == 0.9
+
+
+@pytest.mark.asyncio
+async def test_decide_uses_async_judge_contract(tmp_path: Path) -> None:
+    """Slice 3: a judge implementing the async evaluate_prompt contract is awaited."""
+    service = GuardrailDecisionService(judge=AsyncSafeJudge(), audit_path=tmp_path / "audit.jsonl")
+    decision = await service.decide(_prompt("hello"), _key())
+    assert decision.outcome == "forwarded"
+    assert decision.reason_code is None
+    entries = _read_audit(tmp_path / "audit.jsonl")
+    assert entries[0]["outcome"] == "forwarded"
+
+
+@pytest.mark.asyncio
+async def test_decide_async_judge_blocked(tmp_path: Path) -> None:
+    """Slice 3: an async blocked verdict maps to judge_block and is audited."""
+    service = GuardrailDecisionService(judge=AsyncBlockingJudge(), audit_path=tmp_path / "audit.jsonl")
+    decision = await service.decide(_prompt("jailbreak attempt"), _key())
+    assert decision.outcome == "blocked"
+    assert decision.reason_code == ReasonCode.JUDGE_BLOCK.value
+    assert decision.reason == "jailbreak"
+    entries = _read_audit(tmp_path / "audit.jsonl")
+    assert entries[0]["reason_code"] == ReasonCode.JUDGE_BLOCK.value

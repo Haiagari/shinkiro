@@ -155,6 +155,41 @@ class Config:
     def guardrail_fail_open(self) -> bool:
         """Fail-open flag for the guardrail proxy; defaults to fail-closed (False)."""
         return self.get('guardrail.fail_open', False)
+
+    @property
+    def guardrail_judge_base_url(self) -> Optional[str]:
+        """OpenAI-compatible judge endpoint; empty/missing fails startup (JUDGE-1)."""
+        return self.get('guardrail.judge.base_url')
+
+    @property
+    def guardrail_judge_model(self) -> Optional[str]:
+        """Judge model name; empty/missing fails startup (JUDGE-1)."""
+        return self.get('guardrail.judge.model')
+
+    @property
+    def guardrail_judge_api_key_env(self) -> str:
+        """Env var holding the judge API key (never bundled in code, JUDGE-1)."""
+        return self.get('guardrail.judge.api_key_env', 'PROMPTWALL_JUDGE_API_KEY')
+
+    @property
+    def guardrail_judge_timeout_seconds(self) -> float:
+        """Per-attempt judge timeout in seconds (JUDGE-3)."""
+        return self.get('guardrail.judge.timeout_seconds', 10.0)
+
+    @property
+    def guardrail_judge_retries(self) -> int:
+        """Transient-failure retries before the judge fails closed (JUDGE-3)."""
+        return self.get('guardrail.judge.retries', 2)
+
+    @property
+    def guardrail_upstream_base_url(self) -> str:
+        """Upstream LLM endpoint the proxy forwards allowed requests to (LLM-PROXY-4)."""
+        return self.get('guardrail.upstream.base_url', 'https://api.openai.com/v1')
+
+    @property
+    def guardrail_upstream_api_key_env(self) -> str:
+        """Env var holding the upstream API key (never the client key, LLM-PROXY-4)."""
+        return self.get('guardrail.upstream.api_key_env', 'PROMPTWALL_UPSTREAM_API_KEY')
     
     def __repr__(self):
         return f"<Config loaded={bool(self._config)} path={self._config_path}>"
