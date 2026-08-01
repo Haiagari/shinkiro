@@ -6,6 +6,7 @@ parsing, fail-closed on malformed output, retry-then-success, persistent
 failure -> judge_unavailable, and config-derived API key (never bundled).
 """
 
+import json
 from typing import Any, Callable, Dict, List
 
 import httpx
@@ -62,7 +63,7 @@ async def test_posts_to_chat_completions_with_model() -> None:
     request = seen[0]
     assert request.method == "POST"
     assert str(request.url) == f"{JUDGE_URL}/chat/completions"
-    payload = request.json()
+    payload = json.loads(request.content)
     assert payload["model"] == "gemini-2.0-flash"
     assert payload["messages"][0]["role"] == "user"
     assert "hello there" in payload["messages"][0]["content"]
