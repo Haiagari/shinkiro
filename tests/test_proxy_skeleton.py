@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
+import httpx
 import pytest
 from httpx import ASGITransport, AsyncClient
 
@@ -17,6 +18,27 @@ from src.adapters.llms.provider_base import MockProvider
 from src.application.guardrail_service import GuardrailDecisionService
 from src.auth.key_store import KeyStore
 from src.core.api import create_app
+
+
+def _upstream_completion(request: httpx.Request) -> httpx.Response:
+    """Mock upstream answering with an OpenAI-shaped completion (slice 3 passthrough)."""
+    return httpx.Response(
+        200,
+        json={
+            "id": "chatcmpl-test",
+            "object": "chat.completion",
+            "created": 1700000000,
+            "model": "gpt-4o-mini",
+            "choices": [
+                {
+                    "index": 0,
+                    "message": {"role": "assistant", "content": "Mock upstream reply"},
+                    "finish_reason": "stop",
+                }
+            ],
+            "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+        },
+    )
 
 
 def _chat_body(content: str = "Hello there") -> Dict[str, Any]:
@@ -48,7 +70,10 @@ def proxy_env(tmp_path: Path) -> Dict[str, Any]:
     _disable_key(store.storage_path, "app-disabled")
     audit_path = tmp_path / "audit.jsonl"
     service = GuardrailDecisionService(judge=MockProvider(), audit_path=audit_path)
-    app = create_app(key_store=store, decision_service=service)
+    upstream_client = httpx.AsyncClient(
+        transport=httpx.MockTransport(_upstream_completion), base_url="http://upstream.test"
+    )
+    app = create_app(key_store=store, decision_service=service, upstream_client=upstream_client)
     return {
         "app": app,
         "audit_path": audit_path,

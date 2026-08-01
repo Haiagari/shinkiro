@@ -1,27 +1,31 @@
 """
-FastAPI proxy app: OpenAI-compatible guardrail endpoint (guardrail-pivot slice 2).
+FastAPI proxy app: OpenAI-compatible guardrail endpoint (guardrail-pivot slice 3).
 
 Request flow: pydantic parse (422) → KeyStore.verify_key (401) → scope check
 (403 insufficient_scope) → per-key rate limit (429 + Retry-After) →
-GuardrailDecisionService (403 on block, 200 OpenAI-shaped completion
-otherwise) → JSONL audit append (service side). `_MASTER_KEYS` is gone:
-auth is KeyStore-only (LLM-PROXY-2). Upstream passthrough lands in slice 3.
+GuardrailDecisionService (403 on block) → upstream passthrough (LLM-PROXY-4)
+or buffer-then-judge SSE relay (LLM-PROXY-7) → JSONL audit append (service
+side). `_MASTER_KEYS` is gone: auth is KeyStore-only (LLM-PROXY-2). The
+upstream key comes from env (PROMPTWALL_UPSTREAM_API_KEY) — never the client
+key. Missing judge base_url/model fails loudly at startup (JUDGE-1); the
+proxy is fail-closed by default (AD-8).
 """
 
 from __future__ import annotations
 
 import math
+import os
 import time
 from collections import defaultdict
 from typing import Any, Dict, Optional
-from uuid import uuid4
 
-from fastapi import FastAPI, Request
+import httpx
+from fastapi import FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
-from src.adapters.llms.provider_base import MockProvider
+from src.adapters.llms.openai_compatible_judge import OpenAICompatibleJudge
 from src.application.guardrail_service import GuardrailDecisionService
 from src.auth.key_store import KeyStore
 from src.auth.key_store import key_store as default_key_store
@@ -85,35 +89,70 @@ def _bearer_token(request: Request) -> Optional[str]:
     return token.strip()
 
 
-def _stub_completion(model: str) -> JSONResponse:
-    """Return a minimal OpenAI-shaped completion (real passthrough lands in slice 3)."""
-    return JSONResponse(
-        status_code=200,
-        content={
-            "id": f"chatcmpl-{uuid4().hex}",
-            "object": "chat.completion",
-            "created": int(time.time()),
-            "model": model,
-            "choices": [
-                {
-                    "index": 0,
-                    "message": {"role": "assistant", "content": "Mock upstream response (passthrough in slice 3)."},
-                    "finish_reason": "stop",
-                }
-            ],
-            "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
-        },
+def _judge_from_config() -> OpenAICompatibleJudge:
+    """Build the judge from guardrail.judge config.
+
+    Missing base_url/model raises loudly so the proxy cannot start without
+    judge configuration (JUDGE-1, fail fast).
+    """
+    return OpenAICompatibleJudge(
+        base_url=config.guardrail_judge_base_url,
+        model=config.guardrail_judge_model,
+        api_key=os.environ.get(config.guardrail_judge_api_key_env),
+        timeout_seconds=config.guardrail_judge_timeout_seconds,
+        retries=config.guardrail_judge_retries,
     )
+
+
+def _upstream_client_from_config() -> httpx.AsyncClient:
+    """Upstream client: base_url from config, API key from env — never bundled (LLM-PROXY-4)."""
+    key = os.environ.get(config.guardrail_upstream_api_key_env)
+    headers = {"Authorization": f"Bearer {key}"} if key else {}
+    return httpx.AsyncClient(base_url=config.guardrail_upstream_base_url, headers=headers, timeout=60.0)
+
+
+async def _relay_upstream(client: httpx.AsyncClient, body: ChatCompletionRequest) -> Response:
+    """Forward an allowed request upstream (LLM-PROXY-4) or relay its SSE stream (LLM-PROXY-7).
+
+    The upstream Authorization header is set on the client (config/env key) —
+    the client's key is never forwarded. Any 5xx or transport error yields a
+    generic 502 with no upstream internals.
+    """
+    url = f"{str(client.base_url).rstrip('/')}/chat/completions"
+    payload = body.model_dump(exclude_none=True)
+    try:
+        if body.stream:
+            upstream_response = await client.send(client.build_request("POST", url, json=payload), stream=True)
+            if upstream_response.status_code >= 500:
+                await upstream_response.aclose()
+                return _error_response(
+                    502, ReasonCode.UPSTREAM_FAILURE.value, "upstream error", "Upstream request failed"
+                )
+            return StreamingResponse(
+                upstream_response.aiter_bytes(),
+                media_type="text/event-stream",
+                status_code=upstream_response.status_code,
+            )
+        upstream_response = await client.post(url, json=payload)
+        if upstream_response.status_code >= 500:
+            return _error_response(
+                502, ReasonCode.UPSTREAM_FAILURE.value, "upstream error", "Upstream request failed"
+            )
+        return JSONResponse(status_code=upstream_response.status_code, content=upstream_response.json())
+    except httpx.HTTPError:
+        return _error_response(502, ReasonCode.UPSTREAM_FAILURE.value, "upstream unreachable", "Upstream request failed")
 
 
 def create_app(
     *,
     key_store: Optional[KeyStore] = None,
     decision_service: Optional[GuardrailDecisionService] = None,
+    upstream_client: Optional[httpx.AsyncClient] = None,
 ) -> FastAPI:
-    """Build the proxy app, wiring auth, per-key rate limiting and the decision service."""
+    """Build the proxy app: auth, per-key rate limit, decision service and upstream relay."""
     ks = key_store or default_key_store
-    service = decision_service or GuardrailDecisionService(judge=MockProvider(), audit_path=config.guardrail_audit_path)
+    service = decision_service or GuardrailDecisionService(judge=_judge_from_config(), audit_path=config.guardrail_audit_path)
+    upstream = upstream_client or _upstream_client_from_config()
     limiter = _PerKeyRateLimiter()
 
     app = FastAPI(title="PromptWall Guardrail Proxy", version="0.10.0")
@@ -137,7 +176,7 @@ def create_app(
         return {"status": "ok"}
 
     @app.post("/v1/chat/completions")
-    async def chat_completions(request: Request, body: ChatCompletionRequest) -> JSONResponse:
+    async def chat_completions(request: Request, body: ChatCompletionRequest) -> Response:
         token = _bearer_token(request)
         key_data = ks.verify_key(token) if token else None
         if key_data is None:
@@ -167,7 +206,7 @@ def create_app(
                 "Request blocked by guardrail",
                 decision_id=decision.decision_id,
             )
-        return _stub_completion(body.model)
+        return await _relay_upstream(upstream, body)
 
     return app
 

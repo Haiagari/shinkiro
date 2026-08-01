@@ -41,8 +41,17 @@ ai:
   gemini_api_key: ""
   claude_api_key: ""
 
-# Guardrail Proxy (guardrail-pivot slice 2)
+# Guardrail Proxy (guardrail-pivot slice 3)
 guardrail:
   fail_open: false  # MUST default closed (AD-8)
+  judge:
+    base_url: "https://api.openai.com/v1"   # REQUIRED: OpenAI-compatible endpoint (Gemini/OpenAI/Ollama)
+    model: "gpt-4o-mini"                    # REQUIRED: judge model (JUDGE-1, fails startup if empty)
+    api_key_env: "PROMPTWALL_JUDGE_API_KEY" # env var with the judge key — never bundled in code
+    timeout_seconds: 10
+    retries: 2
+  upstream:
+    base_url: "https://api.openai.com/v1"   # upstream the proxy forwards allowed requests to
+    api_key_env: "PROMPTWALL_UPSTREAM_API_KEY"  # env var — never the client key
   audit:
     path: "runs/audit_guardrail.jsonl"

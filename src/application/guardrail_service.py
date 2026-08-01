@@ -82,7 +82,7 @@ class GuardrailDecisionService:
             return self._record(
                 prompt, key, outcome="blocked", reason_code=policy.reason_code, reason=policy.rule_id or "blocked by policy"
             )
-        verdict = self._judge_prompt(prompt)
+        verdict = await self._judge_prompt(prompt)
         if verdict.verdict == "blocked":
             reason_code = (
                 ReasonCode.JUDGE_UNAVAILABLE.value
@@ -96,7 +96,17 @@ class GuardrailDecisionService:
         # ponytail: allow-all placeholder; the real PolicyEngine lands in slice 4.
         return PolicyDecision(action="allow")
 
-    def _judge_prompt(self, prompt: IncomingPrompt) -> Verdict:
+    async def _judge_prompt(self, prompt: IncomingPrompt) -> Verdict:
+        """Run the judge: async IJudgeLLM contract when available, legacy AIProvider otherwise.
+
+        The OpenAICompatibleJudge (slice 3) speaks the async ``evaluate_prompt``
+        contract; the deterministic MockProvider/BlockingProvider test doubles
+        keep the sync ``generate_content`` shape. Both fail closed via
+        parse_verdict on any unclear output (AD-8).
+        """
+        evaluate = getattr(self.judge, "evaluate_prompt", None)
+        if evaluate is not None:
+            return await evaluate(prompt)
         judge_prompt = JUDGE_PROMPT_TEMPLATE + prompt.prompt
         return parse_verdict(self.judge.generate_content(judge_prompt))
 
