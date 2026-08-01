@@ -69,6 +69,7 @@ def _setup_signal_handlers() -> None:
 )
 @click.option(
     '--config',
+    'config_path',
     type=click.Path(exists=True),
     default=None,
     help='Specify custom config file path'
