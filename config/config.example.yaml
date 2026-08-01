@@ -40,3 +40,18 @@ notifications:
 ai:
   gemini_api_key: ""
   claude_api_key: ""
+
+# Guardrail Proxy (v10) — REQUERIDO para el modo firewall
+guardrail:
+  fail_open: false  # default cerrado (AD-8)
+  judge:
+    base_url: "https://api.openai.com/v1"   # REQUERIDO (JUDGE-1, falla el startup si está vacío)
+    model: "gpt-4o-mini"                    # REQUERIDO (JUDGE-1)
+    api_key_env: "PROMPTWALL_JUDGE_API_KEY"
+    timeout_seconds: 10
+    retries: 2
+  upstream:
+    base_url: "https://api.openai.com/v1"
+    api_key_env: "PROMPTWALL_UPSTREAM_API_KEY"
+  audit:
+    path: "runs/audit_guardrail.jsonl"

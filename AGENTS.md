@@ -13,7 +13,7 @@
 - **Hexagonal / Clean Architecture**: Maintain strict separation of concerns.
   - `src/domain/`: Pure business logic, immutable, no external dependencies.
   - `src/application/` and `src/core/`: Use cases and orchestration.
-  - `src/adapters/`: External integrations (databases, Nmap, Subfinder, etc.).
+  - `src/adapters/`: External integrations (LLM judge providers, upstream APIs).
 - **Composition over Inheritance**: Prefer dependency injection and composition.
 - **Low Coupling**: Modules must not know each other's internal implementations.
 
