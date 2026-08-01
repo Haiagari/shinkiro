@@ -1,4 +1,4 @@
-name: OzyRecon CI/CD Pipeline
+name: PromptWall CI/CD Pipeline
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-    
+
     strategy:
       matrix:
         python-version: ["3.11"]
@@ -30,17 +30,12 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
         pip install pytest pytest-asyncio pytest-cov
         pip install -e .
 
     - name: Run Validation Suite (Pytest)
       run: |
         pytest tests/ --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
-
-    - name: Run Runtime Verify (Degraded Allowed)
-      run: |
-        python ozy.py verify --allow-degraded --json
 
     - name: Security Lint (Bandit)
       run: |
