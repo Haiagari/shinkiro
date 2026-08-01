@@ -2,13 +2,13 @@
   "$schema": "https://opencode.ai/config.json",
   "agent": {
     "sdd-orchestrator": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "opencode/deepseek-v4-flash-free"
     },
     "sdd-apply": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "opencode/deepseek-v4-flash-free"
     },
     "sdd-verify": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "opencode/deepseek-v4-flash-free"
     }
   }
 }
