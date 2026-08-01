@@ -287,6 +287,19 @@ class WeightHistory(Base):
     diff = Column(Float)
     decision_id = Column(String(100), nullable=True)
 
+class PromptEvent(Base):
+    """Audit event row for a proxied prompt decision (guardrail-pivot slice 2)."""
+    __tablename__ = "prompt_events"
+
+    id = Column(Integer, primary_key=True)
+    decision_id = Column(String(100), unique=True, index=True, nullable=False)
+    key_name = Column(String(255), index=True)
+    outcome = Column(String(20))  # forwarded, blocked
+    reason_code = Column(String(50), nullable=True)
+    prompt_hash = Column(String(100))
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # MODELOS OZYRECON v5.0 (Validation & Evidence)
 # ══════════════════════════════════════════════════════════════════════════════
