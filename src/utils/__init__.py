@@ -185,7 +185,8 @@ def get_random_ua() -> str:
 
 def anonymize_target(target: str) -> str:
     """Oculta la identidad de un target (Dominio o IP) para logs o docs públicos."""
-    if not target: return "hidden-target"
+    if not target:
+        return "hidden-target"
     
     # Caso 1: Es una IPv4
     ip_pattern = r'^(\d{1,3}\.\d{1,3})\.(\d{1,3}\.\d{1,3})$'

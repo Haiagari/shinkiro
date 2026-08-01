@@ -8,7 +8,6 @@ import logging
 import base64
 from pathlib import Path
 from typing import Dict
-from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import ed25519
 from cryptography.exceptions import InvalidSignature
 

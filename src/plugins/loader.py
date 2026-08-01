@@ -3,7 +3,7 @@ import pkgutil
 import logging
 from pathlib import Path
 from typing import Dict, List
-from src.plugins.base import Plugin, PluginManifest
+from src.plugins.base import Plugin
 
 logger = logging.getLogger("plugins")
 

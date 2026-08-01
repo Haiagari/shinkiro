@@ -5,11 +5,9 @@ Envía alertas via Telegram y otros canales.
 
 import requests
 from typing import Optional, Dict, Any
-from datetime import datetime
 
 from src.core.config import config
 from src.core.logging import get_logger
-from src.export.schema import ScanResult
 
 logger = get_logger('notifier')
 
@@ -143,34 +141,7 @@ class Notifier:
         text += f"{message}"
         
         return self.send_message(text)
-    
-    def send_scan_summary(self, target: str, result: ScanResult) -> bool:
-        """Envía un resumen del scan."""
-        stats = result.stats
-        findings = result.findings
-        
-        # Contar por severidad
-        critical = len([f for f in findings if f.severity == "critical"])
-        high = len([f for f in findings if f.severity == "high"])
-        medium = len([f for f in findings if f.severity == "medium"])
-        
-        message = f"*Scan completado: {target}*\n\n"
-        message += f"*Estadísticas:*\n"
-        message += f"• Subdominios: {stats.get('subdomains_found', 0)}\n"
-        message += f"• Hosts vivos: {stats.get('hosts_alive', 0)}\n"
-        message += f"• Puertos: {stats.get('ports_found', 0)}\n"
-        message += f"• Hallazgos: {stats.get('findings', 0)}\n\n"
-        
-        if critical > 0 or high > 0:
-            message += f"*Hallazgos críticos:* {critical}\n"
-            message += f"*Hallazgos altos:* {high}\n"
-        elif medium > 0:
-            message += f"*Hallazgos medios:* {medium}\n"
-        
-        severity = "critical" if critical > 0 else "high" if high > 0 else "medium" if medium > 0 else "info"
-        
-        return self.send_alert(f"Scan completado: {target}", message, severity)
-    
+
     def send_finding(self, target: str, finding: Dict[str, Any]) -> bool:
         """Envía notificación de un finding."""
         severity = finding.get("severity", "info")

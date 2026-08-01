@@ -13,8 +13,8 @@ class TelegramNotifier:
     """Gestiona el envío de alertas a Telegram."""
     
     def __init__(self):
-        self.token = config.notifications.get("telegram_token")
-        self.chat_id = config.notifications.get("telegram_chat_id")
+        self.token = config.telegram_token
+        self.chat_id = config.telegram_chat_id
         self.enabled = bool(self.token and self.chat_id)
 
     def send_message(self, text: str):
@@ -50,7 +50,7 @@ class TelegramNotifier:
         msg = [
             f"🎯 *{target}* - *Surface Change Detected*",
             "",
-            f"✨ *Novedades:*",
+            "✨ *Novedades:*",
         ]
         
         if diff_report.new_subdomains:
@@ -64,7 +64,7 @@ class TelegramNotifier:
         if diff_report.changed_services:
             msg.append(f"• 🔄 `{len(diff_report.changed_services)}` servicios actualizados")
 
-        msg.append(f"\n🚀 *PromptWall v4.0*")
+        msg.append("\n🚀 *PromptWall v4.0*")
         
         return self.send_message("\n".join(msg))
 
