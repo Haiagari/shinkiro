@@ -40,3 +40,9 @@ notifications:
 ai:
   gemini_api_key: ""
   claude_api_key: ""
+
+# Guardrail Proxy (guardrail-pivot slice 2)
+guardrail:
+  fail_open: false  # MUST default closed (AD-8)
+  audit:
+    path: "runs/audit_guardrail.jsonl"

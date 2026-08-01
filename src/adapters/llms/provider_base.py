@@ -26,10 +26,9 @@ class MockProvider(AIProvider):
         self.api_key = api_key
 
     def generate_content(self, prompt: str) -> Optional[str]:
-        prompt_lower = prompt.lower()
-        if "verified_indices" in prompt_lower:
-            return '{"verified_indices": [0]}'
-        return '{"analysis": "mock-analysis", "business_impact": "LOW", "recommendations": [], "remediation_snippet": {"language": "bash", "code": "echo mock", "description": "mock remediation"}}'
+        # ponytail: deterministic dev-mode judge; always explicit verdict so the
+        # fail-closed parser (guardrail_service.parse_verdict) allows mock traffic.
+        return '{"verdict": "safe", "reason": "mock analysis", "confidence": 0.5}'
 
 
 class GeminiProvider(AIProvider):

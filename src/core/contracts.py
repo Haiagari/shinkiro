@@ -7,7 +7,7 @@ These values define the stable shape that the local engine exposes.
 from abc import ABC, abstractmethod
 from typing import Dict, Iterable, Tuple
 
-from src.domain.models import AttackPayload, TargetResponse, EvaluationResult
+from src.domain.models import AttackPayload, IncomingPrompt, TargetResponse, Verdict
 
 CONTRACT_VERSION = "ozy.runtime.v1"
 
@@ -67,14 +67,6 @@ def validate_required_fields(payload: Dict[str, object], required: Iterable[str]
         raise ValueError(f"Missing contract fields: {', '.join(missing)}")
 
 
-class IAttackerLLM(ABC):
-    """Interface for the Attacker LLM that generates malicious payloads."""
-
-    @abstractmethod
-    async def generate_payload(self, context: dict, previous_responses: list) -> AttackPayload:
-        pass
-
-
 class ITargetAPI(ABC):
     """Interface for the Target API that receives payloads."""
 
@@ -84,13 +76,9 @@ class ITargetAPI(ABC):
 
 
 class IJudgeLLM(ABC):
-    """Interface for the Judge LLM that evaluates responses."""
+    """Interface for the Judge LLM that evaluates incoming prompts."""
 
     @abstractmethod
-    async def evaluate_response(self, payload: AttackPayload, response: TargetResponse, criteria: dict) -> EvaluationResult:
-        pass
-
-    @abstractmethod
-    async def evaluate_prompt(self, payload: AttackPayload) -> EvaluationResult:
-        pass
+    async def evaluate_prompt(self, prompt: IncomingPrompt) -> Verdict:
+        """Evaluate a prompt and return a verdict."""
 

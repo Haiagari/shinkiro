@@ -145,6 +145,16 @@ class Config:
     @property
     def max_requests_per_min(self) -> int:
         return self.get('auto_rate_limit.max_requests_per_min', 200)
+
+    @property
+    def guardrail_audit_path(self) -> str:
+        """Path of the JSONL audit log written by the guardrail decision service."""
+        return self.get('guardrail.audit.path', 'runs/audit_guardrail.jsonl')
+
+    @property
+    def guardrail_fail_open(self) -> bool:
+        """Fail-open flag for the guardrail proxy; defaults to fail-closed (False)."""
+        return self.get('guardrail.fail_open', False)
     
     def __repr__(self):
         return f"<Config loaded={bool(self._config)} path={self._config_path}>"
