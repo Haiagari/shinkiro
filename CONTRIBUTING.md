@@ -8,7 +8,7 @@ PromptWall is an open-source AI Security Guardrail (Firewall) designed to interc
 1. Fork the repository and create your branch from `main`.
 2. If you've added code that should be tested, add tests.
 3. Ensure the test suite passes.
-4. Format your code using standard Python tooling (e.g. `black`, `mypy`).
+4. Format and lint your code using standard Python tooling (`black`, `ruff`). Note: `mypy` is referenced in some docs but is not configured in this project.
 5. Issue a pull request!
 
 ## Pull Request Process
@@ -19,7 +19,11 @@ PromptWall is an open-source AI Security Guardrail (Firewall) designed to interc
 ## Hexagonal Architecture
 We strictly adhere to a Ports and Adapters (Hexagonal) architecture. 
 - `src/domain/`: Pure business logic (immutable dataclasses).
-- `src/core/`: Interfaces/Ports (`IAttackerLLM`, `IJudgeLLM`, etc.)
+- `src/core/`: Contracts (`ITargetAPI`, `IJudgeLLM`).
 - `src/adapters/`: Concrete implementations of LLM APIs and external targets.
-- `src/application/`: Orchestration via Async EventBus.
+- `src/application/`: Use cases and orchestration.
+- `src/application/ports/event_bus.py`: `IEventBus` port.
+- `src/adapters/llms/provider_base.py`: `AIProvider` base for LLM adapters.
+
+Orchestration via the EventBus exists for `AIOrchestrator`, but the shipped guardrail path is the FastAPI proxy route (`POST /v1/chat/completions`) → `GuardrailDecisionService`.
 Please ensure your PR respects these boundaries.

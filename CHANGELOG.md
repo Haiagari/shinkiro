@@ -1,5 +1,17 @@
 # Changelog
 
+## [10.1.0] (Guardrail Proxy) - 2026-08-01
+
+### Added
+- **Guarded OpenAI-compatible proxy route**: `POST /v1/chat/completions` with KeyStore Bearer auth (sha256-hashed keys in `config/api_keys.json`, per-key scopes + rate limits). Requests without the `chat` scope return `insufficient_scope` 403; per-key fixed-window rate limit returns 429 with `Retry-After`.
+- **JSONL audit trail**: `runs/audit_guardrail.jsonl` recording `decision_id`, `key_name`, `outcome`, `reason_code`, `prompt_hash`, and `confidence`.
+- **OpenAI-compatible judge adapter**: retries and fail-closed verdict parsing — only an explicit `safe` verdict forwards; anything else is blocked or treated as `judge_unavailable`.
+- **Upstream passthrough**: non-stream requests are forwarded as-is; `stream: true` is relayed as SSE; upstream failures return 502.
+- **CLI**: `serve` (`--host`/`--port`), `keys create` / `keys list` / `keys revoke`, and `self-test`.
+
+### Notes
+- Version alignment pending: `pyproject.toml` still reports 9.0.1.
+
 ## [10.0.0] (AI Security Pivot) - 2026-07-02
 
 ### Changed

@@ -1,25 +1,14 @@
 # Reports
 
-- `generated/` — Output directory for newly generated reports (.md + .pdf)
-- `archive/` — Historical generated reports (old format, kept for reference)
-- `evidence/` — Captured evidence (HTTP responses + gowitness screenshots)
-  - `evidence/http/` — JSON evidence from HTTP requests
-  - `evidence/screenshots/` — Gowitness PNG screenshots by target
-- `reales/` — Real scan session data (gitignored)
-- `pruebas/` — Sample/test scan sessions
+`src/reporting` was removed in the AI Security Guardrail pivot (v10). The current audit artifact is the guardrail JSONL at `runs/audit_guardrail.jsonl`, with one JSON object per decision:
 
-## Generate a new report
-
-```python
-from src.reporting import ProfessionalReport, generate_pdf
-from pathlib import Path
-
-report = ProfessionalReport(
-    workspace_path=Path("path/to/workspace.json"),
-    target="target.tld",
-    screenshots_dir=Path("reports/evidence/screenshots/unitru"),
-    diagram_path=Path("docs/diagrams/attack-surface.png"),
-)
-md_path = report.save(Path("reports/generated/report.md"))
-pdf_path = generate_pdf(md_path, Path("reports/generated/report.pdf"))
 ```
+version, timestamp, decision_id, key_name, outcome, reason_code, reason, prompt_hash, confidence
+```
+
+The remaining directories are v9 legacy scan artifacts retained for reference:
+
+- `evidence/` — Captured evidence (HTTP responses + gowitness screenshots)
+- `generated/` — Output directory for generated reports (v9)
+- `pruebas/` — Sample/test scan sessions (v9)
+- `reales/` — Real scan session data, gitignored (v9)
