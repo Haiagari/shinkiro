@@ -25,10 +25,10 @@ fi
 # Check 1: Version
 echo "🔍 Checking version..."
 VERSION_OUTPUT=$(python ozy.py --version 2>&1 | grep -o "v[0-9]\+\.[0-9]\+\.[0-9]\+" || echo "")
-if [ "$VERSION_OUTPUT" = "v9.0.1" ]; then
+if [ "$VERSION_OUTPUT" = "v0.1.0" ]; then
     echo "✅ Version: $VERSION_OUTPUT"
 else
-    echo "❌ Version mismatch: expected v9.0.1, got '$VERSION_OUTPUT'"
+    echo "❌ Version mismatch: expected v0.1.0, got '$VERSION_OUTPUT'"
     echo "   Run: pip install -e ."
     exit 1
 fi

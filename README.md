@@ -3,7 +3,7 @@
 **AI Security Guardrail (Firewall for LLMs)**  
 *Built for safe AI deployments. Engineered for reliability.*
 
-[![Version](https://img.shields.io/badge/version-10.0.0-6366f1?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.1.0-6366f1?style=flat-square)](CHANGELOG.md)
 [![Tests](https://img.shields.io/badge/tests-passing-22c55e?style=flat-square)](#development)
 [![Python](https://img.shields.io/badge/python-3.11+-3b82f6?style=flat-square)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-f59e0b?style=flat-square)](LICENSE)

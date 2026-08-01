@@ -6,4 +6,4 @@ from importlib.metadata import version, PackageNotFoundError
 try:
     __version__ = version("promptwall")
 except PackageNotFoundError:
-    __version__ = "9.0.1"  # Fallback for non-installed runs
+    __version__ = "0.1.0"  # Fallback for non-installed runs

@@ -17,6 +17,7 @@ import math
 import os
 import time
 from collections import defaultdict
+from importlib.metadata import PackageNotFoundError, version as _pkg_version
 from typing import Any, Dict, Optional
 
 import httpx
@@ -143,6 +144,14 @@ async def _relay_upstream(client: httpx.AsyncClient, body: ChatCompletionRequest
         return _error_response(502, ReasonCode.UPSTREAM_FAILURE.value, "upstream unreachable", "Upstream request failed")
 
 
+def _app_version() -> str:
+    """Resolve the package version from installed metadata, with a fallback for source runs."""
+    try:
+        return _pkg_version("promptwall")
+    except PackageNotFoundError:
+        return "0.1.0"
+
+
 def create_app(
     *,
     key_store: Optional[KeyStore] = None,
@@ -155,7 +164,7 @@ def create_app(
     upstream = upstream_client or _upstream_client_from_config()
     limiter = _PerKeyRateLimiter()
 
-    app = FastAPI(title="PromptWall Guardrail Proxy", version="0.10.0")
+    app = FastAPI(title="PromptWall Guardrail Proxy", version=_app_version())
 
     @app.exception_handler(RequestValidationError)
     async def _validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:

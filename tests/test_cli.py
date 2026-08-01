@@ -1,5 +1,5 @@
 """
-Tests for PromptWall CLI - v9.0.1 Alignment
+Tests for PromptWall CLI - v0.1.0 Alignment
 """
 
 import pytest
@@ -16,7 +16,7 @@ def runner():
     return CliRunner()
 
 class TestOzyCLI:
-    """Tests for cli/ozy.py - v9.0.1 Entry point"""
+    """Tests for cli/ozy.py - v0.1.0 Entry point"""
 
     def test_cli_exists(self, runner):
         from cli.ozy import cli
@@ -29,13 +29,13 @@ class TestOzyCLI:
         assert 'PromptWall' in result.output
 
     def test_cli_version(self, runner):
-        """Validates version 9.0.1 as per definitive baseline."""
+        """Validates version 0.1.0 as per definitive baseline."""
         from cli.ozy import cli
         result = runner.invoke(cli, ['--version'])
         assert result.exit_code == 0
-        assert '9.0.1' in result.output
+        assert '0.1.0' in result.output
 
     def test_banner_contains_version(self, runner):
         from cli.ozy import get_banner
         banner = get_banner()
-        assert '9.0.1' in banner
+        assert '0.1.0' in banner
