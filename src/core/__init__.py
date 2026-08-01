@@ -17,14 +17,6 @@ from .errors import (
     NotificationError,
     AIError,
 )
-from .context import (
-    ScanContext,
-    TargetProfile,
-    get_context,
-    set_context,
-    clear_context,
-)
-
 __all__ = [
     # Config
     'config',
@@ -47,10 +39,4 @@ __all__ = [
     'ExportError',
     'NotificationError',
     'AIError',
-    # Context
-    'ScanContext',
-    'TargetProfile',
-    'get_context',
-    'set_context',
-    'clear_context',
 ]

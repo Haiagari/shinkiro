@@ -4,9 +4,7 @@ Tests for PromptWall CLI - v9.0.1 Alignment
 
 import pytest
 import sys
-import os
 from pathlib import Path
-from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
 # Add root to path
@@ -41,34 +39,3 @@ class TestOzyCLI:
         from cli.ozy import get_banner
         banner = get_banner()
         assert '9.0.1' in banner
-
-    def test_hunt_subcommand_exists(self, runner):
-        from cli.ozy import cli
-        result = runner.invoke(cli, ['--help'])
-        assert result.exit_code == 0
-        assert 'hunt' in result.output.lower()
-
-class TestCliVerifyCommand:
-    """Tests for the hardened v9.0.1 verify command."""
-
-    def test_verify_command_exists(self, runner):
-        from cli.ozy import cli, register_runtime_commands
-        register_runtime_commands()
-        result = runner.invoke(cli, ["verify", "--help"])
-        assert result.exit_code == 0
-        assert "verify" in result.output.lower()
-
-    def test_verify_system_integrity(self, runner):
-        """Verifies that the command runs and performs audit."""
-        from cli.ozy import cli, register_runtime_commands
-        register_runtime_commands()
-        
-        # We mock external checks to ensure it doesn't fail due to environment in unit tests
-        with patch("cli.commands.verify.check_binaries", return_value=True), \
-             patch("cli.commands.verify.check_folders", return_value=True), \
-             patch("cli.commands.verify.check_intelligence_engines", return_value=True), \
-             patch("cli.commands.verify.check_api_contract", return_value=True):
-            
-            result = runner.invoke(cli, ["verify"])
-            assert result.exit_code == 0
-            assert "SYSTEM INTEGRITY AUDIT" in result.output

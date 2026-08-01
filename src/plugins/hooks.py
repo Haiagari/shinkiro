@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, Any
+from typing import Dict
 from src.plugins.loader import plugin_loader
 
 logger = logging.getLogger("plugins.hooks")

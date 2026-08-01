@@ -5,7 +5,7 @@ These values define the stable shape that the local engine exposes.
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Iterable, Tuple, Any, List
+from typing import Dict, Iterable, Tuple
 
 from src.domain.models import AttackPayload, TargetResponse, EvaluationResult
 

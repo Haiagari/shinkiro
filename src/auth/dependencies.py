@@ -2,18 +2,18 @@
 Auth Dependencies & Scopes - PromptWall v8.1
 """
 
-from fastapi import HTTPException, Security, Depends, Request
-from fastapi.security.api_key import APIKeyHeader
-from typing import List, Dict, Optional
-from .key_store import key_store
+import asyncio
 import logging
+import random
+
+from fastapi import Depends, HTTPException, Request, Security
+from fastapi.security.api_key import APIKeyHeader
+from typing import Dict
+
+from .key_store import key_store
 
 logger = logging.getLogger("auth.dependencies")
 api_key_header = APIKeyHeader(name="X-API-KEY", auto_error=False)
-
-import time
-import random
-import asyncio
 
 async def get_current_key(header_key: str = Security(api_key_header)) -> Dict:
     """Validates the key hash and returns the key metadata (Generic errors v8.3.1)."""

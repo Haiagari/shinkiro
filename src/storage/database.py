@@ -4,16 +4,30 @@ PromptWall - Storage Layer
 """
 
 import os
-from datetime import datetime
-from pathlib import Path
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.utils import log, save_json, load_json
+from src.utils import log
 from src.core.runtime_paths import get_runtime_root
 
-from .models import Base, Target, Scan, Subdomain, Port, Vulnerability, Finding, AgentMemory, AgentLock, Session, WeightHistory, Hypothesis, Evidence, WorkflowStep
+# Model imports register tables on Base.metadata (side-effect import).
+from .models import (  # noqa: F401
+    Base,
+    Target,
+    Scan,
+    Subdomain,
+    Port,
+    Vulnerability,
+    Finding,
+    AgentMemory,
+    AgentLock,
+    Session,
+    WeightHistory,
+    Hypothesis,
+    Evidence,
+    WorkflowStep,
+)
 
 DEFAULT_DB_PATH = get_runtime_root() / "db" / "promptwall.db"
 DB_PATH = DEFAULT_DB_PATH  # backward compat

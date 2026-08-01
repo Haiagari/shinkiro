@@ -30,7 +30,7 @@ def ensure_config_loaded() -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs):
             # Task 2.10: Import config here to ensure it's loaded
-            from src.core.config import config
+            from src.core.config import config  # noqa: F401
             return func(*args, **kwargs)
         return wrapper
     return decorator
