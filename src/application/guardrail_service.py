@@ -40,6 +40,7 @@ class Decision:
     prompt_hash: str
     key_name: str
     timestamp: datetime
+    confidence: Optional[float] = None  # judge Verdict confidence; None when policy blocked without a judge
 
 
 def parse_verdict(text: Optional[str]) -> Verdict:
@@ -89,8 +90,8 @@ class GuardrailDecisionService:
                 if verdict.reason == ReasonCode.JUDGE_UNAVAILABLE.value
                 else ReasonCode.JUDGE_BLOCK.value
             )
-            return self._record(prompt, key, outcome="blocked", reason_code=reason_code, reason=verdict.reason)
-        return self._record(prompt, key, outcome="forwarded", reason_code=None, reason="allowed by policy and judge")
+            return self._record(prompt, key, outcome="blocked", reason_code=reason_code, reason=verdict.reason, confidence=verdict.confidence)
+        return self._record(prompt, key, outcome="forwarded", reason_code=None, reason="allowed by policy and judge", confidence=verdict.confidence)
 
     def _evaluate_policy(self, prompt: IncomingPrompt) -> PolicyDecision:
         # ponytail: allow-all placeholder; the real PolicyEngine lands in slice 4.
@@ -110,7 +111,7 @@ class GuardrailDecisionService:
         judge_prompt = JUDGE_PROMPT_TEMPLATE + prompt.prompt
         return parse_verdict(self.judge.generate_content(judge_prompt))
 
-    def _record(self, prompt: IncomingPrompt, key: Dict[str, Any], *, outcome: str, reason_code: Optional[str], reason: str) -> Decision:
+    def _record(self, prompt: IncomingPrompt, key: Dict[str, Any], *, outcome: str, reason_code: Optional[str], reason: str, confidence: Optional[float] = None) -> Decision:
         decision = Decision(
             decision_id=f"dec_{uuid4().hex}",
             outcome=outcome,
@@ -119,6 +120,7 @@ class GuardrailDecisionService:
             prompt_hash=f"sha256:{hashlib.sha256(prompt.prompt.encode('utf-8')).hexdigest()}",
             key_name=key["name"],
             timestamp=datetime.now(timezone.utc),
+            confidence=confidence,
         )
         self._write_audit(decision)
         return decision
@@ -134,6 +136,7 @@ class GuardrailDecisionService:
             "reason_code": decision.reason_code,
             "reason": decision.reason,
             "prompt_hash": decision.prompt_hash,
+            "confidence": decision.confidence,
         }
         self.audit_path.parent.mkdir(parents=True, exist_ok=True)
         with self.audit_path.open("a", encoding="utf-8") as handle:

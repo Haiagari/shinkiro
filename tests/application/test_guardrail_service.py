@@ -129,6 +129,16 @@ async def test_decide_fail_closed_on_judge_unavailable(tmp_path: Path) -> None:
 
 
 @pytest.mark.asyncio
+async def test_audit_entry_records_judge_confidence(tmp_path: Path) -> None:
+    """JUDGE-5: the JSONL audit entry must carry the judge's confidence."""
+    service = GuardrailDecisionService(judge=AsyncSafeJudge(), audit_path=tmp_path / "audit.jsonl")
+    decision = await service.decide(_prompt("hello"), _key())
+    assert decision.confidence == 0.9
+    entries = _read_audit(tmp_path / "audit.jsonl")
+    assert entries[0]["confidence"] == 0.9
+
+
+@pytest.mark.asyncio
 async def test_decide_uses_async_judge_contract(tmp_path: Path) -> None:
     """Slice 3: a judge implementing the async evaluate_prompt contract is awaited."""
     service = GuardrailDecisionService(judge=AsyncSafeJudge(), audit_path=tmp_path / "audit.jsonl")
