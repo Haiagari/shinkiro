@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Optional
 from uuid import uuid4
-from src.domain.models import AttackPayload, TargetResponse, EvaluationResult, AttackPath
+from src.domain.models import AttackPayload, TargetResponse, EvaluationResult, AttackPath, IncomingPrompt
 
 @dataclass(frozen=True, kw_only=True)
 class DomainEvent:
@@ -47,3 +48,17 @@ class AttackBlocked(DomainEvent):
     payload: AttackPayload
     reason: str
     type: str = "attack_blocked"
+
+@dataclass(frozen=True, kw_only=True)
+class PromptForwarded(DomainEvent):
+    """Event emitted when a prompt passes policy and judge and is forwarded."""
+    prompt: IncomingPrompt
+    type: str = "prompt_forwarded"
+
+@dataclass(frozen=True, kw_only=True)
+class DecisionRecorded(DomainEvent):
+    """Event emitted when a guardrail decision has been recorded."""
+    decision_id: str
+    outcome: str
+    reason_code: Optional[str] = None
+    type: str = "decision_recorded"

@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Dict, List, Optional, Any
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
+from uuid import uuid4
 
 @dataclass(frozen=True)
 class AttackPayload:
@@ -54,8 +55,47 @@ class Finding:
     title: str
     severity: str  # critical, high, medium, low, info
     description: str
-    asset_id: str  # References an Asset (domain or ip)
     evidence_ids: List[str] = field(default_factory=list)
     vulnerability_type: Optional[str] = None
     path: Optional[str] = None
     param: Optional[str] = None
+
+
+# ────────────────────────────────────────────────────────────────────────────
+# Guardrail models (guardrail-pivot slice 2, AD-12)
+# ────────────────────────────────────────────────────────────────────────────
+
+@dataclass(frozen=True, kw_only=True)
+class IncomingPrompt:
+    """Prompt submitted by a client for guardrail evaluation."""
+    prompt: str
+    model: str
+    stream: bool = False
+    id: str = field(default_factory=lambda: str(uuid4()))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+@dataclass(frozen=True, kw_only=True)
+class UpstreamResponse:
+    """Response received from the upstream LLM."""
+    id: str
+    decision_id: str
+    status_code: int
+    body: Dict[str, Any]
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+@dataclass(frozen=True, kw_only=True)
+class Verdict:
+    """Judge evaluation result for a prompt."""
+    verdict: str  # "safe" | "blocked"
+    reason: str
+    confidence: float
+
+
+@dataclass(frozen=True, kw_only=True)
+class PolicyDecision:
+    """Outcome of policy evaluation for a prompt."""
+    action: str  # "allow" | "block"
+    reason_code: Optional[str] = None
+    rule_id: Optional[str] = None
