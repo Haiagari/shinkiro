@@ -1,0 +1,28 @@
+context: |
+  PromptWall (formerly OzyRecon) — offensive security platform. Python 3.11+.
+  Stack: Click + Rich CLI, FastAPI, SQLAlchemy 2.0, pytest. Hexagonal layout:
+  src/domain (pure), src/application, src/core, src/adapters. Pivot in progress:
+  v9 recon stack removal, building AI guardrail (prompt interception + judge LLM
+  + policy engine) on the v10 scaffold. Frozen dataclasses, type hints, async
+  only for I/O. TDD mandatory for core/domain logic per AGENTS.md.
+strict_tdd: true
+testing:
+  test_command: pytest
+  runner: pytest
+  layers:
+    unit: true
+    integration: true
+    e2e: false
+  coverage: false
+  quality:
+    linter: ruff
+    type_checker: mypy
+    formatter: black
+phase_rules:
+  propose: review_budget_lines=800, delivery_strategy=auto-forecast
+  spec: scenarios must map to judge/guardrail behaviors
+  design: hexagonal layering, frozen domain models
+  tasks: atomic work units with tests
+  apply: TDD red-green-refactor, pytest gate
+  verify: pytest + ruff + mypy evidence
+  archive: sync delta specs to openspec/changes/archive

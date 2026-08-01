@@ -3,7 +3,6 @@ Configuración Centralizada de PromptWall
 Carga y provee acceso a la configuración del sistema.
 """
 
-import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -133,7 +132,7 @@ class Config:
     
     @property
     def promptwall_api_key(self) -> str:
-        return self.get('api_keys.promptwall_api_key', 'ozy-secret-key')
+        return self.get('api_keys.promptwall_api_key', 'promptwall-secret-key')
     
     @property
     def alert_level(self) -> str:
