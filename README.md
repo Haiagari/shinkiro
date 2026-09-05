@@ -162,30 +162,82 @@ Run synthetic automated adversarial probes against all active decoys to verify d
 
 ### 6. Automated Defense & SOAR Playbooks
 
-Shinkiro executes dynamic playbooks defined in `playbooks.yaml`:
+Shinkiro executes dynamic declarative playbooks defined in `playbooks.yaml`:
+
+```yaml
+version: "1.0"
+playbooks:
+  - id: "block-malicious-ssh"
+    name: "Auto-Drop SSH Brute Forcers"
+    trigger:
+      min_threat_score: 80
+      protocols: ["ssh"]
+    actions:
+      - type: "firewall_drop"
+        backend: "nftables"
+      - type: "webhook"
+        url: "https://soc.company.internal/alerts"
+```
+
+Export kernel and firewall rules dynamically:
 
 ```bash
-# Export blocklists directly
+# Generate in-kernel eBPF / XDP hardware drop driver
 ./bin/shinkiro kernel
+
+# Generate nftables blackhole table
 ./bin/shinkiro export --format nftables --threshold 80
+
+# Generate iptables DROP script
+./bin/shinkiro export --format iptables --threshold 80
 ```
 
 ### 7. Kubernetes Deployment (Helm)
 
+Deploy Shinkiro across Kubernetes clusters with a single command:
+
 ```bash
-helm install shinkiro ./deploy/helm/shinkiro
+# Install via Helm chart
+helm install shinkiro ./deploy/helm/shinkiro \
+  --namespace security \
+  --create-namespace \
+  --set decoys.ssh.enabled=true \
+  --set decoys.redis.enabled=true \
+  --set decoys.modbus.enabled=true
 ```
+
+The Helm chart enforces production-grade security contexts:
+- `readOnlyRootFilesystem: true`
+- `runAsNonRoot: true` (UID 65534 `nobody`)
+- `capabilities: drop: ["ALL"]`
+- Non-privileged port bindings (`2222`, `2323`, `5020`, `6379`, `8080`)
+
+### 8. MITRE ATT&CK® & ThreatFox IoC Feeds
+
+Every event and correlated attack campaign automatically outputs structured intelligence:
+- **MITRE ATT&CK TTP Mapping:** Tags tactics from Initial Access (`TA0001`), Execution (`TA0002`), Persistence (`TA0003`), Credential Access (`TA0006`), Lateral Movement (`TA0008`), and ICS Execution (`TA0108` / `T0855`).
+- **ThreatFox / AbuseIPDB Feeds:** Generate community-consumable IoC feeds with cryptographic SHA-256 payload checksums, ports, and confidence ratings.
+
 ---
 
-## Testing & Quality
+## Supply Chain & Runtime Hardening
 
-Shinkiro enforces 100% test coverage with Go's race detector enabled:
+Shinkiro achieves zero-trust runtime and supply chain posture:
+1. **Keyless Signing:** Release binaries and container images are cryptographically signed with **Sigstore Cosign** using OpenID Connect (OIDC).
+2. **SBOM & Provenance:** Automated releases attach **SPDX** and **CycloneDX** Software Bill of Materials (SBOMs) generated via Anchore Syft, accompanied by **SLSA Level 3** build provenance attestations.
+3. **Seccomp Sandboxing:** Includes `deploy/security/seccomp.json` blocking dangerous syscalls (`execve`, `fork`, `ptrace`, `chroot`).
+
+---
+
+## Testing & Quality Assurance
+
+Shinkiro enforces strict verification across all packages with Go's race detector enabled:
 
 ```bash
 # Run all unit tests with race condition detector
 make test
 
-# Run protocol parser security fuzzing
+# Run protocol parser security fuzzing (testing.F)
 make fuzz
 
 # Run concurrent connection spike / chaos flood tests
@@ -193,8 +245,22 @@ go test -v -race ./tests/chaos
 
 # Run end-to-end multi-decoy honeynet simulation
 go test -v -race ./tests/e2e
+```
+
+---
+
+## Documentation Index
+
+- [High-Interaction Protocol Matrix](docs/decoys/decoy-matrix.md): In-depth decoy specifications, payloads, and MITRE mapping.
+- [System Architecture & Data Flow](docs/architecture/system-architecture.md): In-memory multiplexer, eBPF XDP hook, and mesh gossip protocol.
+- [Threat Scoring & Campaign Correlator](docs/architecture/threat-scoring.md): Bayesian scoring algorithms, velocity multipliers, and playbooks.
+- [SIEM & STIX 2.1 Integration](docs/threat-intel/stix-misp-integration.md): ArcSight CEF, RFC5424 Syslog, Elastic ECS v8.x, and MISP schemas.
+- [Performance Benchmarks & Scaling](docs/benchmarks/performance.md): Microbenchmarks, flamegraphs, Cowrie/T-Pot comparison, and kernel tuning.
+- [Architecture Overview & API Reference](docs/api/architecture-overview.md): Go package APIs, state machines, and Prometheus metrics.
+
 ---
 
 ## License
 
 AGPL-3.0-only © 2026 Haiagari Security.
+
