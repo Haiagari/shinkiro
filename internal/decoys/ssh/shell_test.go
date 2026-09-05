@@ -32,4 +32,25 @@ func TestVirtualFS_Commands(t *testing.T) {
 	if out := vfs.Execute("history"); !strings.Contains(out, "whoami") {
 		t.Errorf("expected whoami in history: %s", out)
 	}
+
+	// 6. cd and pwd navigation
+	_ = vfs.Execute("cd /etc")
+	if out := vfs.Execute("pwd"); out != "/etc\n" {
+		t.Errorf("expected /etc pwd, got %q", out)
+	}
+
+	// 7. head command
+	if out := vfs.Execute("head /etc/passwd"); !strings.Contains(out, "root:x:0:0") {
+		t.Errorf("expected head output, got: %s", out)
+	}
+
+	// 8. find command
+	if out := vfs.Execute("find / -name *.conf"); !strings.Contains(out, "/etc/resolv.conf") {
+		t.Errorf("expected find output to contain resolv.conf, got: %s", out)
+	}
+
+	// 9. ls -la
+	if out := vfs.Execute("ls -la"); !strings.Contains(out, "total") {
+		t.Errorf("expected ls -la output, got: %s", out)
+	}
 }

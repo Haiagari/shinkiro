@@ -9,6 +9,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	mrand "math/rand"
 	"net"
 	"strings"
 	"time"
@@ -178,6 +179,10 @@ func (d *Decoy) handleSession(ctx context.Context, ch gossh.Channel, reqs <-chan
 			}
 
 			output := vfs.Execute(cmd)
+			// Realistic human/OS execution jitter (15ms - 45ms)
+			jitter := time.Duration(15+mrand.Intn(30)) * time.Millisecond
+			time.Sleep(jitter)
+
 			output = strings.ReplaceAll(output, "\n", "\r\n")
 			_, _ = ch.Write([]byte(output))
 		}
