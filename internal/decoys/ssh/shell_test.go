@@ -53,4 +53,22 @@ func TestVirtualFS_Commands(t *testing.T) {
 	if out := vfs.Execute("ls -la"); !strings.Contains(out, "total") {
 		t.Errorf("expected ls -la output, got: %s", out)
 	}
+
+	// 10. grep
+	if out := vfs.Execute("grep root /etc/passwd"); !strings.Contains(out, "root:x:0:0") {
+		t.Errorf("expected grep output to contain root user, got: %s", out)
+	}
+
+	// 11. sudo whoami
+	if out := vfs.Execute("sudo whoami"); out != "root\n" {
+		t.Errorf("expected sudo whoami to output root, got: %s", out)
+	}
+
+	// 12. df & free
+	if out := vfs.Execute("df"); !strings.Contains(out, "/dev/sda1") {
+		t.Errorf("expected df output, got: %s", out)
+	}
+	if out := vfs.Execute("free"); !strings.Contains(out, "Mem:") {
+		t.Errorf("expected free output, got: %s", out)
+	}
 }

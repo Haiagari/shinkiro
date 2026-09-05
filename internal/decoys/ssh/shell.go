@@ -195,6 +195,58 @@ func (fs *VirtualFS) Execute(cmdLine string) string {
 			return ".bash_history  .bashrc  .env  .profile\n"
 		}
 		return "bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var\n"
+	case "tail":
+		if len(parts) < 2 {
+			return "tail: missing file operand\n"
+		}
+		target := fs.resolvePath(parts[len(parts)-1])
+		if content, ok := fs.files[target]; ok {
+			lines := strings.Split(strings.TrimRight(content, "\n"), "\n")
+			limit := 10
+			if len(lines) < limit {
+				limit = len(lines)
+			}
+			return strings.Join(lines[len(lines)-limit:], "\n") + "\n"
+		}
+		return fmt.Sprintf("tail: cannot open '%s' for reading: No such file or directory\n", parts[len(parts)-1])
+	case "grep":
+		if len(parts) < 3 {
+			return "Usage: grep [PATTERN] [FILE]\n"
+		}
+		pattern := parts[1]
+		target := fs.resolvePath(parts[2])
+		if content, ok := fs.files[target]; ok {
+			var matches []string
+			for _, l := range strings.Split(content, "\n") {
+				if strings.Contains(l, pattern) {
+					matches = append(matches, l)
+				}
+			}
+			if len(matches) > 0 {
+				return strings.Join(matches, "\n") + "\n"
+			}
+			return ""
+		}
+		return fmt.Sprintf("grep: %s: No such file or directory\n", parts[2])
+	case "touch":
+		if len(parts) > 1 {
+			target := fs.resolvePath(parts[1])
+			if _, ok := fs.files[target]; !ok {
+				fs.files[target] = ""
+			}
+		}
+		return ""
+	case "mkdir":
+		return ""
+	case "df":
+		return "Filesystem     1K-blocks     Used Available Use% Mounted on\nudev             8151244        0   8151244   0% /dev\ntmpfs            1634568     1320   1633248   1% /run\n/dev/sda1       61421056 12582912  45682144  22% /\n"
+	case "free":
+		return "               total        used        free      shared  buff/cache   available\nMem:        16345688     2458112     9854120       14280     4033456    13568212\nSwap:        2097148           0     2097148\n"
+	case "sudo":
+		if len(parts) > 1 {
+			return fs.Execute(strings.Join(parts[1:], " "))
+		}
+		return "usage: sudo -h | -K | -k | -V\n"
 	case "curl", "wget":
 		return fmt.Sprintf("%s: connecting... connection timed out.\n", binary)
 	case "history":

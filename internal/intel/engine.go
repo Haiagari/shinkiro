@@ -6,12 +6,14 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 )
 
 type Engine struct {
 	eventsPath string
 	mu         sync.Mutex
 	blocklist  map[string]int // IP -> cumulative threat score
+	Correlator *Correlator
 }
 
 func NewEngine(eventsPath string) (*Engine, error) {
@@ -27,6 +29,7 @@ func NewEngine(eventsPath string) (*Engine, error) {
 	return &Engine{
 		eventsPath: eventsPath,
 		blocklist:  make(map[string]int),
+		Correlator: NewCorrelator(2 * time.Hour),
 	}, nil
 }
 
@@ -38,6 +41,11 @@ func (e *Engine) Record(ev Event) error {
 	if ev.Mitre == nil {
 		m := MapToMitre(ev.DecoyName, ev.Action, ev.Command)
 		ev.Mitre = &m
+	}
+
+	// Ingest into multi-protocol campaign correlator
+	if e.Correlator != nil {
+		e.Correlator.Ingest(ev)
 	}
 
 	// Update cumulative score

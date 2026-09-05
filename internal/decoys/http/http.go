@@ -61,6 +61,21 @@ func (d *Decoy) HandleConnection(ctx context.Context, conn net.Conn, events chan
 		event.Severity = intel.SeverityHigh
 		event.ThreatScore = 80
 		respBody = "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n[remote \"origin\"]\n\turl = git@github.com:internal/corporate-app.git\n"
+	case strings.Contains(path, "wp-login.php") || strings.Contains(path, "wp-admin"):
+		event.Severity = intel.SeverityHigh
+		event.ThreatScore = 75
+		contentType = "text/html"
+		respBody = `<!DOCTYPE html><html><head><title>WordPress &rsaquo; Log In</title></head><body class="login"><form name="loginform" id="loginform" action="/wp-login.php" method="post"><p><label for="user_login">Username or Email Address</label><input type="text" name="log" id="user_login" class="input" size="20" /></p><p><label for="user_pass">Password</label><input type="password" name="pwd" id="user_pass" class="input" size="20" /></p><p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="Log In" /></p></form></body></html>`
+	case strings.Contains(path, "grafana") || strings.Contains(path, "/api/v1/query"):
+		event.Severity = intel.SeverityHigh
+		event.ThreatScore = 75
+		contentType = "application/json"
+		respBody = `{"version":"10.2.3","database":"ok","commit":"0d86927","buildstamp":1704987654}`
+	case strings.Contains(path, "jenkins") || strings.Contains(path, "j_spring_security_check"):
+		event.Severity = intel.SeverityCritical
+		event.ThreatScore = 85
+		contentType = "text/html"
+		respBody = `<html><head><title>Jenkins [Jenkins]</title></head><body><h1>Sign in [Jenkins]</h1><form action="j_spring_security_check" method="POST"><input type="text" name="j_username" placeholder="Username"/><input type="password" name="j_password" placeholder="Password"/><input type="submit" value="Sign in"/></form></body></html>`
 	default:
 		respBody = "<html><body><h1>404 Not Found</h1></body></html>"
 		contentType = "text/html"
