@@ -4,53 +4,31 @@
 
 Shinkiro is structured following clean hexagonal architecture in **Go 1.24+**, prioritizing zero external daemon dependencies, in-memory isolation, and high-concurrency event multiplexing.
 
-```text
-               +-------------------------------------------------------+
-               |                    Adversary Traffic                  |
-               |       (Port 2222/SSH, 6379/Redis, 2375/Docker)        |
-               +---------------------------+---------------------------+
-                                           |
-                                           v
-               +-------------------------------------------------------+
-               |              Shinkiro Core Listener Multiplexer       |
-               |          - Max connection limits                      |
-               |          - Idle deadline timeouts (30s)               |
-               |          - Graceful context cancellation              |
-               +---------------------------+---------------------------+
-                                           |
-                    +----------------------+----------------------+
-                    |                      |                      |
-                    v                      v                      v
-         +--------------------+  +--------------------+  +--------------------+
-         |   decoy/ssh        |  |   decoy/redis      |  |   decoy/docker     |
-         | - OpenSSH Banner   |  | - RESP protocol    |  | - REST API v1.24   |
-         | - Synthetic Shell  |  | - Key traps        |  | - Container probes |
-         | - Session TTY log  |  | - Lua EVAL hash    |  | - Mining payloads  |
-         +----------+---------+  +---------+----------+  +---------+----------+
-                    |                      |                       |
-                    +----------------------+-----------------------+
-                                           | Emits Telemetry Event
-                                           v
-               +-------------------------------------------------------+
-               |              Threat Intelligence Engine               |
-               |          - IP & Session Aggregator                    |
-               |          - SHA-256 Payload Hasher & IoC Extractor     |
-               |          - Dynamic Threat Scorer                      |
-               +---------------------------+---------------------------+
-                                           |
-                    +----------------------+----------------------+
-                    |                                             |
-                    v                                             v
-         +--------------------+                        +--------------------+
-         |  JSONL / Syslog    |                        | Live Terminal TUI  |
-         |  Audit Trail       |                        | (Bubbletea)        |
-         +--------------------+                        +--------------------+
-                    |
-                    v
-         +--------------------+
-         | Active Defense     |
-         | (iptables/nftables)|
-         +--------------------+
+```mermaid
+graph TD
+    Mux["Shinkiro Core Listener Multiplexer<br/>- Max connection limits<br/>- Idle deadline timeouts (30s)<br/>- Graceful context cancellation"]
+
+    D1["decoy/ssh<br/>- OpenSSH Banner<br/>- Synthetic Shell<br/>- Session TTY log"]
+    D2["decoy/redis<br/>- RESP protocol<br/>- Key traps<br/>- Lua EVAL hash"]
+    D3["decoy/docker<br/>- REST API v1.24<br/>- Container probes<br/>- Mining payloads"]
+
+    Mux --> D1
+    Mux --> D2
+    Mux --> D3
+
+    Intel["Threat Intelligence Engine<br/>- IP & Session Aggregator<br/>- SHA-256 Payload Hasher<br/>- Dynamic Threat Scorer"]
+
+    D1 -->|Emits Event| Intel
+    D2 -->|Emits Event| Intel
+    D3 -->|Emits Event| Intel
+
+    Audit["JSONL / Syslog Audit Trail"]
+    TUI["Live Terminal TUI (Bubbletea)"]
+    Defense["Active Defense (iptables / nftables / eBPF)"]
+
+    Intel --> Audit
+    Intel --> TUI
+    Audit --> Defense
 ```
 
 ## 2. Component Design & Interfaces
