@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "sdd-orchestrator": {
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "sdd-apply": {
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "sdd-verify": {
+      "model": "opencode/deepseek-v4-flash-free"
+    }
+  }
+}

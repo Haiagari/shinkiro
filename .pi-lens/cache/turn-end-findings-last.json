@@ -1,0 +1,4 @@
+{
+  "signature": "tests/cli/test_compliance_check_lookup.py|tests/intelligence/test_orchestrator.py::Unresolved from this turn — tests/intelligence/test_orchestrator.py:\n🔴 STOP — 1 issue(s) must be fixed:\n  Argument of type \"Column[int]\" cannot be assigned to parameter \"scan_id\" of type \"int | None\" in function \"__init__\"\n    Type \"Column[int]\" is not assignable to type \"int | None\"\n      \"Column[int]\" is not assignable to \"int\"\n      \"Column[int]\" is not assignable to \"None\"",
+  "sessionId": "lens-mp6250qm-7f62b464"
+}

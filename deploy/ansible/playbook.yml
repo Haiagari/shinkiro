@@ -1,0 +1,70 @@
+---
+- name: Deploy Shinkiro Ephemeral Honeynet Sensor Mesh
+  hosts: sensors
+  become: true
+  vars:
+    shinkiro_version: "v0.2.0"
+    shinkiro_user: "shinkiro"
+    shinkiro_dir: "/opt/shinkiro"
+
+  tasks:
+    - name: Ensure shinkiro group exists
+      ansible.builtin.group:
+        name: "{{ shinkiro_user }}"
+        state: present
+
+    - name: Ensure shinkiro user exists
+      ansible.builtin.user:
+        name: "{{ shinkiro_user }}"
+        group: "{{ shinkiro_user }}"
+        shell: /usr/sbin/nologin
+        system: true
+
+    - name: Create Shinkiro working directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ shinkiro_user }}"
+        group: "{{ shinkiro_user }}"
+        mode: '0750'
+      loop:
+        - "{{ shinkiro_dir }}"
+        - "{{ shinkiro_dir }}/data"
+
+    - name: Install Shinkiro binary
+      ansible.builtin.copy:
+        src: "../../bin/shinkiro"
+        dest: "/usr/local/bin/shinkiro"
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Deploy Shinkiro configuration
+      ansible.builtin.copy:
+        src: "../../config.yaml"
+        dest: "{{ shinkiro_dir }}/config.yaml"
+        owner: "{{ shinkiro_user }}"
+        group: "{{ shinkiro_user }}"
+        mode: '0640'
+
+    - name: Install Systemd service
+      ansible.builtin.copy:
+        src: "../systemd/shinkiro.service"
+        dest: "/etc/systemd/system/shinkiro.service"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart Shinkiro
+
+    - name: Enable and start Shinkiro service
+      ansible.builtin.systemd:
+        name: shinkiro
+        enabled: true
+        state: started
+        daemon_reload: true
+
+  handlers:
+    - name: Restart Shinkiro
+      ansible.builtin.systemd:
+        name: shinkiro
+        state: restarted

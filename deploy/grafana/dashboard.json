@@ -1,0 +1,42 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Total Attacker Probes",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "targets": [{ "expr": "shinkiro_connections_total", "legendFormat": "Probes" }]
+    },
+    {
+      "title": "Mitigated / Blocked IPs",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "targets": [{ "expr": "shinkiro_probes_blocked_total", "legendFormat": "Blocked" }]
+    },
+    {
+      "title": "Critical Severity Threats",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "targets": [{ "expr": "shinkiro_critical_threats_total", "legendFormat": "Critical" }]
+    },
+    {
+      "title": "Probes by Decoy Protocol",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 },
+      "targets": [{ "expr": "rate(shinkiro_decoy_probes[1m])", "legendFormat": "{{service}}" }]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["shinkiro", "honeypot", "security"],
+  "time": { "from": "now-1h", "to": "now" },
+  "title": "Shinkiro Deception Mesh & Threat Telemetry",
+  "version": 1
+}

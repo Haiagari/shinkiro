@@ -1,0 +1,37 @@
+# Binaries and build artifacts
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Data and logs
+data/
+logs/
+*.log
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.token
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Agents & local tooling
+.agents/
+.atl/
+.cocoindex_code/
+.pi/
+.pi-lens/
+runtime/
+runtime/

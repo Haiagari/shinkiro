@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  shinkiro:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    container_name: shinkiro-mesh
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    ports:
+      - "2222:2222"   # SSH Decoy
+      - "2375:2375"   # Docker API Decoy
+      - "5432:5432"   # PostgreSQL Decoy
+      - "6379:6379"   # Redis Decoy
+      - "6443:6443"   # Kubernetes API Decoy
+      - "8080:8080"   # HTTP Traps (.env / .git)
+    volumes:
+      - ./data:/data
+    environment:
+      - SHINKIRO_NODE=shinkiro-cloud-sensor-01

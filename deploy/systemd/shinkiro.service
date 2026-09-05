@@ -1,0 +1,17 @@
+[Unit]
+Description=Shinkiro Ephemeral Cyber Deception & Honeynet Mesh
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/shinkiro
+ExecStart=/usr/local/bin/shinkiro up
+Restart=always
+RestartSec=5s
+LimitNOFILE=65536
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_ADMIN CAP_NET_RAW
+AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_NET_ADMIN CAP_NET_RAW
+
+[Install]
+WantedBy=multi-user.target
