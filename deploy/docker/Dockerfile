@@ -12,7 +12,7 @@ RUN apk --no-cache add ca-certificates iptables nftables tzdata
 WORKDIR /root/
 COPY --from=builder /shinkiro /usr/local/bin/shinkiro
 
-EXPOSE 2222 2375 5432 6379 6443 8080
+EXPOSE 502 1053 1883 2222 2323 2375 2525 4445 5432 6379 6443 8080 8169 9100 9200 27017
 
 VOLUME ["/data"]
 

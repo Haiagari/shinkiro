@@ -117,6 +117,9 @@ OPTIONS:
 }
 
 func runCanary(args []string) {
+	if len(args) > 0 && args[0] == "generate" {
+		args = args[1:]
+	}
 	fs := flag.NewFlagSet("canary", flag.ExitOnError)
 	label := fs.String("label", "canary-prod-seed", "Attribution tag for the canary token")
 	_ = fs.Parse(args)
@@ -125,6 +128,7 @@ func runCanary(args []string) {
 	data, _ := json.MarshalIndent(token, "", "  ")
 	fmt.Println(string(data))
 }
+
 
 func runUp(interactiveUI bool) {
 	if !interactiveUI {
@@ -300,9 +304,15 @@ func runExport(args []string) {
 func runSTIX(args []string) {
 	data, err := os.ReadFile("data/events.jsonl")
 	if err != nil {
+		if os.IsNotExist(err) {
+			emptyBundle, _ := stix.ConvertEventsToSTIX(nil)
+			fmt.Println(string(emptyBundle))
+			return
+		}
 		fmt.Printf("❌ Failed to read events log: %v\n", err)
 		return
 	}
+
 
 	var events []intel.Event
 	lines := splitLines(string(data))

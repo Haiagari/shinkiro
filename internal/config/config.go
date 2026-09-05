@@ -46,6 +46,7 @@ func DefaultConfig() *Config {
 			"smb":      {Enabled: true, Port: 4445},
 			"telnet":   {Enabled: true, Port: 2323},
 			"mqtt":     {Enabled: true, Port: 1883},
+			"modbus":   {Enabled: true, Port: 502},
 		},
 	}
 }
