@@ -17,6 +17,13 @@
 
 Adversaries scanning your perimeter or attempting lateral movement encounter realistic, responsive services that safely entrap their scanners, credential brute-forcers, and manual exploit attempts without granting access to the host.
 
+<p align="center">
+  <img src="docs/diagrams/architecture-darkmode.svg" alt="Shinkiro System Architecture" width="100%">
+</p>
+
+<details>
+<summary><b>View Mermaid Source Diagram</b></summary>
+
 ```mermaid
 graph TD
     subgraph Adversary ["🌐 Adversary Traffic Vectors"]
@@ -71,6 +78,7 @@ graph TD
     Intel --> SIEM
     Intel -->|Threat Score >= 80| Drop
 ```
+</details>
 
 ---
 
@@ -137,8 +145,6 @@ Run synthetic automated adversarial probes against all active decoys to verify d
 ```bash
 ./bin/shinkiro kernel
 ./bin/shinkiro export --format nftables --threshold 80
-```
-
 ---
 
 ## Testing & Quality
@@ -154,8 +160,6 @@ go test -v -race ./tests/chaos
 
 # Run end-to-end multi-decoy honeynet simulation
 go test -v -race ./tests/e2e
-```
-
 ---
 
 ## License
