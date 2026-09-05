@@ -17,18 +17,16 @@
 
 ## 2. Dynamic Threat Scoring & Telemetry Pipeline
 
-```text
-[ Incoming Attack ]
-       ↓
-[ Core Multiplexer ] ── (Memory isolation, Slowloris timeouts)
-       ↓
-[ Active Decoy ] ── (Protocol Handshake, Credential/Command extraction)
-       ↓
-[ Threat Intelligence Engine ] ── (SHA-256 Hashing, GeoIP/ASN Resolution)
-       ↓
-       ├──► [ JSONL Audit Stream ] (`data/events.jsonl`)
-       ├──► [ Prometheus / OpenMetrics ] (`:9100/metrics`)
-       ├──► [ Webhooks / SIEM ] (Slack / Discord / OpenCTI)
-       ├──► [ STIX 2.1 Bundles ] (`shinkiro stix`)
-       └──► [ Active Defense Drop ] (eBPF XDP / nftables / iptables)
+```mermaid
+graph TD
+    A["Incoming Attack"] --> M["Core Multiplexer<br/>(Memory isolation, Slowloris timeouts)"]
+    M --> D["Active Decoy<br/>(Protocol Handshake, Credential/Command extraction)"]
+    D --> I["Threat Intelligence Engine<br/>(SHA-256 Hashing, GeoIP/ASN Resolution)"]
+    
+    I --> O1["JSONL Audit Stream (data/events.jsonl)"]
+    I --> O2["Prometheus / OpenMetrics (:9100/metrics)"]
+    I --> O3["Webhooks / SIEM (Slack / Discord)"]
+    I --> O4["STIX 2.1 Bundles (shinkiro stix)"]
+    I --> O5["ECS v8.x Exporter (shinkiro ecs)"]
+    I --> O6["Active Defense Drop (eBPF XDP / nftables / iptables)"]
 ```

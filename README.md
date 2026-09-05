@@ -17,48 +17,59 @@
 
 Adversaries scanning your perimeter or attempting lateral movement encounter realistic, responsive services that safely entrap their scanners, credential brute-forcers, and manual exploit attempts without granting access to the host.
 
-```text
-               +-------------------------------------------------------+
-               |                    Adversary Traffic                  |
-               | (SSH, Telnet, Redis, Docker, Postgres, K8s, MQTT, SMB)|
-               +---------------------------+---------------------------+
-                                           |
-                                           v
-               +-------------------------------------------------------+
-               |            Shinkiro Core Listener Multiplexer         |
-               |    - Memory-jailed goroutine isolation                |
-               |    - Idle connection deadlines & Slowloris defense    |
-               |    - Zero-copy Libpcap 2.4 raw frame logging          |
-               +---------------------------+---------------------------+
-                                           |
-    +-------+-------+-------+-------+------+--------+-------+-------+-------+
-    |       |       |       |       |       |       |       |       |       |
-    v       v       v       v       v       v       v       v       v       v
-+-------++-------++-------++-------++-------++-------++-------++-------++-------+
-|  SSH  ||Telnet || Redis || Docker||  MQTT ||Postgres||  SMB  ||  AWS  ||  eBPF |
-| :2222 || :2323 || :6379 || :2375 || :1883 || :5432  || :4445 || :8169 || (XDP) |
-+---+---++---+---++---+---++---+---++---+---++---+---++---+---++---+---++---+---+
-    |       |       |       |       |       |       |       |       |       |
-    +-------+-------+-------+-------+---+---+-------+-------+-------+-------+
-                                        |
-                                        v (Structured Telemetry Event)
-               +-------------------------------------------------------+
-               |              Threat Intelligence Engine               |
-               |   - Real-time IP profiling & session aggregation      |
-               |   - Cryptographic payload hashing (SHA-256)           |
-               |   - Dynamic threat scoring matrix (0-100)             |
-               |   - STIX 2.1 / MISP threat sharing format             |
-               |   - Embedded Offline GeoIP / Autonomous System lookup |
-               +---------------------------+---------------------------+
-                                           |
-                    +----------------------+----------------------+
-                    |                                             |
-                    v                                             v
-         +--------------------+                        +--------------------+
-         |   Live Bubbletea   |                        | Automated Defense  |
-         |   Terminal TUI     |                        | (eBPF / nftables / |
-         |   `shinkiro tui`   |                        |  iptables DROP)    |
-         +--------------------+                        +--------------------+
+```mermaid
+graph TD
+    subgraph Adversary ["🌐 Adversary Traffic Vectors"]
+        Attacker["Adversary Probes<br/>(SSH, Telnet, Redis, Docker, Postgres, K8s, MQTT, SMB)"]
+    end
+
+    subgraph Core ["🛡️ Shinkiro Core Multiplexer"]
+        Mux["In-Memory Multiplexer<br/>- Strict Read/Write Deadlines<br/>- Slowloris Defense<br/>- Raw Libpcap 2.4 Forensics"]
+    end
+
+    subgraph Decoys ["🎭 Active Protocol Decoys"]
+        D1["SSH :2222"]
+        D2["Telnet :2323"]
+        D3["Redis :6379"]
+        D4["Docker :2375"]
+        D5["MQTT :1883"]
+        D6["Postgres :5432"]
+        D7["SMB :4445"]
+        D8["AWS IMDS :8169"]
+    end
+
+    subgraph Pipeline ["⚡ Telemetry & Attribution Engine"]
+        Intel["Threat Intel Engine<br/>- SHA-256 Payload Hashing<br/>- Offline GeoIP & ASN<br/>- Dynamic Scoring (0-100)"]
+    end
+
+    subgraph Defense ["🚀 Automated Response & SecOps"]
+        TUI["Live Terminal Dashboard<br/>(shinkiro tui)"]
+        SIEM["SIEM Feeds<br/>(STIX 2.1 / ECS v8.x)"]
+        Drop["Kernel-Level Defense<br/>(eBPF / XDP & nftables DROP)"]
+    end
+
+    Attacker --> Mux
+    Mux --> D1
+    Mux --> D2
+    Mux --> D3
+    Mux --> D4
+    Mux --> D5
+    Mux --> D6
+    Mux --> D7
+    Mux --> D8
+
+    D1 --> Intel
+    D2 --> Intel
+    D3 --> Intel
+    D4 --> Intel
+    D5 --> Intel
+    D6 --> Intel
+    D7 --> Intel
+    D8 --> Intel
+
+    Intel --> TUI
+    Intel --> SIEM
+    Intel -->|Threat Score >= 80| Drop
 ```
 
 ---
