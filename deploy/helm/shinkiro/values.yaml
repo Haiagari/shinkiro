@@ -1,0 +1,38 @@
+# Default values for Shinkiro Cyber Deception Mesh
+replicaCount: 1
+
+image:
+  repository: haiagari/shinkiro
+  pullPolicy: IfNotPresent
+  tag: "0.4.0"
+
+service:
+  type: ClusterIP
+  ports:
+    ssh: 2222
+    redis: 6379
+    postgres: 5432
+    docker: 2375
+    http: 8080
+    k8s: 6443
+    metrics: 9100
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65534
+
+env:
+  SHINKIRO_NODE_NAME: "shinkiro-k8s-mesh-sensor"

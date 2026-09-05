@@ -37,4 +37,5 @@ fuzz:
 	@go test -fuzz=FuzzPostgresDecoy -fuzztime=5s ./internal/decoys/postgres
 	@go test -fuzz=FuzzDockerDecoy -fuzztime=5s ./internal/decoys/docker
 	@go test -fuzz=FuzzVirtualFSExecute -fuzztime=5s ./internal/decoys/ssh
+	@go test -fuzz=FuzzModbusDecoy -fuzztime=5s ./internal/decoys/modbus
 	@echo "✅ All fuzz targets passed without panics or crashes."

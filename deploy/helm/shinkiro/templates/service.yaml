@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-shinkiro
+  labels:
+    app.kubernetes.io/name: shinkiro
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app.kubernetes.io/name: shinkiro
+  ports:
+    - name: ssh
+      port: {{ .Values.service.ports.ssh }}
+      targetPort: {{ .Values.service.ports.ssh }}
+    - name: redis
+      port: {{ .Values.service.ports.redis }}
+      targetPort: {{ .Values.service.ports.redis }}
+    - name: postgres
+      port: {{ .Values.service.ports.postgres }}
+      targetPort: {{ .Values.service.ports.postgres }}
+    - name: docker
+      port: {{ .Values.service.ports.docker }}
+      targetPort: {{ .Values.service.ports.docker }}
+    - name: http
+      port: {{ .Values.service.ports.http }}
+      targetPort: {{ .Values.service.ports.http }}
+    - name: k8s
+      port: {{ .Values.service.ports.k8s }}
+      targetPort: {{ .Values.service.ports.k8s }}
+    - name: metrics
+      port: {{ .Values.service.ports.metrics }}
+      targetPort: {{ .Values.service.ports.metrics }}

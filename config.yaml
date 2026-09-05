@@ -49,3 +49,6 @@ services:
   mqtt:
     enabled: true
     port: 1883
+  modbus:
+    enabled: true
+    port: 502

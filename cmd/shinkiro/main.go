@@ -31,6 +31,7 @@ import (
 	"github.com/Haiagari/shinkiro/internal/decoys/smb"
 	"github.com/Haiagari/shinkiro/internal/decoys/telnet"
 	"github.com/Haiagari/shinkiro/internal/decoys/mqtt"
+	"github.com/Haiagari/shinkiro/internal/decoys/modbus"
 	"github.com/Haiagari/shinkiro/internal/defense"
 	"github.com/Haiagari/shinkiro/internal/ebpf"
 	"github.com/Haiagari/shinkiro/internal/intel"
@@ -163,6 +164,7 @@ func runUp(interactiveUI bool) {
 	mux.RegisterDecoy(smb.New())
 	mux.RegisterDecoy(telnet.New())
 	mux.RegisterDecoy(mqtt.New())
+	mux.RegisterDecoy(modbus.New())
 
 	soarEngine := soar.NewEngine()
 	_ = soarEngine.LoadYAML("playbooks.yaml")
