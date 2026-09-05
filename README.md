@@ -18,7 +18,7 @@
 Adversaries scanning your perimeter or attempting lateral movement encounter realistic, responsive services that safely entrap their scanners, credential brute-forcers, and manual exploit attempts without granting access to the host.
 
 <p align="center">
-  <img src="docs/diagrams/architecture-darkmode.svg" alt="Shinkiro System Architecture" width="100%">
+  <img src="docs/diagrams/architecture-darkmode.jpg" alt="Shinkiro System Architecture" width="100%">
 </p>
 
 <details>
