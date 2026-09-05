@@ -36,6 +36,7 @@ import (
 	"github.com/Haiagari/shinkiro/internal/intel"
 	"github.com/Haiagari/shinkiro/internal/intel/geoip"
 	"github.com/Haiagari/shinkiro/internal/intel/ecs"
+	"github.com/Haiagari/shinkiro/internal/intel/siem"
 	"github.com/Haiagari/shinkiro/internal/intel/stix"
 	"github.com/Haiagari/shinkiro/internal/metrics"
 	"github.com/Haiagari/shinkiro/internal/tui"
@@ -72,6 +73,10 @@ func main() {
 		runSTIX(os.Args[2:])
 	case "ecs":
 		runECS(os.Args[2:])
+	case "cef":
+		runCEF(os.Args[2:])
+	case "syslog":
+		runSyslog(os.Args[2:])
 	case "cluster":
 		runCluster(os.Args[2:])
 	case "ebpf", "kernel":
@@ -95,6 +100,8 @@ USAGE:
   shinkiro export blocklist       Export malicious IPs to firewall format
   shinkiro stix                   Export threat intelligence in STIX 2.1 JSON bundle
   shinkiro ecs                    Export telemetry in Elastic Common Schema (ECS v8.x) format
+  shinkiro cef                    Export telemetry in ArcSight Common Event Format (CEF)
+  shinkiro syslog                 Export telemetry as RFC5424 Syslog stream
   shinkiro cluster hub            Start distributed threat intelligence sync hub
   shinkiro kernel [rules]         Generate kernel-level XDP/eBPF / nftables drop rules
   shinkiro simulate               Execute red-team adversarial probe suite against decoys
@@ -404,4 +411,42 @@ func runECS(args []string) {
 		os.Exit(1)
 	}
 	fmt.Println(string(data))
+}
+
+func runCEF(args []string) {
+	cfg, err := config.LoadConfig("config.yaml")
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+		os.Exit(1)
+	}
+
+	engine, err := intel.NewEngine(cfg.AuditLogPath)
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+		os.Exit(1)
+	}
+
+	events := engine.RecentEvents(500)
+	for _, ev := range events {
+		fmt.Println(siem.FormatCEF(ev, cfg.NodeName))
+	}
+}
+
+func runSyslog(args []string) {
+	cfg, err := config.LoadConfig("config.yaml")
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+		os.Exit(1)
+	}
+
+	engine, err := intel.NewEngine(cfg.AuditLogPath)
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+		os.Exit(1)
+	}
+
+	events := engine.RecentEvents(500)
+	for _, ev := range events {
+		fmt.Println(siem.FormatSyslog(ev, cfg.NodeName))
+	}
 }

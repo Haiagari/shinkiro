@@ -29,5 +29,6 @@ type Event struct {
 	Password      string            `json:"password,omitempty"`
 	Command       string            `json:"command,omitempty"`
 	PayloadHashes []string          `json:"payload_hashes,omitempty"`
+	Mitre         *MitreAttack      `json:"mitre,omitempty"`
 	Metadata      map[string]string `json:"metadata,omitempty"`
 }

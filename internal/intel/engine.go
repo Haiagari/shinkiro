@@ -34,6 +34,12 @@ func (e *Engine) Record(ev Event) error {
 	e.mu.Lock()
 	defer e.mu.Unlock()
 
+	// Ensure MITRE mapping is populated
+	if ev.Mitre == nil {
+		m := MapToMitre(ev.DecoyName, ev.Action, ev.Command)
+		ev.Mitre = &m
+	}
+
 	// Update cumulative score
 	e.blocklist[ev.RemoteIP] += ev.ThreatScore
 

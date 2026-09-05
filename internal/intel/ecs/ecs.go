@@ -72,11 +72,18 @@ type NetworkFields struct {
 }
 
 type ThreatFields struct {
-	Framework string        `json:"framework"`
-	Tactic    *TacticFields `json:"tactic,omitempty"`
+	Framework string           `json:"framework"`
+	Tactic    *TacticFields    `json:"tactic,omitempty"`
+	Technique *TechniqueFields `json:"technique,omitempty"`
 }
 
 type TacticFields struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Reference string `json:"reference"`
+}
+
+type TechniqueFields struct {
 	ID        string `json:"id"`
 	Name      string `json:"name"`
 	Reference string `json:"reference"`
@@ -120,13 +127,25 @@ func ConvertToECS(ev intel.Event, nodeHostname string) ECSEvent {
 		},
 		Threat: ThreatFields{
 			Framework: "MITRE ATT&CK",
-			Tactic: &TacticFields{
-				ID:        "TA0001",
-				Name:      "Initial Access",
-				Reference: "https://attack.mitre.org/tactics/TA0001/",
-			},
 		},
 		Labels: ev.Metadata,
+	}
+
+	mitreObj := ev.Mitre
+	if mitreObj == nil {
+		m := intel.MapToMitre(ev.DecoyName, ev.Action, ev.Command)
+		mitreObj = &m
+	}
+
+	ecsEv.Threat.Tactic = &TacticFields{
+		ID:        mitreObj.TacticID,
+		Name:      mitreObj.TacticName,
+		Reference: "https://attack.mitre.org/tactics/" + mitreObj.TacticID + "/",
+	}
+	ecsEv.Threat.Technique = &TechniqueFields{
+		ID:        mitreObj.TechniqueID,
+		Name:      mitreObj.TechniqueName,
+		Reference: mitreObj.Reference,
 	}
 
 	if ev.Username != "" {
