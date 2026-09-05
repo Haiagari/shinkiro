@@ -2,7 +2,7 @@
 
 All notable changes to **Shinkiro** are documented in this file following [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
 
-## [v0.4.0] - 2026-09-05
+## [v1.0.0] - 2026-09-05
 
 ### Added
 - **Modbus/TCP Industrial Decoy (`:502`)**: ICS/SCADA PLC emulator supporting MBAP framing, holding registers, coils, and direct MITRE for ICS `T0855` mapping.

@@ -86,7 +86,7 @@ func main() {
 	case "simulate", "attack":
 		runSimulate(os.Args[2:])
 	case "version", "-v", "--version":
-		fmt.Println("Shinkiro v0.4.0 — High-Interaction Deception Engine (Haiagari Security)")
+		fmt.Println("Shinkiro v1.0.0 — High-Interaction Deception Engine (Haiagari Security)")
 	default:
 		printUsage()
 	}

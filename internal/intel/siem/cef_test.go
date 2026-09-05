@@ -31,7 +31,7 @@ func TestFormatCEF(t *testing.T) {
 
 	cef := FormatCEF(ev, "sensor-01")
 
-	if !strings.HasPrefix(cef, "CEF:0|Haiagari|Shinkiro|0.4.0|redis|CONFIG GET|8|") {
+	if !strings.HasPrefix(cef, "CEF:0|Haiagari|Shinkiro|1.0.0|redis|CONFIG GET|8|") {
 		t.Fatalf("unexpected CEF header: %s", cef)
 	}
 

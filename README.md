@@ -3,7 +3,7 @@
 **Ephemeral Cyber Deception & Attacker Intelligence Mesh**  
 *Zero-footprint in-memory honeynet, high-interaction virtual shells, automated IoC extraction, STIX 2.1 feeds, distributed cluster mesh, red team attack simulator, and kernel-level eBPF/XDP defense.*
 
-[![Version](https://img.shields.io/badge/version-0.4.0-6366f1?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.0.0-6366f1?style=flat-square)](CHANGELOG.md)
 [![Tests](https://img.shields.io/badge/tests-passing-22c55e?style=flat-square)](#testing)
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square)](https://golang.org/)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-f59e0b?style=flat-square)](LICENSE)

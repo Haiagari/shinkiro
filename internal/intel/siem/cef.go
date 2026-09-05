@@ -57,7 +57,7 @@ func FormatCEF(ev intel.Event, deviceHost string) string {
 		exts = append(exts, fmt.Sprintf("msg=%s", escapeCEFValue(ev.Command)))
 	}
 
-	return fmt.Sprintf("CEF:0|Haiagari|Shinkiro|0.4.0|%s|%s|%d|%s",
+	return fmt.Sprintf("CEF:0|Haiagari|Shinkiro|1.0.0|%s|%s|%d|%s",
 		ev.DecoyName,
 		escapeCEFValue(ev.Action),
 		cefSeverity,

@@ -2,9 +2,9 @@
 replicaCount: 1
 
 image:
-  repository: haiagari/shinkiro
+  repository: ghcr.io/haiagari/shinkiro
   pullPolicy: IfNotPresent
-  tag: "0.4.0"
+  tag: "1.0.0"
 
 service:
   type: ClusterIP
