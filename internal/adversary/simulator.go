@@ -85,6 +85,34 @@ func DefaultScenarios() []AttackScenario {
 			Payload:     []byte("GET /latest/meta-data/iam/security-credentials/admin-role HTTP/1.1\r\nHost: 169.254.169.254\r\n\r\n"),
 			ExpectMatch: "AccessKeyId",
 		},
+		{
+			Name:        "Modbus/TCP SCADA Holding Registers Probe",
+			Protocol:    "tcp",
+			Port:        502,
+			Payload:     []byte{0x00, 0x01, 0x00, 0x00, 0x00, 0x06, 0x01, 0x03, 0x00, 0x00, 0x00, 0x02},
+			ExpectMatch: "",
+		},
+		{
+			Name:        "PostgreSQL 3.0 Startup Handshake",
+			Protocol:    "tcp",
+			Port:        5432,
+			Payload:     []byte{0x00, 0x00, 0x00, 0x08, 0x04, 0xd2, 0x16, 0x2f}, // SSLRequest
+			ExpectMatch: "N",
+		},
+		{
+			Name:        "Docker Engine Daemon Recon",
+			Protocol:    "http",
+			Port:        2375,
+			Payload:     []byte("GET /version HTTP/1.1\r\nHost: target\r\n\r\n"),
+			ExpectMatch: "Docker",
+		},
+		{
+			Name:        "Kubernetes Control Plane API Discovery",
+			Protocol:    "http",
+			Port:        6443,
+			Payload:     []byte("GET /version HTTP/1.1\r\nHost: target\r\n\r\n"),
+			ExpectMatch: "kubernetes",
+		},
 	}
 }
 

@@ -2,14 +2,22 @@
 
 All notable changes to **Shinkiro** are documented in this file following [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
 
-## [v0.4.0] - 2026-09-04
+## [v0.4.0] - 2026-09-05
 
 ### Added
-- **Telnet IoT Botnet Decoy (`:2323`)**: Emulates BusyBox v1.31.1 embedded Linux router, handles IAC negotiation, logs brute-force Mirai botnet credentials, and executes fake shell sessions.
-- **MQTT Broker Decoy (`:1883`)**: MQTT v3.1.1 protocol parser trapping unauthorized IoT client connections, malformed exploit topics, and sensor command injections.
-- **Raw PCAP Forensic Engine**: Zero-copy packet capture writer storing malicious payloads in standard libpcap 2.4 format (`data/dump.pcap`) for Wireshark inspection.
-- **SMB/CIFS Decoy (`:4445`)**: NetBIOS session and SMBv2 negotiate parser detecting EternalBlue and lateral movement ransomware reconnaissance.
+- **Modbus/TCP Industrial Decoy (`:502`)**: ICS/SCADA PLC emulator supporting MBAP framing, holding registers, coils, and direct MITRE for ICS `T0855` mapping.
+- **SOAR-Lite Playbook Automation Engine**: Declarative YAML playbooks (`playbooks.yaml`) for rule-based automated IP containment and alerting.
+- **Enterprise SIEM Exporters**: Native ArcSight CEF, RFC5424 Syslog, Elastic Common Schema (ECS v8.x), STIX 2.1, and ThreatFox/AbuseIPDB feed generation.
+- **Multi-Protocol Campaign Correlator**: Cross-protocol adversary session aggregation with Bayesian scoring and velocity multipliers.
+- **Kubernetes Helm Chart**: Production-ready deployment (`deploy/helm/shinkiro`) with strict security contexts (`readOnlyRootFilesystem`, `runAsNonRoot`, `drop: [ALL]`).
+- **Comprehensive Fuzzing Suite**: Continuous native Go fuzz tests (`testing.F`) across all protocol parsers via `make fuzz`.
+- **Supply Chain Security**: Sigstore Cosign keyless OIDC signing, Anchore Syft SBOM generation (SPDX & CycloneDX), and SLSA build provenance in CI.
+- **Telnet IoT Botnet Decoy (`:2323`)**: Emulates BusyBox v1.31.1 embedded Linux router, handles IAC negotiation, and captures Mirai botnet credentials.
+- **MQTT Broker Decoy (`:1883`)**: MQTT v3.1.1 protocol parser trapping unauthorized IoT client connections and command injections.
+- **Raw PCAP Forensic Engine**: Zero-copy packet capture writer storing malicious payloads in standard libpcap 2.4 format (`data/dump.pcap`).
+- **SMB/CIFS Decoy (`:4445`)**: NetBIOS session and SMBv2 negotiate parser detecting EternalBlue reconnaissance.
 - **Decoys Matrix Documentation**: Comprehensive MITRE ATT&CK mapping and threat score taxonomy in `docs/decoys/decoy-matrix.md`.
+
 
 ## [v0.2.0] - 2026-09-04
 
