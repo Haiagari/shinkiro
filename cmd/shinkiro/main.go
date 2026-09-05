@@ -39,6 +39,7 @@ import (
 	"github.com/Haiagari/shinkiro/internal/intel/siem"
 	"github.com/Haiagari/shinkiro/internal/intel/stix"
 	"github.com/Haiagari/shinkiro/internal/metrics"
+	"github.com/Haiagari/shinkiro/internal/soar"
 	"github.com/Haiagari/shinkiro/internal/tui"
 	"github.com/Haiagari/shinkiro/internal/webhook"
 )
@@ -163,13 +164,21 @@ func runUp(interactiveUI bool) {
 	mux.RegisterDecoy(telnet.New())
 	mux.RegisterDecoy(mqtt.New())
 
+	soarEngine := soar.NewEngine()
+	_ = soarEngine.LoadYAML("playbooks.yaml")
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// Consumer loop for threat intelligence, webhooks, and metrics
+	// Consumer loop for threat intelligence, webhooks, metrics, and SOAR playbooks
 	go func() {
 		for ev := range events {
 			metrics.IncConnections()
+			// Execute SOAR playbooks
+			soarActions := soarEngine.Process(ev)
+			for _, act := range soarActions {
+				fmt.Printf("🛡️  [SOAR] %s\n", act)
+			}
 			if ev.Severity == intel.SeverityCritical {
 				metrics.IncCritical()
 				_ = dispatcher.SendAlert(ev)
