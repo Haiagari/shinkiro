@@ -8,6 +8,7 @@ graph TD
         A2["Cloud & Container Probes<br/>(AWS IMDS :8169, Docker :2375, K8s :6443)"]
         A3["Database Recon<br/>(PostgreSQL :5432, Redis :6379, Mongo :27017)"]
         A4["IoT & Lateral Movement<br/>(MQTT :1883, SMB :4445, SMTP :2525, DNS :1053)"]
+        A5["Industrial Control Systems (OT)<br/>(Modbus/TCP :502)"]
     end
 
     %% Core Multiplexer
@@ -20,12 +21,13 @@ graph TD
     A2 -->|TCP/UDP| Mux
     A3 -->|TCP/UDP| Mux
     A4 -->|TCP/UDP| Mux
+    A5 -->|TCP| Mux
     Mux -.->|Zero-Copy Frame Dump| PCAP
 
     %% Decoy Layer
     subgraph Decoys ["🎭 High-Interaction Protocol Decoys"]
         direction TB
-        D_SSH["SSH (VirtualFS Bash)"]
+        D_SSH["SSH (VirtualFS Bash & Jitter)"]
         D_Telnet["Telnet (BusyBox Mirai)"]
         D_Redis["Redis (RESP & Lua EVAL)"]
         D_Docker["Docker API (Cryptominer Trap)"]
@@ -38,7 +40,8 @@ graph TD
         D_SMB["SMBv2 (EternalBlue Recon)"]
         D_SMTP["SMTP (Spam / Phishing)"]
         D_DNS["DNS (Subdomain Enum)"]
-        D_HTTP["HTTP (/.env Canary Trap)"]
+        D_HTTP["HTTP (Canary & Admin Traps)"]
+        D_Modbus["Modbus/TCP (ICS/SCADA PLC)"]
     end
 
     Mux --> D_SSH
@@ -55,11 +58,14 @@ graph TD
     Mux --> D_SMTP
     Mux --> D_DNS
     Mux --> D_HTTP
+    Mux --> D_Modbus
 
     %% Telemetry & Intel Engine
     subgraph Telemetry ["⚡ Real-Time Intelligence & Attribution Pipeline"]
         GeoIP["Offline GeoIP & ASN Engine"]
         Hasher["SHA-256 Payload Hasher"]
+        Mitre["MITRE ATT&CK Mapper (TTPs)"]
+        Corr["Campaign Correlator (Multi-Decoy)"]
         Score["Dynamic Threat Scoring (0-100)"]
     end
 
@@ -77,25 +83,29 @@ graph TD
     D_SMTP -->|Event| Hasher
     D_DNS -->|Event| Hasher
     D_HTTP -->|Event| Hasher
+    D_Modbus -->|Event| Hasher
 
-    Hasher --> GeoIP
-    GeoIP --> Score
+    Hasher --> Mitre
+    Mitre --> GeoIP
+    GeoIP --> Corr
+    Corr --> Score
 
     %% Outputs & Automated Defense
     subgraph Outputs ["📊 Integration & Active Mitigation"]
-        STIX["STIX 2.1 Threat Feed<br/>(shinkiro stix)"]
-        ECS["Elastic Common Schema ECS v8<br/>(shinkiro ecs)"]
+        SOAR["SOAR-Lite Engine<br/>(playbooks.yaml)"]
+        SIEM["SIEM & Feeds<br/>(ArcSight CEF / Syslog / STIX 2.1 / ECS / ThreatFox)"]
         Prom["Prometheus Metrics<br/>(:9100/metrics)"]
         TUI["Bubbletea Terminal UI<br/>(shinkiro tui)"]
         Webhook["SecOps Webhooks<br/>(Slack Block Kit / Discord)"]
         Drop["Kernel-Level Defense<br/>- Native eBPF / XDP Filter<br/>- nftables / iptables Sets"]
     end
 
-    Score --> STIX
-    Score --> ECS
+    Score --> SOAR
+    Score --> SIEM
     Score --> Prom
     Score --> TUI
     Score --> Webhook
+    SOAR -->|Automated Playbook Action| Drop
     Score -->|Score >= 80| Drop
 ```
 

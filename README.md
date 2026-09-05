@@ -27,7 +27,7 @@ Adversaries scanning your perimeter or attempting lateral movement encounter rea
 ```mermaid
 graph TD
     subgraph Adversary ["🌐 Adversary Traffic Vectors"]
-        Attacker["Adversary Probes<br/>(SSH, Telnet, Redis, Docker, Postgres, K8s, MQTT, SMB)"]
+        Attacker["Adversary Probes<br/>(SSH, Telnet, Redis, Docker, Postgres, K8s, MQTT, SMB, Modbus OT)"]
     end
 
     subgraph Core ["🛡️ Shinkiro Core Multiplexer"]
@@ -43,15 +43,18 @@ graph TD
         D6["Postgres :5432"]
         D7["SMB :4445"]
         D8["AWS IMDS :8169"]
+        D9["Modbus/TCP :502"]
+        D10["HTTP Deep Traps :8080"]
     end
 
     subgraph Pipeline ["⚡ Telemetry & Attribution Engine"]
-        Intel["Threat Intel Engine<br/>- SHA-256 Payload Hashing<br/>- Offline GeoIP & ASN<br/>- Dynamic Scoring (0-100)"]
+        Intel["Threat Intel & Attribution<br/>- SHA-256 Payload Hashing<br/>- MITRE ATT&CK Mapping<br/>- Multi-Protocol Campaign Correlator<br/>- Dynamic Scoring (0-100)"]
     end
 
     subgraph Defense ["🚀 Automated Response & SecOps"]
         TUI["Live Terminal Dashboard<br/>(shinkiro tui)"]
-        SIEM["SIEM Feeds<br/>(STIX 2.1 / ECS v8.x)"]
+        SOAR["SOAR-Lite Playbooks Engine<br/>(Automated IP ban & alerts)"]
+        SIEM["SIEM & Threat Feeds<br/>(CEF, Syslog, STIX 2.1, ECS, ThreatFox)"]
         Drop["Kernel-Level Defense<br/>(eBPF / XDP & nftables DROP)"]
     end
 
@@ -64,6 +67,8 @@ graph TD
     Mux --> D6
     Mux --> D7
     Mux --> D8
+    Mux --> D9
+    Mux --> D10
 
     D1 --> Intel
     D2 --> Intel
@@ -73,28 +78,32 @@ graph TD
     D6 --> Intel
     D7 --> Intel
     D8 --> Intel
+    D9 --> Intel
+    D10 --> Intel
 
     Intel --> TUI
+    Intel --> SOAR
     Intel --> SIEM
+    SOAR -->|Automated Playbook Trigger| Drop
     Intel -->|Threat Score >= 80| Drop
 ```
 </details>
 
 ---
 
-## 14 High-Interaction Decoy Services
+## 15 High-Interaction Decoy Services
 
 See the complete [Decoy Protocols & Emulation Matrix](docs/decoys/decoy-matrix.md) for full protocol specifications and MITRE ATT&CK taxonomy.
 
 | Decoy Service | Default Port | Emulated Protocol & Deception Capabilities |
 | :--- | :--- | :--- |
-| **SSH** | `2222` | OpenSSH 9.2p1 handshake, captures passwords/keys, provides a sandbox in-memory virtual terminal (`bash`), logs commands & exfiltration attempts (`curl`, `wget`). |
+| **SSH** | `2222` | OpenSSH 9.2p1 handshake, captures passwords/keys, provides a sandbox in-memory virtual terminal (`bash`), human latency jitter, logs commands & exfiltration attempts. |
 | **Telnet** | `2323` | BusyBox v1.31.1 router login prompt, IAC negotiation, Mirai botnet credential harvesting, interactive fake shell. |
 | **MQTT** | `1883` | MQTT v3.1.1 broker, CONNECT client authentication traps, unauthorized PUBLISH topic exploits, SUBSCRIBE reconnaissance. |
 | **SMB / CIFS** | `4445` | NetBIOS session & SMBv2 negotiation parser, EternalBlue (MS17-010) & ransomware recon trap. |
 | **Redis** | `6379` | RESP protocol engine. Emulates unauthenticated Redis 7.2.4 cluster specs (`INFO`), traps unauthorized `CONFIG` dumps, and intercepts rogue Lua `EVAL` injection payloads. |
 | **Docker Engine** | `2375` | Docker REST API (`/_ping`, `/version`, `/v1.24/containers/create`). Intercepts crypto-mining containers (`xmrig`, etc.) and records attacker images. |
-| **HTTP Traps** | `8080` | Catches directory-traversal and scanner probes looking for `/.env`, `/.git/config`, `/aws/credentials`. Serves canary-seeded synthetic keys. |
+| **HTTP Deep Traps**| `8080` | Catches directory-traversal, canary keys (`/.env`, `/.git`), and deep admin panels (`wp-login.php`, Jenkins, Grafana). |
 | **PostgreSQL** | `5432` | Postgres wire protocol 3.0. Emulates SSL negotiation, cleartext authentication challenge, captures database usernames & passwords. |
 | **Kubernetes API** | `6443` | Emulates K8s v1.29 control-plane endpoints (`/version`, `/api`, `/apis`). Traps anonymous credential theft attempts on pods and secrets. |
 | **AWS IMDS** | `8169` / `169.254.169.254` | Emulates AWS EC2 Instance Metadata Service (IMDSv1 & IMDSv2). Traps SSRF attempts to steal IAM role credentials (`/latest/meta-data/iam/security-credentials/`). |
@@ -102,6 +111,7 @@ See the complete [Decoy Protocols & Emulation Matrix](docs/decoys/decoy-matrix.m
 | **Elasticsearch** | `9200` | Elasticsearch REST API (`/`, `/_cat/indices`, `/_cluster/health`), cluster indexing trap. |
 | **SMTP / ESMTP** | `2525` | Postfix ESMTP banner (`HELO`, `EHLO`, `MAIL FROM`, `RCPT TO`, `DATA`), phishing/spam collector. |
 | **DNS Server** | `1053` | RFC 1035 UDP parser, traps subdomain enumeration and C2 covert channel lookups. |
+| **Modbus / TCP** | `502` | ICS/SCADA PLC emulator, MBAP frame decoder, holding registers/coils telemetry, unauthorized command traps (`T0855`). |
 
 ---
 
@@ -134,17 +144,37 @@ Run synthetic automated adversarial probes against all active decoys to verify d
 ./bin/shinkiro simulate --host 127.0.0.1
 ```
 
-### 5. Export STIX 2.1 Threat Intelligence Bundle
+### 5. Export SIEM (CEF / Syslog / STIX 2.1 / ECS)
 
 ```bash
+# ArcSight Common Event Format
+./bin/shinkiro cef
+
+# RFC5424 Syslog stream
+./bin/shinkiro syslog
+
+# STIX 2.1 JSON Bundle
 ./bin/shinkiro stix > /tmp/shinkiro-threats.json
+
+# Elastic Common Schema (ECS v8.x)
+./bin/shinkiro ecs
 ```
 
-### 6. Generate Kernel-Level eBPF / XDP & nftables Blocklists
+### 6. Automated Defense & SOAR Playbooks
+
+Shinkiro executes dynamic playbooks defined in `playbooks.yaml`:
 
 ```bash
+# Export blocklists directly
 ./bin/shinkiro kernel
 ./bin/shinkiro export --format nftables --threshold 80
+```
+
+### 7. Kubernetes Deployment (Helm)
+
+```bash
+helm install shinkiro ./deploy/helm/shinkiro
+```
 ---
 
 ## Testing & Quality
@@ -154,6 +184,9 @@ Shinkiro enforces 100% test coverage with Go's race detector enabled:
 ```bash
 # Run all unit tests with race condition detector
 make test
+
+# Run protocol parser security fuzzing
+make fuzz
 
 # Run concurrent connection spike / chaos flood tests
 go test -v -race ./tests/chaos

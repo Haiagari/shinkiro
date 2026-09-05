@@ -18,6 +18,7 @@ Shinkiro deploys an ultra-lightweight, zero-footprint, in-memory mesh of high-in
 | **DNS Server** | UDP | `1053` / `53` | DNS query RFC 1035 parser, subdomain enumeration, C2 covert channel detector | T1071.004, T1568 | 50–90 |
 | **AWS IMDS** | HTTP | `8169` / `80` | IMDSv1 & IMDSv2 token generator (`/latest/meta-data/iam/security-credentials/`), SSRF bait with HMAC canary tokens | T1552.005, T1078.004 | 95 |
 | **Web / HTTP** | HTTP | `8080` / `80` | High-value web honeytraps (`/.env`, `/.git/config`, `/wp-login.php`, `/actuator/env`, `/phpinfo.php`) | T1190, T1552.001 | 85–90 |
+| **Modbus / TCP** | TCP | `502` | ICS/SCADA PLC emulator, MBAP frame decoder, holding registers, coils, unauthorized command bait | T0855, T0858 | 75–95 |
 
 ---
 
