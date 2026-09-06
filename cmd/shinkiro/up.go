@@ -173,7 +173,8 @@ func runUp(interactiveUI bool, args []string) {
 			ev.Metadata["pcap_path"] = pcapRes.Path
 		}
 
-		if err := intelEngine.Record(*ev); err != nil {
+		// Persist only — Score/Correlate stages already mapped MITRE and ingested campaigns
+		if err := intelEngine.Persist(*ev); err != nil {
 			return err
 		}
 
