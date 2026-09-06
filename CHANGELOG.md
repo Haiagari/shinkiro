@@ -4,6 +4,17 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 
 ## [Unreleased]
 
+### Added
+- **Version via ldflags:** `main.version` / `main.commit` / `main.date` injected by Makefile, release CI, Dockerfile build args, and `.goreleaser.yml` (`shinkiro version` prints them).
+- **Real CI badge** linked to `.github/workflows/ci.yml` (replaces the removed static tests-passing badge).
+- **Quick Start:** documented real `simulate --host` and `canary generate --label` CLI usage after install/build.
+
+### Changed
+- **go.mod:** direct requires for `bubbletea`, `lipgloss`, `golang.org/x/crypto`, `gopkg.in/yaml.v3` (go 1.24 unchanged); transitive deps remain `indirect`.
+- **CLI exit status:** no arguments and unknown commands now exit non-zero (`os.Exit(1)`).
+- **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`).
+- **Docs:** clarified Linux-only prebuilt binaries; Darwin requires build-from-source.
+
 ### Fixed
 - `scripts/install.sh` now downloads real GitHub Release assets (`shinkiro-linux-amd64` / `shinkiro-linux-arm64`), verifies `checksums.txt` when present, and no longer falls back to nonexistent `v0.2.0` or GoReleaser-style `shinkiro_${VER}_${os}_${arch}.tar.gz` names.
 - **Docker / Helm runnable:** Dockerfile installs the binary at `/usr/local/bin/shinkiro`, copies `config.yaml` + `playbooks.yaml` into `/app` (and `/etc/shinkiro`), and uses `WORKDIR /app` so `data/events.jsonl` persists via the `/app/data` volume.
