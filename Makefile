@@ -5,14 +5,19 @@ SRC=$(shell find . -name "*.go")
 DOCKER_IMAGE?=shinkiro:local
 COMPOSE_FILE=deploy/docker/docker-compose.yml
 
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
+COMMIT  ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo none)
+DATE    ?= $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
+LDFLAGS = -s -w -X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE)
+
 .PHONY: all build clean test run lint bench fuzz docker-build compose-up compose-down
 
 all: build
 
 build:
 	@mkdir -p bin
-	@echo "🔨 Building Shinkiro..."
-	@go build -o $(BINARY) cmd/shinkiro/main.go
+	@echo "🔨 Building Shinkiro $(VERSION)..."
+	@go build -ldflags "$(LDFLAGS)" -o $(BINARY) ./cmd/shinkiro
 	@echo "✅ Binary compiled at $(BINARY)"
 
 test:
