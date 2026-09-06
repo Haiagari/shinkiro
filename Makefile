@@ -1,4 +1,4 @@
-# Shinkiro — Ephemeral Deception & Attacker Intelligence Mesh
+# Shinkiro - Ephemeral Deception & Attacker Intelligence Mesh
 
 BINARY=bin/shinkiro
 SRC=$(shell find . -name "*.go")
@@ -10,7 +10,7 @@ COMMIT  ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo none)
 DATE    ?= $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
 LDFLAGS = -s -w -X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE)
 
-.PHONY: all build clean test run lint bench fuzz docker-build compose-up compose-down
+.PHONY: all build clean test run lint bench fuzz docker-build compose-up compose-down compose-lab compose-edge e2e e2e-shinkiro helm-lab helm-edge
 
 all: build
 
@@ -56,5 +56,28 @@ compose-up: docker-build
 	@docker compose -f $(COMPOSE_FILE) up -d
 	@echo "✅ Compose stack up (see deploy/README.md)"
 
+# Lab mode: demo mounts from deploy/modes/lab (see deploy/modes/README.md)
+compose-lab: docker-build
+	@docker compose -f $(COMPOSE_FILE) -f deploy/docker/compose.lab.yml up -d
+	@echo "✅ Lab compose up (mode=lab)"
+
+# Edge mode: hardened overlay from deploy/modes/edge (dry-run SOAR, less noisy)
+compose-edge: docker-build
+	@docker compose -f $(COMPOSE_FILE) -f deploy/docker/compose.edge.yml up -d
+	@echo "✅ Edge compose up (mode=edge)"
+
 compose-down:
 	@docker compose -f $(COMPOSE_FILE) down
+	@-docker compose -f $(COMPOSE_FILE) -f deploy/docker/compose.lab.yml down 2>/dev/null || true
+	@-docker compose -f $(COMPOSE_FILE) -f deploy/docker/compose.edge.yml down 2>/dev/null || true
+
+# E2E: register & probe all 15 real decoys (unprivileged high ports; no netns)
+e2e e2e-shinkiro:
+	@./scripts/e2e-shinkiro.sh
+
+# Print Helm install recipes for lab/edge (does not require a cluster)
+helm-lab:
+	@./scripts/print-helm-mode.sh lab
+
+helm-edge:
+	@./scripts/print-helm-mode.sh edge
