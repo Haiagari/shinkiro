@@ -3,12 +3,11 @@
 **Ephemeral Cyber Deception & Attacker Intelligence Mesh**  
 *In-memory honeynet, protocol decoys, IoC extraction, STIX/CEF/Syslog/ECS exporters, SOAR-lite playbooks, and text exporters for nftables / iptables / sample eBPF rules — not a live kernel XDP loader.*
 
+[![CI](https://github.com/Haiagari/shinkiro/actions/workflows/ci.yml/badge.svg)](https://github.com/Haiagari/shinkiro/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-6366f1?style=flat-square)](CHANGELOG.md)
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square)](https://golang.org/)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-f59e0b?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux%20(prebuilt)%20%7C%20macOS%20(source)-blue?style=flat-square)](#quick-start)
-
-> **Honesty note:** The static `tests-passing` badge was removed. CI runs `make test` on pushes/PRs to `main` (see `.github/workflows/ci.yml`); badge status is not auto-linked from Actions.
 
 ---
 
@@ -155,7 +154,14 @@ curl -sSL https://raw.githubusercontent.com/Haiagari/shinkiro/main/scripts/insta
 SHINKIRO_VERSION=v1.0.0 curl -sSL https://raw.githubusercontent.com/Haiagari/shinkiro/main/scripts/install.sh | sh
 ```
 
-macOS / Darwin: no pre-built assets today — use **Build from Source** below.
+**Pre-built binaries are Linux-only** (`linux-amd64`, `linux-arm64`). macOS / Darwin has no release assets — use **Build from Source** below (`make build`). The installer exits with a clear message on Darwin.
+
+After install (or build), confirm the embedded version string:
+
+```bash
+shinkiro version
+# or: ./bin/shinkiro version
+```
 
 ### 1. Build from Source
 
@@ -178,13 +184,21 @@ make build
 
 ### 4. Red Team Attack Simulation
 
-Run synthetic adversarial probes against active decoys to exercise detection and telemetry:
+With the mesh running (`shinkiro up` or `shinkiro tui` in another terminal), run the real adversary simulator:
 
 ```bash
 ./bin/shinkiro simulate --host 127.0.0.1
 ```
 
-### 5. Export SIEM (CEF / Syslog / STIX 2.1 / ECS)
+### 5. Generate Canary Tokens
+
+HMAC-signed synthetic AWS honeytokens for canary placement:
+
+```bash
+./bin/shinkiro canary generate --label canary-prod-seed
+```
+
+### 6. Export SIEM (CEF / Syslog / STIX 2.1 / ECS)
 
 ```bash
 # ArcSight Common Event Format
@@ -200,7 +214,7 @@ Run synthetic adversarial probes against active decoys to exercise detection and
 ./bin/shinkiro ecs
 ```
 
-### 6. Automated Defense & SOAR Playbooks
+### 7. Automated Defense & SOAR Playbooks
 
 Shinkiro loads declarative rules from `playbooks.yaml`. The **real** schema is `rules` / `if` / `then` with actions such as `block_ip` and `alert` (see `internal/soar`):
 
@@ -241,7 +255,7 @@ Export firewall / sample kernel rule **text** (you apply it; Shinkiro does not a
 ./bin/shinkiro export --format iptables --threshold 80
 ```
 
-### 7. Docker Compose & Kubernetes / Helm
+### 8. Docker Compose & Kubernetes / Helm
 
 Full steps: [`deploy/README.md`](deploy/README.md).
 
@@ -272,7 +286,7 @@ helm install shinkiro ./deploy/helm/shinkiro \
   --set image.pullPolicy=IfNotPresent
 ```
 
-### 8. MITRE ATT&CK® & ThreatFox IoC Feeds
+### 9. MITRE ATT&CK® & ThreatFox IoC Feeds
 
 Every scored event can carry structured intelligence:
 
