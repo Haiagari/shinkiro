@@ -1,2 +1,83 @@
-# MaxMind GeoLite2 databases (never commit license-bound binaries)
+# Binaries and build artifacts
+bin/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+cover.out
+coverage.txt
+coverage.html
+cpu.prof
+mem.prof
+
+# Go workspace & cache
+.cache/
+
+# Runtime data, captures & logs
+data/
+logs/
+*.log
+*.pcap
+*.pcapng
+
+# Environment, keys and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.token
+*.crt
+*.cert
+*.pfx
+*.p12
+*.id_rsa
+*.id_ed25519
+*.secret
+credentials.json
+secring.gpg
+
+# OS & Desktop metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.directory
+
+# Editors, IDEs & language servers
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.bak
+*.orig
+.project
+.classpath
+.settings/
+.fleet/
+
+# Local agent, LLM tooling & assistant cache
+.agents/
+.atl/
+.cocoindex_code/
+.pi/
+.pi-lens/
+runtime/
+.gga
+opencode.json
+
+# Temporary files
+tmp/
+temp/
+scratch/
+
+# MaxMind GeoLite2/GeoIP2 databases (never commit license-bound binaries)
 *.mmdb
