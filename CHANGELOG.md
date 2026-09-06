@@ -28,7 +28,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ### Changed
 - **GeoIP honesty:** demo/heuristic prefix resolver replaced by optional MaxMind GeoLite2; docs no longer claim fake GeoIP is production attribution.
 - **Cluster honesty:** docs/CLI describe hub-and-spoke HTTP with optional token auth; remaining mesh/gossip overclaims removed from cluster package comments and operator surfaces.
-- **go.mod:** direct requires for `bubbletea`, `lipgloss`, `geoip2-golang`, `golang.org/x/crypto`, `gopkg.in/yaml.v3` (go 1.24 unchanged); transitive deps remain `indirect`.
+- **go.mod:** add `geoip2-golang` v1.13.0 (+ `maxminddb-golang`); pin `golang.org/x/crypto` to **v0.40.0** (and compatible `x/sys`/`x/text`) so **Go 1.24** CI/`go mod verify` works — `crypto` v0.56+ needs Go ≥1.26.
 - **CLI exit status:** no arguments and unknown commands now exit non-zero (`os.Exit(1)`).
 - **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`).
 - **Docs:** clarified Linux-only prebuilt binaries; Darwin requires build-from-source.
