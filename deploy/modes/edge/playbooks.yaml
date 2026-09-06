@@ -1,0 +1,32 @@
+# Edge playbooks — higher score/rate thresholds (less noisy). block_ip still dry-run
+# unless the process is started with --apply or SHINKIRO_SOAR_APPLY=1.
+rules:
+  - name: ssh-credential-stuffing-autoblock
+    enabled: true
+    if:
+      decoy: ssh
+      min_score: 85
+      action_match: LOGIN
+    then:
+      - type: block_ip
+      - type: alert
+
+  - name: redis-exploitation-immediate-ban
+    enabled: true
+    if:
+      decoy: redis
+      min_score: 90
+      action_match: CONFIG
+    then:
+      - type: block_ip
+      - type: alert
+
+  - name: rapid-recon-scanning-ratelimit
+    enabled: true
+    if:
+      decoy: "*"
+      threshold: 12
+      window_sec: 60
+    then:
+      - type: block_ip
+      - type: alert
