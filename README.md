@@ -29,7 +29,7 @@ Adversaries scanning your perimeter encounter responsive decoy services that cap
 | **Cluster** | HTTP ingest hub (`POST /api/v1/cluster/ingest`) — **not** encrypted UDP gossip |
 | **PCAP** | Libpcap 2.4 **writer package** exists (`internal/pcap`) but is **not wired** into `cmd/shinkiro` / the multiplexer pipeline |
 | **Supply chain** | Release CI: Linux amd64/arm64 binaries, `checksums.txt`, Cosign **`sign-blob`** on checksums, Syft SPDX + CycloneDX SBOMs — **not** SLSA Level 3 provenance |
-| **Deploy** | Dockerfile + Helm chart exist; GHCR image path and chart config wiring have known gaps until a follow-up deploy PR |
+| **Deploy** | Dockerfile + Compose + Helm are runnable with a **local** image (`shinkiro:local`); no GHCR publish in release CI — see `deploy/README.md` |
 
 <p align="center">
   <img src="docs/diagrams/architecture-darkmode.jpg" alt="Shinkiro System Architecture" width="100%">
@@ -241,21 +241,35 @@ Export firewall / sample kernel rule **text** (you apply it; Shinkiro does not a
 ./bin/shinkiro export --format iptables --threshold 80
 ```
 
-### 7. Kubernetes / Helm (limitations until deploy PR)
+### 7. Docker Compose & Kubernetes / Helm
 
-A chart lives at `deploy/helm/shinkiro` with useful securityContext defaults (`readOnlyRootFilesystem`, `runAsNonRoot` UID 65534, `capabilities.drop: [ALL]`). **Do not assume a working one-liner yet:**
+Full steps: [`deploy/README.md`](deploy/README.md).
 
-- Default image is `ghcr.io/haiagari/shinkiro` — **GHCR publish is not reliably wired** in current release CI (binaries go to GitHub Releases only).
-- Chart values use `image.*` and a fixed `command: ["/bin/shinkiro", "up"]`; path/config mounts and decoy port/env wiring remain incomplete relative to `config.yaml`'s `services:` model.
-- Prefer building the local Dockerfile (`deploy/docker/Dockerfile`) and pointing the chart at an image **you** push, until a dedicated deploy PR lands.
+**Compose** (local build — preferred):
 
 ```bash
-# Illustrative only — requires an image you built/pushed; not a verified GHCR pull today
+make docker-build    # tags shinkiro:local
+make compose-up      # deploy/docker/docker-compose.yml
+```
+
+**Helm** chart: `deploy/helm/shinkiro`
+
+- Image defaults: `repository: shinkiro`, `tag: local`, `pullPolicy: IfNotPresent` — **no GHCR image is published** by current release CI (binaries only).
+- Container command: `/usr/local/bin/shinkiro up` (matches Dockerfile).
+- ConfigMap mounts `config.yaml` + `playbooks.yaml` into `/app` (runtime key is **`services:`**, not `decoys:`).
+- Data volume at `/app/data` for `data/events.jsonl`; optional seccomp JSON mount + `RuntimeDefault` profile.
+- `capabilities.drop: [ALL]` with `add: [NET_BIND_SERVICE]` for Modbus `:502`.
+
+```bash
+make docker-build
+kind load docker-image shinkiro:local   # or: minikube image load shinkiro:local
+
 helm install shinkiro ./deploy/helm/shinkiro \
   --namespace security \
   --create-namespace \
-  --set image.repository=YOUR_REGISTRY/shinkiro \
-  --set image.tag=YOUR_TAG
+  --set image.repository=shinkiro \
+  --set image.tag=local \
+  --set image.pullPolicy=IfNotPresent
 ```
 
 ### 8. MITRE ATT&CK® & ThreatFox IoC Feeds
@@ -311,6 +325,7 @@ Published ns/op tables that previously appeared in docs without matching checked
 - [SIEM & STIX 2.1 Integration](docs/threat-intel/stix-misp-integration.md): CEF, Syslog, ECS, STIX; honest GeoIP description.
 - [Performance & Scaling Notes](docs/benchmarks/performance.md): How to run real benches/chaos; no invented SLA numbers.
 - [Architecture Overview & Package Map](docs/api/architecture-overview.md): Go packages and CLI surface.
+- [Deploy (Compose & Helm)](deploy/README.md): Local image build, `docker compose up`, `helm install`.
 
 ---
 
