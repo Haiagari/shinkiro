@@ -218,7 +218,17 @@ func runUp(interactiveUI bool, args []string) {
 	}
 
 	if interactiveUI {
-		p := tea.NewProgram(tui.NewModel(tuiEvents, activePorts), tea.WithAltScreen())
+		model := tui.NewModel(tui.Config{
+			EventChan:    tuiEvents,
+			Ports:        activePorts,
+			Engine:       intelEngine,
+			Blocker:      blockApplier,
+			PCAP:         pcapHook,
+			ApplyLive:    applyLive,
+			SimulateHost: "127.0.0.1",
+			MinScore:     50,
+		})
+		p := tea.NewProgram(model, tea.WithAltScreen())
 		if _, err := p.Run(); err != nil {
 			fmt.Printf("TUI error: %v\n", err)
 		}

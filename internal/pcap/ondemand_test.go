@@ -3,7 +3,8 @@ package pcap
 import (
 	"os"
 	"path/filepath"
-	testing"
+	"strings"
+	"testing"
 	"time"
 
 	"github.com/Haiagari/shinkiro/internal/intel"
@@ -86,5 +87,32 @@ func TestOnDemand_ExactThresholdTriggers(t *testing.T) {
 	}
 	if filepath.Dir(res.Path) != dir {
 		t.Fatalf("path dir=%s want %s", filepath.Dir(res.Path), dir)
+	}
+}
+
+func TestCaptureNow_BelowThresholdStillWrites(t *testing.T) {
+	dir := t.TempDir()
+	o := NewOnDemandCapture(80, dir)
+	defer o.Close()
+
+	res, err := o.CaptureNow(intel.Event{
+		RemoteIP:    "192.0.2.99",
+		ThreatScore: 5,
+		Timestamp:   time.Date(2026, 9, 6, 15, 0, 0, 0, time.UTC),
+		DecoyName:   "telnet",
+		Action:      "operator",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !res.Triggered {
+		t.Fatal("CaptureNow must write regardless of threshold")
+	}
+	if !strings.Contains(res.Path, "operator-") {
+		t.Fatalf("expected operator- prefix path, got %s", res.Path)
+	}
+	st, err := os.Stat(res.Path)
+	if err != nil || st.Size() <= 24 {
+		t.Fatalf("pcap missing or too small: %v size=%v", err, st)
 	}
 }
