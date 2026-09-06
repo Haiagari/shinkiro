@@ -5,6 +5,10 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ## [Unreleased]
 
 ### Added
+- **Deploy modes lab vs edge** (`deploy/modes/`): lab (demo-friendly) and edge (hardened defaults — dry-run SOAR, quieter playbook/PCAP thresholds). Compose overlays `compose.lab.yml` / `compose.edge.yml`; Helm `values-lab.yaml` / `values-edge.yaml` with optional `--set-file` config overrides. Docs: `deploy/modes/README.md`. Makefile: `compose-lab`, `compose-edge`, `helm-lab`, `helm-edge`.
+- **E2E for all 15 decoys**: `tests/e2e/e2e_all_decoys_{test,run,probes}_test.go` register and probe every real decoy (`ssh`…`modbus`); `make e2e` / `make e2e-shinkiro` → `scripts/e2e-shinkiro.sh`. Uses high unprivileged ports (Modbus `29502`) — **no** privileged netns / `CAP_NET_BIND_SERVICE` required.
+- **Optional GHCR on release**: `.github/workflows/release.yml` job `push-ghcr` publishes `ghcr.io/haiagari/shinkiro` when repository variable `PUSH_GHCR=true` (login via `GITHUB_TOKEN` / `packages:write`). Binary release path unchanged when the variable is unset.
+
 - **Campaign correlator v2** (`internal/intel/correlator.go`): multi-event grouping by same source IP + sliding session window + decoy hop path; tracks technique IDs, event/action rolls, ordered hop path, and explicit grouping reasons (rule-based - **not ML**). CLI: `shinkiro campaigns [--format table|json]`.
 - **ThreatFox / AbuseIPDB CLI**: real HTTP clients (`internal/intel/feeds.go`) with `THREATFOX_API_KEY` / `ABUSEIPDB_API_KEY`; graceful errors when keys are missing. Commands: `shinkiro threatfox --search|--days`, `shinkiro abuseipdb --ip`.
 - **ATT&CK coverage report**: `shinkiro coverage` / `attack-coverage` maps decoy-matrix.md technique tags (+ optional `--runtime-mapper` for `MapToMitre`) to table/JSON - no invented ATT&CK mappings.
