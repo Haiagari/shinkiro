@@ -184,7 +184,7 @@ func (camp *Campaign) SummaryLine() string {
 	if camp == nil {
 		return ""
 	}
-	hops := strings.Join(camp.HopPath, "→")
+	hops := strings.Join(camp.HopPath, "->")
 	if hops == "" {
 		hops = strings.Join(camp.DecoysTargeted, ",")
 	}
@@ -202,17 +202,17 @@ func FormatCampaignsTable(camps []*Campaign) string {
 	var b strings.Builder
 	b.WriteString(fmt.Sprintf("%-18s %-5s %-6s %-7s %-24s %-20s %s\n",
 		"ATTACKER_IP", "EVTS", "MAXSCR", "DECOYS", "HOP_PATH", "TECHNIQUES", "CAMPAIGN_ID"))
-	b.WriteString(strings.Repeat("─", 110))
+	b.WriteString(strings.Repeat("-", 110))
 	b.WriteString("\n")
 	if len(camps) == 0 {
-		b.WriteString("(no active campaigns — ingest events via the mesh / pipeline)\n")
+		b.WriteString("(no active campaigns - ingest events via the mesh / pipeline)\n")
 		return b.String()
 	}
 	for _, c := range camps {
 		if c == nil {
 			continue
 		}
-		hops := strings.Join(c.HopPath, "→")
+		hops := strings.Join(c.HopPath, "->")
 		if hops == "" {
 			hops = strings.Join(c.DecoysTargeted, ",")
 		}
