@@ -1,23 +1,46 @@
-version: '3.8'
+# Shinkiro — local Compose stack
+# Build context is the repo root. Default config enables all decoys in config.yaml.
+#
+#   make docker-build && make compose-up
+#   # or:
+#   docker compose -f deploy/docker/docker-compose.yml up --build
 
 services:
   shinkiro:
     build:
       context: ../..
       dockerfile: deploy/docker/Dockerfile
+    image: shinkiro:local
     container_name: shinkiro-mesh
-    restart: always
+    restart: unless-stopped
+    working_dir: /app
+    # ENTRYPOINT is /usr/local/bin/shinkiro; default CMD is "up"
     cap_add:
       - NET_ADMIN
       - NET_RAW
     ports:
-      - "2222:2222"   # SSH Decoy
-      - "2375:2375"   # Docker API Decoy
-      - "5432:5432"   # PostgreSQL Decoy
-      - "6379:6379"   # Redis Decoy
-      - "6443:6443"   # Kubernetes API Decoy
-      - "8080:8080"   # HTTP Traps (.env / .git)
+      # Ports match enabled services in default config.yaml (+ metrics)
+      - "502:502"       # Modbus / TCP
+      - "1053:1053"     # DNS (TCP listen via multiplexer)
+      - "1883:1883"     # MQTT
+      - "2222:2222"     # SSH
+      - "2323:2323"     # Telnet
+      - "2375:2375"     # Docker API
+      - "2525:2525"     # SMTP
+      - "4445:4445"     # SMB
+      - "5432:5432"     # PostgreSQL
+      - "6379:6379"     # Redis
+      - "6443:6443"     # Kubernetes API
+      - "8080:8080"     # HTTP traps
+      - "8169:8169"     # AWS IMDS
+      - "9100:9100"     # Prometheus metrics
+      - "9200:9200"     # Elasticsearch
+      - "27017:27017"   # MongoDB
     volumes:
-      - ./data:/data
+      # Persist audit log at data/events.jsonl (CWD-relative path in config)
+      - ./data:/app/data
+      # Optional host overrides (baked image already includes defaults):
+      # - ../../config.yaml:/app/config.yaml:ro
+      # - ../../playbooks.yaml:/app/playbooks.yaml:ro
     environment:
-      - SHINKIRO_NODE=shinkiro-cloud-sensor-01
+      SHINKIRO_NODE: shinkiro-cloud-sensor-01
