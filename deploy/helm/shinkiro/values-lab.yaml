@@ -1,0 +1,19 @@
+# Lab overlay for deploy/helm/shinkiro
+# Pair with: --set-file configOverride=deploy/modes/lab/config.yaml
+#            --set-file playbooksOverride=deploy/modes/lab/playbooks.yaml
+# Or: make helm-lab
+
+deployMode: lab
+
+env:
+  SHINKIRO_NODE_NAME: "shinkiro-lab-demo"
+  SHINKIRO_PCAP_THRESHOLD: "80"
+  # Do not set SHINKIRO_SOAR_APPLY — dry-run remains default
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi

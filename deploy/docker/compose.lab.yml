@@ -1,0 +1,17 @@
+# Lab overlay — demo-friendly mounts + node name.
+# Usage: docker compose -f deploy/docker/docker-compose.yml -f deploy/docker/compose.lab.yml up -d
+# Or: make compose-lab
+
+services:
+  shinkiro:
+    container_name: shinkiro-lab
+    environment:
+      SHINKIRO_NODE: shinkiro-lab-demo-01
+      SHINKIRO_PCAP_THRESHOLD: "80"
+      # Leave SHINKIRO_SOAR_APPLY unset → dry-run block_ip
+    volumes:
+      - ../modes/lab/config.yaml:/app/config.yaml:ro
+      - ../modes/lab/playbooks.yaml:/app/playbooks.yaml:ro
+      - ./data-lab:/app/data
+    labels:
+      shinkiro.deploy.mode: lab
