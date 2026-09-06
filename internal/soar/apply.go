@@ -37,8 +37,9 @@ type BlockResult struct {
 	Message   string    `json:"message"`
 }
 
-// CommandRunner executes a privileged firewall command. Injectable for tests.
-type CommandRunner func(name string, args ...string) error
+// CommandRunner executes a privileged firewall command with optional stdin (e.g. nft -f -).
+// Injectable for tests.
+type CommandRunner func(name string, args []string, stdin string) error
 
 // BlockApplier implements the real SOAR block_ip apply path with dry-run default.
 type BlockApplier struct {
@@ -192,30 +193,33 @@ func (a *BlockApplier) record(res BlockResult) {
 }
 
 func (a *BlockApplier) execCommands(script string) error {
-	lines := strings.Split(script, "\n")
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if line == "" || strings.HasPrefix(line, "#") {
-			continue
-		}
-		switch a.format {
-		case defense.FormatIPTables:
+	switch a.format {
+	case defense.FormatIPTables:
+		lines := strings.Split(script, "\n")
+		for _, line := range lines {
+			line = strings.TrimSpace(line)
+			if line == "" || strings.HasPrefix(line, "#") {
+				continue
+			}
 			fields := strings.Fields(line)
 			if len(fields) == 0 {
 				continue
 			}
-			if err := a.runner(fields[0], fields[1:]...); err != nil {
+			if err := a.runner(fields[0], fields[1:], ""); err != nil {
 				return fmt.Errorf("%s: %w", line, err)
 			}
-		case defense.FormatNFTables:
-			if err := a.runner("nft", strings.Fields(line)...); err != nil {
-				return fmt.Errorf("nft %s: %w", line, err)
-			}
-		default:
-			a.logf("[SOAR block_ip apply] format " + string(a.format) + " has no local exec path; commands emitted only")
 		}
+		return nil
+	case defense.FormatNFTables:
+		// Batch via stdin so braced set syntax is preserved (nft -f -).
+		if err := a.runner("nft", []string{"-f", "-"}, script); err != nil {
+			return fmt.Errorf("nft -f -: %w", err)
+		}
+		return nil
+	default:
+		a.logf("[SOAR block_ip apply] format " + string(a.format) + " has no local exec path; commands emitted only")
+		return nil
 	}
-	return nil
 }
 
 func (a *BlockApplier) postWebhook(res BlockResult) error {
@@ -234,8 +238,11 @@ func (a *BlockApplier) postWebhook(res BlockResult) error {
 	return nil
 }
 
-func defaultRunner(name string, args ...string) error {
+func defaultRunner(name string, args []string, stdin string) error {
 	cmd := exec.Command(name, args...)
+	if stdin != "" {
+		cmd.Stdin = strings.NewReader(stdin)
+	}
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("%v: %s", err, strings.TrimSpace(string(out)))

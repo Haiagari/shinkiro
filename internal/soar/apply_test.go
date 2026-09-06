@@ -8,12 +8,12 @@ import (
 )
 
 func TestBlockApplier_DryRunDefault(t *testing.T) {
-	var ran []string
+	var ran int
 	a := NewBlockApplier(BlockApplierConfig{
 		Mode:   ApplyDryRun,
 		Format: defense.FormatIPTables,
-		Runner: func(name string, args ...string) error {
-			ran = append(ran, name+" "+strings.Join(args, " "))
+		Runner: func(name string, args []string, stdin string) error {
+			ran++
 			return nil
 		},
 	})
@@ -34,18 +34,18 @@ func TestBlockApplier_DryRunDefault(t *testing.T) {
 	if !strings.Contains(res.Message, "dry-run") {
 		t.Fatalf("message should mention dry-run: %s", res.Message)
 	}
-	if len(ran) != 0 {
-		t.Fatalf("runner must not be called in dry-run, got %v", ran)
+	if ran != 0 {
+		t.Fatalf("runner must not be called in dry-run, got %d", ran)
 	}
 }
 
 func TestBlockApplier_ApplyExecutesIPTables(t *testing.T) {
-	var ran []string
+	var calls []string
 	a := NewBlockApplier(BlockApplierConfig{
 		Mode:   ApplyLive,
 		Format: defense.FormatIPTables,
-		Runner: func(name string, args ...string) error {
-			ran = append(ran, name+" "+strings.Join(args, " "))
+		Runner: func(name string, args []string, stdin string) error {
+			calls = append(calls, name+" "+strings.Join(args, " "))
 			return nil
 		},
 	})
@@ -57,12 +57,12 @@ func TestBlockApplier_ApplyExecutesIPTables(t *testing.T) {
 	if !res.Applied {
 		t.Fatal("expected Applied=true")
 	}
-	if len(ran) == 0 {
+	if len(calls) == 0 {
 		t.Fatal("expected runner invocation")
 	}
-	joined := strings.Join(ran, "\n")
+	joined := strings.Join(calls, "\n")
 	if !strings.Contains(joined, "iptables") || !strings.Contains(joined, "198.51.100.9") {
-		t.Fatalf("unexpected runner calls: %v", ran)
+		t.Fatalf("unexpected runner calls: %v", calls)
 	}
 }
 
@@ -80,6 +80,35 @@ func TestBlockApplier_NFTablesDryRunOutput(t *testing.T) {
 	}
 	if !strings.Contains(res.Commands, "203.0.113.7") {
 		t.Fatalf("IP missing from commands:\n%s", res.Commands)
+	}
+}
+
+func TestBlockApplier_NFTablesApplyUsesStdinBatch(t *testing.T) {
+	var gotName string
+	var gotArgs []string
+	var gotStdin string
+	a := NewBlockApplier(BlockApplierConfig{
+		Mode:   ApplyLive,
+		Format: defense.FormatNFTables,
+		Runner: func(name string, args []string, stdin string) error {
+			gotName = name
+			gotArgs = append([]string{}, args...)
+			gotStdin = stdin
+			return nil
+		},
+	})
+	res, err := a.BlockIP("203.0.113.8", "nft-apply")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !res.Applied {
+		t.Fatal("expected applied")
+	}
+	if gotName != "nft" || len(gotArgs) < 2 || gotArgs[0] != "-f" || gotArgs[1] != "-" {
+		t.Fatalf("expected nft -f -, got %s %v", gotName, gotArgs)
+	}
+	if !strings.Contains(gotStdin, "203.0.113.8") || !strings.Contains(gotStdin, "{") {
+		t.Fatalf("stdin must preserve braced nft script, got:\n%s", gotStdin)
 	}
 }
 
