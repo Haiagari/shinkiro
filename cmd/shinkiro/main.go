@@ -43,6 +43,14 @@ func main() {
 		runEBPF(os.Args[2:])
 	case "simulate", "attack":
 		runSimulate(os.Args[2:])
+	case "campaigns":
+		runCampaigns(os.Args[2:])
+	case "threatfox":
+		runThreatFox(os.Args[2:])
+	case "abuseipdb":
+		runAbuseIPDB(os.Args[2:])
+	case "coverage", "attack-coverage":
+		runCoverage(os.Args[2:])
 	case "version", "-v", "--version":
 		fmt.Printf("Shinkiro %s (commit=%s date=%s) — High-Interaction Deception Engine (Haiagari Security)\n", version, commit, date)
 	default:
