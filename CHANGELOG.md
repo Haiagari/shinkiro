@@ -5,6 +5,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ## [Unreleased]
 
 ### Documentation
+- **Architecture diagram honesty** ([`docs/diagrams/architecture-darkmode.svg`](docs/diagrams/architecture-darkmode.svg)): replaced overclaimed dark dual-plane map (gossip mesh, live XDP drop loop, SLSA L3, fake throughput, always-on GeoIP, continuous libpcap) with a code-backed diagram covering Event→Score→Correlate→Playbook→Sink, SOAR dry-run/`--apply`, optional MaxMind GeoLite2, on-demand PCAP, correlator v2 (not ML), ThreatFox/AbuseIPDB CLI, coverage, lab/edge deploy, optional GHCR, HTTP cluster hub + token, Cosign+Syft (not SLSA L3), Linux-only prebuilts, 15 decoys, fail-closed contract. README centered image now points at the SVG; [`docs/honesty-limitations.md`](docs/honesty-limitations.md) names it canonical.
 - **Complete documentation pass** (post-roadmap PRs #10–#16): navigation hub [`docs/README.md`](docs/README.md); new [`docs/getting-started.md`](docs/getting-started.md), [`docs/cli-reference.md`](docs/cli-reference.md), [`docs/operator-guide.md`](docs/operator-guide.md), [`docs/development.md`](docs/development.md), [`docs/honesty-limitations.md`](docs/honesty-limitations.md); README / AGENTS / CONTRIBUTING / deploy / architecture / threat-intel aligned with code (hub-and-spoke cluster, SOAR dry-run default, optional MaxMind GeoIP, Linux-only prebuilts, eBPF exporter-only, 15 decoys, no SLSA L3 / gossip / invented coords).
 
 ### Added
