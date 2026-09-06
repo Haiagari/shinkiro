@@ -1,462 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1050" width="100%" height="100%" style="background:#07090e; font-family:'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace;">
-  <defs>
-    <!-- Background Grid -->
-    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#111726" stroke-width="1" />
-    </pattern>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1080" width="100%" style="background:#07090e;font-family:'JetBrains Mono',Menlo,Monaco,monospace">
+<defs>
+<pattern id="g" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#111726" stroke-width="1"/></pattern>
+<filter id="gc"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#00f2fe" flood-opacity="0.4"/></filter>
+<filter id="gp"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#a855f7" flood-opacity="0.4"/></filter>
+<filter id="go"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f59e0b" flood-opacity="0.4"/></filter>
+<marker id="ac" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 2L7 5L0 8z" fill="#00f2fe"/></marker>
+<marker id="ap" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 2L7 5L0 8z" fill="#a855f7"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#07090e"/><rect width="100%" height="100%" fill="url(#g)"/>
+<g transform="translate(50,36)">
+  <rect width="8" height="28" rx="2" fill="#00f2fe" filter="url(#gc)"/>
+  <text x="22" y="22" fill="#fff" font-size="22" font-weight="900">SHINKIRO CORE ARCHITECTURE</text>
+  <text x="440" y="21" fill="#475569" font-size="12">|  EPHEMERAL CYBER DECEPTION + ATTACKER INTELLIGENCE  •  SINGLE BINARY (GO)</text>
+  <g transform="translate(1580,-2)"><rect width="320" height="30" rx="15" fill="#031522" stroke="#00f2fe" stroke-width="1.2" filter="url(#gc)"/><circle cx="16" cy="15" r="4" fill="#00f2fe"/><text x="28" y="19" fill="#00f2fe" font-size="10" font-weight="700">HONEST CODE-BACKED MAP</text></g>
+</g>
+<g transform="translate(50,78)"><rect width="1900" height="28" rx="8" fill="#0a1628" stroke="#0284c7"/><text x="20" y="19" fill="#38bdf8" font-size="11" font-weight="700">✓ Honest map  •  No fake gossip / live XDP loader / SLSA L3  •  No invented GeoIP coords  •  No continuous PCAP  •  No fake throughput</text></g>
+<line x1="980" y1="120" x2="980" y2="980" stroke="#161f33" stroke-width="1.5" stroke-dasharray="4,4"/>
 
-    <!-- Glowing Filters -->
-    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#00f2fe" flood-opacity="0.4"/>
-    </filter>
-    <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#a855f7" flood-opacity="0.4"/>
-    </filter>
-    <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#10b981" flood-opacity="0.4"/>
-    </filter>
-    <filter id="glow-orange" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f59e0b" flood-opacity="0.4"/>
-    </filter>
-    <filter id="glow-rose" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f43f5e" flood-opacity="0.4"/>
-    </filter>
+<text x="50" y="145" fill="#38bdf8" font-size="13" font-weight="800">PLANE A : DECEPTION RUNTIME, MULTIPLEXER &amp; IN-MEMORY DECOYS</text>
+<text x="50" y="163" fill="#64748b" font-size="11">Zero-host mutation  •  socket interception  •  anti-fingerprint jitter  •  fail-closed sockets</text>
+<rect x="50" y="175" width="890" height="790" rx="16" fill="#090d16" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="6,6"/>
 
-    <!-- Markers -->
-    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 2 L 7 5 L 0 8 z" fill="#00f2fe" />
-    </marker>
-    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 2 L 7 5 L 0 8 z" fill="#a855f7" />
-    </marker>
-    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 2 L 7 5 L 0 8 z" fill="#10b981" />
-    </marker>
-    <marker id="arrow-rose" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 2 L 7 5 L 0 8 z" fill="#f43f5e" />
-    </marker>
-    <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 2 L 7 5 L 0 8 z" fill="#f59e0b" />
-    </marker>
-  </defs>
+<g transform="translate(75,200)"><rect width="840" height="52" rx="10" fill="#0d1527" stroke="#38bdf8" stroke-width="1.5" filter="url(#gc)"/><text x="20" y="22" fill="#f1f5f9" font-size="13" font-weight="800">1  ADVERSARY PROBES</text><text x="20" y="40" fill="#94a3b8" font-size="10">Scanners, botnets, C2  •  TCP/UDP ingress into decoy listeners</text></g>
 
-  <!-- Background -->
-  <rect width="100%" height="100%" fill="#07090e" />
-  <rect width="100%" height="100%" fill="url(#grid)" />
+<g transform="translate(75,265)"><rect width="840" height="62" rx="10" fill="#171207" stroke="#eab308" stroke-width="1.5" filter="url(#go)"/><text x="20" y="22" fill="#fef08a" font-size="13" font-weight="800">2  IN-MEMORY MULTIPLEXER</text><text x="20" y="40" fill="#94a3b8" font-size="10">Strict deadlines  •  Slowloris defense  •  Emits decoy events to pipeline bus</text><text x="20" y="54" fill="#eab308" font-size="9.5" font-weight="600">No invented ops/sec — measure with make bench</text></g>
 
-  <!-- TOP HEADER BAR -->
-  <g transform="translate(50, 45)">
-    <rect x="0" y="0" width="8" height="28" rx="2" fill="#00f2fe" filter="url(#glow-cyan)" />
-    <text x="22" y="22" fill="#ffffff" font-size="22" font-weight="900" letter-spacing="1">SHINKIRO CORE ARCHITECTURE</text>
-    <text x="440" y="21" fill="#475569" font-size="12" font-weight="500">|  EPHEMERAL CYBER DECEPTION &amp; ATTACKER INTELLIGENCE MESH</text>
-    
-    <g transform="translate(1700, 0)">
-      <rect width="190" height="30" rx="15" fill="#031522" stroke="#00f2fe" stroke-width="1.2" filter="url(#glow-cyan)" />
-      <circle cx="20" cy="15" r="4" fill="#00f2fe" />
-      <text x="32" y="19" fill="#00f2fe" font-size="10" font-weight="700" letter-spacing="1">SINGLE BINARY (GO)</text>
-    </g>
+<g transform="translate(75,340)">
+  <rect width="840" height="26" rx="6" fill="#081b2a" stroke="#00f2fe"/><text x="16" y="18" fill="#00f2fe" font-size="11" font-weight="800">3  15 HIGH-INTERACTION DECOYS (REAL PORTS)</text>
+  <g font-size="10" font-weight="700" fill="#f1f5f9">
+    <rect y="36" width="160" height="32" rx="6" fill="#0a121e" stroke="#38bdf8"/><text x="80" y="56" text-anchor="middle">SSH :2222</text>
+    <rect x="168" y="36" width="160" height="32" rx="6" fill="#0a121e" stroke="#38bdf8"/><text x="248" y="56" text-anchor="middle">Telnet :2323</text>
+    <rect x="336" y="36" width="160" height="32" rx="6" fill="#0a121e" stroke="#38bdf8"/><text x="416" y="56" text-anchor="middle">MQTT :1883</text>
+    <rect x="504" y="36" width="160" height="32" rx="6" fill="#0a121e" stroke="#38bdf8"/><text x="584" y="56" text-anchor="middle">SMB :4445</text>
+    <rect x="672" y="36" width="168" height="32" rx="6" fill="#0a121e" stroke="#38bdf8"/><text x="756" y="56" text-anchor="middle">Redis :6379</text>
+    <rect y="76" width="160" height="32" rx="6" fill="#0a121e" stroke="#a855f7"/><text x="80" y="96" text-anchor="middle">Docker :2375</text>
+    <rect x="168" y="76" width="160" height="32" rx="6" fill="#0a121e" stroke="#a855f7"/><text x="248" y="96" text-anchor="middle">HTTP :8080</text>
+    <rect x="336" y="76" width="160" height="32" rx="6" fill="#0a121e" stroke="#a855f7"/><text x="416" y="96" text-anchor="middle">Postgres :5432</text>
+    <rect x="504" y="76" width="160" height="32" rx="6" fill="#0a121e" stroke="#a855f7"/><text x="584" y="96" text-anchor="middle">K8s :6443</text>
+    <rect x="672" y="76" width="168" height="32" rx="6" fill="#0a121e" stroke="#a855f7"/><text x="756" y="96" text-anchor="middle">AWS IMDS :8169</text>
+    <rect y="116" width="160" height="32" rx="6" fill="#0a121e" stroke="#10b981"/><text x="80" y="136" text-anchor="middle">Mongo :27017</text>
+    <rect x="168" y="116" width="160" height="32" rx="6" fill="#0a121e" stroke="#10b981"/><text x="248" y="136" text-anchor="middle">Elastic :9200</text>
+    <rect x="336" y="116" width="160" height="32" rx="6" fill="#0a121e" stroke="#10b981"/><text x="416" y="136" text-anchor="middle">SMTP :2525</text>
+    <rect x="504" y="116" width="160" height="32" rx="6" fill="#0a121e" stroke="#10b981"/><text x="584" y="136" text-anchor="middle">DNS :1053</text>
+    <rect x="672" y="116" width="168" height="32" rx="6" fill="#1f0e08" stroke="#f97316"/><text x="756" y="136" text-anchor="middle" fill="#ffedd5">Modbus :502</text>
   </g>
+</g>
 
-  <!-- DIVIDER (Split Screen Canvas) -->
-  <line x1="980" y1="95" x2="980" y2="990" stroke="#161f33" stroke-width="1.5" stroke-dasharray="4,4" />
+<g transform="translate(75,530)"><rect width="410" height="80" rx="10" fill="#0a121e" stroke="#00f2fe"/><text x="16" y="22" fill="#f1f5f9" font-size="12" font-weight="800">4  OPERATOR TOOLS</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">TUI (Bubbletea)  •  simulate  •  canary  •  coverage  •  campaigns</text><text x="16" y="60" fill="#38bdf8" font-size="9">Keys: ↑↓ select · b block · p pcap · s simulate · c canary · r · q</text></g>
+<g transform="translate(505,530)"><rect width="410" height="80" rx="10" fill="#071b12" stroke="#10b981"/><text x="16" y="22" fill="#f1f5f9" font-size="12" font-weight="800">5  DEPLOY</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">Compose/Helm lab vs edge  •  Linux-only prebuilts</text><text x="16" y="60" fill="#6ee7b7" font-size="9">Optional GHCR when PUSH_GHCR=true</text></g>
 
-  <!-- ========================================================================= -->
-  <!-- PLANE A: DECEPTION RUNTIME, SENSOR INGRESS & COHERENT VIRTUAL STATE        -->
-  <!-- ========================================================================= -->
-  <g transform="translate(50, 95)">
-    <text x="0" y="20" fill="#38bdf8" font-size="13" font-weight="800" letter-spacing="1">PLANE A : DECEPTION RUNTIME, MULTIPLEXER &amp; IN-MEMORY DECOYS</text>
-    <text x="0" y="38" fill="#64748b" font-size="11">Zero-host mutation execution, socket interception, anti-fingerprint jitter &amp; coherent sandbox</text>
+<g transform="translate(75,625)"><rect width="410" height="80" rx="10" fill="#140b24" stroke="#a855f7"/><text x="16" y="22" fill="#f1f5f9" font-size="12" font-weight="800">6  HARDENING &amp; SUPPLY CHAIN</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">seccomp.json  •  Cosign sign-blob + Syft SBOM</text><text x="16" y="60" fill="#c084fc" font-size="9" font-weight="700">NOT SLSA L3 — no provenance generator</text></g>
+<g transform="translate(505,625)"><rect width="410" height="80" rx="10" fill="#071520" stroke="#00f2fe"/><text x="16" y="22" fill="#f1f5f9" font-size="12" font-weight="800">7  CLUSTER (HONEST)</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">HTTP hub-and-spoke join/ingest  •  token auth</text><text x="16" y="60" fill="#38bdf8" font-size="9" font-weight="700">NOT UDP gossip / mesh / SWIM</text></g>
+
+<g transform="translate(75,720)"><rect width="840" height="62" rx="10" fill="#13070b" stroke="#f43f5e"/><text x="20" y="22" fill="#f43f5e" font-size="11" font-weight="800">FAIL-CLOSED DECEPTION CONTRACT</text><text x="20" y="40" fill="#fda4af" font-size="9.5">Unhandled/malformed payloads terminate the socket — no host detail leakage.</text><text x="20" y="54" fill="#94a3b8" font-size="8.5">Zero OS process execution against real host state. Attacks hit in-memory decoys only.</text></g>
+
+<g transform="translate(75,800)"><rect width="270" height="48" rx="8" fill="#0a121e" stroke="#00f2fe"/><text x="14" y="20" fill="#f1f5f9" font-size="10" font-weight="700">Adversary Simulator</text><text x="14" y="36" fill="#38bdf8" font-size="8.5">shinkiro simulate</text></g>
+<g transform="translate(360,800)"><rect width="270" height="48" rx="8" fill="#141109" stroke="#eab308"/><text x="14" y="20" fill="#f1f5f9" font-size="10" font-weight="700">Canary Generation</text><text x="14" y="36" fill="#eab308" font-size="8.5">shinkiro canary generate</text></g>
+<g transform="translate(645,800)"><rect width="270" height="48" rx="8" fill="#071b12" stroke="#10b981"/><text x="14" y="20" fill="#f1f5f9" font-size="10" font-weight="700">Cluster Hub (HTTP)</text><text x="14" y="36" fill="#6ee7b7" font-size="8.5">shinkiro cluster hub — not gossip</text></g>
+<g transform="translate(75,865)"><rect width="840" height="44" rx="8" fill="#040811" stroke="#161f33"/><text x="16" y="18" fill="#64748b" font-size="9" font-weight="700">CANONICAL DIAGRAM</text><text x="16" y="34" fill="#94a3b8" font-size="9">docs/diagrams/architecture-darkmode.svg  •  docs/honesty-limitations.md</text></g>
+
+<path d="M940 420C960 420 960 470 990 470" stroke="#00f2fe" stroke-width="2.2" stroke-dasharray="5,5" fill="none" marker-end="url(#ac)"/>
+<g transform="translate(955,485)"><rect width="90" height="60" rx="10" fill="#0a1628" stroke="#00f2fe" filter="url(#gc)"/><text x="45" y="20" fill="#00f2fe" font-size="8" font-weight="800" text-anchor="middle">JSONL</text><text x="45" y="36" fill="#38bdf8" font-size="8" font-weight="700" text-anchor="middle">PIPELINE</text><text x="45" y="50" fill="#64748b" font-size="7" text-anchor="middle">BUS</text></g>
+<path d="M1045 515C1065 515 1065 300 1030 280" stroke="#a855f7" stroke-width="2.2" stroke-dasharray="5,5" fill="none" marker-end="url(#ap)"/>
+<g transform="translate(955,575)"><rect width="90" height="100" rx="8" fill="#18070e" stroke="#f43f5e" stroke-dasharray="3,3"/><text x="45" y="18" fill="#fda4af" font-size="7.5" font-weight="800" text-anchor="middle">FEEDBACK</text><text x="45" y="34" fill="#94a3b8" font-size="7" text-anchor="middle">(honest)</text><text x="45" y="52" fill="#fda4af" font-size="7" text-anchor="middle">SOAR may</text><text x="45" y="66" fill="#fda4af" font-size="7" text-anchor="middle">emit rule</text><text x="45" y="80" fill="#fda4af" font-size="7" text-anchor="middle">text; live</text><text x="45" y="94" fill="#f43f5e" font-size="7" font-weight="700" text-anchor="middle">apply opt-in</text></g>
+
+<text x="1070" y="145" fill="#a855f7" font-size="13" font-weight="800">PLANE B : PIPELINE, CORRELATION, SOAR &amp; SECOPS</text>
+<text x="1070" y="163" fill="#64748b" font-size="11">Event → Score → Correlate → Playbook → Sink  •  dry-run default  •  exporters only</text>
+<rect x="1070" y="175" width="880" height="790" rx="16" fill="#0c0717" stroke="#a855f7" stroke-width="1.5" filter="url(#gp)"/>
+
+<g transform="translate(1095,200)"><rect width="830" height="88" rx="10" fill="#140824" stroke="#a855f7"/><text x="16" y="22" fill="#e9d5ff" font-size="12" font-weight="800">1  EVENT PIPELINE (internal/pipeline)</text><text x="16" y="42" fill="#c084fc" font-size="11" font-weight="700">Score → Correlate → Playbook → Sink</text><text x="16" y="60" fill="#94a3b8" font-size="9.5">MITRE + optional MaxMind  •  Correlator v2: same IP + window + hops — NOT ML</text><text x="16" y="76" fill="#94a3b8" font-size="9.5">Playbook YAML (block_ip/alert/tag)  •  Sink: JSONL, metrics, webhook, on-demand PCAP, TUI</text></g>
+
+<g transform="translate(1095,302)"><rect width="405" height="85" rx="10" fill="#08101a" stroke="#00f2fe"/><text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="800">2  GEOIP (OPTIONAL)</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">MaxMind GeoLite2 via SHINKIRO_GEOLITE2_PATH</text><text x="16" y="58" fill="#94a3b8" font-size="9.5">or --geoip-db  •  no-op if unset</text><text x="16" y="74" fill="#38bdf8" font-size="9" font-weight="700">Never invents coordinates</text></g>
+<g transform="translate(1520,302)"><rect width="405" height="85" rx="10" fill="#071b12" stroke="#10b981"/><text x="16" y="22" fill="#6ee7b7" font-size="12" font-weight="800">3  ON-DEMAND PCAP</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">Threshold gate (default score ≥ 80)</text><text x="16" y="58" fill="#94a3b8" font-size="9.5">TUI CaptureNow (p)  •  data/pcap/</text><text x="16" y="74" fill="#6ee7b7" font-size="9" font-weight="700">NOT continuous ringbuffer mirror</text></g>
+
+<g transform="translate(1095,402)"><rect width="830" height="110" rx="10" fill="#120c04" stroke="#f59e0b" filter="url(#go)"/><text x="16" y="22" fill="#fde68a" font-size="12" font-weight="800">4  SOAR-LITE block_ip (internal/soar)</text>
+  <g transform="translate(16,36)"><rect width="250" height="58" rx="6" fill="#071b12" stroke="#10b981"/><text x="12" y="18" fill="#6ee7b7" font-size="10" font-weight="700">DEFAULT: DRY-RUN</text><text x="12" y="34" fill="#94a3b8" font-size="8.5">Prints nftables/iptables text</text><text x="12" y="48" fill="#94a3b8" font-size="8.5">No silent kernel auto-block</text></g>
+  <g transform="translate(286,36)"><rect width="250" height="58" rx="6" fill="#1e1305" stroke="#f59e0b"/><text x="12" y="18" fill="#fde68a" font-size="10" font-weight="700">LIVE APPLY (OPT-IN)</text><text x="12" y="34" fill="#94a3b8" font-size="8.5">--apply or SHINKIRO_SOAR_APPLY=1</text><text x="12" y="48" fill="#94a3b8" font-size="8.5">Optional block webhook</text></g>
+  <g transform="translate(556,36)"><rect width="258" height="58" rx="6" fill="#1f070e" stroke="#f43f5e"/><text x="12" y="18" fill="#fda4af" font-size="10" font-weight="700">NOT LIVE eBPF/XDP</text><text x="12" y="34" fill="#94a3b8" font-size="8.5">--apply runs nft/iptables bins</text><text x="12" y="48" fill="#f43f5e" font-size="8.5" font-weight="700">No BPF_MAP_UPDATE / XDP attach</text></g>
+</g>
+
+<g transform="translate(1095,528)"><rect width="405" height="85" rx="10" fill="#08101a" stroke="#00f2fe"/><text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="800">5  DEFENSE EXPORTERS</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">nftables / iptables / sample eBPF</text><text x="16" y="58" fill="#94a3b8" font-size="9.5">SCRIPT TEXT via RenderScript()</text><text x="16" y="74" fill="#38bdf8" font-size="9" font-weight="700">NOT a live kernel BPF/XDP loader</text></g>
+<g transform="translate(1520,528)"><rect width="405" height="85" rx="10" fill="#071520" stroke="#00f2fe"/><text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="800">6  SIEM &amp; THREAT FEEDS</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">CEF • Syslog • STIX 2.1 • ECS</text><text x="16" y="58" fill="#94a3b8" font-size="9.5">ThreatFox CLI • AbuseIPDB CLI</text><text x="16" y="74" fill="#38bdf8" font-size="9">API keys required for feed CLIs</text></g>
+
+<g transform="translate(1095,630)"><rect width="830" height="48" rx="8" fill="#140824" stroke="#a855f7"/><text x="16" y="18" fill="#c084fc" font-size="10" font-weight="700">PIPELINE STAGES</text>
+  <g transform="translate(16,26)" font-size="8" font-weight="700" fill="#fff">
+    <rect width="120" height="16" rx="4" fill="#7e22ce"/><text x="60" y="12" text-anchor="middle">EVENT</text>
+    <text x="130" y="12" fill="#a855f7" font-size="10">→</text>
+    <rect x="145" width="120" height="16" rx="4" fill="#7e22ce"/><text x="205" y="12" text-anchor="middle">SCORE</text>
+    <text x="275" y="12" fill="#a855f7" font-size="10">→</text>
+    <rect x="290" width="120" height="16" rx="4" fill="#7e22ce"/><text x="350" y="12" text-anchor="middle">CORRELATE</text>
+    <text x="420" y="12" fill="#a855f7" font-size="10">→</text>
+    <rect x="435" width="120" height="16" rx="4" fill="#a16207"/><text x="495" y="12" text-anchor="middle">PLAYBOOK</text>
+    <text x="565" y="12" fill="#a855f7" font-size="10">→</text>
+    <rect x="580" width="120" height="16" rx="4" fill="#0284c7"/><text x="640" y="12" text-anchor="middle">SINK</text>
   </g>
+</g>
 
-  <!-- Outer Boundary: Sensor Node Platform -->
-  <rect x="50" y="155" width="890" height="825" rx="16" fill="#090d16" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="6,6" />
-  <text x="75" y="182" fill="#38bdf8" font-size="12" font-weight="700" letter-spacing="0.5">SHINKIRO SENSOR NODE &amp; PROTOCOL EMULATORS</text>
+<g transform="translate(1095,695)"><rect width="830" height="58" rx="10" fill="#071b12" stroke="#10b981"/><text x="16" y="20" fill="#6ee7b7" font-size="11" font-weight="800">TUI ACTIONS</text><text x="16" y="42" fill="#94a3b8" font-size="9.5">select events/campaigns  •  [b] block  •  [p] pcap  •  [s] simulate  •  [c] canary  •  [r] refresh  •  [?] help</text></g>
+<g transform="translate(1095,770)"><rect width="830" height="48" rx="8" fill="#040811" stroke="#161f33"/><text x="16" y="18" fill="#64748b" font-size="9" font-weight="700">CLI SURFACES</text><text x="16" y="36" fill="#f1f5f9" font-size="9">cef | syslog | ecs | stix | export --format nftables | kernel (text) | threatfox | abuseipdb | campaigns | coverage</text></g>
 
-  <!-- 1. Adversary Actor Box -->
-  <g transform="translate(80, 210)">
-    <rect width="210" height="85" rx="10" fill="#0d1527" stroke="#38bdf8" stroke-width="1.5" filter="url(#glow-cyan)" />
-    <text x="105" y="35" fill="#f1f5f9" font-size="13" font-weight="800" text-anchor="middle">Adversary Probes</text>
-    <text x="105" y="55" fill="#94a3b8" font-size="9.5" text-anchor="middle">Scanners, Botnets, C2</text>
-    <text x="105" y="70" fill="#38bdf8" font-size="8.5" font-weight="600" text-anchor="middle">TCP / UDP Port Ingress</text>
-  </g>
+<g transform="translate(1095,840)" font-size="9" font-weight="700">
+  <rect width="195" height="44" rx="8" fill="#13070b" stroke="#f43f5e"/><text x="97" y="18" fill="#fda4af" text-anchor="middle">NO auto XDP drop</text><text x="97" y="34" fill="#94a3b8" text-anchor="middle" font-weight="400" font-size="8">feedback is opt-in apply</text>
+  <rect x="210" width="195" height="44" rx="8" fill="#140b24" stroke="#a855f7"/><text x="307" y="18" fill="#e9d5ff" text-anchor="middle">Correlator v2 ≠ ML</text><text x="307" y="34" fill="#94a3b8" text-anchor="middle" font-weight="400" font-size="8">rule-based campaigns</text>
+  <rect x="420" width="195" height="44" rx="8" fill="#071b12" stroke="#10b981"/><text x="517" y="18" fill="#6ee7b7" text-anchor="middle">15 decoys · Linux</text><text x="517" y="34" fill="#94a3b8" text-anchor="middle" font-weight="400" font-size="8">prebuilts amd64/arm64</text>
+  <rect x="630" width="200" height="44" rx="8" fill="#08101a" stroke="#00f2fe"/><text x="730" y="18" fill="#38bdf8" text-anchor="middle">Cosign + Syft</text><text x="730" y="34" fill="#94a3b8" text-anchor="middle" font-weight="400" font-size="8">not SLSA L3</text>
+</g>
 
-  <!-- Connection: Adversary -> Multiplexer -->
-  <path d="M 290 252 L 350 252" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow-cyan)" />
-  <text x="320" y="244" fill="#64748b" font-size="8" text-anchor="middle">PROBES</text>
-
-  <!-- 2. Core In-Memory Multiplexer -->
-  <g transform="translate(350, 210)">
-    <rect width="250" height="85" rx="10" fill="#171207" stroke="#eab308" stroke-width="1.5" filter="url(#glow-orange)" />
-    <text x="125" y="30" fill="#fef08a" font-size="12" font-weight="800" text-anchor="middle">In-Memory Multiplexer</text>
-    <text x="125" y="50" fill="#94a3b8" font-size="9" text-anchor="middle">Strict 30s Deadlines • Slowloris Mitig.</text>
-    <text x="125" y="68" fill="#eab308" font-size="8.5" font-weight="600" text-anchor="middle">Throughput: &gt;87M ops/sec</text>
-  </g>
-
-  <!-- Connection: Multiplexer -> PCAP forensics -->
-  <path d="M 600 252 L 670 252" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow-green)" />
-
-  <!-- 3. Zero-Copy Libpcap Forensics -->
-  <g transform="translate(670, 210)">
-    <rect width="240" height="85" rx="10" fill="#051c14" stroke="#10b981" stroke-width="1.5" filter="url(#glow-green)" />
-    <text x="120" y="30" fill="#6ee7b7" font-size="12" font-weight="800" text-anchor="middle">Libpcap 2.4 Forensics</text>
-    <text x="120" y="50" fill="#94a3b8" font-size="9" text-anchor="middle">data/dump.pcap (Wireshark)</text>
-    <text x="120" y="68" fill="#10b981" font-size="8.5" font-weight="600" text-anchor="middle">Zero-Copy Frame Ringbuffer</text>
-  </g>
-
-  <!-- Multiplexer Dispatch Arrow Down to Decoys -->
-  <path d="M 475 295 L 475 330" stroke="#00f2fe" stroke-width="2" marker-end="url(#arrow-cyan)" />
-
-  <!-- 4. 15 Protocol Decoys Grid Header -->
-  <g transform="translate(80, 330)">
-    <rect width="830" height="35" rx="6" fill="#081b2a" stroke="#00f2fe" stroke-width="1.2" />
-    <text x="20" y="22" fill="#00f2fe" font-size="11" font-weight="800">15 HIGH-INTERACTION PROTOCOL DECOYS (ZERO HOST MUTATION)</text>
-    <text x="810" y="22" fill="#38bdf8" font-size="9.5" text-anchor="end">Pure In-Memory State</text>
-  </g>
-
-  <!-- DECOY GRID ITEMS -->
-  <!-- Decoy 1: SSH -->
-  <g transform="translate(80, 380)">
-    <rect width="265" height="85" rx="8" fill="#0a121e" stroke="#38bdf8" stroke-width="1.2" />
-    <text x="15" y="25" fill="#f1f5f9" font-size="11" font-weight="700">SSH Server :2222</text>
-    <text x="15" y="45" fill="#94a3b8" font-size="8.5">VirtualFS (bash) • Human Jitter (15-45ms)</text>
-    <text x="15" y="60" fill="#94a3b8" font-size="8.5">cd, ls -la, head, grep, sudo, tail, df, free</text>
-    <text x="15" y="75" fill="#0284c7" font-size="8">T1078 Valid Accounts • T1059 Command Shell</text>
-  </g>
-
-  <!-- Decoy 2: Modbus/TCP -->
-  <g transform="translate(362, 380)">
-    <rect width="265" height="85" rx="8" fill="#1f0e08" stroke="#f97316" stroke-width="1.5" filter="url(#glow-orange)" />
-    <text x="15" y="25" fill="#ffedd5" font-size="11" font-weight="700">Modbus/TCP :502 (OT/ICS)</text>
-    <text x="15" y="45" fill="#94a3b8" font-size="8.5">SCADA PLC Emulator • MBAP Header Decoder</text>
-    <text x="15" y="60" fill="#94a3b8" font-size="8.5">Holding Registers (220V/50Hz) &amp; Coils Lure</text>
-    <text x="15" y="75" fill="#f97316" font-size="8">T0855 Unauthorized Command • Critical OT</text>
-  </g>
-
-  <!-- Decoy 3: HTTP Deep Traps -->
-  <g transform="translate(645, 380)">
-    <rect width="265" height="85" rx="8" fill="#0a121e" stroke="#38bdf8" stroke-width="1.2" />
-    <text x="15" y="25" fill="#f1f5f9" font-size="11" font-weight="700">HTTP Deep Traps :8080</text>
-    <text x="15" y="45" fill="#94a3b8" font-size="8.5">WordPress (/wp-login.php) • Jenkins Form</text>
-    <text x="15" y="60" fill="#94a3b8" font-size="8.5">Grafana API Metrics • /.env &amp; /.git Canaries</text>
-    <text x="15" y="75" fill="#0284c7" font-size="8">T1190 Public Exploit • T1552 Unsec Credentials</text>
-  </g>
-
-  <!-- Decoy 4: Redis -->
-  <g transform="translate(80, 480)">
-    <rect width="265" height="80" rx="8" fill="#150a24" stroke="#a855f7" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="11" font-weight="700">Redis Engine :6379</text>
-    <text x="15" y="42" fill="#94a3b8" font-size="8.5">RESP Wire Protocol • INFO Reconnaissance</text>
-    <text x="15" y="56" fill="#94a3b8" font-size="8.5">Lua EVAL Sandbox Block • CONFIG Dump Trap</text>
-    <text x="15" y="71" fill="#c084fc" font-size="8">T1059 Scripting • High Threat Scoring</text>
-  </g>
-
-  <!-- Decoy 5: Docker & K8s -->
-  <g transform="translate(362, 480)">
-    <rect width="265" height="80" rx="8" fill="#061611" stroke="#10b981" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="11" font-weight="700">Docker :2375 &amp; K8s :6443</text>
-    <text x="15" y="42" fill="#94a3b8" font-size="8.5">Docker REST API • Container Create Trap</text>
-    <text x="15" y="56" fill="#94a3b8" font-size="8.5">K8s Control Plane Control • Anonymous RBAC</text>
-    <text x="15" y="71" fill="#34d399" font-size="8">T1609 Container Exec • T1496 Cryptomining</text>
-  </g>
-
-  <!-- Decoy 6: PostgreSQL & Mongo -->
-  <g transform="translate(645, 480)">
-    <rect width="265" height="80" rx="8" fill="#150a24" stroke="#a855f7" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="11" font-weight="700">Postgres :5432 &amp; Mongo :27017</text>
-    <text x="15" y="42" fill="#94a3b8" font-size="8.5">PG 3.0 Wire Protocol • Auth Cleartext Probe</text>
-    <text x="15" y="56" fill="#94a3b8" font-size="8.5">Mongo OP_MSG BSON • isMaster Recon Trap</text>
-    <text x="15" y="71" fill="#c084fc" font-size="8">T1110 Brute Force • Credential Harvester</text>
-  </g>
-
-  <!-- Decoy 7: AWS IMDS -->
-  <g transform="translate(80, 575)">
-    <rect width="265" height="75" rx="8" fill="#0a121e" stroke="#38bdf8" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="11" font-weight="700">AWS IMDS :8169 / 169.254.x</text>
-    <text x="15" y="42" fill="#94a3b8" font-size="8.5">IMDSv1 &amp; v2 Token Bait • SSRF Defense</text>
-    <text x="15" y="56" fill="#94a3b8" font-size="8.5">Synthetic IAM Role Security Credentials</text>
-    <text x="15" y="70" fill="#0284c7" font-size="8">T1552.005 Cloud Instance Metadata API</text>
-  </g>
-
-  <!-- Decoy 8: IoT & Lateral Movement -->
-  <g transform="translate(362, 575)">
-    <rect width="265" height="75" rx="8" fill="#150a24" stroke="#a855f7" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="11" font-weight="700">MQTT :1883 &amp; SMB :4445</text>
-    <text x="15" y="42" fill="#94a3b8" font-size="8.5">MQTT Broker • Connect &amp; Publish Traps</text>
-    <text x="15" y="56" fill="#94a3b8" font-size="8.5">SMBv2 / NetBIOS • EternalBlue Scanner Trap</text>
-    <text x="15" y="70" fill="#c084fc" font-size="8">T1021 Remote Services • T1210 Exploitation</text>
-  </g>
-
-  <!-- Decoy 9: Mail & Network Infra -->
-  <g transform="translate(645, 575)">
-    <rect width="265" height="75" rx="8" fill="#0a121e" stroke="#38bdf8" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="11" font-weight="700">SMTP :2525, DNS :1053, Telnet</text>
-    <text x="15" y="42" fill="#94a3b8" font-size="8.5">Postfix ESMTP • Phishing Spam Collector</text>
-    <text x="15" y="56" fill="#94a3b8" font-size="8.5">DNS RFC 1035 UDP • Telnet BusyBox Mirai</text>
-    <text x="15" y="70" fill="#0284c7" font-size="8">T1566 Phishing • T1071 C2 Covert Channel</text>
-  </g>
-
-  <!-- Bottom Details in Plane A: Hardening & Sandboxing -->
-  <g transform="translate(80, 675)">
-    <rect width="830" height="95" rx="10" fill="#0b1120" stroke="#0284c7" stroke-width="1.2" />
-    <text x="20" y="25" fill="#38bdf8" font-size="11" font-weight="800">RUNTIME HARDENING &amp; BOUNDARY SPECIFICATION</text>
-
-    <!-- Sub-badge 1 -->
-    <g transform="translate(20, 38)">
-      <rect width="180" height="42" rx="6" fill="#071b12" stroke="#10b981" stroke-width="1" />
-      <text x="90" y="20" fill="#6ee7b7" font-size="9.5" font-weight="700" text-anchor="middle">seccomp.json (SCMP_ERRNO)</text>
-      <text x="90" y="34" fill="#94a3b8" font-size="8" text-anchor="middle">Kernel syscall whitelisting</text>
-    </g>
-
-    <!-- Sub-badge 2 -->
-    <g transform="translate(225, 38)">
-      <rect width="180" height="42" rx="6" fill="#07151e" stroke="#00f2fe" stroke-width="1" />
-      <text x="90" y="20" fill="#38bdf8" font-size="9.5" font-weight="700" text-anchor="middle">K8s Helm Hardening</text>
-      <text x="90" y="34" fill="#94a3b8" font-size="8" text-anchor="middle">readOnlyRootFS • drop: ALL</text>
-    </g>
-
-    <!-- Sub-badge 3 -->
-    <g transform="translate(430, 38)">
-      <rect width="180" height="42" rx="6" fill="#140b24" stroke="#a855f7" stroke-width="1" />
-      <text x="90" y="20" fill="#e9d5ff" font-size="9.5" font-weight="700" text-anchor="middle">Cosign + SLSA v1.0</text>
-      <text x="90" y="34" fill="#94a3b8" font-size="8" text-anchor="middle">Keyless Sigstore • SPDX SBOM</text>
-    </g>
-
-    <!-- Sub-badge 4 -->
-    <g transform="translate(635, 38)">
-      <rect width="175" height="42" rx="6" fill="#1f1406" stroke="#f59e0b" stroke-width="1" />
-      <text x="87" y="20" fill="#fde68a" font-size="9.5" font-weight="700" text-anchor="middle">Native Go Fuzzing</text>
-      <text x="87" y="34" fill="#94a3b8" font-size="8" text-anchor="middle">make fuzz • Zero crash parse</text>
-    </g>
-  </g>
-
-  <!-- Plane A Footer Safety Contract Banner -->
-  <g transform="translate(80, 795)">
-    <rect width="830" height="75" rx="10" fill="#13070b" stroke="#f43f5e" stroke-width="1.2" />
-    <text x="20" y="26" fill="#f43f5e" font-size="11" font-weight="800">FAIL-CLOSED DECEPTION CONTRACT</text>
-    <text x="20" y="46" fill="#fda4af" font-size="9.5">Unhandled network frames or malformed attacker payloads cleanly terminate the socket without exposing host details.</text>
-    <text x="20" y="62" fill="#94a3b8" font-size="8.5">Zero OS process execution. Attacks execute purely against in-memory state trees and synthetic mocks.</text>
-    
-    <g transform="translate(690, 22)">
-      <rect width="120" height="32" rx="6" fill="#290a14" stroke="#f43f5e" stroke-width="1" />
-      <text x="60" y="20" fill="#f43f5e" font-size="9" font-weight="800" text-anchor="middle">FAIL-CLOSED (0)</text>
-    </g>
-  </g>
-
-  <g transform="translate(80, 890)">
-    <rect width="265" height="70" rx="8" fill="#0a121e" stroke="#00f2fe" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="10.5" font-weight="700">Adversary Simulator</text>
-    <text x="15" y="42" fill="#38bdf8" font-size="8.5">shinkiro simulate [opts]</text>
-    <text x="15" y="58" fill="#94a3b8" font-size="8">Synthetic automated attack suite</text>
-  </g>
-
-  <g transform="translate(362, 890)">
-    <rect width="265" height="70" rx="8" fill="#141109" stroke="#eab308" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="10.5" font-weight="700">Canary Key Generation</text>
-    <text x="15" y="42" fill="#eab308" font-size="8.5">shinkiro canary generate</text>
-    <text x="15" y="58" fill="#94a3b8" font-size="8">HMAC AWS &amp; DB canary token seeding</text>
-  </g>
-
-  <g transform="translate(645, 890)">
-    <rect width="265" height="70" rx="8" fill="#071b12" stroke="#10b981" stroke-width="1.2" />
-    <text x="15" y="24" fill="#f1f5f9" font-size="10.5" font-weight="700">Cluster Hub Sync</text>
-    <text x="15" y="42" fill="#6ee7b7" font-size="8.5">shinkiro cluster hub</text>
-    <text x="15" y="58" fill="#94a3b8" font-size="8">Multi-node mesh gossip telemetry</text>
-  </g>
-
-  <!-- ========================================================================= -->
-  <!-- CROSS-PLANE BRIDGE PIPELINE                                               -->
-  <!-- ========================================================================= -->
-  <path d="M 940 420 C 970 420, 970 300, 1030 300" stroke="#00f2fe" stroke-width="2" stroke-dasharray="5,5" fill="none" marker-end="url(#arrow-cyan)" />
-  <text x="980" y="340" fill="#00f2fe" font-size="8.5" font-weight="700" text-anchor="middle">JSONL STREAM</text>
-
-  <!-- ========================================================================= -->
-  <!-- PLANE B: ATTRIBUTION, CAMPAIGN CLUSTERING, SOAR & DEFENSE ENGINE         -->
-  <!-- ========================================================================= -->
-  <g transform="translate(1030, 95)">
-    <text x="0" y="20" fill="#a855f7" font-size="13" font-weight="800" letter-spacing="1">PLANE B : ATTRIBUTION, CORRELATION, SOAR AUTOMATION &amp; KERNEL DEFENSE</text>
-    <text x="0" y="38" fill="#64748b" font-size="11">Multi-protocol campaign clustering, MITRE ATT&amp;CK mapping, YAML SOAR playbooks &amp; kernel drops</text>
-  </g>
-
-  <!-- 1. Shinkiro Intel & Attribution Pipeline -->
-  <g transform="translate(1030, 155)">
-    <rect width="920" height="240" rx="14" fill="#0c0717" stroke="#a855f7" stroke-width="1.5" filter="url(#glow-purple)" />
-    <text x="25" y="32" fill="#c084fc" font-size="12" font-weight="800" letter-spacing="0.5">TELEMETRY, MITRE ATT&amp;CK &amp; CAMPAIGN CORRELATOR</text>
-    <text x="895" y="32" fill="#a855f7" font-size="9.5" text-anchor="end">pkg: internal/intel</text>
-
-    <!-- Sub-element 1: Immutable Log -->
-    <g transform="translate(25, 55)">
-      <rect width="200" height="160" rx="10" fill="#08101a" stroke="#00f2fe" stroke-width="1.2" />
-      <text x="100" y="30" fill="#38bdf8" font-size="11" font-weight="700" text-anchor="middle">Audit Stream</text>
-      <text x="100" y="55" fill="#f1f5f9" font-size="12" font-weight="800" text-anchor="middle">data/events.jsonl</text>
-      <text x="100" y="80" fill="#94a3b8" font-size="8.5" text-anchor="middle">SHA-256 Hashes</text>
-      <text x="100" y="100" fill="#94a3b8" font-size="8.5" text-anchor="middle">MaxMind GeoIP &amp; ASN</text>
-      <rect x="25" y="120" width="150" height="24" rx="4" fill="#0284c7" />
-      <text x="100" y="136" fill="#ffffff" font-size="8" font-weight="700" text-anchor="middle">IMMUTABLE TELEMETRY</text>
-    </g>
-
-    <!-- Ingest Arrow -->
-    <path d="M 225 135 L 255 135" stroke="#a855f7" stroke-width="1.8" marker-end="url(#arrow-purple)" />
-
-    <!-- Sub-element 2: MITRE ATT&CK Auto-Mapper -->
-    <g transform="translate(255, 55)">
-      <rect width="200" height="160" rx="10" fill="#140824" stroke="#a855f7" stroke-width="1.2" />
-      <text x="100" y="30" fill="#e9d5ff" font-size="11" font-weight="700" text-anchor="middle">MITRE ATT&amp;CK Mapper</text>
-      <text x="100" y="55" fill="#c084fc" font-size="12" font-weight="800" text-anchor="middle">TTP Matrix Binding</text>
-      <text x="100" y="80" fill="#94a3b8" font-size="8.5" text-anchor="middle">T1110 (Brute Force)</text>
-      <text x="100" y="98" fill="#94a3b8" font-size="8.5" text-anchor="middle">T1059 (Scripting) • T0855 (OT)</text>
-      <rect x="25" y="120" width="150" height="24" rx="4" fill="#7e22ce" />
-      <text x="100" y="136" fill="#ffffff" font-size="8" font-weight="700" text-anchor="middle">SOC COMMON VOCABULARY</text>
-    </g>
-
-    <!-- Map Arrow -->
-    <path d="M 455 135 L 485 135" stroke="#a855f7" stroke-width="1.8" marker-end="url(#arrow-purple)" />
-
-    <!-- Sub-element 3: Multi-Protocol Campaign Correlator -->
-    <g transform="translate(485, 55)">
-      <rect width="200" height="160" rx="10" fill="#140824" stroke="#a855f7" stroke-width="1.2" />
-      <text x="100" y="30" fill="#e9d5ff" font-size="11" font-weight="700" text-anchor="middle">Campaign Correlator</text>
-      <text x="100" y="55" fill="#c084fc" font-size="12" font-weight="800" text-anchor="middle">Attacker Clustering</text>
-      <text x="100" y="80" fill="#94a3b8" font-size="8.5" text-anchor="middle">SSH + Redis + Modbus Unified</text>
-      <text x="100" y="98" fill="#94a3b8" font-size="8.5" text-anchor="middle">Sliding Window Sessionizing</text>
-      <rect x="25" y="120" width="150" height="24" rx="4" fill="#7e22ce" />
-      <text x="100" y="136" fill="#ffffff" font-size="8" font-weight="700" text-anchor="middle">CAMPAIGN TIMELINE</text>
-    </g>
-
-    <!-- Correlate Arrow -->
-    <path d="M 685 135 L 715 135" stroke="#a855f7" stroke-width="1.8" marker-end="url(#arrow-purple)" />
-
-    <!-- Sub-element 4: Dynamic Threat Scorer -->
-    <g transform="translate(715, 55)">
-      <rect width="180" height="160" rx="10" fill="#140824" stroke="#eab308" stroke-width="1.5" filter="url(#glow-orange)" />
-      <text x="90" y="30" fill="#fef08a" font-size="11" font-weight="700" text-anchor="middle">Dynamic Threat Scorer</text>
-      <text x="90" y="55" fill="#eab308" font-size="14" font-weight="900" text-anchor="middle">SCORE 0–100</text>
-      <text x="90" y="80" fill="#94a3b8" font-size="8.5" text-anchor="middle">Cumulative Reputation</text>
-      <text x="90" y="98" fill="#94a3b8" font-size="8.5" text-anchor="middle">13.40 ns / op (0 B/op)</text>
-      <rect x="20" y="120" width="140" height="24" rx="4" fill="#a16207" />
-      <text x="90" y="136" fill="#ffffff" font-size="8" font-weight="700" text-anchor="middle">HIGH-CONFIDENCE IoC</text>
-    </g>
-  </g>
-
-  <!-- Connect Downwards to SOAR Playbook Engine -->
-  <path d="M 1490 395 L 1490 425" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange)" />
-
-  <!-- 2. SOAR-Lite Playbook Automation Engine -->
-  <g transform="translate(1030, 425)">
-    <rect width="920" height="215" rx="14" fill="#120c04" stroke="#f59e0b" stroke-width="1.5" filter="url(#glow-orange)" />
-    <text x="25" y="30" fill="#fde68a" font-size="12" font-weight="800" letter-spacing="0.5">SOAR-LITE ACTIVE DEFENSE AUTOMATION (PLAYBOOKS.YAML)</text>
-    <text x="895" y="30" fill="#f59e0b" font-size="9.5" text-anchor="end">pkg: internal/soar</text>
-
-    <!-- Policy 1: Score < 50 -->
-    <g transform="translate(25, 50)">
-      <rect width="275" height="145" rx="8" fill="#071b12" stroke="#10b981" stroke-width="1.2" />
-      <circle cx="25" cy="25" r="7" fill="#10b981" />
-      <text x="25" y="28" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle">1</text>
-      <text x="42" y="28" fill="#6ee7b7" font-size="11" font-weight="700">RECONNAISSANCE PASS</text>
-      <text x="20" y="55" fill="#f1f5f9" font-size="9.5">Threat Score &lt; 50 (Scanning)</text>
-      <text x="20" y="75" fill="#94a3b8" font-size="8.5">• Continue baiting in honeypot</text>
-      <text x="20" y="90" fill="#94a3b8" font-size="8.5">• Record TTPs &amp; toolkit fingerprint</text>
-      <rect x="20" y="110" width="235" height="24" rx="4" fill="#064e3b" />
-      <text x="137" y="126" fill="#a7f3d0" font-size="8.5" font-weight="700" text-anchor="middle">PASSIVE INTELLIGENCE GATHERING</text>
-    </g>
-
-    <!-- Policy 2: Score 50-79 Rate Threshold -->
-    <g transform="translate(322, 50)">
-      <rect width="275" height="145" rx="8" fill="#1e1305" stroke="#f59e0b" stroke-width="1.2" />
-      <circle cx="25" cy="25" r="7" fill="#f59e0b" />
-      <text x="25" y="28" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle">2</text>
-      <text x="42" y="28" fill="#fde68a" font-size="11" font-weight="700">THRESHOLD RATE BURST</text>
-      <text x="20" y="55" fill="#f1f5f9" font-size="9.5">5+ Events in 30s Window</text>
-      <text x="20" y="75" fill="#94a3b8" font-size="8.5">• Automated SecOps Alerting</text>
-      <text x="20" y="90" fill="#94a3b8" font-size="8.5">• Stage IP for firewall blacklisting</text>
-      <rect x="20" y="110" width="235" height="24" rx="4" fill="#78350f" />
-      <text x="137" y="126" fill="#fef08a" font-size="8.5" font-weight="700" text-anchor="middle">DISPATCH ALERTS &amp; MITIGATION</text>
-    </g>
-
-    <!-- Policy 3: Score >= 80 Hard Exploit -->
-    <g transform="translate(620, 50)">
-      <rect width="275" height="145" rx="8" fill="#1f070e" stroke="#f43f5e" stroke-width="1.5" filter="url(#glow-rose)" />
-      <circle cx="25" cy="25" r="7" fill="#f43f5e" />
-      <text x="25" y="28" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle">3</text>
-      <text x="42" y="28" fill="#fda4af" font-size="11" font-weight="700">HARD EXPLOITATION BLOCK</text>
-      <text x="20" y="55" fill="#f1f5f9" font-size="9.5">Score &gt;= 80 or Critical OT Action</text>
-      <text x="20" y="75" fill="#94a3b8" font-size="8.5">• Dynamic eBPF/XDP drop at NIC</text>
-      <text x="20" y="90" fill="#94a3b8" font-size="8.5">• nftables &amp; iptables sets injection</text>
-      <rect x="20" y="110" width="235" height="24" rx="4" fill="#881337" />
-      <text x="137" y="126" fill="#fecdd3" font-size="8.5" font-weight="700" text-anchor="middle">AUTOMATED KERNEL MITIGATION</text>
-    </g>
-  </g>
-
-  <!-- Connect Downwards to Feeds & Outputs -->
-  <path d="M 1490 640 L 1490 670" stroke="#00f2fe" stroke-width="2" marker-end="url(#arrow-cyan)" />
-
-  <!-- 3. SIEM Integrations & SecOps Ecosystem -->
-  <g transform="translate(1030, 670)">
-    <rect width="920" height="290" rx="14" fill="#0a121e" stroke="#00f2fe" stroke-width="1.5" filter="url(#glow-cyan)" />
-    <text x="25" y="32" fill="#38bdf8" font-size="12" font-weight="800" letter-spacing="0.5">SIEM INTEGRATIONS, THREAT FEEDS &amp; SECOPS INTERFACES</text>
-    <text x="895" y="32" fill="#00f2fe" font-size="9.5" text-anchor="end">Zero-Touch Ingestion</text>
-
-    <!-- Box A: SIEM Feeds -->
-    <g transform="translate(25, 55)">
-      <rect width="430" height="140" rx="10" fill="#071520" stroke="#00f2fe" stroke-width="1.2" />
-      <text x="20" y="26" fill="#38bdf8" font-size="11" font-weight="700">Enterprise SIEM &amp; Community Feeds</text>
-      
-      <g transform="translate(20, 42)">
-        <rect width="90" height="40" rx="6" fill="#0c2333" stroke="#0284c7" stroke-width="1" />
-        <text x="45" y="18" fill="#f1f5f9" font-size="9" font-weight="700" text-anchor="middle">CEF</text>
-        <text x="45" y="32" fill="#38bdf8" font-size="7.5" text-anchor="middle">ArcSight Format</text>
-      </g>
-      <g transform="translate(120, 42)">
-        <rect width="90" height="40" rx="6" fill="#0c2333" stroke="#0284c7" stroke-width="1" />
-        <text x="45" y="18" fill="#f1f5f9" font-size="9" font-weight="700" text-anchor="middle">Syslog</text>
-        <text x="45" y="32" fill="#38bdf8" font-size="7.5" text-anchor="middle">RFC5424 Stream</text>
-      </g>
-      <g transform="translate(220, 42)">
-        <rect width="90" height="40" rx="6" fill="#0c2333" stroke="#0284c7" stroke-width="1" />
-        <text x="45" y="18" fill="#f1f5f9" font-size="9" font-weight="700" text-anchor="middle">STIX 2.1</text>
-        <text x="45" y="32" fill="#38bdf8" font-size="7.5" text-anchor="middle">JSON Bundles</text>
-      </g>
-      <g transform="translate(320, 42)">
-        <rect width="90" height="40" rx="6" fill="#0c2333" stroke="#0284c7" stroke-width="1" />
-        <text x="45" y="18" fill="#f1f5f9" font-size="9" font-weight="700" text-anchor="middle">ECS v8.x</text>
-        <text x="45" y="32" fill="#38bdf8" font-size="7.5" text-anchor="middle">Elastic Schema</text>
-      </g>
-
-      <rect x="20" y="95" width="390" height="30" rx="6" fill="#082b3d" stroke="#00f2fe" stroke-width="1" />
-      <text x="215" y="114" fill="#00f2fe" font-size="9" font-weight="700" text-anchor="middle">COMMUNITY THREAT FEEDS: MISP • ThreatFox • AbuseIPDB</text>
-    </g>
-
-    <!-- Box B: SecOps & Active Response -->
-    <g transform="translate(470, 55)">
-      <rect width="425" height="140" rx="10" fill="#071b12" stroke="#10b981" stroke-width="1.2" />
-      <text x="20" y="26" fill="#6ee7b7" font-size="11" font-weight="700">SecOps Interfaces &amp; Kernel Mitigation</text>
-
-      <g transform="translate(20, 42)">
-        <rect width="185" height="40" rx="6" fill="#05281a" stroke="#10b981" stroke-width="1" />
-        <text x="92" y="18" fill="#f1f5f9" font-size="9.5" font-weight="700" text-anchor="middle">Live Dashboard (TUI)</text>
-        <text x="92" y="32" fill="#34d399" font-size="8" text-anchor="middle">Bubbletea + Lipgloss Terminal</text>
-      </g>
-
-      <g transform="translate(220, 42)">
-        <rect width="185" height="40" rx="6" fill="#05281a" stroke="#10b981" stroke-width="1" />
-        <text x="92" y="18" fill="#f1f5f9" font-size="9.5" font-weight="700" text-anchor="middle">SecOps Webhooks</text>
-        <text x="92" y="32" fill="#34d399" font-size="8" text-anchor="middle">Slack Block Kit / Discord</text>
-      </g>
-
-      <rect x="20" y="95" width="385" height="30" rx="6" fill="#093522" stroke="#10b981" stroke-width="1" />
-      <text x="212" y="114" fill="#6ee7b7" font-size="9" font-weight="700" text-anchor="middle">KERNEL DROP: eBPF / XDP (NIC Drop) &amp; nftables / iptables</text>
-    </g>
-
-    <!-- Export CLI commands in Plane B -->
-    <g transform="translate(25, 210)">
-      <rect width="870" height="60" rx="8" fill="#040811" stroke="#161f33" stroke-width="1" />
-      <text x="20" y="24" fill="#64748b" font-size="9" font-weight="700">CLI INTEGRATION INTERFACES:</text>
-      <text x="20" y="44" fill="#f1f5f9" font-size="9">shinkiro cef  |  shinkiro syslog  |  shinkiro ecs  |  shinkiro stix  |  shinkiro export --format nftables  |  shinkiro kernel</text>
-    </g>
-  </g>
-
-  <!-- Global Loop Arrow: Kernel XDP Mitigation drop back to Adversary -->
-  <path d="M 1250 850 L 1250 985 L 45 985 L 45 305" stroke="#f43f5e" stroke-width="1.8" stroke-dasharray="6,6" fill="none" marker-end="url(#arrow-rose)" />
-  <rect x="360" y="972" width="340" height="26" rx="6" fill="#18070e" stroke="#f43f5e" stroke-width="1.2" />
-  <text x="530" y="989" fill="#f43f5e" font-size="9.5" font-weight="800" text-anchor="middle">KERNEL XDP INGRESS DROP (HARDWARE NIC DISCARD)</text>
-
+<g transform="translate(50,990)"><rect width="1900" height="55" rx="10" fill="#0a121e" stroke="#161f33"/>
+  <text x="30" y="22" fill="#64748b" font-size="10" font-weight="700">docs/README.md   •   honesty-limitations.md   •   15 decoys   •   Linux-only prebuilts</text>
+  <text x="30" y="42" fill="#38bdf8" font-size="10" font-weight="700">Canonical: docs/diagrams/architecture-darkmode.svg   •   Post-roadmap PRs #10–#16</text>
+</g>
 </svg>
