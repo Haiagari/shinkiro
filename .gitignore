@@ -79,3 +79,5 @@ tmp/
 temp/
 scratch/
 
+# MaxMind GeoLite2/GeoIP2 databases (never commit license-bound binaries)
+*.mmdb

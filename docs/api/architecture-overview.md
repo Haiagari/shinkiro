@@ -39,7 +39,7 @@ internal/
 ├── ebpf/               # Sample C + RenderScript exporter (NOT live loader)
 ├── intel/              # Telemetry, scoring, MITRE, correlator
 │   ├── ecs/            # ECS serializer
-│   ├── geoip/          # Heuristic / demo prefix resolver (NOT MaxMind)
+│   ├── geoip/          # Optional MaxMind GeoLite2 (path via env/flag; no-op if unset)
 │   ├── siem/           # CEF & Syslog exporters
 │   └── stix/           # STIX 2.1 bundle generator
 ├── metrics/            # Prometheus helpers
@@ -67,6 +67,8 @@ shinkiro kernel                       # sample eBPF / rule script text
 shinkiro canary generate --label prod-cluster-secret
 shinkiro simulate --host 127.0.0.1
 shinkiro cluster hub [--port 9090] [--token SECRET] [--tls-cert PATH] [--tls-key PATH]
+shinkiro geoip --ip 1.2.3.4 [--geoip-db PATH]   # optional MaxMind lookup
+shinkiro up [--apply] [--geoip-db PATH]
 # Hub-and-spoke HTTP (not gossip/mesh). Empty SHINKIRO_CLUSTER_TOKEN = lab-only insecure.
 ```
 

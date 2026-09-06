@@ -1,10 +1,11 @@
 # Shinkiro Cyber Deception & Threat Intelligence Architecture
 
-This document describes **what the code does today**. Where earlier drafts claimed live kernel XDP attachment, MaxMind GeoIP, UDP gossip/mesh, or continuous packet mirroring, those claims are corrected below.
+This document describes **what the code does today**. Where earlier drafts claimed live kernel XDP attachment, always-on/fake GeoIP, UDP gossip/mesh, or continuous packet mirroring, those claims are corrected below.
 
 See also:
 - [`event-pipeline.md`](event-pipeline.md) — Event → Score → Correlate → Playbook → Sink; SOAR dry-run/apply; on-demand PCAP
 - [`cluster-hub.md`](cluster-hub.md) — hub-and-spoke HTTP cluster hub (token auth, TLS, join/ingest)
+- [`../threat-intel/geolite2-geoip.md`](../threat-intel/geolite2-geoip.md) — optional MaxMind GeoLite2 enrichment
 
 ---
 
@@ -67,6 +68,11 @@ export SHINKIRO_CLUSTER_TOKEN="$(openssl rand -hex 32)"
 
 ---
 
-## 7. GeoIP Enrichment (Heuristic)
+## 7. GeoIP Enrichment (Optional MaxMind GeoLite2)
 
-`internal/intel/geoip.Resolver` uses RFC1918/loopback → `LOCAL`, a small demo prefix table (`198.51.100.`, `203.0.113.`, `192.0.2.`, …), and deterministic octet heuristics. **Not** MaxMind GeoLite/GeoIP2.
+`internal/intel/geoip.Resolver` loads a local MaxMind `.mmdb` from `SHINKIRO_GEOLITE2_PATH` or `--geoip-db`.
+
+- **Unset / missing path:** no-op enrichment; logs `GeoIP disabled` once. Product works without GeoIP.
+- **City / Country / ASN DB:** fills `geo_country` / `geo_city` / `geo_asn` / `geo_org` when present — **never invents coordinates** or heuristic octet countries.
+- **Private / loopback:** tagged `LOCAL` (not MaxMind attribution).
+- Ops test: `shinkiro geoip --ip 1.2.3.4`. Full guide: [`geolite2-geoip.md`](../threat-intel/geolite2-geoip.md).

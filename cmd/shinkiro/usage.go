@@ -15,13 +15,16 @@ func printUsage() {
 	fmt.Print(banner)
 	fmt.Print(`
 USAGE:
-  shinkiro up [--apply]           Start decoy listeners; SOAR block_ip dry-run unless --apply
-  shinkiro tui [--apply]          Live TUI dashboard (same pipeline / SOAR flags)
+  shinkiro up [--apply] [--geoip-db PATH]
+                                  Start decoy listeners; SOAR block_ip dry-run unless --apply
+  shinkiro tui [--apply] [--geoip-db PATH]
+                                  Live TUI dashboard (same pipeline / SOAR / GeoIP flags)
   shinkiro canary generate        Generate synthetic HMAC-signed AWS/DB honeytokens
   shinkiro campaigns              List correlator v2 campaigns (rebuild from events JSONL)
   shinkiro threatfox              Query ThreatFox IOCs (--search or --days; needs THREATFOX_API_KEY)
   shinkiro abuseipdb              Check IP reputation (--ip; needs ABUSEIPDB_API_KEY)
   shinkiro coverage               ATT&CK coverage report from decoy-matrix + optional MapToMitre
+  shinkiro geoip --ip <addr>      Lookup IP via optional MaxMind GeoLite2 .mmdb (ops test)
   shinkiro export blocklist       Export malicious IPs to firewall format
   shinkiro stix                   Export threat intelligence in STIX 2.1 JSON bundle
   shinkiro ecs                    Export telemetry in Elastic Common Schema (ECS v8.x) format
@@ -34,6 +37,7 @@ USAGE:
 
 OPTIONS:
   --apply                         Live-execute SOAR block_ip firewall commands (default: dry-run)
+  --geoip-db <path>               MaxMind GeoLite2/GeoIP2 .mmdb for up/tui/geoip (overrides env)
   --config <path>                 Path to configuration YAML (default: config.yaml)
   --format <iptables|nftables|cidr> Firewall syntax (default: iptables)
   --threshold <score>             Minimum threat score to trigger mitigation (default: 80)
@@ -49,6 +53,7 @@ ENV:
   SHINKIRO_PCAP_THRESHOLD         On-demand PCAP score gate (default: 80)
   SHINKIRO_PCAP_DIR               On-demand PCAP directory (default: data/pcap)
   SHINKIRO_WEBHOOK_URL            Slack/Discord alert webhook for critical events
+  SHINKIRO_GEOLITE2_PATH          Optional path to GeoLite2/GeoIP2 .mmdb (City/Country/ASN)
   SHINKIRO_CLUSTER_TOKEN          Shared secret for cluster join/ingest (empty = lab-only insecure)
   THREATFOX_API_KEY               ThreatFox Auth-Key (https://auth.abuse.ch/) for threatfox CLI
   ABUSEIPDB_API_KEY               AbuseIPDB API key for abuseipdb CLI

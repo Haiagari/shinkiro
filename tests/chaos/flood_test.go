@@ -16,12 +16,15 @@ import (
 
 // TestChaos_ConcurrentConnectionSpike tests stability under massive simultaneous port connection bursts
 func TestChaos_ConcurrentConnectionSpike(t *testing.T) {
+	// Port must not collide with tests/e2e (http :29080) when `go test ./...` runs packages in parallel.
+	const httpPort = 28080
+
 	cfg := &config.Config{
 		NodeName:       "shinkiro-chaos-node",
 		IdleTimeout:    1 * time.Second,
 		MaxConnections: 5000,
 		Services: map[string]config.ServiceConfig{
-			"http": {Enabled: true, Port: 29080},
+			"http": {Enabled: true, Port: httpPort},
 		},
 	}
 
@@ -46,7 +49,7 @@ func TestChaos_ConcurrentConnectionSpike(t *testing.T) {
 		wg.Add(1)
 		go func(id int) {
 			defer wg.Done()
-			conn, err := net.Dial("tcp", "127.0.0.1:29080")
+			conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", httpPort))
 			if err != nil {
 				return
 			}

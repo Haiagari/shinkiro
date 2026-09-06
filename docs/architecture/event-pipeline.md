@@ -8,7 +8,7 @@ This note describes the unified telemetry path landed for roadmap items 1–3.
 
 Ordered stages:
 
-1. **Score** — ensure MITRE mapping (`intel.MapToMitre`) and GeoIP metadata enrichment.
+1. **Score** — ensure MITRE mapping (`intel.MapToMitre`) and **optional** MaxMind GeoLite2 metadata enrichment (`SHINKIRO_GEOLITE2_PATH` / `--geoip-db`; no-op when unset).
 2. **Correlate** — `intel.Correlator.Ingest` for multi-decoy campaigns.
 3. **Playbook** — `soar.Engine.Process` (YAML rules from `playbooks.yaml`).
 4. **Sink** — Prometheus metrics, critical webhook, on-demand PCAP, `intel.Engine.Persist` (JSONL), TUI fan-out.
@@ -57,3 +57,7 @@ shinkiro up
 ls data/pcap/
 # highscore-<ip>-<unix>.pcap
 ```
+
+## Optional GeoIP
+
+See [`docs/threat-intel/geolite2-geoip.md`](../threat-intel/geolite2-geoip.md). When disabled, Score still maps MITRE; `geo_*` metadata keys are simply absent.

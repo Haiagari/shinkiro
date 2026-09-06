@@ -16,7 +16,7 @@ Use this file as the **source of truth for agents and contributors**. Prefer cod
 | Core Philosophy | Zero-footprint in-memory decoys, fail-closed sockets, live telemetry |
 | Protocol Decoys (**15**) | SSH, Telnet, MQTT, SMB, Redis, Docker, HTTP, PostgreSQL, Kubernetes, AWS IMDS, MongoDB, Elasticsearch, SMTP, DNS, Modbus |
 | Active Defense | **Text exporters** for `iptables` / `nftables` / sample eBPF scripts; SOAR-lite `block_ip` / `alert` — dry-run default, live apply only with `--apply` / `SHINKIRO_SOAR_APPLY=1` — **not** a live kernel BPF loader |
-| GeoIP | Heuristic / demo prefix resolver (`internal/intel/geoip`) — **not** MaxMind |
+| GeoIP | Optional MaxMind GeoLite2 (`SHINKIRO_GEOLITE2_PATH` / `--geoip-db`); no-op when unset — **not** demo fake countries |
 | Cluster | Hub-and-spoke HTTP hub (`internal/cluster`) with optional `SHINKIRO_CLUSTER_TOKEN` auth — **not** gossip / mesh / eBPF-cluster |
 | Event pipeline | `internal/pipeline` — Event → Score → Correlate → Playbook → Sink (wired in `up`/`tui`) |
 | PCAP | On-demand high-score capture (`internal/pcap.OnDemandCapture`) wired into pipeline sink — **not** continuous mirror |
@@ -31,7 +31,7 @@ Use this file as the **source of truth for agents and contributors**. Prefer cod
 shinkiro/
 ├── cmd/
 │   └── shinkiro/             # CLI: up, tui, simulate, export, kernel/ebpf,
-│                             #      cef/syslog/stix/ecs, canary, cluster hub, version
+│                             #      cef/syslog/stix/ecs, canary, cluster hub, geoip, version
 ├── config.yaml               # Runtime config — top-level key is services:
 ├── playbooks.yaml            # SOAR-lite rules: rules / if / then / block_ip|alert
 ├── deploy/
@@ -54,7 +54,7 @@ shinkiro/
 │   ├── defense/              # iptables & nftables rule text generator
 │   ├── ebpf/                 # Rule script renderer + sample C (internal/ebpf/c/xdp_drop.c)
 │   ├── intel/                # Telemetry, scoring, MITRE, correlator
-│   │   ├── ecs/ geoip/ siem/ stix/
+│   │   ├── ecs/ geoip/ (optional MaxMind) siem/ stix/
 │   ├── metrics/              # Prometheus metrics helper
 │   ├── pcap/                 # Libpcap writer + on-demand high-score capture
 │   ├── pipeline/             # Event → Score → Correlate → Playbook → Sink bus
@@ -75,6 +75,6 @@ shinkiro/
 - **Zero Attribution**: Never include `Co-Authored-By` or AI trailer lines.
 - **Fail-Closed**: Any unhandled network error must cleanly terminate the socket without exposing host details.
 - **Zero Host Mutation**: Decoys must execute purely in memory; never spawn host OS processes or touch real filesystem paths for attacker commands.
-- **Honest docs**: Do not claim live eBPF loaders, MaxMind GeoIP, UDP gossip mesh, continuous in-pipeline PCAP mirroring, SLSA L3, or GHCR Helm one-liners unless the code/CI lands first. Cluster is hub-and-spoke HTTP with optional token — empty `SHINKIRO_CLUSTER_TOKEN` is lab-only insecure. SOAR live firewall apply requires explicit `--apply` / `SHINKIRO_SOAR_APPLY=1`.
+- **Honest docs**: Do not claim live eBPF loaders, always-on GeoIP without a configured `.mmdb`, UDP gossip mesh, continuous in-pipeline PCAP mirroring, SLSA L3, or GHCR Helm one-liners unless the code/CI lands first. Optional MaxMind GeoLite2 is supported when `SHINKIRO_GEOLITE2_PATH` / `--geoip-db` points at a real DB. Cluster is hub-and-spoke HTTP with optional token — empty `SHINKIRO_CLUSTER_TOKEN` is lab-only insecure. SOAR live firewall apply requires explicit `--apply` / `SHINKIRO_SOAR_APPLY=1`.
 - **Comprehensive Unit Testing**: Protocol parsers should be tested via in-memory pipes (`net.Pipe()`) where practical.
 - **Config key**: Runtime YAML uses `services:` — examples and matrix docs must match.

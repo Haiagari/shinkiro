@@ -25,11 +25,11 @@ Adversaries scanning your perimeter encounter responsive decoy services that cap
 | Area | Reality in this tree |
 | :--- | :--- |
 | **15 decoys** | SSH, Telnet, MQTT, SMB, Redis, Docker, HTTP, Postgres, K8s, AWS IMDS, Mongo, Elastic, SMTP, DNS, Modbus — see matrix below |
-| **CLI** | `up [--apply]`, `tui [--apply]` (operator actions: block/pcap/simulate/canary), `simulate`, `export` (nftables/iptables text), `kernel`/`ebpf` (rule script text), `cef`/`syslog`/`stix`/`ecs`, `canary`, `cluster hub` |
+| **CLI** | `up [--apply] [--geoip-db]`, `tui [--apply] [--geoip-db]`, `geoip --ip`, `simulate`, `export` (nftables/iptables text), `kernel`/`ebpf` (rule script text), `cef`/`syslog`/`stix`/`ecs`, `canary`, `cluster hub` |
 | **Event pipeline** | `internal/pipeline` bus wired in `up`/`tui` — Score (MITRE+GeoIP) → Correlate → Playbook → Sink |
 | **Defense exporters** | `internal/defense` + `internal/ebpf.FilterManager.RenderScript()` emit rule text; sample XDP C lives under `internal/ebpf/c/` — **no live BPF map loader / `BPF_MAP_UPDATE`** |
 | **SOAR block_ip** | Dry-run default (prints nftables/iptables commands); live exec + optional webhook only with `--apply` or `SHINKIRO_SOAR_APPLY=1` |
-| **GeoIP** | Heuristic / demo prefix table in `internal/intel/geoip` — **not** a MaxMind offline database |
+| **GeoIP** | Optional MaxMind GeoLite2 via `SHINKIRO_GEOLITE2_PATH` / `--geoip-db` — **no-op when unset**; never invents coords |
 | **Cluster** | HTTP ingest hub (`POST /api/v1/cluster/ingest`) — **not** encrypted UDP gossip |
 | **PCAP** | On-demand libpcap capture when score ≥ threshold (default 80) via `internal/pcap.OnDemandCapture` → `data/pcap/` — **not** continuous socket mirroring |
 | **Supply chain** | Release CI: Linux amd64/arm64 binaries, `checksums.txt`, Cosign **`sign-blob`** on checksums, Syft SPDX + CycloneDX SBOMs — **not** SLSA Level 3 provenance |
@@ -67,7 +67,7 @@ graph TD
     end
 
     subgraph Pipeline ["⚡ Event → Score → Correlate → Playbook → Sink"]
-        Intel["Threat Intel & Attribution<br/>- MITRE ATT&CK Mapping<br/>- Campaign Correlator<br/>- Heuristic GeoIP prefixes<br/>- Dynamic Scoring (0-100)<br/>- On-demand PCAP (score gate)"]
+        Intel["Threat Intel & Attribution<br/>- MITRE ATT&CK Mapping<br/>- Campaign Correlator<br/>- Optional MaxMind GeoLite2<br/>- Dynamic Scoring (0-100)<br/>- On-demand PCAP (score gate)"]
     end
 
     subgraph Defense ["🚀 Response & SecOps"]
@@ -385,7 +385,8 @@ Published ns/op tables that previously appeared in docs without matching checked
 - [High-Interaction Protocol Matrix](docs/decoys/decoy-matrix.md): Decoy specifications and MITRE mapping.
 - [System Architecture & Data Flow](docs/architecture/system-architecture.md): Multiplexer, rule exporters, HTTP cluster hub, PCAP package status.
 - [Threat Scoring & Campaign Correlator](docs/architecture/threat-scoring.md): Scoring, velocity notes, and real playbook schema.
-- [SIEM & STIX 2.1 Integration](docs/threat-intel/stix-misp-integration.md): CEF, Syslog, ECS, STIX; honest GeoIP description.
+- [SIEM & STIX 2.1 Integration](docs/threat-intel/stix-misp-integration.md): CEF, Syslog, ECS, STIX exporters.
+- [Optional GeoLite2 GeoIP](docs/threat-intel/geolite2-geoip.md): MaxMind account + `.mmdb` path; works without GeoIP.
 - [Performance & Scaling Notes](docs/benchmarks/performance.md): How to run real benches/chaos; no invented SLA numbers.
 - [Architecture Overview & Package Map](docs/api/architecture-overview.md): Go packages and CLI surface.
 - [Deploy (Compose & Helm)](deploy/README.md): Local image, lab/edge modes, optional GHCR.

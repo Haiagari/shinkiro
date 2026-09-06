@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -64,7 +65,22 @@ func runUp(interactiveUI bool, args []string) {
 	}
 
 	dispatcher := webhook.NewDispatcher(os.Getenv("SHINKIRO_WEBHOOK_URL"))
-	geoResolver := geoip.NewResolver()
+
+	geoDBPath := ""
+	for i := 0; i < len(args); i++ {
+		switch {
+		case args[i] == "--geoip-db" && i+1 < len(args):
+			geoDBPath = args[i+1]
+			i++
+		case strings.HasPrefix(args[i], "--geoip-db="):
+			geoDBPath = strings.TrimPrefix(args[i], "--geoip-db=")
+		}
+	}
+	geoResolver := geoip.NewResolver(geoip.ResolvePath(geoDBPath), geoip.WithLogger(func(msg string) {
+		fmt.Printf("🌐  %s\n", msg)
+	}))
+	defer func() { _ = geoResolver.Close() }()
+
 	events := make(chan intel.Event, 200)
 	tuiEvents := make(chan intel.Event, 200)
 	mux := core.NewMultiplexer(cfg, events)
@@ -107,20 +123,14 @@ func runUp(interactiveUI bool, args []string) {
 
 	bus := pipeline.NewBus()
 
-	// Stage: Score — MITRE mapping + GeoIP enrichment (threat score already set by decoys)
+	// Stage: Score — MITRE mapping + optional MaxMind GeoIP enrichment
 	bus.On(pipeline.StageScore, func(ctx context.Context, ev *intel.Event) error {
 		if ev.Mitre == nil {
 			m := intel.MapToMitre(ev.DecoyName, ev.Action, ev.Command)
 			ev.Mitre = &m
 		}
-		if ev.Metadata == nil {
-			ev.Metadata = make(map[string]string)
-		}
 		geo := geoResolver.Lookup(ev.RemoteIP)
-		ev.Metadata["geo_country"] = geo.Country
-		ev.Metadata["geo_city"] = geo.City
-		ev.Metadata["geo_asn"] = geo.ASN
-		ev.Metadata["geo_org"] = geo.Org
+		ev.Metadata = geoip.EnrichMetadata(ev.Metadata, geo)
 		return nil
 	})
 
@@ -173,7 +183,6 @@ func runUp(interactiveUI bool, args []string) {
 			ev.Metadata["pcap_path"] = pcapRes.Path
 		}
 
-		// Persist only — Score/Correlate stages already mapped MITRE and ingested campaigns
 		if err := intelEngine.Persist(*ev); err != nil {
 			return err
 		}
@@ -184,9 +193,17 @@ func runUp(interactiveUI bool, args []string) {
 			default:
 			}
 		} else {
+			geoCountry := ev.Metadata["geo_country"]
+			if geoCountry == "" {
+				geoCountry = "-"
+			}
+			geoASN := ev.Metadata["geo_asn"]
+			if geoASN == "" {
+				geoASN = "-"
+			}
 			fmt.Printf("🚨 [%s] %-8s probe from %s [%s/%s] on port %d -> %s (Threat: %d)\n",
 				ev.Severity, ev.DecoyName, ev.RemoteIP,
-				ev.Metadata["geo_country"], ev.Metadata["geo_asn"],
+				geoCountry, geoASN,
 				ev.LocalPort, ev.Action, ev.ThreatScore)
 		}
 		return nil
@@ -247,6 +264,11 @@ func runUp(interactiveUI bool, args []string) {
 	}
 	fmt.Println("Audit logs streaming to:", cfg.AuditLogPath)
 	fmt.Printf("Pipeline: Event → Score → Correlate → Playbook → Sink (SOAR block_ip mode=%s)\n", blockMode)
+	if geoResolver.Enabled() {
+		fmt.Printf("GeoIP: MaxMind %s (optional enrichment active)\n", geoResolver.DatabaseType())
+	} else {
+		fmt.Println("GeoIP: disabled (set SHINKIRO_GEOLITE2_PATH or --geoip-db to enable)")
+	}
 	fmt.Printf("On-demand PCAP threshold: %d → dir %s\n", pcapHook.Threshold(), pcap.DirFromEnv())
 	if blockMode == soar.ApplyDryRun {
 		fmt.Println("SOAR block_ip: dry-run (pass --apply or set SHINKIRO_SOAR_APPLY=1 for live firewall exec)")
