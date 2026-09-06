@@ -27,7 +27,7 @@ USAGE:
   shinkiro ecs                    Export telemetry in Elastic Common Schema (ECS v8.x) format
   shinkiro cef                    Export telemetry in ArcSight Common Event Format (CEF)
   shinkiro syslog                 Export telemetry as RFC5424 Syslog stream
-  shinkiro cluster hub            Start distributed threat intelligence sync hub
+  shinkiro cluster hub            Start hub-and-spoke HTTP cluster hub (not gossip/mesh)
   shinkiro kernel [rules]         Generate kernel-level XDP/eBPF / nftables drop rules
   shinkiro simulate               Execute red-team adversarial probe suite against decoys
   shinkiro version                Display engine version
@@ -37,6 +37,10 @@ OPTIONS:
   --config <path>                 Path to configuration YAML (default: config.yaml)
   --format <iptables|nftables|cidr> Firewall syntax (default: iptables)
   --threshold <score>             Minimum threat score to trigger mitigation (default: 80)
+  --port <n>                      cluster hub listen port (default: 9090)
+  --token <secret>                cluster hub shared secret (overrides SHINKIRO_CLUSTER_TOKEN)
+  --tls-cert <path>               optional hub TLS certificate (with --tls-key)
+  --tls-key <path>                optional hub TLS private key (with --tls-cert)
 
 ENV:
   SHINKIRO_SOAR_APPLY=1           Same as --apply (live firewall exec / webhook POST)
@@ -45,6 +49,7 @@ ENV:
   SHINKIRO_PCAP_THRESHOLD         On-demand PCAP score gate (default: 80)
   SHINKIRO_PCAP_DIR               On-demand PCAP directory (default: data/pcap)
   SHINKIRO_WEBHOOK_URL            Slack/Discord alert webhook for critical events
+  SHINKIRO_CLUSTER_TOKEN          Shared secret for cluster join/ingest (empty = lab-only insecure)
   THREATFOX_API_KEY               ThreatFox Auth-Key (https://auth.abuse.ch/) for threatfox CLI
   ABUSEIPDB_API_KEY               AbuseIPDB API key for abuseipdb CLI
 `)

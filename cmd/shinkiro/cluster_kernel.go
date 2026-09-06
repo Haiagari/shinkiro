@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Haiagari/shinkiro/internal/cluster"
 	"github.com/Haiagari/shinkiro/internal/ebpf"
@@ -12,17 +13,63 @@ import (
 )
 
 func runCluster(args []string) {
-	fs := flag.NewFlagSet("cluster", flag.ExitOnError)
-	port := fs.Int("port", 9090, "Cluster sync hub HTTP port")
+	if len(args) == 0 {
+		fmt.Fprintln(os.Stderr, "usage: shinkiro cluster hub [flags]")
+		os.Exit(1)
+	}
+
+	sub := args[0]
+	rest := args[1:]
+	switch sub {
+	case "hub":
+		runClusterHub(rest)
+	default:
+		// Backward compatible: `shinkiro cluster --port 9090`
+		if strings.HasPrefix(sub, "-") {
+			runClusterHub(args)
+			return
+		}
+		fmt.Fprintf(os.Stderr, "unknown cluster subcommand: %s\nusage: shinkiro cluster hub [flags]\n", sub)
+		os.Exit(1)
+	}
+}
+
+func runClusterHub(args []string) {
+	fs := flag.NewFlagSet("cluster hub", flag.ExitOnError)
+	port := fs.Int("port", 9090, "Hub-and-spoke HTTP listen port")
+	token := fs.String("token", "", "Shared secret (overrides SHINKIRO_CLUSTER_TOKEN; empty = lab-only insecure)")
+	tlsCert := fs.String("tls-cert", "", "Optional TLS certificate path (requires --tls-key)")
+	tlsKey := fs.String("tls-key", "", "Optional TLS private key path (requires --tls-cert)")
 	_ = fs.Parse(args)
 
-	events := make(chan intel.Event, 500)
-	hub := cluster.NewHub(events)
+	cfg := cluster.DefaultHubConfig()
+	if strings.TrimSpace(*token) != "" {
+		cfg.Token = strings.TrimSpace(*token)
+	}
+	cfg.TLSCertFile = strings.TrimSpace(*tlsCert)
+	cfg.TLSKeyFile = strings.TrimSpace(*tlsKey)
 
-	fmt.Printf("Starting Shinkiro Distributed Threat Hub on :%d...\n", *port)
+	events := make(chan intel.Event, 500)
+	hub := cluster.NewHubWithConfig(events, cfg)
+
+	authMode := "insecure-lab (empty token)"
+	if hub.TokenConfigured() {
+		authMode = "token (SHINKIRO_CLUSTER_TOKEN / --token)"
+	}
+	tlsMode := "plain HTTP (terminate TLS at reverse proxy if needed)"
+	if cfg.TLSCertFile != "" && cfg.TLSKeyFile != "" {
+		tlsMode = "HTTPS (" + cfg.TLSCertFile + ")"
+	}
+
+	fmt.Printf("Starting Shinkiro cluster hub (hub-and-spoke HTTP, not gossip/mesh) on :%d\n", *port)
+	fmt.Printf("  auth: %s\n", authMode)
+	fmt.Printf("  tls:  %s\n", tlsMode)
+	fmt.Printf("  endpoints: /healthz /readyz /api/v1/cluster/{join,ingest,nodes}\n")
+
 	ctx := context.Background()
 	if err := hub.StartHTTP(ctx, *port); err != nil {
 		fmt.Printf("Cluster Hub exited: %v\n", err)
+		os.Exit(1)
 	}
 }
 

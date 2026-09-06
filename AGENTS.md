@@ -17,7 +17,7 @@ Use this file as the **source of truth for agents and contributors**. Prefer cod
 | Protocol Decoys (**15**) | SSH, Telnet, MQTT, SMB, Redis, Docker, HTTP, PostgreSQL, Kubernetes, AWS IMDS, MongoDB, Elasticsearch, SMTP, DNS, Modbus |
 | Active Defense | **Text exporters** for `iptables` / `nftables` / sample eBPF scripts; SOAR-lite `block_ip` / `alert` — dry-run default, live apply only with `--apply` / `SHINKIRO_SOAR_APPLY=1` — **not** a live kernel BPF loader |
 | GeoIP | Heuristic / demo prefix resolver (`internal/intel/geoip`) — **not** MaxMind |
-| Cluster | HTTP ingest hub (`internal/cluster`) — **not** encrypted UDP gossip |
+| Cluster | Hub-and-spoke HTTP hub (`internal/cluster`) with optional `SHINKIRO_CLUSTER_TOKEN` auth — **not** gossip / mesh / eBPF-cluster |
 | Event pipeline | `internal/pipeline` — Event → Score → Correlate → Playbook → Sink (wired in `up`/`tui`) |
 | PCAP | On-demand high-score capture (`internal/pcap.OnDemandCapture`) wired into pipeline sink — **not** continuous mirror |
 | User Interface | Bubbletea TUI (`shinkiro tui`) & headless daemon (`shinkiro up`) |
@@ -43,7 +43,7 @@ shinkiro/
 ├── internal/
 │   ├── adversary/            # Red-team simulate scenarios
 │   ├── canary/               # HMAC-style canary token helpers
-│   ├── cluster/              # HTTP ingest hub (not UDP gossip)
+│   ├── cluster/              # Hub-and-spoke HTTP hub + AgentClient (not UDP gossip)
 │   ├── config/               # YAML & CLI parameters (services: map)
 │   ├── core/                 # Listener multiplexer, deadlines; optional Benchmark*
 │   ├── decoys/
@@ -75,6 +75,6 @@ shinkiro/
 - **Zero Attribution**: Never include `Co-Authored-By` or AI trailer lines.
 - **Fail-Closed**: Any unhandled network error must cleanly terminate the socket without exposing host details.
 - **Zero Host Mutation**: Decoys must execute purely in memory; never spawn host OS processes or touch real filesystem paths for attacker commands.
-- **Honest docs**: Do not claim live eBPF loaders, MaxMind GeoIP, UDP gossip mesh, continuous in-pipeline PCAP mirroring, SLSA L3, or GHCR Helm one-liners unless the code/CI lands first. SOAR live firewall apply requires explicit `--apply` / `SHINKIRO_SOAR_APPLY=1`.
+- **Honest docs**: Do not claim live eBPF loaders, MaxMind GeoIP, UDP gossip mesh, continuous in-pipeline PCAP mirroring, SLSA L3, or GHCR Helm one-liners unless the code/CI lands first. Cluster is hub-and-spoke HTTP with optional token — empty `SHINKIRO_CLUSTER_TOKEN` is lab-only insecure. SOAR live firewall apply requires explicit `--apply` / `SHINKIRO_SOAR_APPLY=1`.
 - **Comprehensive Unit Testing**: Protocol parsers should be tested via in-memory pipes (`net.Pipe()`) where practical.
 - **Config key**: Runtime YAML uses `services:` — examples and matrix docs must match.
