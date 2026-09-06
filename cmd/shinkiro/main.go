@@ -22,9 +22,9 @@ func main() {
 
 	switch cmd {
 	case "up":
-		runUp(false)
+		runUp(false, os.Args[2:])
 	case "tui":
-		runUp(true)
+		runUp(true, os.Args[2:])
 	case "canary":
 		runCanary(os.Args[2:])
 	case "export":

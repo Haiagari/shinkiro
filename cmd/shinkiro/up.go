@@ -17,26 +17,38 @@ import (
 	"github.com/Haiagari/shinkiro/internal/decoys/elastic"
 	decoyhttp "github.com/Haiagari/shinkiro/internal/decoys/http"
 	"github.com/Haiagari/shinkiro/internal/decoys/k8s"
+	"github.com/Haiagari/shinkiro/internal/decoys/modbus"
 	"github.com/Haiagari/shinkiro/internal/decoys/mongo"
+	"github.com/Haiagari/shinkiro/internal/decoys/mqtt"
 	"github.com/Haiagari/shinkiro/internal/decoys/postgres"
 	"github.com/Haiagari/shinkiro/internal/decoys/redis"
+	"github.com/Haiagari/shinkiro/internal/decoys/smb"
 	"github.com/Haiagari/shinkiro/internal/decoys/smtp"
 	"github.com/Haiagari/shinkiro/internal/decoys/ssh"
-	"github.com/Haiagari/shinkiro/internal/decoys/smb"
 	"github.com/Haiagari/shinkiro/internal/decoys/telnet"
-	"github.com/Haiagari/shinkiro/internal/decoys/mqtt"
-	"github.com/Haiagari/shinkiro/internal/decoys/modbus"
 	"github.com/Haiagari/shinkiro/internal/intel"
 	"github.com/Haiagari/shinkiro/internal/intel/geoip"
 	"github.com/Haiagari/shinkiro/internal/metrics"
+	"github.com/Haiagari/shinkiro/internal/pcap"
+	"github.com/Haiagari/shinkiro/internal/pipeline"
 	"github.com/Haiagari/shinkiro/internal/soar"
 	"github.com/Haiagari/shinkiro/internal/tui"
 	"github.com/Haiagari/shinkiro/internal/webhook"
 )
 
-func runUp(interactiveUI bool) {
+func runUp(interactiveUI bool, args []string) {
 	if !interactiveUI {
 		fmt.Print(banner)
+	}
+
+	applyLive := false
+	for _, a := range args {
+		if a == "--apply" {
+			applyLive = true
+		}
+	}
+	if soar.ModeFromEnv() == soar.ApplyLive {
+		applyLive = true
 	}
 
 	cfg, err := config.LoadConfig("config.yaml")
@@ -57,7 +69,6 @@ func runUp(interactiveUI bool) {
 	tuiEvents := make(chan intel.Event, 200)
 	mux := core.NewMultiplexer(cfg, events)
 
-	// Register 11 High-Interaction Decoy Services
 	mux.RegisterDecoy(ssh.New())
 	mux.RegisterDecoy(redis.New())
 	mux.RegisterDecoy(docker.New())
@@ -77,61 +88,115 @@ func runUp(interactiveUI bool) {
 	soarEngine := soar.NewEngine()
 	_ = soarEngine.LoadYAML("playbooks.yaml")
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	blockMode := soar.ApplyDryRun
+	if applyLive {
+		blockMode = soar.ApplyLive
+	}
+	blockApplier := soar.NewBlockApplier(soar.BlockApplierConfig{
+		Mode:       blockMode,
+		Format:     soar.FormatFromEnv(),
+		WebhookURL: soar.WebhookFromEnv(),
+		Logf: func(msg string) {
+			fmt.Println(msg)
+		},
+	})
+	soarEngine.SetBlockHook(blockApplier.Hook())
 
-	// Consumer loop for threat intelligence, webhooks, metrics, and SOAR playbooks
-	go func() {
-		for ev := range events {
-			metrics.IncConnections()
-			// Execute SOAR playbooks
-			soarActions := soarEngine.Process(ev)
-			for _, act := range soarActions {
-				fmt.Printf("🛡️  [SOAR] %s\n", act)
-			}
-			if ev.Severity == intel.SeverityCritical {
-				metrics.IncCritical()
-				_ = dispatcher.SendAlert(ev)
-			}
-			if ev.ThreatScore >= 80 {
-				metrics.IncBlocked()
-			}
+	pcapHook := pcap.NewOnDemandCapture(pcap.ThresholdFromEnv(), pcap.DirFromEnv())
+	defer func() { _ = pcapHook.Close() }()
 
-			switch ev.DecoyName {
-			case "ssh":
-				metrics.IncSSH()
-			case "redis":
-				metrics.IncRedis()
-			case "docker":
-				metrics.IncDocker()
-			case "postgres", "mongo":
-				metrics.IncDatabase()
-			}
+	bus := pipeline.NewBus()
 
-			// Enrich with GeoIP & ASN
-			geo := geoResolver.Lookup(ev.RemoteIP)
+	// Stage: Score — MITRE mapping + GeoIP enrichment (threat score already set by decoys)
+	bus.On(pipeline.StageScore, func(ctx context.Context, ev *intel.Event) error {
+		if ev.Mitre == nil {
+			m := intel.MapToMitre(ev.DecoyName, ev.Action, ev.Command)
+			ev.Mitre = &m
+		}
+		if ev.Metadata == nil {
+			ev.Metadata = make(map[string]string)
+		}
+		geo := geoResolver.Lookup(ev.RemoteIP)
+		ev.Metadata["geo_country"] = geo.Country
+		ev.Metadata["geo_city"] = geo.City
+		ev.Metadata["geo_asn"] = geo.ASN
+		ev.Metadata["geo_org"] = geo.Org
+		return nil
+	})
+
+	// Stage: Correlate — multi-protocol campaign correlator
+	bus.On(pipeline.StageCorrelate, func(ctx context.Context, ev *intel.Event) error {
+		if intelEngine.Correlator != nil {
+			_ = intelEngine.Correlator.Ingest(*ev)
+		}
+		return nil
+	})
+
+	// Stage: Playbook — SOAR-lite rules (block_ip dry-run/apply via BlockApplier hook)
+	bus.On(pipeline.StagePlaybook, func(ctx context.Context, ev *intel.Event) error {
+		actions := soarEngine.Process(*ev)
+		for _, act := range actions {
+			fmt.Printf("🛡️  [SOAR] %s\n", act)
+		}
+		return nil
+	})
+
+	// Stage: Sink — metrics, optional webhook, on-demand PCAP, intel JSONL, TUI fan-out
+	bus.On(pipeline.StageSink, func(ctx context.Context, ev *intel.Event) error {
+		metrics.IncConnections()
+		if ev.Severity == intel.SeverityCritical {
+			metrics.IncCritical()
+			_ = dispatcher.SendAlert(*ev)
+		}
+		if ev.ThreatScore >= 80 {
+			metrics.IncBlocked()
+		}
+		switch ev.DecoyName {
+		case "ssh":
+			metrics.IncSSH()
+		case "redis":
+			metrics.IncRedis()
+		case "docker":
+			metrics.IncDocker()
+		case "postgres", "mongo":
+			metrics.IncDatabase()
+		}
+
+		pcapRes, err := pcapHook.MaybeCapture(*ev)
+		if err != nil {
+			fmt.Printf("⚠️  [PCAP] on-demand capture error: %v\n", err)
+		} else if pcapRes.Triggered {
+			fmt.Printf("📦 [PCAP] high-score (%d≥%d) capture → %s\n", pcapRes.Score, pcapRes.Threshold, pcapRes.Path)
 			if ev.Metadata == nil {
 				ev.Metadata = make(map[string]string)
 			}
-			ev.Metadata["geo_country"] = geo.Country
-			ev.Metadata["geo_city"] = geo.City
-			ev.Metadata["geo_asn"] = geo.ASN
-			ev.Metadata["geo_org"] = geo.Org
-
-			_ = intelEngine.Record(ev)
-			if interactiveUI {
-				select {
-				case tuiEvents <- ev:
-				default:
-				}
-			} else {
-				fmt.Printf("🚨 [%s] %-8s probe from %s [%s/%s] on port %d -> %s (Threat: %d)\n",
-					ev.Severity, ev.DecoyName, ev.RemoteIP, geo.Country, geo.ASN, ev.LocalPort, ev.Action, ev.ThreatScore)
-			}
+			ev.Metadata["pcap_path"] = pcapRes.Path
 		}
-	}()
 
-	// Start Prometheus / OpenMetrics endpoint
+		// Persist only — Score/Correlate stages already mapped MITRE and ingested campaigns
+		if err := intelEngine.Persist(*ev); err != nil {
+			return err
+		}
+
+		if interactiveUI {
+			select {
+			case tuiEvents <- *ev:
+			default:
+			}
+		} else {
+			fmt.Printf("🚨 [%s] %-8s probe from %s [%s/%s] on port %d -> %s (Threat: %d)\n",
+				ev.Severity, ev.DecoyName, ev.RemoteIP,
+				ev.Metadata["geo_country"], ev.Metadata["geo_asn"],
+				ev.LocalPort, ev.Action, ev.ThreatScore)
+		}
+		return nil
+	})
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go bus.RunChannel(ctx, events)
+
 	if cfg.MetricsPort > 0 {
 		http.HandleFunc("/metrics", metrics.Handler)
 		metricsServer := &http.Server{Addr: fmt.Sprintf(":%d", cfg.MetricsPort)}
@@ -171,6 +236,13 @@ func runUp(interactiveUI bool) {
 		fmt.Printf("📊 Prometheus metrics available at: http://0.0.0.0:%d/metrics\n", cfg.MetricsPort)
 	}
 	fmt.Println("Audit logs streaming to:", cfg.AuditLogPath)
+	fmt.Printf("Pipeline: Event → Score → Correlate → Playbook → Sink (SOAR block_ip mode=%s)\n", blockMode)
+	fmt.Printf("On-demand PCAP threshold: %d → dir %s\n", pcapHook.Threshold(), pcap.DirFromEnv())
+	if blockMode == soar.ApplyDryRun {
+		fmt.Println("SOAR block_ip: dry-run (pass --apply or set SHINKIRO_SOAR_APPLY=1 for live firewall exec)")
+	} else {
+		fmt.Println("SOAR block_ip: LIVE apply enabled — firewall commands will be executed")
+	}
 	fmt.Println("Press Ctrl+C to stop.")
 
 	sigChan := make(chan os.Signal, 1)

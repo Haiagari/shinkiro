@@ -33,25 +33,35 @@ func NewEngine(eventsPath string) (*Engine, error) {
 	}, nil
 }
 
+// Record maps MITRE, ingests the correlator, updates the blocklist, and appends JSONL.
+// Prefer Persist from the pipeline sink when Score/Correlate stages already ran.
 func (e *Engine) Record(ev Event) error {
 	e.mu.Lock()
 	defer e.mu.Unlock()
 
-	// Ensure MITRE mapping is populated
 	if ev.Mitre == nil {
 		m := MapToMitre(ev.DecoyName, ev.Action, ev.Command)
 		ev.Mitre = &m
 	}
 
-	// Ingest into multi-protocol campaign correlator
 	if e.Correlator != nil {
 		e.Correlator.Ingest(ev)
 	}
 
-	// Update cumulative score
+	return e.persistLocked(ev)
+}
+
+// Persist updates the cumulative blocklist and appends JSONL without re-running
+// MITRE mapping or correlator ingest (pipeline Score/Correlate stages own those).
+func (e *Engine) Persist(ev Event) error {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	return e.persistLocked(ev)
+}
+
+func (e *Engine) persistLocked(ev Event) error {
 	e.blocklist[ev.RemoteIP] += ev.ThreatScore
 
-	// Append to JSONL
 	data, err := json.Marshal(ev)
 	if err != nil {
 		return err

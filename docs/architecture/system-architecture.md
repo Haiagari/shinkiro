@@ -1,6 +1,6 @@
 # Shinkiro Cyber Deception & Threat Intelligence Architecture
 
-This document describes **what the code does today**. Where earlier drafts claimed live kernel XDP attachment, MaxMind GeoIP, UDP gossip, or in-pipeline PCAP, those claims are corrected below.
+This document describes **what the code does today**. Where earlier drafts claimed live kernel XDP attachment, MaxMind GeoIP, UDP gossip, or continuous packet mirroring, those claims are corrected below. See also [`event-pipeline.md`](event-pipeline.md) for the Event → Score → Correlate → Playbook → Sink bus, SOAR dry-run/apply, and on-demand PCAP.
 
 ```mermaid
 graph TD
@@ -14,7 +14,8 @@ graph TD
 
     subgraph Core ["🛡️ Shinkiro Core In-Memory Multiplexer"]
         Mux["Listener Multiplexer Engine<br/>- Strict Read/Write Timeouts<br/>- Slowloris Mitigation<br/>- Memory-Jailed Goroutines"]
-        PCAP["internal/pcap Writer<br/>(EXISTS — NOT wired in main)"]
+        Bus["internal/pipeline Bus<br/>Score → Correlate → Playbook → Sink"]
+        PCAP["On-demand PCAP<br/>(score ≥ threshold)"]
     end
 
     A1 -->|TCP/UDP| Mux
@@ -22,7 +23,8 @@ graph TD
     A3 -->|TCP/UDP| Mux
     A4 -->|TCP/UDP| Mux
     A5 -->|TCP| Mux
-    Mux -.->|future wiring| PCAP
+    Mux -->|events chan| Bus
+    Bus -->|high score| PCAP
 
     subgraph Decoys ["🎭 High-Interaction Protocol Decoys (15)"]
         direction TB
@@ -89,7 +91,7 @@ graph TD
     Corr --> Score
 
     subgraph Outputs ["📊 Integration & Active Mitigation"]
-        SOAR["SOAR-Lite Engine<br/>(playbooks.yaml: rules/if/then)"]
+        SOAR["SOAR-Lite Engine<br/>(block_ip dry-run / --apply)"]
         SIEM["SIEM & Feeds<br/>(CEF / Syslog / STIX 2.1 / ECS / ThreatFox helpers)"]
         Prom["Prometheus Metrics<br/>(:9100/metrics)"]
         TUI["Bubbletea Terminal UI<br/>(shinkiro tui)"]
@@ -103,7 +105,7 @@ graph TD
     Score --> Prom
     Score --> TUI
     Score --> Webhook
-    SOAR -->|block_ip hook / export| Drop
+    SOAR -->|block_ip dry-run or apply| Drop
     Score -->|thresholded export| Drop
     Hub -.->|optional multi-node| Score
 ```
@@ -118,24 +120,21 @@ sequenceDiagram
     actor Attacker as 🦹 Adversary
     participant Mux as 🛡️ Multiplexer
     participant Decoy as 🎭 Protocol Decoy
-    participant Intel as ⚡ Threat Engine
-    participant Export as 📝 Rule Exporter
+    participant Pipe as ⚡ Pipeline Bus
+    participant Export as 📝 Rule Exporter / block_ip
 
     Attacker->>Mux: Connect (e.g. TCP :2222 or :6379)
     Mux->>Mux: Set deadline, enforce memory jail
     Mux->>Decoy: Dispatch socket connection
     Decoy->>Attacker: Send authentic banner/challenge
     Attacker->>Decoy: Send exploit payload / credentials
-    Decoy->>Intel: Dispatch structured telemetry event
-    par Parallel Ingestion
-        Intel->>Intel: Compute SHA-256 payload hash
-        Intel->>Intel: Heuristic GeoIP prefix lookup
-        Intel->>Intel: Update IP threat score
-    end
+    Decoy->>Pipe: Emit structured telemetry event
+    Pipe->>Pipe: Score (MITRE + GeoIP) → Correlate → Playbook → Sink
     Decoy->>Attacker: Return realistic simulated error/shell
-    alt Score crosses SOAR / export threshold
-        Intel->>Export: Stage IP for block_ip / RenderScript text
-        Note over Export,Attacker: Operator applies nftables/iptables/sample eBPF text; no live BPF_MAP_UPDATE
+    alt Score crosses SOAR / PCAP threshold
+        Pipe->>Export: block_ip dry-run commands (or --apply exec)
+        Note over Export,Attacker: Live firewall needs --apply / SHINKIRO_SOAR_APPLY=1; no silent BPF_MAP_UPDATE
+        Pipe->>Pipe: On-demand PCAP file under data/pcap/
     end
 ```
 
@@ -162,7 +161,7 @@ Idle or trickling sockets are closed, reclaiming file descriptors.
 
 ### 3.3. PCAP status (honest)
 
-`internal/pcap` implements a standard libpcap 2.4 **file writer** (`NewWriter`, `OpenCapture`, `WritePacket`). **`cmd/shinkiro` and the multiplexer do not open or stream packets into that writer today.** Treat in-pipeline forensics as future work; do not document `data/dump.pcap` as an automatic side effect of `shinkiro up`.
+`internal/pcap` implements a standard libpcap 2.4 **file writer** (`NewWriter`, `OpenCapture`, `WritePacket`). The pipeline sink calls `OnDemandCapture.MaybeCapture` when `ThreatScore >=` threshold (default 80), writing forensic frames under `data/pcap/` (see [`event-pipeline.md`](event-pipeline.md)). This is **threshold-gated on-demand capture**, not continuous mirroring of every decoy socket byte stream.
 
 ---
 
@@ -175,6 +174,7 @@ For high-threat IPs, Shinkiro can **emit** mitigation artifacts:
 | Sample XDP C program | `internal/ebpf/c/xdp_drop.c` | Reference filter using a `blacklist_map` — must be built/loaded with external tooling |
 | Go script renderer | `internal/ebpf.FilterManager.RenderScript()` / `shinkiro kernel` | Emits commented eBPF-oriented text or nftables/iptables scripts for staged IPs |
 | Defense exporters | `shinkiro export --format nftables\|iptables` | Firewall rule text |
+| SOAR block_ip apply | `shinkiro up --apply` / `SHINKIRO_SOAR_APPLY=1` | Optional live exec of generated iptables/nft commands (dry-run default) |
 
 ### What is **not** implemented
 
@@ -185,12 +185,12 @@ For high-threat IPs, Shinkiro can **emit** mitigation artifacts:
 ```mermaid
 graph TD
     NIC["Physical NIC (eth0)"] --> Driver["XDP hook — operator loaded separately"]
-    Driver --> BPFMap{"blacklist_map<br/>(only if YOU load xdp_drop.o)"]
+    Driver --> BPFMap{"blacklist_map<br/>(only if YOU load xdp_drop.o)"}
     BPFMap -->|Match| Drop["XDP_DROP"]
     BPFMap -->|No Match| Kernel["Kernel Network Stack"]
     Kernel --> Shinkiro["Shinkiro Decoys"]
-    Shinkiro --> Text["RenderScript / export text"]
-    Text -.->|human / automation applies| Driver
+    Shinkiro --> Text["RenderScript / export text / block_ip dry-run"]
+    Text -.->|human / --apply / automation| Driver
 ```
 
 ---
@@ -213,7 +213,7 @@ Multi-node support is an **HTTP hub**, not encrypted UDP gossip:
 
 - Deploy on a boundary host with decoy ports bound as configured in `services:`.
 - Export CEF / Syslog / STIX to your SIEM.
-- Apply exported `nftables` / `iptables` text (or your own controls).
+- Apply exported `nftables` / `iptables` text (or enable `--apply` deliberately).
 
 ### 6.2. Internal Lateral Movement Tripwire
 

@@ -15,8 +15,8 @@ func printUsage() {
 	fmt.Print(banner)
 	fmt.Print(`
 USAGE:
-  shinkiro up                     Start background decoy listeners & Prometheus metrics
-  shinkiro tui                    Launch live interactive terminal telemetry dashboard
+  shinkiro up [--apply]           Start decoy listeners; SOAR block_ip dry-run unless --apply
+  shinkiro tui [--apply]          Live TUI dashboard (same pipeline / SOAR flags)
   shinkiro canary generate        Generate synthetic HMAC-signed AWS/DB honeytokens
   shinkiro export blocklist       Export malicious IPs to firewall format
   shinkiro stix                   Export threat intelligence in STIX 2.1 JSON bundle
@@ -29,8 +29,17 @@ USAGE:
   shinkiro version                Display engine version
 
 OPTIONS:
+  --apply                         Live-execute SOAR block_ip firewall commands (default: dry-run)
   --config <path>                 Path to configuration YAML (default: config.yaml)
   --format <iptables|nftables|cidr> Firewall syntax (default: iptables)
   --threshold <score>             Minimum threat score to trigger mitigation (default: 80)
+
+ENV:
+  SHINKIRO_SOAR_APPLY=1           Same as --apply (live firewall exec / webhook POST)
+  SHINKIRO_SOAR_BLOCK_FORMAT      nftables (default) | iptables | cidr
+  SHINKIRO_SOAR_BLOCK_WEBHOOK     Optional URL for block_ip JSON POST when applying
+  SHINKIRO_PCAP_THRESHOLD         On-demand PCAP score gate (default: 80)
+  SHINKIRO_PCAP_DIR               On-demand PCAP directory (default: data/pcap)
+  SHINKIRO_WEBHOOK_URL            Slack/Discord alert webhook for critical events
 `)
 }
