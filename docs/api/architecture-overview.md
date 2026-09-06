@@ -2,19 +2,17 @@
 
 **Product:** Shinkiro (蜃気楼)  
 **License:** AGPL-3.0-only  
-**Language:** Go 1.24+ (Single Binary, Non-Blocking Concurrent Goroutines)
+**Language:** Go 1.24+ (single binary)
 
 ---
 
 ## 1. System Design Goals & Principles
 
-Shinkiro is engineered as an enterprise-grade, memory-isolated cyber deception platform. Its architecture is governed by five non-negotiable systems engineering principles:
-
-1. **Zero Host Mutation:** Deceptive protocols must never execute host binaries, spawn subshells, or write untrusted attacker data to the host filesystem. All state is maintained in synthetic in-memory ASTs and ringbuffers.
-2. **Fail-Closed Security Posture:** Any malformed network frame, parser failure, or unhandled protocol condition must cleanly and immediately terminate the TCP/UDP socket, revealing no internal software stack information to scanners.
-3. **Sub-Microsecond Hot Path:** The telemetry processing, scoring, and correlation pipeline must process events with zero memory allocations on the hot path (< 20 ns per event).
-4. **Actionable SOC Interoperability:** All captured interactions must map directly to industry standards (MITRE ATT&CK TTPs, STIX 2.1, Elastic ECS v8.x, ArcSight CEF, and RFC5424 Syslog).
-5. **Dynamic Active Defense:** Telemetry must be capable of automatically triggering immediate host or kernel mitigation via eBPF/XDP and nftables.
+1. **Zero Host Mutation:** Deceptive protocols must not execute host binaries or write attacker-controlled files for shell semantics. State stays in synthetic in-memory structures.
+2. **Fail-Closed Security Posture:** Malformed frames / parser failures terminate the socket without stack traces to the client.
+3. **Measurable Hot Path:** Prefer measured `go test -bench` results over undocumented SLA nanoseconds.
+4. **Actionable SOC Interoperability:** CEF, Syslog, STIX 2.1, ECS exporters; MITRE tagging.
+5. **Exportable Active Defense:** nftables/iptables/sample eBPF **text** + SOAR `block_ip` / `alert` — not a silent live XDP attach.
 
 ---
 
@@ -23,60 +21,60 @@ Shinkiro is engineered as an enterprise-grade, memory-isolated cyber deception p
 ```mermaid
 graph TD
     subgraph AdversaryPlane ["🌐 Adversary Vectors"]
-        Attacker["Adversary Traffic<br/>• Scanners & Botnets<br/>• Lateral Movement<br/>• Exploit Scripts"]
+        Attacker["Adversary Traffic"]
     end
 
     subgraph CoreMultiplexer ["🛡️ In-Memory Multiplexer Engine"]
-        Mux["Core Listener Multiplexer<br/>• Strict 30s Connection Deadlines<br/>• Slowloris Mitigation<br/>• Bounded Memory Goroutines"]
-        PCAP["Raw Libpcap 2.4 Forensics<br/>(data/dump.pcap)"]
+        Mux["Core Listener Multiplexer<br/>• Connection Deadlines<br/>• Slowloris Mitigation"]
+        PCAP["internal/pcap Writer<br/>(not wired in main)"]
     end
 
     subgraph DecoyPlane ["🎭 15 High-Interaction Protocol Decoys"]
-        direction TB
-        D_SSH["SSH :2222 (VirtualFS & Jitter)"]
-        D_Telnet["Telnet :2323 (BusyBox Mirai)"]
-        D_Modbus["Modbus/TCP :502 (ICS/SCADA PLC)"]
-        D_Redis["Redis :6379 (RESP & Lua Eval)"]
-        D_Docker["Docker :2375 (Miner Trap)"]
-        D_K8s["Kubernetes :6443 (RBAC Trap)"]
-        D_HTTP["HTTP :8080 (Admin Canaries)"]
-        D_Postgres["PostgreSQL :5432 (Wire Auth)"]
-        D_Mongo["MongoDB :27017 (BSON OP_MSG)"]
-        D_Elastic["Elasticsearch :9200 (Indices)"]
-        D_IMDS["AWS IMDS :8169 (SSRF Honeytokens)"]
-        D_MQTT["MQTT :1883 (IoT Broker)"]
-        D_SMB["SMBv2 :4445 (EternalBlue Trap)"]
-        D_SMTP["SMTP :2525 (Phishing Collector)"]
-        D_DNS["DNS :1053 (Subdomain Logger)"]
+        D_SSH["SSH :2222"]
+        D_Telnet["Telnet :2323"]
+        D_Modbus["Modbus/TCP :502"]
+        D_Redis["Redis :6379"]
+        D_Docker["Docker :2375"]
+        D_K8s["Kubernetes :6443"]
+        D_HTTP["HTTP :8080"]
+        D_Postgres["PostgreSQL :5432"]
+        D_Mongo["MongoDB :27017"]
+        D_Elastic["Elasticsearch :9200"]
+        D_IMDS["AWS IMDS :8169"]
+        D_MQTT["MQTT :1883"]
+        D_SMB["SMBv2 :4445"]
+        D_SMTP["SMTP :2525"]
+        D_DNS["DNS :1053"]
     end
 
-    subgraph IntelPipeline ["⚡ Real-Time Intelligence & Attribution"]
-        Events["Audit Stream (data/events.jsonl)"]
-        Geo["Offline GeoIP & ASN Resolution"]
-        Mitre["MITRE ATT&CK Auto-Mapper"]
-        Corr["Multi-Protocol Campaign Correlator"]
-        Score["Dynamic Threat Scorer (0-100)"]
+    subgraph IntelPipeline ["⚡ Intelligence & Attribution"]
+        Events["Audit Stream (events.jsonl)"]
+        Geo["Heuristic GeoIP prefixes"]
+        Mitre["MITRE ATT&CK Mapper"]
+        Corr["Campaign Correlator"]
+        Score["Threat Scorer (0-100)"]
     end
 
-    subgraph ActiveDefense ["🚀 SOAR & Automated Mitigation"]
-        SOAR["SOAR-Lite Engine (playbooks.yaml)"]
-        Kernel["Kernel Mitigation (eBPF / XDP & nftables)"]
+    subgraph ActiveDefense ["🚀 SOAR & Exporters"]
+        SOAR["SOAR-Lite (rules/if/then)"]
+        Kernel["Rule text: eBPF sample / nftables / iptables"]
+        Hub["Cluster HTTP ingest hub"]
     end
 
-    subgraph SecOpsInterfaces ["📊 SecOps & SIEM Integrations"]
-        CEF["ArcSight CEF (shinkiro cef)"]
-        Syslog["RFC5424 Syslog (shinkiro syslog)"]
-        STIX["STIX 2.1 Bundles (shinkiro stix)"]
-        ECS["Elastic Common Schema (shinkiro ecs)"]
-        ThreatFox["Community IoC Feed (ThreatFox / AbuseIPDB)"]
-        TUI["Terminal Dashboard (shinkiro tui)"]
-        Prom["Prometheus Metrics (:9100/metrics)"]
-        Webhooks["Slack / Discord Rich Embeds"]
+    subgraph SecOpsInterfaces ["📊 SecOps Integrations"]
+        CEF["CEF"]
+        Syslog["Syslog"]
+        STIX["STIX 2.1"]
+        ECS["ECS"]
+        ThreatFox["ThreatFox helpers"]
+        TUI["TUI"]
+        Prom["Prometheus :9100"]
+        Webhooks["Webhook helpers"]
     end
 
     Attacker --> Mux
     Mux --> DecoyPlane
-    Mux -.-> PCAP
+    Mux -.->|not wired| PCAP
 
     DecoyPlane --> Events
     Events --> Geo
@@ -85,8 +83,9 @@ graph TD
     Corr --> Score
 
     Score --> SOAR
-    SOAR -->|Automated Action| Kernel
-    Score -->|Score >= 80| Kernel
+    SOAR --> Kernel
+    Score --> Kernel
+    Hub -.-> Score
 
     Score --> CEF
     Score --> Syslog
@@ -104,39 +103,27 @@ graph TD
 
 ```text
 internal/
-├── adversary/          # Automated red-team attack simulator suite
-├── canary/             # Cryptographic HMAC AWS/DB canary token generation
-├── cluster/            # Distributed multi-node gossip mesh hub (:9090)
-├── config/             # YAML configuration parser & environment binder
-├── core/               # Non-blocking network multiplexer & connection lifecycles
+├── adversary/          # Automated red-team simulate suite
+├── canary/             # Canary token helpers
+├── cluster/            # HTTP ingest hub (NOT UDP gossip)
+├── config/             # YAML parser — runtime key services:
+├── core/               # Multiplexer & connection lifecycle; Benchmark* tests
 ├── decoys/             # Unified Decoy interface & 15 protocol emulators
-│   ├── aws/            # AWS EC2 IMDSv1/v2 SSRF bait
-│   ├── dns/            # RFC 1035 UDP parser
-│   ├── docker/         # Docker Engine REST API emulator
-│   ├── elastic/        # Elasticsearch REST API emulator
-│   ├── http/           # Canary web traps (/.env, wp-login, Jenkins, Grafana)
-│   ├── k8s/            # Kubernetes control-plane emulator
-│   ├── modbus/         # Modbus/TCP ICS/SCADA PLC emulator
-│   ├── mongo/          # MongoDB BSON OP_MSG emulator
-│   ├── mqtt/           # MQTT v3.1.1 IoT broker
-│   ├── postgres/       # PostgreSQL 3.0 wire protocol emulator
-│   ├── redis/          # Redis RESP wire protocol & Lua EVAL blocker
-│   ├── smb/            # SMBv2 NetBIOS session emulator
-│   ├── smtp/           # Postfix ESMTP banner & spam collector
-│   ├── ssh/            # OpenSSH server, VirtualFS, and human jitter
-│   └── telnet/         # BusyBox embedded router Mirai trap
-├── defense/            # Dynamic iptables & nftables ruleset generator
-├── ebpf/               # Linux kernel-level XDP drop driver generator
-├── intel/              # Telemetry ingestion, threat scoring, MITRE, & campaign correlator
-│   ├── ecs/            # Elastic Common Schema (ECS v8.x) serializer
-│   ├── geoip/          # Offline MaxMind GeoIP & ASN resolver
-│   ├── siem/           # ArcSight CEF & RFC5424 Syslog exporters
-│   └── stix/           # OASIS STIX 2.1 JSON bundle generator
-├── metrics/            # Prometheus / OpenMetrics collector (:9100/metrics)
-├── pcap/               # Raw libpcap 2.4 frame recorder
-├── soar/               # SOAR-Lite YAML playbook execution engine
-├── tui/                # Bubbletea + Lipgloss live terminal dashboard
-└── webhook/            # Slack Block Kit and Discord notification dispatcher
+│   ├── aws/ dns/ docker/ elastic/ http/ k8s/
+│   ├── modbus/ mongo/ mqtt/ postgres/ redis/
+│   ├── smb/ smtp/ ssh/ telnet/
+├── defense/            # iptables & nftables ruleset text generator
+├── ebpf/               # Sample C + RenderScript exporter (NOT live loader)
+├── intel/              # Telemetry, scoring, MITRE, correlator
+│   ├── ecs/            # ECS serializer
+│   ├── geoip/          # Heuristic / demo prefix resolver (NOT MaxMind)
+│   ├── siem/           # CEF & Syslog exporters
+│   └── stix/           # STIX 2.1 bundle generator
+├── metrics/            # Prometheus helpers
+├── pcap/               # Libpcap 2.4 writer (NOT wired in cmd/main)
+├── soar/               # Playbook engine (block_ip, alert, tag)
+├── tui/                # Bubbletea dashboard
+└── webhook/            # Slack / Discord helpers
 ```
 
 ---
@@ -144,96 +131,47 @@ internal/
 ## 4. Operational CLI Interface
 
 ```bash
-# Start background decoy listeners and metrics daemon
 shinkiro up [--config config.yaml]
-
-# Launch interactive Bubbletea terminal dashboard
 shinkiro tui
-
-# Export SIEM telemetry streams
-shinkiro cef                          # ArcSight CEF
-shinkiro syslog                       # RFC5424 Syslog stream
-shinkiro ecs                          # Elastic Common Schema JSON array
-shinkiro stix                         # STIX 2.1 Threat Feed bundle
-
-# Generate firewall & kernel drop rules
-shinkiro export --format nftables     # nftables blackhole set
-shinkiro export --format iptables     # iptables DROP script
-shinkiro kernel                       # eBPF / XDP drop script
-
-# Generate canary tokens
+shinkiro cef
+shinkiro syslog
+shinkiro ecs
+shinkiro stix
+shinkiro export --format nftables     # text export
+shinkiro export --format iptables     # text export
+shinkiro kernel                       # sample eBPF / rule script text
 shinkiro canary generate --label prod-cluster-secret
-
-# Run synthetic adversarial attack simulation
 shinkiro simulate --host 127.0.0.1
+shinkiro cluster hub                  # HTTP ingest on configured port
 ```
 
 ---
 
 ## 5. Security & Runtime Hardening
 
-- **Syscall Restrictions:** Evaluated under strict Linux `seccomp.json` profiles returning `SCMP_ACT_ERRNO` on unauthorized kernel operations.
-- **Supply Chain Integrity:** Automated releases built with `-trimpath` and `-ldflags="-s -w -buildid="`, signed via **Sigstore Cosign keyless OIDC**, and verified by SPDX and CycloneDX SBOMs.
-- **Continuous Fuzzing:** All protocol decoders pass automated `testing.F` fuzz suites (`make fuzz`) with zero panics or memory leaks.
+- **Seccomp file:** `deploy/security/seccomp.json` for operators to apply.
+- **Supply chain:** Releases build with `-trimpath` / stripped ldflags; Cosign **`sign-blob`** on `checksums.txt`; Syft SPDX + CycloneDX SBOMs. **No SLSA Level 3 provenance workflow.**
+- **Fuzzing:** Selected `testing.F` targets via `make fuzz`.
+- **Deploy caveats:** Dockerfile and Helm chart exist; GHCR one-liner and full `services:` config mounts are incomplete until a deploy PR.
 
 ---
 
-## 6. Go Package APIs & Programmatic Integration
+## 6. Go Package Integration
 
-Shinkiro is organized into modular Go packages that can be imported directly into external Go applications or custom security agents:
+Prefer copying patterns from `cmd/shinkiro/main.go` — it is the authoritative wiring for decoys, SOAR, metrics, cluster hub, and exporters. Public/internal APIs evolve with the binary; do not invent alternate constructor signatures in docs without checking the source.
 
-### 6.1. Embedding the Decoy Multiplexer
-
-```go
-package main
-
-import (
-	"context"
-	"log"
-	"time"
-
-	"github.com/Haiagari/shinkiro/internal/config"
-	"github.com/Haiagari/shinkiro/internal/core"
-	"github.com/Haiagari/shinkiro/internal/intel"
-)
-
-func main() {
-	cfg, err := config.Load("config.yaml")
-	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
-	}
-
-	// Initialize Threat Intelligence & Scoring Engine
-	intelEngine := intel.NewEngine(cfg.Intel)
-	defer intelEngine.Close()
-
-	// Initialize Core Multiplexer with Connection Deadlines
-	mux := core.NewMultiplexer(cfg, intelEngine)
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	log.Println("Starting Shinkiro Deception Mesh...")
-	if err := mux.Start(ctx); err != nil {
-		log.Fatalf("Multiplexer runtime failure: %v", err)
-	}
-}
-```
-
-### 6.2. In-Memory Protocol Decoy Lifecycle State Machine
-
-Each decoy implements the unified `Decoy` interface (`internal/decoys/decoy.go`):
+### Decoy lifecycle (conceptual)
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Initialized: NewDecoy(config, intelEngine)
+    [*] --> Initialized: NewDecoy(...)
     Initialized --> Listening: Start(ctx)
-    Listening --> ConnectionAccepted: net.Listener.Accept()
-    ConnectionAccepted --> DeadlineEnforced: SetDeadline(now + 30s)
-    DeadlineEnforced --> FrameParsing: Read(buffer)
-    FrameParsing --> ThreatScored: Evaluate(payload)
-    ThreatScored --> SyntheticResponse: Write(deceptionPayload)
-    SyntheticResponse --> ConnectionClosed: Close()
+    Listening --> ConnectionAccepted: Accept()
+    ConnectionAccepted --> DeadlineEnforced: SetDeadline
+    DeadlineEnforced --> FrameParsing: Read
+    FrameParsing --> ThreatScored: Evaluate
+    ThreatScored --> SyntheticResponse: Write
+    SyntheticResponse --> ConnectionClosed: Close
     ConnectionClosed --> Listening
     Listening --> [*]: Stop()
 ```
@@ -242,14 +180,4 @@ stateDiagram-v2
 
 ## 7. Metrics & Observability (`:9100/metrics`)
 
-Shinkiro exposes standard OpenMetrics / Prometheus endpoints for real-time dashboarding in Grafana:
-
-| Metric Name | Type | Description |
-| :--- | :--- | :--- |
-| `shinkiro_events_total` | Counter | Total adversary interactions partitioned by `decoy`, `protocol`, and `severity`. |
-| `shinkiro_threat_score_gauge` | Gauge | Instantaneous threat score distribution across active attacker IP addresses. |
-| `shinkiro_active_connections` | Gauge | Currently open TCP/UDP decoy sockets. |
-| `shinkiro_mitre_hits_total` | Counter | Aggregated count of triggered MITRE ATT&CK techniques. |
-| `shinkiro_ebpf_drops_total` | Counter | Number of malicious packets discarded at the kernel XDP driver layer. |
-| `shinkiro_soar_executions_total` | Counter | Count of automated playbook actions executed by type (`firewall`, `webhook`, `siem`). |
-
+Prometheus helpers live under `internal/metrics`. Treat metric names in dashboards as best-effort documentation — verify exporters in code before depending on a specific time series (including any historical `shinkiro_ebpf_drops_total` style counters that implied a live XDP path).
