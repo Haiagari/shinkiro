@@ -51,6 +51,8 @@ func main() {
 		runAbuseIPDB(os.Args[2:])
 	case "coverage", "attack-coverage":
 		runCoverage(os.Args[2:])
+	case "geoip":
+		runGeoIP(os.Args[2:])
 	case "version", "-v", "--version":
 		fmt.Printf("Shinkiro %s (commit=%s date=%s) — High-Interaction Deception Engine (Haiagari Security)\n", version, commit, date)
 	default:
