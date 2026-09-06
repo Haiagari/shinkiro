@@ -10,6 +10,7 @@ See also:
 - [`campaign-correlator-v2.md`](campaign-correlator-v2.md) — rule-based campaigns  
 - [`tui-operator.md`](tui-operator.md) — operator dashboard  
 - [`../threat-intel/geolite2-geoip.md`](../threat-intel/geolite2-geoip.md) — optional MaxMind GeoLite2  
+- [`../diagrams/architecture-darkmode.svg`](../diagrams/architecture-darkmode.svg) — **canonical** dual-plane architecture diagram (honesty-aligned)
 - [`../honesty-limitations.md`](../honesty-limitations.md) — explicit non-goals  
 
 ---
@@ -19,7 +20,7 @@ See also:
 ```text
  Adversary ──► Multiplexer ──► 15 Decoys ──► chan Event
                                               │
-                    ┌─────────────────────────┘
+                    ┌──────────────────────────┘
                     ▼
          Pipeline Bus (internal/pipeline)
            Score → Correlate → Playbook → Sink
