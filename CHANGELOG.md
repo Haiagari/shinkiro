@@ -5,6 +5,8 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ## [Unreleased]
 
 ### Added
+- **Optional MaxMind GeoLite2 GeoIP** (`internal/intel/geoip`): loads a local `.mmdb` from `SHINKIRO_GEOLITE2_PATH` or `--geoip-db`; no-op with a one-shot `GeoIP disabled` log when unset/missing; Country/City/ASN from City, Country, or ASN DB — **never invents coordinates** or heuristic octet countries. CLI: `shinkiro geoip --ip`. Docs: `docs/threat-intel/geolite2-geoip.md`.
+
 - **Honest cluster hub hardening** (`internal/cluster`): hub-and-spoke HTTP (not gossip/mesh) with shared-secret auth (`SHINKIRO_CLUSTER_TOKEN` / `--token`; empty = lab-only insecure), optional TLS (`--tls-cert`/`--tls-key` or reverse-proxy termination), timeouts + 1 MiB body limits, structured JSON errors, `/healthz` + `/readyz`, `POST /api/v1/cluster/join`, and `cluster.AgentClient`. Unit tests cover missing/wrong/correct tokens. Docs: `docs/architecture/cluster-hub.md`.
 - **Deploy modes lab vs edge** (`deploy/modes/`): lab (demo-friendly) and edge (hardened defaults — dry-run SOAR, quieter playbook/PCAP thresholds). Compose overlays `compose.lab.yml` / `compose.edge.yml`; Helm `values-lab.yaml` / `values-edge.yaml` with optional `--set-file` config overrides. Docs: `deploy/modes/README.md`. Makefile: `compose-lab`, `compose-edge`, `helm-lab`, `helm-edge`.
 - **E2E for all 15 decoys**: `tests/e2e/e2e_all_decoys_{test,run,probes}_test.go` register and probe every real decoy (`ssh`…`modbus`); `make e2e` / `make e2e-shinkiro` → `scripts/e2e-shinkiro.sh`. Uses high unprivileged ports (Modbus `29502`) — **no** privileged netns / `CAP_NET_BIND_SERVICE` required.
@@ -24,8 +26,9 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Quick Start:** documented real `simulate --host` and `canary generate --label` CLI usage after install/build.
 
 ### Changed
+- **GeoIP honesty:** demo/heuristic prefix resolver replaced by optional MaxMind GeoLite2; docs no longer claim fake GeoIP is production attribution.
 - **Cluster honesty:** docs/CLI describe hub-and-spoke HTTP with optional token auth; remaining mesh/gossip overclaims removed from cluster package comments and operator surfaces.
-- **go.mod:** direct requires for `bubbletea`, `lipgloss`, `golang.org/x/crypto`, `gopkg.in/yaml.v3` (go 1.24 unchanged); transitive deps remain `indirect`.
+- **go.mod:** direct requires for `bubbletea`, `lipgloss`, `geoip2-golang`, `golang.org/x/crypto`, `gopkg.in/yaml.v3` (go 1.24 unchanged); transitive deps remain `indirect`.
 - **CLI exit status:** no arguments and unknown commands now exit non-zero (`os.Exit(1)`).
 - **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`).
 - **Docs:** clarified Linux-only prebuilt binaries; Darwin requires build-from-source.
@@ -44,7 +47,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Event pipeline guide:** `docs/architecture/event-pipeline.md` — dry-run vs apply SOAR, PCAP threshold/env, stage order.
 - **Honesty pass:** README, AGENTS.md, architecture, benchmarks, decoy matrix, threat-intel, and threat-scoring docs aligned with implemented behavior:
   - eBPF/XDP described as rule exporters + sample C (`internal/ebpf`), not a live kernel loader / `BPF_MAP_UPDATE`.
-  - GeoIP described as demo/heuristic prefixes, not MaxMind.
+  - GeoIP is optional MaxMind GeoLite2 (path via env/flag); product works without it; no demo fake countries.
   - Cluster described as hub-and-spoke HTTP ingest hub (token-optional), not encrypted UDP gossip / mesh.
   - PCAP: on-demand high-score capture wired into pipeline sink (not continuous mirror of every socket).
   - Supply chain described as Cosign `sign-blob` on checksums + Syft SBOM only (no SLSA Level 3 claim).
