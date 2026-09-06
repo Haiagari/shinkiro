@@ -145,4 +145,10 @@ No checked-in SLA tables; no `.github/workflows/bench.yml` gate. Run `make bench
 - [ ] No Darwin/Windows prebuilt binaries  
 - [ ] No assumed GHCR without `PUSH_GHCR`  
 - [ ] No ML correlator  
-- [ ] Exactly 15 decoys unless code adds more  
+- [ ] Exactly 15 decoys unless code adds more
+
+---
+
+## Canonical architecture diagram
+
+The dual-plane dark architecture map lives at **[`diagrams/architecture-darkmode.svg`](diagrams/architecture-darkmode.svg)** (Plane A deception runtime / Plane B pipeline·SOAR·SecOps). It is honesty-aligned with this document and post-roadmap PRs **#10–#16** (no gossip mesh, no live eBPF/XDP loader, no SLSA L3, no fake throughput, optional GeoIP, on-demand PCAP, SOAR dry-run default). Prefer the SVG over any legacy JPG raster.

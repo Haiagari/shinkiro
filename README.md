@@ -42,8 +42,10 @@ Adversaries scanning your perimeter encounter responsive decoy services that cap
 Full “what is not implemented” list: [`docs/honesty-limitations.md`](docs/honesty-limitations.md).
 
 <p align="center">
-  <img src="docs/diagrams/architecture-darkmode.jpg" alt="Shinkiro System Architecture" width="100%">
+  <img src="docs/diagrams/architecture-darkmode.svg" alt="Shinkiro System Architecture (honest code-backed map)" width="100%">
 </p>
+
+> Canonical architecture diagram: [`docs/diagrams/architecture-darkmode.svg`](docs/diagrams/architecture-darkmode.svg). Legacy JPG under the same folder (if present) is **not** the source of truth.
 
 <details>
 <summary><b>View Mermaid Source Diagram</b></summary>
@@ -259,8 +261,8 @@ What release CI **actually** does (`.github/workflows/release.yml`):
 ```bash
 make test
 make fuzz
-make e2e
 go test -v -race ./tests/chaos
+make e2e
 make bench   # local only; no bench.yml CI gate
 ```
 
