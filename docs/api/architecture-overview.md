@@ -4,6 +4,8 @@
 **License:** AGPL-3.0-only  
 **Language:** Go 1.24+ (single binary)
 
+Documentation hub: [`../README.md`](../README.md). Honesty: [`../honesty-limitations.md`](../honesty-limitations.md).
+
 ---
 
 ## 1. System Design Goals & Principles
@@ -11,14 +13,14 @@
 1. **Zero Host Mutation:** Deceptive protocols must not execute host binaries or write attacker-controlled files for shell semantics. State stays in synthetic in-memory structures.
 2. **Fail-Closed Security Posture:** Malformed frames / parser failures terminate the socket without stack traces to the client.
 3. **Measurable Hot Path:** Prefer measured `go test -bench` results over undocumented SLA nanoseconds.
-4. **Actionable SOC Interoperability:** CEF, Syslog, STIX 2.1, ECS exporters; MITRE tagging.
+4. **Actionable SOC Interoperability:** CEF, Syslog, STIX 2.1, ECS exporters; MITRE tagging; ThreatFox/AbuseIPDB CLIs.
 5. **Exportable Active Defense:** nftables/iptables/sample eBPF **text** + SOAR `block_ip` / `alert` — not a silent live XDP attach.
 
 ---
 
 ## 2. Component Topology & Data Flow
 
-See `docs/architecture/system-architecture.md` and `docs/architecture/cluster-hub.md` for current diagrams.
+See [`../architecture/system-architecture.md`](../architecture/system-architecture.md) and [`../architecture/cluster-hub.md`](../architecture/cluster-hub.md).
 
 ---
 
@@ -37,7 +39,7 @@ internal/
 │   ├── smb/ smtp/ ssh/ telnet/
 ├── defense/            # iptables & nftables ruleset text generator
 ├── ebpf/               # Sample C + RenderScript exporter (NOT live loader)
-├── intel/              # Telemetry, scoring, MITRE, correlator
+├── intel/              # Telemetry, scoring, MITRE, correlator v2, feeds, coverage
 │   ├── ecs/            # ECS serializer
 │   ├── geoip/          # Optional MaxMind GeoLite2 (path via env/flag; no-op if unset)
 │   ├── siem/           # CEF & Syslog exporters
@@ -54,23 +56,26 @@ internal/
 
 ## 4. Operational CLI Interface
 
+Authoritative flag list: [`../cli-reference.md`](../cli-reference.md). Summary:
+
 ```bash
-shinkiro up [--config config.yaml] [--apply]
-shinkiro tui [--apply]
-shinkiro cef
-shinkiro syslog
-shinkiro ecs
-shinkiro stix
-shinkiro export --format nftables     # text export
-shinkiro export --format iptables     # text export
+shinkiro up [--apply] [--geoip-db PATH]
+shinkiro tui [--apply] [--geoip-db PATH]
+shinkiro campaigns [--format table|json] [--events PATH] [--window 2h]
+shinkiro threatfox --search <ioc> | --days N
+shinkiro abuseipdb --ip <addr>
+shinkiro coverage [--format table|json] [--runtime-mapper]
+shinkiro geoip --ip <addr> [--geoip-db PATH]
+shinkiro cef | syslog | ecs | stix
+shinkiro export --format nftables|iptables|cidr [--threshold 80]
 shinkiro kernel                       # sample eBPF / rule script text
-shinkiro canary generate --label prod-cluster-secret
+shinkiro canary generate --label …
 shinkiro simulate --host 127.0.0.1
 shinkiro cluster hub [--port 9090] [--token SECRET] [--tls-cert PATH] [--tls-key PATH]
-shinkiro geoip --ip 1.2.3.4 [--geoip-db PATH]   # optional MaxMind lookup
-shinkiro up [--apply] [--geoip-db PATH]
-# Hub-and-spoke HTTP (not gossip/mesh). Empty SHINKIRO_CLUSTER_TOKEN = lab-only insecure.
+shinkiro version
 ```
+
+Hub-and-spoke HTTP (not gossip/mesh). Empty `SHINKIRO_CLUSTER_TOKEN` = lab-only insecure.
 
 ---
 
@@ -81,12 +86,13 @@ shinkiro up [--apply] [--geoip-db PATH]
 - **Supply chain:** Releases build with `-trimpath` / stripped ldflags; Cosign **`sign-blob`** on `checksums.txt`; Syft SPDX + CycloneDX SBOMs. **No SLSA Level 3 provenance workflow.**
 - **Fuzzing:** Selected `testing.F` targets via `make fuzz`.
 - **Deploy:** Dockerfile and Helm chart with lab/edge modes; optional GHCR when `PUSH_GHCR=true`.
+- **E2E:** `make e2e` probes all 15 decoys on high unprivileged ports.
 
 ---
 
 ## 6. Go Package Integration
 
-Prefer copying patterns from `cmd/shinkiro/` — authoritative wiring for decoys, SOAR, metrics, cluster hub, and exporters. Public/internal APIs evolve with the binary; do not invent alternate constructor signatures in docs without checking the source.
+Prefer copying patterns from `cmd/shinkiro/` — authoritative wiring for decoys, SOAR, metrics, cluster hub, GeoIP, and exporters. Public/internal APIs evolve with the binary; do not invent alternate constructor signatures in docs without checking the source.
 
 ---
 
