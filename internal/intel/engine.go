@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 )
 
 type Engine struct {
@@ -30,4 +31,105 @@ func NewEngine(eventsPath string) (*Engine, error) {
 		blocklist:  make(map[string]int),
 		Correlator: NewCorrelator(2 * time.Hour),
 	}, nil
+}
+
+// Record maps MITRE, ingests the correlator, updates the blocklist, and appends JSONL.
+// Prefer Persist from the pipeline sink when Score/Correlate stages already ran.
+func (e *Engine) Record(ev Event) error {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
+	if ev.Mitre == nil {
+		m := MapToMitre(ev.DecoyName, ev.Action, ev.Command)
+		ev.Mitre = &m
+	}
+
+	if e.Correlator != nil {
+		e.Correlator.Ingest(ev)
+	}
+
+	return e.persistLocked(ev)
+}
+
+// Persist updates the cumulative blocklist and appends JSONL without re-running
+// MITRE mapping or correlator ingest (pipeline Score/Correlate stages own those).
+func (e *Engine) Persist(ev Event) error {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	return e.persistLocked(ev)
+}
+
+func (e *Engine) persistLocked(ev Event) error {
+	e.blocklist[ev.RemoteIP] += ev.ThreatScore
+
+	data, err := json.Marshal(ev)
+	if err != nil {
+		return err
+	}
+
+	f, err := os.OpenFile(e.eventsPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	_, err = f.Write(append(data, '\n'))
+	return err
+}
+
+func (e *Engine) MaliciousIPs(threshold int) []string {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
+	var malicious []string
+	for ip, score := range e.blocklist {
+		if score >= threshold {
+			malicious = append(malicious, ip)
+		}
+	}
+	return malicious
+}
+
+func (e *Engine) RecentEvents(limit int) []Event {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
+	data, err := os.ReadFile(e.eventsPath)
+	if err != nil {
+		return nil
+	}
+
+	var events []Event
+	lines := splitLines(string(data))
+	for _, l := range lines {
+		if l == "" {
+			continue
+		}
+		var ev Event
+		if err := json.Unmarshal([]byte(l), &ev); err == nil {
+			events = append(events, ev)
+		}
+	}
+
+	if limit > 0 && len(events) > limit {
+		return events[len(events)-limit:]
+	}
+	return events
+}
+
+func splitLines(s string) []string {
+	var res []string
+	var cur []rune
+	for _, r := range s {
+		if r == '\n' {
+			res = append(res, string(cur))
+			cur = nil
+		} else {
+			cur = append(cur, r)
+		}
+	}
+	if len(cur) > 0 {
+		res = append(res, string(cur))
+	}
+	return res
 }
