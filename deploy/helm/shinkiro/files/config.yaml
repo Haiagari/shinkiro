@@ -1,0 +1,54 @@
+# Shinkiro — Ephemeral Deception & Attacker Intelligence Mesh Configuration
+
+node_name: "shinkiro-sensor-primary"
+idle_timeout: 30s
+max_connections: 1000
+audit_log_path: "data/events.jsonl"
+metrics_port: 9100
+
+services:
+  ssh:
+    enabled: true
+    port: 2222
+  redis:
+    enabled: true
+    port: 6379
+  docker:
+    enabled: true
+    port: 2375
+  http:
+    enabled: true
+    port: 8080
+  postgres:
+    enabled: true
+    port: 5432
+  k8s:
+    enabled: true
+    port: 6443
+  aws-imds:
+    enabled: true
+    port: 8169
+  mongo:
+    enabled: true
+    port: 27017
+  elastic:
+    enabled: true
+    port: 9200
+  smtp:
+    enabled: true
+    port: 2525
+  dns:
+    enabled: true
+    port: 1053
+  smb:
+    enabled: true
+    port: 4445
+  telnet:
+    enabled: true
+    port: 2323
+  mqtt:
+    enabled: true
+    port: 1883
+  modbus:
+    enabled: true
+    port: 502

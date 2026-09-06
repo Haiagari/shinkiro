@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-shinkiro-config
+  labels:
+    app.kubernetes.io/name: shinkiro
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  config.yaml: |
+{{ .Files.Get "files/config.yaml" | indent 4 }}
+  playbooks.yaml: |
+{{ .Files.Get "files/playbooks.yaml" | indent 4 }}
+{{- if .Values.seccomp.mountProfile }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-shinkiro-seccomp
+  labels:
+    app.kubernetes.io/name: shinkiro
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  seccomp.json: |
+{{ .Files.Get "files/seccomp.json" | indent 4 }}
+{{- end }}

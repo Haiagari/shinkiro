@@ -6,6 +6,9 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 
 ### Fixed
 - `scripts/install.sh` now downloads real GitHub Release assets (`shinkiro-linux-amd64` / `shinkiro-linux-arm64`), verifies `checksums.txt` when present, and no longer falls back to nonexistent `v0.2.0` or GoReleaser-style `shinkiro_${VER}_${os}_${arch}.tar.gz` names.
+- **Docker / Helm runnable:** Dockerfile installs the binary at `/usr/local/bin/shinkiro`, copies `config.yaml` + `playbooks.yaml` into `/app` (and `/etc/shinkiro`), and uses `WORKDIR /app` so `data/events.jsonl` persists via the `/app/data` volume.
+- **docker-compose.yml:** mounts `./data` → `/app/data`, exposes ports for all decoys enabled in default `config.yaml` (+ metrics `:9100`), image tag `shinkiro:local`.
+- **Helm chart:** container command `/usr/local/bin/shinkiro up`; ConfigMaps for config/playbooks and optional seccomp JSON; honest defaults `image.repository=shinkiro`, `tag=local`, `pullPolicy=IfNotPresent` (no assumed GHCR image); `NET_BIND_SERVICE` for Modbus `:502`; pod `seccompProfile: RuntimeDefault`.
 
 ### Documentation
 - **Honesty pass:** README, AGENTS.md, architecture, benchmarks, decoy matrix, threat-intel, and threat-scoring docs aligned with implemented behavior:
@@ -17,7 +20,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
   - Invented benchmark tables / nonexistent `bench.yml` gate removed; point to real `Benchmark*` and `tests/chaos`.
   - Playbook examples match real `rules` / `if` / `then` / `block_ip` schema.
   - Config examples use `services:` (runtime key), not `decoys:`.
-  - Helm one-liner notes image/path/config limitations until a dedicated deploy PR.
+  - Helm / Compose deploy docs match local-image workflow (`deploy/README.md`); no decoys.* values key.
   - Removed static `tests-passing` badge that was not CI-linked.
 
 ## [v1.0.0] - 2026-09-05

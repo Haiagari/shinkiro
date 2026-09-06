@@ -1,0 +1,31 @@
+# Shinkiro SOAR-Lite Active Defense Playbooks
+rules:
+  - name: ssh-credential-stuffing-autoblock
+    enabled: true
+    if:
+      decoy: ssh
+      min_score: 75
+      action_match: LOGIN
+    then:
+      - type: block_ip
+      - type: alert
+
+  - name: redis-exploitation-immediate-ban
+    enabled: true
+    if:
+      decoy: redis
+      min_score: 80
+      action_match: CONFIG
+    then:
+      - type: block_ip
+      - type: alert
+
+  - name: rapid-recon-scanning-ratelimit
+    enabled: true
+    if:
+      decoy: "*"
+      threshold: 5
+      window_sec: 30
+    then:
+      - type: block_ip
+      - type: alert
