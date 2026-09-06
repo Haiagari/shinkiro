@@ -88,8 +88,35 @@ func (o *OnDemandCapture) MaybeCapture(ev intel.Event) (TriggerResult, error) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 
+	path, err := o.writeLocked(ev, false)
+	if err != nil {
+		return res, err
+	}
+	res.Triggered = true
+	res.Path = path
+	return res, nil
+}
+
+// CaptureNow writes a forensic frame for ev regardless of threshold.
+// Intended for explicit TUI/operator requests (not automatic score gating).
+func (o *OnDemandCapture) CaptureNow(ev intel.Event) (TriggerResult, error) {
+	res := TriggerResult{Score: ev.ThreatScore, Threshold: o.threshold}
+	o.mu.Lock()
+	defer o.mu.Unlock()
+
+	path, err := o.writeLocked(ev, true)
+	if err != nil {
+		return res, err
+	}
+	res.Triggered = true
+	res.Path = path
+	return res, nil
+}
+
+// writeLocked must be called with o.mu held.
+func (o *OnDemandCapture) writeLocked(ev intel.Event, operator bool) (string, error) {
 	if err := os.MkdirAll(o.dir, 0755); err != nil {
-		return res, fmt.Errorf("pcap dir: %w", err)
+		return "", fmt.Errorf("pcap dir: %w", err)
 	}
 
 	key := sanitizeIP(ev.RemoteIP)
@@ -102,10 +129,14 @@ func (o *OnDemandCapture) MaybeCapture(ev intel.Event) (TriggerResult, error) {
 		if ts.IsZero() {
 			ts = time.Now().UTC()
 		}
-		path = filepath.Join(o.dir, fmt.Sprintf("highscore-%s-%d.pcap", key, ts.Unix()))
+		prefix := "highscore"
+		if operator {
+			prefix = "operator"
+		}
+		path = filepath.Join(o.dir, fmt.Sprintf("%s-%s-%d.pcap", prefix, key, ts.Unix()))
 		cf, err := OpenCapture(path)
 		if err != nil {
-			return res, err
+			return "", err
 		}
 		o.opened[key] = cf
 		o.paths[key] = path
@@ -113,30 +144,28 @@ func (o *OnDemandCapture) MaybeCapture(ev intel.Event) (TriggerResult, error) {
 
 	cf := o.opened[key]
 	payload, err := json.Marshal(map[string]interface{}{
-		"type":         "shinkiro-ondemand-pcap",
-		"id":           ev.ID,
-		"decoy":        ev.DecoyName,
-		"remote_ip":    ev.RemoteIP,
-		"threat_score": ev.ThreatScore,
-		"action":       ev.Action,
-		"severity":     ev.Severity,
-		"command":      ev.Command,
-		"timestamp":    ev.Timestamp.UTC().Format(time.RFC3339Nano),
+		"type":             "shinkiro-ondemand-pcap",
+		"id":               ev.ID,
+		"decoy":            ev.DecoyName,
+		"remote_ip":        ev.RemoteIP,
+		"threat_score":     ev.ThreatScore,
+		"action":           ev.Action,
+		"severity":         ev.Severity,
+		"command":          ev.Command,
+		"operator_trigger": operator,
+		"timestamp":        ev.Timestamp.UTC().Format(time.RFC3339Nano),
 	})
 	if err != nil {
-		return res, err
+		return "", err
 	}
 	ts := ev.Timestamp
 	if ts.IsZero() {
 		ts = time.Now().UTC()
 	}
 	if err := cf.Write(ts, payload); err != nil {
-		return res, err
+		return "", err
 	}
-
-	res.Triggered = true
-	res.Path = path
-	return res, nil
+	return path, nil
 }
 
 // Close releases open capture files.
