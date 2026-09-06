@@ -15,18 +15,20 @@
 
 **Shinkiro (蜃気楼 — *mirage*)** is a single-binary cyber deception engine written in Go. It multiplexes lightweight, memory-jailed protocol emulators across common internet, cloud, and IoT attack surfaces.
 
-Adversaries scanning your perimeter encounter responsive decoy services that capture credentials, probes, and exploit attempts without granting host access. Telemetry is scored, optionally correlated across decoys, and can drive SOAR-lite actions (`block_ip` / `alert`) plus **exported** firewall rule text — operators apply those rules themselves.
+Adversaries scanning your perimeter encounter responsive decoy services that capture credentials, probes, and exploit attempts without granting host access. Telemetry flows through an in-process **Event → Score → Correlate → Playbook → Sink** pipeline, drives SOAR-lite actions (`block_ip` / `alert`), and can emit firewall rule text — **live firewall apply is opt-in** (`--apply` / `SHINKIRO_SOAR_APPLY=1`); default is dry-run.
 
 ### What is implemented today
 
 | Area | Reality in this tree |
 | :--- | :--- |
 | **15 decoys** | SSH, Telnet, MQTT, SMB, Redis, Docker, HTTP, Postgres, K8s, AWS IMDS, Mongo, Elastic, SMTP, DNS, Modbus — see matrix below |
-| **CLI** | `up`, `tui`, `simulate`, `export` (nftables/iptables text), `kernel`/`ebpf` (rule script text), `cef`/`syslog`/`stix`/`ecs`, `canary`, `cluster hub` |
+| **CLI** | `up [--apply]`, `tui [--apply]`, `simulate`, `export` (nftables/iptables text), `kernel`/`ebpf` (rule script text), `cef`/`syslog`/`stix`/`ecs`, `canary`, `cluster hub` |
+| **Event pipeline** | `internal/pipeline` bus wired in `up`/`tui` — Score (MITRE+GeoIP) → Correlate → Playbook → Sink |
 | **Defense exporters** | `internal/defense` + `internal/ebpf.FilterManager.RenderScript()` emit rule text; sample XDP C lives under `internal/ebpf/c/` — **no live BPF map loader / `BPF_MAP_UPDATE`** |
+| **SOAR block_ip** | Dry-run default (prints nftables/iptables commands); live exec + optional webhook only with `--apply` or `SHINKIRO_SOAR_APPLY=1` |
 | **GeoIP** | Heuristic / demo prefix table in `internal/intel/geoip` — **not** a MaxMind offline database |
 | **Cluster** | HTTP ingest hub (`POST /api/v1/cluster/ingest`) — **not** encrypted UDP gossip |
-| **PCAP** | Libpcap 2.4 **writer package** exists (`internal/pcap`) but is **not wired** into `cmd/shinkiro` / the multiplexer pipeline |
+| **PCAP** | On-demand libpcap capture when score ≥ threshold (default 80) via `internal/pcap.OnDemandCapture` → `data/pcap/` — **not** continuous socket mirroring |
 | **Supply chain** | Release CI: Linux amd64/arm64 binaries, `checksums.txt`, Cosign **`sign-blob`** on checksums, Syft SPDX + CycloneDX SBOMs — **not** SLSA Level 3 provenance |
 | **Deploy** | Dockerfile + Compose + Helm are runnable with a **local** image (`shinkiro:local`); no GHCR publish in release CI — see `deploy/README.md` |
 
@@ -44,7 +46,7 @@ graph TD
     end
 
     subgraph Core ["🛡️ Shinkiro Core Multiplexer"]
-        Mux["In-Memory Multiplexer<br/>- Strict Read/Write Deadlines<br/>- Slowloris Defense<br/>- PCAP writer NOT wired in main"]
+        Mux["In-Memory Multiplexer<br/>- Strict Read/Write Deadlines<br/>- Slowloris Defense<br/>- Emits to pipeline bus"]
     end
 
     subgraph Decoys ["🎭 Active Protocol Decoys (15)"]
@@ -61,13 +63,13 @@ graph TD
         D11["K8s :6443 / Mongo / Elastic / SMTP / DNS"]
     end
 
-    subgraph Pipeline ["⚡ Telemetry & Attribution Engine"]
-        Intel["Threat Intel & Attribution<br/>- SHA-256 Payload Hashing<br/>- MITRE ATT&CK Mapping<br/>- Campaign Correlator<br/>- Heuristic GeoIP prefixes<br/>- Dynamic Scoring (0-100)"]
+    subgraph Pipeline ["⚡ Event → Score → Correlate → Playbook → Sink"]
+        Intel["Threat Intel & Attribution<br/>- MITRE ATT&CK Mapping<br/>- Campaign Correlator<br/>- Heuristic GeoIP prefixes<br/>- Dynamic Scoring (0-100)<br/>- On-demand PCAP (score gate)"]
     end
 
     subgraph Defense ["🚀 Response & SecOps"]
         TUI["Live Terminal Dashboard<br/>(shinkiro tui)"]
-        SOAR["SOAR-Lite Playbooks<br/>(block_ip / alert hooks)"]
+        SOAR["SOAR-Lite Playbooks<br/>(block_ip dry-run / --apply)"]
         SIEM["SIEM & Threat Feeds<br/>(CEF, Syslog, STIX 2.1, ECS, ThreatFox)"]
         Drop["Rule exporters<br/>(nftables / iptables / sample eBPF script text)"]
     end
@@ -100,7 +102,7 @@ graph TD
     Intel --> TUI
     Intel --> SOAR
     Intel --> SIEM
-    SOAR -->|block_ip hook / export text| Drop
+    SOAR -->|block_ip dry-run or apply| Drop
     Intel -->|Threat Score thresholds| Drop
 ```
 </details>
@@ -179,7 +181,12 @@ make build
 ### 3. Run Headless Daemon
 
 ```bash
+# Dry-run SOAR block_ip (default) — prints nftables/iptables commands only
 ./bin/shinkiro up
+
+# Live firewall apply (explicit)
+./bin/shinkiro up --apply
+# or: SHINKIRO_SOAR_APPLY=1 ./bin/shinkiro up
 ```
 
 ### 4. Red Team Attack Simulation
@@ -214,7 +221,9 @@ HMAC-signed synthetic AWS honeytokens for canary placement:
 ./bin/shinkiro ecs
 ```
 
-### 7. Automated Defense & SOAR Playbooks
+### 7. Automated Defense, SOAR Playbooks & On-Demand PCAP
+
+Events flow: **Event → Score → Correlate → Playbook → Sink** (`internal/pipeline`). Full operator notes: [`docs/architecture/event-pipeline.md`](docs/architecture/event-pipeline.md).
 
 Shinkiro loads declarative rules from `playbooks.yaml`. The **real** schema is `rules` / `if` / `then` with actions such as `block_ip` and `alert` (see `internal/soar`):
 
@@ -242,7 +251,18 @@ rules:
       - type: alert
 ```
 
-Export firewall / sample kernel rule **text** (you apply it; Shinkiro does not attach XDP or rewrite live BPF maps):
+**`block_ip` dry-run vs apply**
+
+| Mode | Enable | What happens |
+| :--- | :--- | :--- |
+| Dry-run (**default**) | (nothing) | Logs generated `nftables`/`iptables` text; does **not** exec firewall binaries |
+| Live apply | `--apply` or `SHINKIRO_SOAR_APPLY=1` | Executes those commands; optional JSON POST to `SHINKIRO_SOAR_BLOCK_WEBHOOK` |
+
+Format: `SHINKIRO_SOAR_BLOCK_FORMAT=nftables|iptables` (default `nftables`). This is **not** silent kernel XDP / BPF map auto-block.
+
+**On-demand PCAP:** when `ThreatScore >= SHINKIRO_PCAP_THRESHOLD` (default `80`), the sink writes a libpcap file under `SHINKIRO_PCAP_DIR` (default `data/pcap/`).
+
+Export firewall / sample kernel rule **text** (offline export; separate from live `--apply`):
 
 ```bash
 # Sample eBPF / XDP-oriented script text + comments (not a live loader)
@@ -333,6 +353,7 @@ Published ns/op tables that previously appeared in docs without matching checked
 
 ## Documentation Index
 
+- [Event Pipeline, SOAR dry-run/apply, On-Demand PCAP](docs/architecture/event-pipeline.md): Stage order, `--apply` / env flags, PCAP threshold.
 - [High-Interaction Protocol Matrix](docs/decoys/decoy-matrix.md): Decoy specifications and MITRE mapping.
 - [System Architecture & Data Flow](docs/architecture/system-architecture.md): Multiplexer, rule exporters, HTTP cluster hub, PCAP package status.
 - [Threat Scoring & Campaign Correlator](docs/architecture/threat-scoring.md): Scoring, velocity notes, and real playbook schema.
