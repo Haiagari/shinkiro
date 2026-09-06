@@ -2,8 +2,10 @@
 
 Shinkiro's multi-node support is a **central HTTP hub** that remote sensors join and POST events to. It is **not** encrypted UDP gossip, **not** a peer mesh, and **not** an eBPF/kernel cluster fabric.
 
-Package: `internal/cluster`  
+Package: `internal/cluster` (`node.go`, `agent.go`)  
 CLI: `shinkiro cluster hub`
+
+---
 
 ## Model
 
@@ -16,6 +18,10 @@ CLI: `shinkiro cluster hub`
 - **Hub:** one process (`shinkiro cluster hub`) listening on a port (default `:9090`).
 - **Spokes / agents:** any HTTP client (curl, `cluster.AgentClient`, custom forwarder) that can POST JSON.
 - **Honesty:** empty `SHINKIRO_CLUSTER_TOKEN` = **lab-only insecure mode** (no auth). Set a token for anything beyond local demos.
+
+Sensors continue to run `shinkiro up` / `tui` locally for decoys; the hub aggregates events you choose to forward.
+
+---
 
 ## Endpoints
 
@@ -35,6 +41,10 @@ Auth headers (either):
 Errors are JSON: `{ "error": "...", "message": "..." }`.
 
 Hardening built in: read/write/idle timeouts, 1 MiB body cap (`MaxBytesReader`), structured errors, graceful shutdown on context cancel.
+
+`GET /readyz` reports `auth_mode` as `token` or `insecure-lab`, and `model` as `hub-and-spoke-http`.
+
+---
 
 ## Run the hub
 
@@ -56,11 +66,15 @@ export SHINKIRO_CLUSTER_TOKEN="$(openssl rand -hex 32)"
   --tls-key  /etc/shinkiro/hub.key
 ```
 
-`GET /readyz` reports `auth_mode` as `token` or `insecure-lab`, and `model` as `hub-and-spoke-http`.
+| Flag | Default | Meaning |
+| :--- | :--- | :--- |
+| `--port` | `9090` | Listen port |
+| `--token` | `SHINKIRO_CLUSTER_TOKEN` | Shared secret |
+| `--tls-cert` / `--tls-key` | unset | Native TLS (both required together) |
+
+---
 
 ## Agent / spoke nodes
-
-Sensors keep running `shinkiro up` / `tui` locally. To attach to the hub, join once then POST events:
 
 ```bash
 export HUB=http://hub.example:9090
@@ -81,15 +95,22 @@ curl -sS -X POST "$HUB/api/v1/cluster/ingest" \
 
 Go helper: `cluster.AgentClient{BaseURL, Token}` with `Join` / `Ingest`.
 
+---
+
 ## TLS notes
 
 1. **Native:** pass `--tls-cert` + `--tls-key` together; hub uses `ListenAndServeTLS`.
 2. **Termination:** leave cert/key empty; put TLS on a reverse proxy that forwards to plain `:9090`.
 3. Half-configured TLS (only one of cert/key) is rejected at startup.
 
+---
+
 ## Out of scope (still)
 
 - Gossip / SWIM / memberlist
 - Automatic peer discovery
 - Cross-node preemptive blackhole propagation
-- Live eBPF loaders or MaxMind GeoIP
+- Live eBPF loaders tied to the cluster fabric
+- Built-in automatic fan-in from every `up` process (operator must forward events)
+
+GeoIP enrichment remains a **per-sensor** optional MaxMind feature (`SHINKIRO_GEOLITE2_PATH`); it is independent of the hub.
