@@ -1,9 +1,15 @@
-# Shinkiro — local Compose stack
-# Build context is the repo root. Default config enables all decoys in config.yaml.
+# Shinkiro - local Compose stack
+# Build context is the repo root. Default image config enables all decoys in config.yaml.
 #
-#   make docker-build && make compose-up
+#   make docker-build && make compose-up          # baked config (backward compatible)
+#   make compose-lab                             # lab mode overlay (demo mounts)
+#   make compose-edge                            # edge mode overlay (hardened)
 #   # or:
 #   docker compose -f deploy/docker/docker-compose.yml up --build
+#   docker compose -f deploy/docker/docker-compose.yml -f deploy/docker/compose.lab.yml up -d
+#   docker compose -f deploy/docker/docker-compose.yml -f deploy/docker/compose.edge.yml up -d
+#
+# Modes: see deploy/modes/README.md
 
 services:
   shinkiro:
