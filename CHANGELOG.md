@@ -5,6 +5,9 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ## [Unreleased]
 
 ### Added
+- **Unified event pipeline** (`internal/pipeline`): in-process Event → Score → Correlate → Playbook → Sink bus; `shinkiro up` / `tui` feed decoy emit channels through ordered stages (see `docs/architecture/event-pipeline.md`).
+- **SOAR `block_ip` apply path** (`internal/soar.BlockApplier`): generates real `nftables`/`iptables` command text via `internal/defense`; **dry-run by default**; live exec + optional webhook POST only with `--apply` or `SHINKIRO_SOAR_APPLY=1` (no fake kernel auto-block claims).
+- **On-demand PCAP** (`internal/pcap.OnDemandCapture`): when threat score ≥ threshold (default 80), writes libpcap 2.4 forensic frames under `data/pcap/` using the existing writer; wired into the pipeline sink.
 - **Version via ldflags:** `main.version` / `main.commit` / `main.date` injected by Makefile, release CI, Dockerfile build args, and `.goreleaser.yml` (`shinkiro version` prints them).
 - **Real CI badge** linked to `.github/workflows/ci.yml` (replaces the removed static tests-passing badge).
 - **Quick Start:** documented real `simulate --host` and `canary generate --label` CLI usage after install/build.
@@ -14,6 +17,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **CLI exit status:** no arguments and unknown commands now exit non-zero (`os.Exit(1)`).
 - **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`).
 - **Docs:** clarified Linux-only prebuilt binaries; Darwin requires build-from-source.
+- **`intel.Engine.Persist`:** sink-stage JSONL/blocklist write without re-ingesting the correlator (pipeline owns Score/Correlate).
 
 ### Fixed
 - `scripts/install.sh` now downloads real GitHub Release assets (`shinkiro-linux-amd64` / `shinkiro-linux-arm64`), verifies `checksums.txt` when present, and no longer falls back to nonexistent `v0.2.0` or GoReleaser-style `shinkiro_${VER}_${os}_${arch}.tar.gz` names.
@@ -22,11 +26,12 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Helm chart:** container command `/usr/local/bin/shinkiro up`; ConfigMaps for config/playbooks and optional seccomp JSON; honest defaults `image.repository=shinkiro`, `tag=local`, `pullPolicy=IfNotPresent` (no assumed GHCR image); `NET_BIND_SERVICE` for Modbus `:502`; pod `seccompProfile: RuntimeDefault`.
 
 ### Documentation
+- **Event pipeline guide:** `docs/architecture/event-pipeline.md` — dry-run vs apply SOAR, PCAP threshold/env, stage order.
 - **Honesty pass:** README, AGENTS.md, architecture, benchmarks, decoy matrix, threat-intel, and threat-scoring docs aligned with implemented behavior:
   - eBPF/XDP described as rule exporters + sample C (`internal/ebpf`), not a live kernel loader / `BPF_MAP_UPDATE`.
   - GeoIP described as demo/heuristic prefixes, not MaxMind.
   - Cluster described as HTTP ingest hub, not encrypted UDP gossip.
-  - PCAP writer package noted as present but **not wired** into `main` / multiplexer.
+  - PCAP: on-demand high-score capture wired into pipeline sink (not continuous mirror of every socket).
   - Supply chain described as Cosign `sign-blob` on checksums + Syft SBOM only (no SLSA Level 3 claim).
   - Invented benchmark tables / nonexistent `bench.yml` gate removed; point to real `Benchmark*` and `tests/chaos`.
   - Playbook examples match real `rules` / `if` / `then` / `block_ip` schema.
