@@ -50,7 +50,7 @@ jobs:
 
       - name: Sign Checksums and Binaries with Cosign (Keyless Sigstore)
         run: |
-          cosign sign-blob --yes --bundle dist.checksums.bundle dist/checksums.txt
+          cosign sign-blob --yes --bundle dist/checksums.bundle dist/checksums.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
