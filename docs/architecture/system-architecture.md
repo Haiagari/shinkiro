@@ -3,8 +3,31 @@
 This document describes **what the code does today**. Where earlier drafts claimed live kernel XDP attachment, MaxMind GeoIP, UDP gossip/mesh, or continuous packet mirroring, those claims are corrected below.
 
 See also:
-- [`event-pipeline.md`](event-pipeline.md) — Event → Score → Correlate → Playbook → Sink
-- [`cluster-hub.md`](cluster-hub.md) — hub-and-spoke HTTP cluster (token auth, TLS)
+- [`event-pipeline.md`](event-pipeline.md) — Event → Score → Correlate → Playbook → Sink; SOAR dry-run/apply; on-demand PCAP
+- [`cluster-hub.md`](cluster-hub.md) — hub-and-spoke HTTP cluster hub (token auth, TLS, join/ingest)
+
+---
+
+## 3. Deep In-Memory Multiplexer Architecture
+
+The listener multiplexer (`internal/core/multiplexer.go`) is the primary network shock absorber:
+
+- Strict read/write deadlines (config `idle_timeout`, default 30s) neutralize Slowloris-style holds.
+- Fail-closed: malformed frames / unexpected EOF terminate the socket without internal error strings.
+- PCAP: pipeline sink calls `OnDemandCapture.MaybeCapture` when `ThreatScore >=` threshold (default 80) — **threshold-gated on-demand**, not continuous socket mirroring.
+
+---
+
+## 4. eBPF / XDP — Sample C + Rule Exporters (Not a Live Loader)
+
+| Artifact | What it is |
+| :--- | :--- |
+| `internal/ebpf/c/xdp_drop.c` | Sample XDP C — must be built/loaded with external tooling |
+| `FilterManager.RenderScript()` / `shinkiro kernel` | Commented eBPF-oriented or nftables/iptables script text |
+| `shinkiro export --format nftables\|iptables` | Firewall rule text |
+| `shinkiro up --apply` / `SHINKIRO_SOAR_APPLY=1` | Optional live exec of generated commands (dry-run default) |
+
+**Not implemented:** userspace XDP attach, `BPF_MAP_UPDATE`, line-rate hardware drop from `shinkiro up` alone.
 
 ---
 
@@ -26,17 +49,24 @@ Multi-node support is a **hub-and-spoke HTTP hub**, not encrypted UDP gossip and
 ```bash
 export SHINKIRO_CLUSTER_TOKEN="$(openssl rand -hex 32)"
 ./bin/shinkiro cluster hub --port 9090
-# agents: POST /api/v1/cluster/join and /ingest with Authorization: Bearer $SHINKIRO_CLUSTER_TOKEN
+# spokes: Authorization: Bearer $SHINKIRO_CLUSTER_TOKEN on join + ingest
 ```
 
 ---
 
-## Other architecture notes (unchanged honesty)
+## 6. Production Deployment Topologies
 
-- **Multiplexer:** strict deadlines, fail-closed sockets (`internal/core`).
-- **PCAP:** on-demand threshold-gated capture via pipeline sink — not continuous mirror.
-- **eBPF/XDP:** sample C + `RenderScript` text exporters — not a live kernel loader / `BPF_MAP_UPDATE`.
-- **GeoIP:** heuristic / demo prefixes — not MaxMind.
-- **SOAR block_ip:** dry-run default; live only with `--apply` / `SHINKIRO_SOAR_APPLY=1`.
+### 6.1. Edge Perimeter Bastion (Public DMZ)
+- Bind decoy ports from `services:`; export CEF/Syslog/STIX; apply nftables/iptables text or deliberate `--apply`.
 
-For full mermaid topology diagrams previously in this file, prefer regenerating from the live package map under `internal/` and the guides linked above rather than treating marketing diagrams as source of truth.
+### 6.2. Internal Lateral Movement Tripwire
+- Deploy inside LANs / k8s workers; SOAR `alert` / `block_ip` notify SecOps. Helm scaffolding + lab/edge modes; optional GHCR when `PUSH_GHCR=true`.
+
+### 6.3. OT / ICS SCADA Enclave
+- Modbus/TCP `:502` (or remapped ports). Kernel XDP still requires **operator-managed** loading of sample C / exported rules.
+
+---
+
+## 7. GeoIP Enrichment (Heuristic)
+
+`internal/intel/geoip.Resolver` uses RFC1918/loopback → `LOCAL`, a small demo prefix table (`198.51.100.`, `203.0.113.`, `192.0.2.`, …), and deterministic octet heuristics. **Not** MaxMind GeoLite/GeoIP2.
