@@ -22,7 +22,7 @@ Adversaries scanning your perimeter encounter responsive decoy services that cap
 | Area | Reality in this tree |
 | :--- | :--- |
 | **15 decoys** | SSH, Telnet, MQTT, SMB, Redis, Docker, HTTP, Postgres, K8s, AWS IMDS, Mongo, Elastic, SMTP, DNS, Modbus — see matrix below |
-| **CLI** | `up [--apply]`, `tui [--apply]`, `simulate`, `export` (nftables/iptables text), `kernel`/`ebpf` (rule script text), `cef`/`syslog`/`stix`/`ecs`, `canary`, `cluster hub` |
+| **CLI** | `up [--apply]`, `tui [--apply]` (operator actions: block/pcap/simulate/canary), `simulate`, `export` (nftables/iptables text), `kernel`/`ebpf` (rule script text), `cef`/`syslog`/`stix`/`ecs`, `canary`, `cluster hub` |
 | **Event pipeline** | `internal/pipeline` bus wired in `up`/`tui` — Score (MITRE+GeoIP) → Correlate → Playbook → Sink |
 | **Defense exporters** | `internal/defense` + `internal/ebpf.FilterManager.RenderScript()` emit rule text; sample XDP C lives under `internal/ebpf/c/` — **no live BPF map loader / `BPF_MAP_UPDATE`** |
 | **SOAR block_ip** | Dry-run default (prints nftables/iptables commands); live exec + optional webhook only with `--apply` or `SHINKIRO_SOAR_APPLY=1` |
@@ -68,7 +68,7 @@ graph TD
     end
 
     subgraph Defense ["🚀 Response & SecOps"]
-        TUI["Live Terminal Dashboard<br/>(shinkiro tui)"]
+        TUI["Operator TUI<br/>(select / block / pcap / simulate)"]
         SOAR["SOAR-Lite Playbooks<br/>(block_ip dry-run / --apply)"]
         SIEM["SIEM & Threat Feeds<br/>(CEF, Syslog, STIX 2.1, ECS, ThreatFox)"]
         Drop["Rule exporters<br/>(nftables / iptables / sample eBPF script text)"]
@@ -175,8 +175,28 @@ make build
 ### 2. Launch Live Terminal Dashboard (TUI)
 
 ```bash
+# Dry-run SOAR block_ip (default) — same guards as `up`
 ./bin/shinkiro tui
+
+# Live firewall apply for playbook + TUI `b` key
+./bin/shinkiro tui --apply
 ```
+
+Operator keybindings (press `?` in the TUI for the full overlay):
+
+| Key | Action |
+| :--- | :--- |
+| `↑`/`k` `↓`/`j` | Select event or campaign |
+| `Tab` | Toggle Events ↔ Campaigns |
+| `b` | SOAR `block_ip` (dry-run unless `--apply` / `SHINKIRO_SOAR_APPLY=1`) |
+| `p` | On-demand PCAP for selection |
+| `s` | Adversary simulate vs local mesh |
+| `c` | Generate AWS canary honeytoken |
+| `r` | Refresh high-score events / campaigns from intel store |
+| `x` / `esc` | Clear status / close help |
+| `q` | Quit |
+
+Details: [`docs/architecture/tui-operator.md`](docs/architecture/tui-operator.md).
 
 ### 3. Run Headless Daemon
 
@@ -353,6 +373,7 @@ Published ns/op tables that previously appeared in docs without matching checked
 
 ## Documentation Index
 
+- [TUI Operator Actions](docs/architecture/tui-operator.md): Keybindings for block/pcap/simulate/canary; dry-run vs apply honesty.
 - [Event Pipeline, SOAR dry-run/apply, On-Demand PCAP](docs/architecture/event-pipeline.md): Stage order, `--apply` / env flags, PCAP threshold.
 - [High-Interaction Protocol Matrix](docs/decoys/decoy-matrix.md): Decoy specifications and MITRE mapping.
 - [System Architecture & Data Flow](docs/architecture/system-architecture.md): Multiplexer, rule exporters, HTTP cluster hub, PCAP package status.

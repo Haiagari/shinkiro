@@ -5,6 +5,8 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ## [Unreleased]
 
 ### Added
+- **TUI operator actions** (`internal/tui`): select high-score events / correlator campaigns; trigger SOAR `block_ip` (dry-run by default, live only with `--apply` / `SHINKIRO_SOAR_APPLY=1`), operator on-demand PCAP (`CaptureNow`), adversary `simulate`, and AWS canary generation; help overlay + clearable status (see `docs/architecture/tui-operator.md`).
+- **`pcap.OnDemandCapture.CaptureNow`**: explicit operator capture that writes libpcap frames regardless of score threshold (filename prefix `operator-`).
 - **Unified event pipeline** (`internal/pipeline`): in-process Event → Score → Correlate → Playbook → Sink bus; `shinkiro up` / `tui` feed decoy emit channels through ordered stages (see `docs/architecture/event-pipeline.md`).
 - **SOAR `block_ip` apply path** (`internal/soar.BlockApplier`): generates real `nftables`/`iptables` command text via `internal/defense`; **dry-run by default**; live exec + optional webhook POST only with `--apply` or `SHINKIRO_SOAR_APPLY=1` (no fake kernel auto-block claims).
 - **On-demand PCAP** (`internal/pcap.OnDemandCapture`): when threat score ≥ threshold (default 80), writes libpcap 2.4 forensic frames under `data/pcap/` using the existing writer; wired into the pipeline sink.
@@ -18,6 +20,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`).
 - **Docs:** clarified Linux-only prebuilt binaries; Darwin requires build-from-source.
 - **`intel.Engine.Persist`:** sink-stage JSONL/blocklist write without re-ingesting the correlator (pipeline owns Score/Correlate).
+- **`shinkiro tui`:** Bubbletea dashboard wired to intel Engine, SOAR BlockApplier, and on-demand PCAP (same process as `up`).
 
 ### Fixed
 - `scripts/install.sh` now downloads real GitHub Release assets (`shinkiro-linux-amd64` / `shinkiro-linux-arm64`), verifies `checksums.txt` when present, and no longer falls back to nonexistent `v0.2.0` or GoReleaser-style `shinkiro_${VER}_${os}_${arch}.tar.gz` names.
@@ -26,6 +29,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Helm chart:** container command `/usr/local/bin/shinkiro up`; ConfigMaps for config/playbooks and optional seccomp JSON; honest defaults `image.repository=shinkiro`, `tag=local`, `pullPolicy=IfNotPresent` (no assumed GHCR image); `NET_BIND_SERVICE` for Modbus `:502`; pod `seccompProfile: RuntimeDefault`.
 
 ### Documentation
+- **TUI operator guide:** `docs/architecture/tui-operator.md` — keybindings, dry-run vs apply, PCAP/simulate/canary honesty notes.
 - **Event pipeline guide:** `docs/architecture/event-pipeline.md` — dry-run vs apply SOAR, PCAP threshold/env, stage order.
 - **Honesty pass:** README, AGENTS.md, architecture, benchmarks, decoy matrix, threat-intel, and threat-scoring docs aligned with implemented behavior:
   - eBPF/XDP described as rule exporters + sample C (`internal/ebpf`), not a live kernel loader / `BPF_MAP_UPDATE`.
