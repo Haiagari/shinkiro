@@ -1,34 +1,9 @@
 package e2e
 
 import (
-	"context"
-	"encoding/binary"
-	"fmt"
-	"io"
-	"net"
-	nethttp "net/http"
-	"strings"
-	"testing"
 	"time"
 
 	"github.com/Haiagari/shinkiro/internal/config"
-	"github.com/Haiagari/shinkiro/internal/core"
-	"github.com/Haiagari/shinkiro/internal/decoys/aws"
-	"github.com/Haiagari/shinkiro/internal/decoys/dns"
-	"github.com/Haiagari/shinkiro/internal/decoys/docker"
-	"github.com/Haiagari/shinkiro/internal/decoys/elastic"
-	decoyhttp "github.com/Haiagari/shinkiro/internal/decoys/http"
-	"github.com/Haiagari/shinkiro/internal/decoys/k8s"
-	"github.com/Haiagari/shinkiro/internal/decoys/modbus"
-	"github.com/Haiagari/shinkiro/internal/decoys/mongo"
-	"github.com/Haiagari/shinkiro/internal/decoys/mqtt"
-	"github.com/Haiagari/shinkiro/internal/decoys/postgres"
-	"github.com/Haiagari/shinkiro/internal/decoys/redis"
-	"github.com/Haiagari/shinkiro/internal/decoys/smb"
-	"github.com/Haiagari/shinkiro/internal/decoys/smtp"
-	"github.com/Haiagari/shinkiro/internal/decoys/ssh"
-	"github.com/Haiagari/shinkiro/internal/decoys/telnet"
-	"github.com/Haiagari/shinkiro/internal/intel"
 )
 
 // expectedDecoys lists the 15 real decoy Name() values from cmd/shinkiro/up.go.
@@ -37,7 +12,7 @@ var expectedDecoys = []string{
 	"mongo", "elastic", "smtp", "dns", "smb", "telnet", "mqtt", "modbus",
 }
 
-// highPorts avoid privileged binds (no CAP_NET_BIND_SERVICE / root).
+// allDecoyConfig uses high ports so CI needs no CAP_NET_BIND_SERVICE / root / netns.
 func allDecoyConfig() *config.Config {
 	return &config.Config{
 		NodeName:       "shinkiro-e2e-all-decoys",
