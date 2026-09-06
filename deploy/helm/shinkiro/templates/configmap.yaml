@@ -5,11 +5,20 @@ metadata:
   labels:
     app.kubernetes.io/name: shinkiro
     app.kubernetes.io/instance: {{ .Release.Name }}
+    shinkiro.deploy.mode: {{ .Values.deployMode | default "lab" | quote }}
 data:
   config.yaml: |
+{{- if .Values.configOverride }}
+{{ .Values.configOverride | nindent 4 }}
+{{- else }}
 {{ .Files.Get "files/config.yaml" | indent 4 }}
+{{- end }}
   playbooks.yaml: |
+{{- if .Values.playbooksOverride }}
+{{ .Values.playbooksOverride | nindent 4 }}
+{{- else }}
 {{ .Files.Get "files/playbooks.yaml" | indent 4 }}
+{{- end }}
 {{- if .Values.seccomp.mountProfile }}
 ---
 apiVersion: v1

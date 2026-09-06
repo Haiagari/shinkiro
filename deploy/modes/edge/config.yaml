@@ -1,0 +1,57 @@
+# Shinkiro deploy mode: edge
+# Hardened defaults for edge sensors: all 15 decoys, quieter PCAP gate via env,
+# lower connection ceiling, longer idle timeout. SOAR stays dry-run unless
+# operators explicitly enable apply (do not set SHINKIRO_SOAR_APPLY in compose/helm edge overlays).
+
+node_name: "shinkiro-edge-sensor-01"
+idle_timeout: 60s
+max_connections: 500
+audit_log_path: "data/events.jsonl"
+metrics_port: 9100
+
+services:
+  ssh:
+    enabled: true
+    port: 2222
+  redis:
+    enabled: true
+    port: 6379
+  docker:
+    enabled: true
+    port: 2375
+  http:
+    enabled: true
+    port: 8080
+  postgres:
+    enabled: true
+    port: 5432
+  k8s:
+    enabled: true
+    port: 6443
+  aws-imds:
+    enabled: true
+    port: 8169
+  mongo:
+    enabled: true
+    port: 27017
+  elastic:
+    enabled: true
+    port: 9200
+  smtp:
+    enabled: true
+    port: 2525
+  dns:
+    enabled: true
+    port: 1053
+  smb:
+    enabled: true
+    port: 4445
+  telnet:
+    enabled: true
+    port: 2323
+  mqtt:
+    enabled: true
+    port: 1883
+  modbus:
+    enabled: true
+    port: 502

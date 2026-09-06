@@ -9,6 +9,9 @@
 [![License](https://img.shields.io/badge/license-AGPL--3.0-f59e0b?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux%20(prebuilt)%20%7C%20macOS%20(source)-blue?style=flat-square)](#quick-start)
 
+
+> **Deploy modes / e2e / GHCR:** `make compose-lab` · `make compose-edge` · `make e2e` · optional `PUSH_GHCR=true` → `ghcr.io/haiagari/shinkiro`. See [`docs/deploy-modes-e2e-ghcr.md`](docs/deploy-modes-e2e-ghcr.md) and [`deploy/README.md`](deploy/README.md).
+
 ---
 
 ## What is Shinkiro
@@ -30,7 +33,7 @@ Adversaries scanning your perimeter encounter responsive decoy services that cap
 | **Cluster** | HTTP ingest hub (`POST /api/v1/cluster/ingest`) — **not** encrypted UDP gossip |
 | **PCAP** | On-demand libpcap capture when score ≥ threshold (default 80) via `internal/pcap.OnDemandCapture` → `data/pcap/` — **not** continuous socket mirroring |
 | **Supply chain** | Release CI: Linux amd64/arm64 binaries, `checksums.txt`, Cosign **`sign-blob`** on checksums, Syft SPDX + CycloneDX SBOMs — **not** SLSA Level 3 provenance |
-| **Deploy** | Dockerfile + Compose + Helm are runnable with a **local** image (`shinkiro:local`); no GHCR publish in release CI — see `deploy/README.md` |
+| **Deploy** | Dockerfile + Compose + Helm with **lab/edge** modes (`make compose-lab` / `compose-edge`); local image by default; **optional** GHCR when `PUSH_GHCR=true` — see `deploy/README.md` |
 
 <p align="center">
   <img src="docs/diagrams/architecture-darkmode.jpg" alt="Shinkiro System Architecture" width="100%">
@@ -304,11 +307,13 @@ Full steps: [`deploy/README.md`](deploy/README.md).
 ```bash
 make docker-build    # tags shinkiro:local
 make compose-up      # deploy/docker/docker-compose.yml
+make compose-lab    # lab mode overlay
+make compose-edge   # edge mode overlay
 ```
 
 **Helm** chart: `deploy/helm/shinkiro`
 
-- Image defaults: `repository: shinkiro`, `tag: local`, `pullPolicy: IfNotPresent` — **no GHCR image is published** by current release CI (binaries only).
+- Image defaults: `repository: shinkiro`, `tag: local`, `pullPolicy: IfNotPresent` — optional GHCR when `PUSH_GHCR=true` (see `docs/deploy-modes-e2e-ghcr.md`).
 - Container command: `/usr/local/bin/shinkiro up` (matches Dockerfile).
 - ConfigMap mounts `config.yaml` + `playbooks.yaml` into `/app` (runtime key is **`services:`**, not `decoys:`).
 - Data volume at `/app/data` for `data/events.jsonl`; optional seccomp JSON mount + `RuntimeDefault` profile.
@@ -341,8 +346,9 @@ What release CI **actually** does today (`.github/workflows/release.yml`):
 
 1. **Cosign `sign-blob`:** Keyless Sigstore signing of `checksums.txt` → `checksums.bundle`. Individual binary attestations / image signing are not claimed here.
 2. **Syft SBOM:** SPDX JSON and CycloneDX JSON attached to the GitHub Release.
-3. **Not SLSA Level 3:** There is no SLSA provenance generator / attestation workflow in this repo. Earlier docs that claimed “SLSA Level 3 build provenance” were incorrect.
-4. **Seccomp profile file:** `deploy/security/seccomp.json` is shipped for operators to apply; it is not automatically enforced by the binary itself.
+3. **Optional GHCR image:** job `push-ghcr` when repository variable `PUSH_GHCR=true` → `ghcr.io/haiagari/shinkiro:<tag>` (+ `latest`); binary release always runs.
+4. **Not SLSA Level 3:** There is no SLSA provenance generator / attestation workflow in this repo. Earlier docs that claimed “SLSA Level 3 build provenance” were incorrect.
+5. **Seccomp profile file:** `deploy/security/seccomp.json` is shipped for operators to apply; it is not automatically enforced by the binary itself.
 
 ---
 
@@ -358,8 +364,9 @@ make fuzz
 # Concurrent connection spike / chaos flood test (real test in tree)
 go test -v -race ./tests/chaos
 
-# End-to-end multi-decoy simulation package
-go test -v -race ./tests/e2e
+# End-to-end: all 15 real decoys (unprivileged high ports)
+make e2e
+# equivalent: go test -v -race ./tests/e2e
 
 # Optional local microbenchmarks (not gated in CI; no bench.yml regression workflow)
 make bench
@@ -381,7 +388,8 @@ Published ns/op tables that previously appeared in docs without matching checked
 - [SIEM & STIX 2.1 Integration](docs/threat-intel/stix-misp-integration.md): CEF, Syslog, ECS, STIX; honest GeoIP description.
 - [Performance & Scaling Notes](docs/benchmarks/performance.md): How to run real benches/chaos; no invented SLA numbers.
 - [Architecture Overview & Package Map](docs/api/architecture-overview.md): Go packages and CLI surface.
-- [Deploy (Compose & Helm)](deploy/README.md): Local image build, `docker compose up`, `helm install`.
+- [Deploy (Compose & Helm)](deploy/README.md): Local image, lab/edge modes, optional GHCR.
+- [Deploy modes / e2e / GHCR](docs/deploy-modes-e2e-ghcr.md): How to run modes, `make e2e`, enable GHCR.
 
 ---
 

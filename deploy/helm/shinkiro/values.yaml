@@ -2,11 +2,14 @@
 replicaCount: 1
 
 image:
-  # No published GHCR image is assumed by this chart.
+  # Default: local image (make docker-build → shinkiro:local).
+  # Optional GHCR: only when release CI has PUSH_GHCR=true (repo variable).
+  #   repository: ghcr.io/haiagari/shinkiro
+  #   tag: <release tag e.g. v1.1.0>
+  #   pullPolicy: IfNotPresent
   # Build locally, then load into your cluster:
-  #   make docker-build                    # tags shinkiro:local
+  #   make docker-build
   #   kind load docker-image shinkiro:local
-  #   # or: minikube image load shinkiro:local
   #   helm install shinkiro ./deploy/helm/shinkiro \
   #     --set image.repository=shinkiro --set image.tag=local
   repository: shinkiro
@@ -67,3 +70,15 @@ seccomp:
   mountProfile: true
   profile:
     type: RuntimeDefault
+
+# ---------------------------------------------------------------------------
+# Deploy mode (lab | edge) — informational label + selects recommended overlays.
+# Use values-lab.yaml / values-edge.yaml and --set-file for mode configs:
+#   see deploy/modes/README.md
+# ---------------------------------------------------------------------------
+deployMode: lab
+
+# When non-empty (e.g. helm --set-file configOverride=deploy/modes/edge/config.yaml),
+# these replace the chart-baked files/config.yaml and files/playbooks.yaml.
+configOverride: ""
+playbooksOverride: ""

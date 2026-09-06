@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: shinkiro
     app.kubernetes.io/instance: {{ .Release.Name }}
+    shinkiro.deploy.mode: {{ .Values.deployMode | default "lab" | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -16,6 +17,7 @@ spec:
       labels:
         app.kubernetes.io/name: shinkiro
         app.kubernetes.io/instance: {{ .Release.Name }}
+        shinkiro.deploy.mode: {{ .Values.deployMode | default "lab" | quote }}
     spec:
       securityContext:
         runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
