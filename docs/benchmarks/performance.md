@@ -3,9 +3,11 @@
 **Product:** Shinkiro (蜃気楼)  
 **Honesty policy:** This page does **not** publish invented microbenchmark tables, fabricated soak-test results, or a nonexistent CI `bench.yml` regression gate. Run the commands below on your hardware and record your own numbers.
 
+Docs hub: [`../README.md`](../README.md) · Development: [`../development.md`](../development.md)
+
 ---
 
-## 1. Architectural Advantage (qualitative)
+## 1. Architectural advantage (qualitative)
 
 Legacy honeypots (Python Cowrie, multi-container T-Pot, etc.) often carry large runtimes or many processes. Shinkiro aims for a **single Go binary**, in-memory decoys, connection deadlines, and no host mutation for attacker commands.
 
@@ -14,14 +16,12 @@ Legacy honeypots (Python Cowrie, multi-container T-Pot, etc.) often carry large 
 | Footprint | Single static binary build (`make build`) |
 | Slowloris | `SetDeadline` / idle timeout on accepted conns |
 | Host mutation | Decoys parse in-memory; no `os/exec` for attacker shells |
-| Defense | Export nftables/iptables/sample eBPF **text**; SOAR `block_ip` hooks |
+| Defense | Export nftables/iptables/sample eBPF **text**; SOAR `block_ip` dry-run/apply |
 | Supply chain | Cosign `sign-blob` on checksums + Syft SBOM — **not** SLSA L3 |
-
-Head-to-head numeric memory/image claims vs Cowrie/Dionaea/T-Pot that previously appeared here without measurement methodology were **removed**.
 
 ---
 
-## 2. How to Run Real Microbenchmarks
+## 2. How to run real microbenchmarks
 
 Checked-in `Benchmark*` functions today live in `internal/core/multiplexer_bench_test.go`:
 
@@ -34,31 +34,24 @@ make bench
 go test -run=^$ -bench=. -benchmem ./internal/core
 ```
 
-There is **no** `.github/workflows/bench.yml` performance regression workflow in this repository. CI (`.github/workflows/ci.yml`) runs `make test` + `make build` only.
+There is **no** `.github/workflows/bench.yml` performance regression workflow. CI (`.github/workflows/ci.yml`) runs `make test` + `make build` only.
 
-Do not cite historical tables such as `BenchmarkCorrelator_SessionCluster` / `BenchmarkMITRE_TaxonomyLookup` or “74,000,000 events/second” unless you regenerate them from current code and attach raw `go test -bench` output.
+Do not cite historical invented ns/op tables unless you regenerate them from current code and attach raw `go test -bench` output.
 
 ---
 
-## 3. Chaos / Concurrency Smoke Tests (real)
+## 3. Chaos / concurrency / e2e
 
 ```bash
 go test -v -race ./tests/chaos
+make e2e
 ```
 
-`tests/chaos/flood_test.go` defines `TestChaos_ConcurrentConnectionSpike` — a concurrent client spike against an HTTP decoy. Use this as the honest “burst stability” reference, not the older invented log transcript that claimed 1,000 sockets × 15 decoys with scripted PASS lines.
-
-Additional e2e coverage:
-
-```bash
-go test -v -race ./tests/e2e
-```
+`tests/chaos` defines concurrent client spike coverage. `make e2e` probes all **15** real decoys on high unprivileged ports.
 
 ---
 
-## 4. Qualitative Comparison Axes (no fake absolute RAM numbers)
-
-When comparing Shinkiro to Cowrie / Dionaea / T-Pot, prefer axes you can verify:
+## 4. Qualitative comparison axes (no fake absolute RAM numbers)
 
 | Axis | What to verify in this repo |
 | :--- | :--- |
@@ -72,11 +65,11 @@ When comparing Shinkiro to Cowrie / Dionaea / T-Pot, prefer axes you can verify:
 
 ---
 
-## 5. Deployment Scaling Notes
+## 5. Deployment scaling notes
 
 ### Kubernetes / Helm
 
-Chart scaffolding: `deploy/helm/shinkiro` with example resource requests/limits in `values.yaml`. **Image publish to GHCR and config/`services:` wiring remain limited** until a dedicated deploy PR — do not treat `helm install` against `ghcr.io/haiagari/shinkiro` as a verified happy path.
+Chart: `deploy/helm/shinkiro` with lab/edge values. Default image is **local** (`shinkiro:local`). Optional GHCR only when `PUSH_GHCR=true` published an image — see [`../../deploy/README.md`](../../deploy/README.md).
 
 ### Edge / cloud VM
 
@@ -84,7 +77,7 @@ A small Linux VM can run `shinkiro up` after `make build` or the install script.
 
 ---
 
-## 6. Optional Kernel Tuning (operator-owned)
+## 6. Optional kernel tuning (operator-owned)
 
 If you expose decoys on high-churn Internet links, host sysctl tuning is **your** responsibility. Example parameters (not auto-applied by Shinkiro):
 
@@ -112,9 +105,9 @@ Interpret profiles from your run; do not paste fabricated flamegraph conclusions
 
 ---
 
-## 8. What Was Removed From Prior Docs
+## 8. What was removed from prior docs
 
-- Invented `go test -bench` result blocks with absolute ns/op and “0 allocs/op” marketing.
-- Claims of a CI Performance Regression Gate / `.github/workflows/bench.yml`.
-- 72-hour soak narratives with scripted goroutine/RSS statistics not backed by checked-in harness output.
-- “Cosign + SLSA v1.0” comparison cells — replaced by Cosign `sign-blob` + Syft SBOM only.
+- Invented `go test -bench` result blocks with absolute ns/op marketing
+- Claims of a CI Performance Regression Gate / `.github/workflows/bench.yml`
+- 72-hour soak narratives without checked-in harness output
+- "Cosign + SLSA v1.0" comparison cells — replaced by Cosign `sign-blob` + Syft SBOM only

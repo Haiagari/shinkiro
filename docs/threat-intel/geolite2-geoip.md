@@ -2,6 +2,10 @@
 
 Shinkiro can enrich attacker events with **country / city / ASN** fields from a local MaxMind `.mmdb` database. GeoIP is **optional**: the product runs fully without it.
 
+Docs hub: [`../README.md`](../README.md). CLI: [`../cli-reference.md`](../cli-reference.md)#shinkiro-geoip.
+
+---
+
 ## Honesty
 
 | Claim | Reality |
@@ -10,6 +14,8 @@ Shinkiro can enrich attacker events with **country / city / ASN** fields from a 
 | Demo / heuristic prefixes | **Removed** — no invented country codes from IP octets |
 | Invented coordinates | **Never** — latitude/longitude are not fabricated or written |
 | License key in repo | **Never** — download DBs with your own MaxMind account |
+
+---
 
 ## Enable
 
@@ -20,25 +26,24 @@ Shinkiro can enrich attacker events with **country / city / ASN** fields from a 
 3. Point Shinkiro at the `.mmdb` file:
 
 ```bash
-# Environment (recommended for daemons / Compose)
 export SHINKIRO_GEOLITE2_PATH=/var/lib/GeoIP/GeoLite2-City.mmdb
 ./bin/shinkiro up
 
-# Or CLI flag (overrides env)
 ./bin/shinkiro up --geoip-db /var/lib/GeoIP/GeoLite2-City.mmdb
 ./bin/shinkiro tui --geoip-db /var/lib/GeoIP/GeoLite2-City.mmdb
 ```
 
+---
+
 ## Ops test CLI
 
 ```bash
-# Without a DB → prints GeoIP disabled and empty fields
 ./bin/shinkiro geoip --ip 1.2.3.4
-
-# With a DB
 ./bin/shinkiro geoip --ip 1.2.3.4 --geoip-db /var/lib/GeoIP/GeoLite2-City.mmdb
 ./bin/shinkiro geoip --ip 8.8.8.8 --format json
 ```
+
+---
 
 ## Pipeline wiring
 
@@ -50,6 +55,8 @@ The Score stage in `shinkiro up` / `tui` calls `internal/intel/geoip.Resolver.Lo
 - `geo_org` — ASN organization / local tag
 
 Empty fields are omitted (not filled with fake values).
+
+---
 
 ## Database types
 
@@ -63,4 +70,4 @@ Only **one** database path is configured at a time (`SHINKIRO_GEOLITE2_PATH` / `
 
 ## Dependency
 
-Uses `github.com/oschwald/geoip2-golang` v1.13 (Go 1.24–compatible). Do **not** commit MaxMind `.mmdb` binaries or license keys to the repository.
+Uses `github.com/oschwald/geoip2-golang` v1.13 (Go 1.24–compatible crypto pin in `go.mod`). Do **not** commit MaxMind `.mmdb` binaries or license keys to the repository (`*.mmdb` is gitignored).

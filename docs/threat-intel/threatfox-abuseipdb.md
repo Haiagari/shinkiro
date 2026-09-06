@@ -1,7 +1,10 @@
 # ThreatFox & AbuseIPDB CLI
 
 **Package:** `internal/intel/feeds.go`  
-**Commands:** `shinkiro threatfox`, `shinkiro abuseipdb`
+**Commands:** `shinkiro threatfox`, `shinkiro abuseipdb`  
+**Also see:** [`../cli-campaigns-feeds-coverage.md`](../cli-campaigns-feeds-coverage.md)
+
+---
 
 ## Keys
 
@@ -12,6 +15,8 @@
 
 If the key is missing, the CLI exits non-zero with a clear message naming the env var. No placeholder / fake IoC data is emitted.
 
+---
+
 ## ThreatFox
 
 ```bash
@@ -20,9 +25,17 @@ shinkiro threatfox --search 198.51.100.10
 shinkiro threatfox --days 1 --format json
 ```
 
+| Flag | Meaning |
+| :--- | :--- |
+| `--search` | IOC search term (IP, domain, hash, …) |
+| `--days` | If >0, fetch recent IOCs for N days (1–7) instead of search |
+| `--format` | `table` (default) or `json` |
+
 Uses `POST https://threatfox-api.abuse.ch/api/v1/` with `query=search_ioc` or `query=get_iocs`.
 
 The older helper `GenerateThreatFoxFeed` still exports honeypot events into ThreatFox-oriented JSON for offline sharing — it does not call the network.
+
+---
 
 ## AbuseIPDB
 
@@ -32,7 +45,15 @@ shinkiro abuseipdb --ip 198.51.100.10
 shinkiro abuseipdb --ip 198.51.100.10 --max-age 30 --format json
 ```
 
+| Flag | Default | Meaning |
+| :--- | :--- | :--- |
+| `--ip` | required | IP address to check |
+| `--max-age` | `90` | Max age in days for reports |
+| `--format` | `table` | `table` or `json` |
+
 Uses `GET https://api.abuseipdb.com/api/v2/check`.
+
+---
 
 ## Tests
 

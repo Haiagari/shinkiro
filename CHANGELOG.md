@@ -4,17 +4,20 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 
 ## [Unreleased]
 
+### Documentation
+- **Complete documentation pass** (post-roadmap PRs #10–#16): navigation hub [`docs/README.md`](docs/README.md); new [`docs/getting-started.md`](docs/getting-started.md), [`docs/cli-reference.md`](docs/cli-reference.md), [`docs/operator-guide.md`](docs/operator-guide.md), [`docs/development.md`](docs/development.md), [`docs/honesty-limitations.md`](docs/honesty-limitations.md); README / AGENTS / CONTRIBUTING / deploy / architecture / threat-intel aligned with code (hub-and-spoke cluster, SOAR dry-run default, optional MaxMind GeoIP, Linux-only prebuilts, eBPF exporter-only, 15 decoys, no SLSA L3 / gossip / invented coords).
+
 ### Added
 - **Optional MaxMind GeoLite2 GeoIP** (`internal/intel/geoip`): loads a local `.mmdb` from `SHINKIRO_GEOLITE2_PATH` or `--geoip-db`; no-op with a one-shot `GeoIP disabled` log when unset/missing; Country/City/ASN from City, Country, or ASN DB — **never invents coordinates** or heuristic octet countries. CLI: `shinkiro geoip --ip`. Docs: `docs/threat-intel/geolite2-geoip.md`.
 
 - **Honest cluster hub hardening** (`internal/cluster`): hub-and-spoke HTTP (not gossip/mesh) with shared-secret auth (`SHINKIRO_CLUSTER_TOKEN` / `--token`; empty = lab-only insecure), optional TLS (`--tls-cert`/`--tls-key` or reverse-proxy termination), timeouts + 1 MiB body limits, structured JSON errors, `/healthz` + `/readyz`, `POST /api/v1/cluster/join`, and `cluster.AgentClient`. Unit tests cover missing/wrong/correct tokens. Docs: `docs/architecture/cluster-hub.md`.
 - **Deploy modes lab vs edge** (`deploy/modes/`): lab (demo-friendly) and edge (hardened defaults — dry-run SOAR, quieter playbook/PCAP thresholds). Compose overlays `compose.lab.yml` / `compose.edge.yml`; Helm `values-lab.yaml` / `values-edge.yaml` with optional `--set-file` config overrides. Docs: `deploy/modes/README.md`. Makefile: `compose-lab`, `compose-edge`, `helm-lab`, `helm-edge`.
-- **E2E for all 15 decoys**: `tests/e2e/e2e_all_decoys_{test,run,probes}_test.go` register and probe every real decoy (`ssh`…`modbus`); `make e2e` / `make e2e-shinkiro` → `scripts/e2e-shinkiro.sh`. Uses high unprivileged ports (Modbus `29502`) — **no** privileged netns / `CAP_NET_BIND_SERVICE` required.
+- **E2E for all 15 decoys**: `tests/e2e/` register and probe every real decoy (`ssh`…`modbus`); `make e2e` / `make e2e-shinkiro` → `scripts/e2e-shinkiro.sh`. Uses high unprivileged ports (Modbus `29502`) — **no** privileged netns / `CAP_NET_BIND_SERVICE` required.
 - **Optional GHCR on release**: `.github/workflows/release.yml` job `push-ghcr` publishes `ghcr.io/haiagari/shinkiro` when repository variable `PUSH_GHCR=true` (login via `GITHUB_TOKEN` / `packages:write`). Binary release path unchanged when the variable is unset.
 
-- **Campaign correlator v2** (`internal/intel/correlator.go`): multi-event grouping by same source IP + sliding session window + decoy hop path; tracks technique IDs, event/action rolls, ordered hop path, and explicit grouping reasons (rule-based - **not ML**). CLI: `shinkiro campaigns [--format table|json]`.
+- **Campaign correlator v2** (`internal/intel/correlator.go`): multi-event grouping by same source IP + sliding session window + decoy hop path; tracks technique IDs, event/action rolls, ordered hop path, and explicit grouping reasons (rule-based — **not ML**). CLI: `shinkiro campaigns [--format table|json]`.
 - **ThreatFox / AbuseIPDB CLI**: real HTTP clients (`internal/intel/feeds.go`) with `THREATFOX_API_KEY` / `ABUSEIPDB_API_KEY`; graceful errors when keys are missing. Commands: `shinkiro threatfox --search|--days`, `shinkiro abuseipdb --ip`.
-- **ATT&CK coverage report**: `shinkiro coverage` / `attack-coverage` maps decoy-matrix.md technique tags (+ optional `--runtime-mapper` for `MapToMitre`) to table/JSON - no invented ATT&CK mappings.
+- **ATT&CK coverage report**: `shinkiro coverage` / `attack-coverage` maps decoy-matrix.md technique tags (+ optional `--runtime-mapper` for `MapToMitre`) to table/JSON — no invented ATT&CK mappings.
 
 - **TUI operator actions** (`internal/tui`): select high-score events / correlator campaigns; trigger SOAR `block_ip` (dry-run by default, live only with `--apply` / `SHINKIRO_SOAR_APPLY=1`), operator on-demand PCAP (`CaptureNow`), adversary `simulate`, and AWS canary generation; help overlay + clearable status (see `docs/architecture/tui-operator.md`).
 - **`pcap.OnDemandCapture.CaptureNow`**: explicit operator capture that writes libpcap frames regardless of score threshold (filename prefix `operator-`).
@@ -30,7 +33,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Cluster honesty:** docs/CLI describe hub-and-spoke HTTP with optional token auth; remaining mesh/gossip overclaims removed from cluster package comments and operator surfaces.
 - **go.mod:** add `geoip2-golang` v1.13.0 (+ `maxminddb-golang`); pin `golang.org/x/crypto` to **v0.40.0** (and compatible `x/sys`/`x/text`) so **Go 1.24** CI/`go mod verify` works — `crypto` v0.56+ needs Go ≥1.26.
 - **CLI exit status:** no arguments and unknown commands now exit non-zero (`os.Exit(1)`).
-- **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`).
+- **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`, `campaigns_feeds_coverage.go`, `geoip_cmd.go`).
 - **Docs:** clarified Linux-only prebuilt binaries; Darwin requires build-from-source.
 - **`intel.Engine.Persist`:** sink-stage JSONL/blocklist write without re-ingesting the correlator (pipeline owns Score/Correlate).
 - **`shinkiro tui`:** Bubbletea dashboard wired to intel Engine, SOAR BlockApplier, and on-demand PCAP (same process as `up`).
@@ -40,22 +43,6 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Docker / Helm runnable:** Dockerfile installs the binary at `/usr/local/bin/shinkiro`, copies `config.yaml` + `playbooks.yaml` into `/app` (and `/etc/shinkiro`), and uses `WORKDIR /app` so `data/events.jsonl` persists via the `/app/data` volume.
 - **docker-compose.yml:** mounts `./data` → `/app/data`, exposes ports for all decoys enabled in default `config.yaml` (+ metrics `:9100`), image tag `shinkiro:local`.
 - **Helm chart:** container command `/usr/local/bin/shinkiro up`; ConfigMaps for config/playbooks and optional seccomp JSON; honest defaults `image.repository=shinkiro`, `tag=local`, `pullPolicy=IfNotPresent` (no assumed GHCR image); `NET_BIND_SERVICE` for Modbus `:502`; pod `seccompProfile: RuntimeDefault`.
-
-### Documentation
-- **Cluster hub guide:** `docs/architecture/cluster-hub.md` — hub-and-spoke model, token auth, TLS options, join/ingest curl examples.
-- **TUI operator guide:** `docs/architecture/tui-operator.md` — keybindings, dry-run vs apply, PCAP/simulate/canary honesty notes.
-- **Event pipeline guide:** `docs/architecture/event-pipeline.md` — dry-run vs apply SOAR, PCAP threshold/env, stage order.
-- **Honesty pass:** README, AGENTS.md, architecture, benchmarks, decoy matrix, threat-intel, and threat-scoring docs aligned with implemented behavior:
-  - eBPF/XDP described as rule exporters + sample C (`internal/ebpf`), not a live kernel loader / `BPF_MAP_UPDATE`.
-  - GeoIP is optional MaxMind GeoLite2 (path via env/flag); product works without it; no demo fake countries.
-  - Cluster described as hub-and-spoke HTTP ingest hub (token-optional), not encrypted UDP gossip / mesh.
-  - PCAP: on-demand high-score capture wired into pipeline sink (not continuous mirror of every socket).
-  - Supply chain described as Cosign `sign-blob` on checksums + Syft SBOM only (no SLSA Level 3 claim).
-  - Invented benchmark tables / nonexistent `bench.yml` gate removed; point to real `Benchmark*` and `tests/chaos`.
-  - Playbook examples match real `rules` / `if` / `then` / `block_ip` schema.
-  - Config examples use `services:` (runtime key), not `decoys:`.
-  - Helm / Compose deploy docs match local-image workflow (`deploy/README.md`); no decoys.* values key.
-  - Removed static `tests-passing` badge that was not CI-linked.
 
 ## [v1.0.0] - 2026-09-05
 
@@ -87,7 +74,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **AWS IMDS Decoy (`:8169`)**: EC2 Instance Metadata Service emulator (IMDSv1 & IMDSv2) for SSRF traps targeting IAM role credential paths.
 - **Sample C eBPF / XDP Filter + Go Rule Exporter**: Sample program at `internal/ebpf/c/xdp_drop.c` and Go `FilterManager.RenderScript()` emitting rule text — not a userspace live loader.
 - **STIX 2.1 Threat Intelligence Exporter**: `shinkiro stix` transforming observed honeypot interactions into STIX 2.1 JSON bundles.
-- **Heuristic GeoIP Resolver**: Offline demo/prefix-based enrichment (`internal/intel/geoip`) — not a MaxMind database engine.
+- **Heuristic GeoIP Resolver**: Offline demo/prefix-based enrichment (`internal/intel/geoip`) — not a MaxMind database engine. *(Superseded in Unreleased by optional MaxMind GeoLite2.)*
 - **Distributed Cluster HTTP Hub**: Multi-node HTTP aggregation (`shinkiro cluster hub`) for edge sensors to POST events to a central ingest endpoint.
 
 ## [v0.1.0] - 2026-09-04
