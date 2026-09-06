@@ -2,8 +2,10 @@
 
 BINARY=bin/shinkiro
 SRC=$(shell find . -name "*.go")
+DOCKER_IMAGE?=shinkiro:local
+COMPOSE_FILE=deploy/docker/docker-compose.yml
 
-.PHONY: all build clean test run lint bench fuzz
+.PHONY: all build clean test run lint bench fuzz docker-build compose-up compose-down
 
 all: build
 
@@ -39,3 +41,15 @@ fuzz:
 	@go test -fuzz=FuzzVirtualFSExecute -fuzztime=5s ./internal/decoys/ssh
 	@go test -fuzz=FuzzModbusDecoy -fuzztime=5s ./internal/decoys/modbus
 	@echo "✅ All fuzz targets passed without panics or crashes."
+
+docker-build:
+	@echo "🐳 Building $(DOCKER_IMAGE)..."
+	@docker build -f deploy/docker/Dockerfile -t $(DOCKER_IMAGE) .
+	@echo "✅ Image tagged $(DOCKER_IMAGE)"
+
+compose-up: docker-build
+	@docker compose -f $(COMPOSE_FILE) up -d
+	@echo "✅ Compose stack up (see deploy/README.md)"
+
+compose-down:
+	@docker compose -f $(COMPOSE_FILE) down
