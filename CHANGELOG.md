@@ -5,6 +5,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ## [Unreleased]
 
 ### Added
+- **Honest cluster hub hardening** (`internal/cluster`): hub-and-spoke HTTP (not gossip/mesh) with shared-secret auth (`SHINKIRO_CLUSTER_TOKEN` / `--token`; empty = lab-only insecure), optional TLS (`--tls-cert`/`--tls-key` or reverse-proxy termination), timeouts + 1 MiB body limits, structured JSON errors, `/healthz` + `/readyz`, `POST /api/v1/cluster/join`, and `cluster.AgentClient`. Unit tests cover missing/wrong/correct tokens. Docs: `docs/architecture/cluster-hub.md`.
 - **Deploy modes lab vs edge** (`deploy/modes/`): lab (demo-friendly) and edge (hardened defaults — dry-run SOAR, quieter playbook/PCAP thresholds). Compose overlays `compose.lab.yml` / `compose.edge.yml`; Helm `values-lab.yaml` / `values-edge.yaml` with optional `--set-file` config overrides. Docs: `deploy/modes/README.md`. Makefile: `compose-lab`, `compose-edge`, `helm-lab`, `helm-edge`.
 - **E2E for all 15 decoys**: `tests/e2e/e2e_all_decoys_{test,run,probes}_test.go` register and probe every real decoy (`ssh`…`modbus`); `make e2e` / `make e2e-shinkiro` → `scripts/e2e-shinkiro.sh`. Uses high unprivileged ports (Modbus `29502`) — **no** privileged netns / `CAP_NET_BIND_SERVICE` required.
 - **Optional GHCR on release**: `.github/workflows/release.yml` job `push-ghcr` publishes `ghcr.io/haiagari/shinkiro` when repository variable `PUSH_GHCR=true` (login via `GITHUB_TOKEN` / `packages:write`). Binary release path unchanged when the variable is unset.
@@ -23,6 +24,7 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Quick Start:** documented real `simulate --host` and `canary generate --label` CLI usage after install/build.
 
 ### Changed
+- **Cluster honesty:** docs/CLI describe hub-and-spoke HTTP with optional token auth; remaining mesh/gossip overclaims removed from cluster package comments and operator surfaces.
 - **go.mod:** direct requires for `bubbletea`, `lipgloss`, `golang.org/x/crypto`, `gopkg.in/yaml.v3` (go 1.24 unchanged); transitive deps remain `indirect`.
 - **CLI exit status:** no arguments and unknown commands now exit non-zero (`os.Exit(1)`).
 - **cmd/shinkiro layout:** `main.go` holds version ldflags vars + dispatch; handlers live in sibling package files (`usage.go`, `up.go`, `canary_cmd.go`, `simulate.go`, `export_siem.go`, `cluster_kernel.go`).
@@ -37,12 +39,13 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **Helm chart:** container command `/usr/local/bin/shinkiro up`; ConfigMaps for config/playbooks and optional seccomp JSON; honest defaults `image.repository=shinkiro`, `tag=local`, `pullPolicy=IfNotPresent` (no assumed GHCR image); `NET_BIND_SERVICE` for Modbus `:502`; pod `seccompProfile: RuntimeDefault`.
 
 ### Documentation
+- **Cluster hub guide:** `docs/architecture/cluster-hub.md` — hub-and-spoke model, token auth, TLS options, join/ingest curl examples.
 - **TUI operator guide:** `docs/architecture/tui-operator.md` — keybindings, dry-run vs apply, PCAP/simulate/canary honesty notes.
 - **Event pipeline guide:** `docs/architecture/event-pipeline.md` — dry-run vs apply SOAR, PCAP threshold/env, stage order.
 - **Honesty pass:** README, AGENTS.md, architecture, benchmarks, decoy matrix, threat-intel, and threat-scoring docs aligned with implemented behavior:
   - eBPF/XDP described as rule exporters + sample C (`internal/ebpf`), not a live kernel loader / `BPF_MAP_UPDATE`.
   - GeoIP described as demo/heuristic prefixes, not MaxMind.
-  - Cluster described as HTTP ingest hub, not encrypted UDP gossip.
+  - Cluster described as hub-and-spoke HTTP ingest hub (token-optional), not encrypted UDP gossip / mesh.
   - PCAP: on-demand high-score capture wired into pipeline sink (not continuous mirror of every socket).
   - Supply chain described as Cosign `sign-blob` on checksums + Syft SBOM only (no SLSA Level 3 claim).
   - Invented benchmark tables / nonexistent `bench.yml` gate removed; point to real `Benchmark*` and `tests/chaos`.
