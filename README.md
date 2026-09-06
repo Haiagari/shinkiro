@@ -7,7 +7,7 @@
 [![Tests](https://img.shields.io/badge/tests-passing-22c55e?style=flat-square)](#testing)
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square)](https://golang.org/)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-f59e0b?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS-blue?style=flat-square)](#deployment)
+[![Platform](https://img.shields.io/badge/platform-Linux%20(prebuilt)%20%7C%20macOS%20(source)-blue?style=flat-square)](#quick-start)
 
 ---
 
@@ -116,6 +116,25 @@ See the complete [Decoy Protocols & Emulation Matrix](docs/decoys/decoy-matrix.m
 ---
 
 ## Quick Start
+
+### 0. Install pre-built binary (Linux amd64 / arm64)
+
+Release CI publishes raw binaries (not GoReleaser tarballs):
+
+| Asset | Example |
+| :--- | :--- |
+| Binary | `shinkiro-linux-amd64`, `shinkiro-linux-arm64` |
+| Checksums | `checksums.txt` (SHA-256) |
+
+```bash
+# Latest release (resolves tag via GitHub Releases API — no hardcoded fallback)
+curl -sSL https://raw.githubusercontent.com/Haiagari/shinkiro/main/scripts/install.sh | sh
+
+# Pin a version
+SHINKIRO_VERSION=v1.0.0 curl -sSL https://raw.githubusercontent.com/Haiagari/shinkiro/main/scripts/install.sh | sh
+```
+
+macOS / Darwin: no pre-built assets today — use **Build from Source** below.
 
 ### 1. Build from Source
 
@@ -263,4 +282,3 @@ go test -v -race ./tests/e2e
 ## License
 
 AGPL-3.0-only © 2026 Haiagari Security.
-

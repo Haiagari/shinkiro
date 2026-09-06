@@ -2,6 +2,11 @@
 
 All notable changes to **Shinkiro** are documented in this file following [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- `scripts/install.sh` now downloads real GitHub Release assets (`shinkiro-linux-amd64` / `shinkiro-linux-arm64`), verifies `checksums.txt` when present, and no longer falls back to nonexistent `v0.2.0` or GoReleaser-style `shinkiro_${VER}_${os}_${arch}.tar.gz` names.
+
 ## [v1.0.0] - 2026-09-05
 
 ### Added
@@ -18,6 +23,11 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 - **SMB/CIFS Decoy (`:4445`)**: NetBIOS session and SMBv2 negotiate parser detecting EternalBlue reconnaissance.
 - **Decoys Matrix Documentation**: Comprehensive MITRE ATT&CK mapping and threat score taxonomy in `docs/decoys/decoy-matrix.md`.
 
+
+## [v0.4.0] - 2026-09-05
+
+### Note
+- Tag `v0.4.0` was published with linux amd64/arm64 release binaries, checksums, SBOMs, and cosign artifacts. This changelog section was previously missing.
 
 ## [v0.2.0] - 2026-09-04
 
