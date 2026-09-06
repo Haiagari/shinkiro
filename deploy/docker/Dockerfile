@@ -5,7 +5,12 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /out/shinkiro cmd/shinkiro/main.go
+ARG VERSION=dev
+ARG COMMIT=none
+ARG DATE=unknown
+RUN CGO_ENABLED=0 GOOS=linux go build \
+	-ldflags="-s -w -X main.version=${VERSION} -X main.commit=${COMMIT} -X main.date=${DATE}" \
+	-o /out/shinkiro ./cmd/shinkiro
 
 FROM alpine:3.21
 RUN apk --no-cache add ca-certificates iptables nftables tzdata \

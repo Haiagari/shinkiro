@@ -1,8 +1,8 @@
 # NOTE: Not used by current CI (.github/workflows/release.yml).
 # Release workflow builds raw binaries: shinkiro-linux-amd64 / shinkiro-linux-arm64
 # (+ checksums.txt, SBOMs, cosign on checksums). This file is retained for a
-# possible future GoReleaser migration. ldflags below reference main.version /
-# main.commit / main.date, which are not declared in cmd/shinkiro/main.go today.
+# possible future GoReleaser migration. ldflags inject main.version / main.commit /
+# main.date (declared in cmd/shinkiro/main.go).
 
 version: 2
 
@@ -15,7 +15,7 @@ before:
 
 builds:
   - id: shinkiro
-    main: ./cmd/shinkiro/main.go
+    main: ./cmd/shinkiro
     binary: shinkiro
     env:
       - CGO_ENABLED=0
