@@ -2,6 +2,8 @@
 
 **Scope:** [Haiagari/shinkiro](https://github.com/Haiagari/shinkiro) — Ephemeral Cyber Deception & Attacker Intelligence Mesh.
 
+Use this file as the **source of truth for agents and contributors**. Prefer code under `internal/` and `cmd/` over marketing language elsewhere.
+
 ---
 
 ## 1. Product Truth
@@ -11,10 +13,14 @@
 | Product | **Shinkiro (蜃気楼)** |
 | Language | **Go 1.24+** |
 | License | **AGPL-3.0-only** |
-| Core Philosophy | Zero-footprint, in-memory deception, fail-closed security, live telemetry |
-| Protocol Decoys | SSH, Redis, Docker API, HTTP Traps, PostgreSQL, Kubernetes API |
-| Active Defense | Dynamic `iptables`, `nftables`, and kernel-level `eBPF / XDP` mitigation |
-| User Interface | Interactive Terminal Dashboard (Bubbletea + Lipgloss) & Headless Daemon |
+| Core Philosophy | Zero-footprint in-memory decoys, fail-closed sockets, live telemetry |
+| Protocol Decoys (**15**) | SSH, Telnet, MQTT, SMB, Redis, Docker, HTTP, PostgreSQL, Kubernetes, AWS IMDS, MongoDB, Elasticsearch, SMTP, DNS, Modbus |
+| Active Defense | **Text exporters** for `iptables` / `nftables` / sample eBPF scripts; SOAR-lite `block_ip` / `alert` hooks — **not** a live kernel BPF loader |
+| GeoIP | Heuristic / demo prefix resolver (`internal/intel/geoip`) — **not** MaxMind |
+| Cluster | HTTP ingest hub (`internal/cluster`) — **not** encrypted UDP gossip |
+| PCAP | Writer package exists (`internal/pcap`) — **not wired** into main pipeline |
+| User Interface | Bubbletea TUI (`shinkiro tui`) & headless daemon (`shinkiro up`) |
+| Supply chain | Cosign `sign-blob` on checksums + Syft SBOM — **not** SLSA Level 3 |
 
 ---
 
@@ -23,27 +29,39 @@
 ```text
 shinkiro/
 ├── cmd/
-│   └── shinkiro/             # CLI entrypoint (up, tui, export, kernel, version)
-├── config.yaml               # Default runtime configuration
+│   └── shinkiro/             # CLI: up, tui, simulate, export, kernel/ebpf,
+│                             #      cef/syslog/stix/ecs, canary, cluster hub, version
+├── config.yaml               # Runtime config — top-level key is services:
+├── playbooks.yaml            # SOAR-lite rules: rules / if / then / block_ip|alert
 ├── deploy/
-│   ├── docker/               # Multi-stage Dockerfile and docker-compose.yml
-│   └── systemd/              # Production systemd service unit
+│   ├── docker/               # Dockerfile + docker-compose (image publish gaps → deploy PR)
+│   ├── helm/shinkiro/        # Helm chart (GHCR/path/config limitations → deploy PR)
+│   ├── security/seccomp.json # Operator-applied seccomp profile
+│   ├── systemd/              # systemd unit
+│   ├── ansible/ prometheus/ grafana/ terraform/
 ├── internal/
-│   ├── config/               # YAML & CLI parameters
-│   ├── core/                 # Listener multiplexer, connection deadlines
+│   ├── adversary/            # Red-team simulate scenarios
+│   ├── canary/               # HMAC-style canary token helpers
+│   ├── cluster/              # HTTP ingest hub (not UDP gossip)
+│   ├── config/               # YAML & CLI parameters (services: map)
+│   ├── core/                 # Listener multiplexer, deadlines; optional Benchmark*
 │   ├── decoys/
 │   │   ├── decoy.go          # Unified Decoy interface
-│   │   ├── docker/           # Docker REST API emulator
-│   │   ├── http/             # Canary HTTP recon traps
-│   │   ├── k8s/              # Kubernetes control-plane emulator
-│   │   ├── postgres/         # PostgreSQL 3.0 protocol emulator
-│   │   ├── redis/            # Redis RESP wire protocol emulator
-│   │   └── ssh/              # OpenSSH server & in-memory VirtualFS shell
-│   ├── defense/              # iptables & nftables rule generator
-│   ├── ebpf/                 # eBPF/XDP kernel drop generator
-│   ├── intel/                # Telemetry ingestion, threat scoring, IoC extraction
-│   └── tui/                  # Bubbletea live adversary dashboard
-├── Makefile                  # Build, test, lint, and run targets
+│   │   ├── aws/ dns/ docker/ elastic/ http/ k8s/
+│   │   ├── modbus/ mongo/ mqtt/ postgres/ redis/
+│   │   ├── smb/ smtp/ ssh/ telnet/
+│   ├── defense/              # iptables & nftables rule text generator
+│   ├── ebpf/                 # Rule script renderer + sample C (internal/ebpf/c/xdp_drop.c)
+│   ├── intel/                # Telemetry, scoring, MITRE, correlator
+│   │   ├── ecs/ geoip/ siem/ stix/
+│   ├── metrics/              # Prometheus metrics helper
+│   ├── pcap/                 # Libpcap 2.4 writer (not wired in cmd/main)
+│   ├── soar/                 # Playbook engine (block_ip, alert, tag)
+│   ├── tui/                  # Bubbletea live adversary dashboard
+│   └── webhook/              # Slack / Discord notification helpers
+├── scripts/install.sh        # Downloads real release asset names
+├── tests/chaos tests/e2e     # Chaos spike + e2e packages
+├── Makefile                  # build, test, lint, bench, fuzz
 └── README.md
 ```
 
@@ -55,4 +73,6 @@ shinkiro/
 - **Zero Attribution**: Never include `Co-Authored-By` or AI trailer lines.
 - **Fail-Closed**: Any unhandled network error must cleanly terminate the socket without exposing host details.
 - **Zero Host Mutation**: Decoys must execute purely in memory; never spawn host OS processes or touch real filesystem paths for attacker commands.
-- **Comprehensive Unit Testing**: All protocol parsers must be tested via in-memory pipes (`net.Pipe()`).
+- **Honest docs**: Do not claim live eBPF loaders, MaxMind GeoIP, UDP gossip mesh, in-pipeline PCAP, SLSA L3, or GHCR Helm one-liners unless the code/CI lands first.
+- **Comprehensive Unit Testing**: Protocol parsers should be tested via in-memory pipes (`net.Pipe()`) where practical.
+- **Config key**: Runtime YAML uses `services:` — examples and matrix docs must match.

@@ -1,8 +1,9 @@
 # Shinkiro Cyber Deception & Threat Intelligence Architecture
 
+This document describes **what the code does today**. Where earlier drafts claimed live kernel XDP attachment, MaxMind GeoIP, UDP gossip, or in-pipeline PCAP, those claims are corrected below.
+
 ```mermaid
 graph TD
-    %% Adversary Vector
     subgraph Adversaries ["🌐 Adversary Traffic Vectors"]
         A1["SSH / Telnet Brute Force<br/>(Ports 2222, 2323)"]
         A2["Cloud & Container Probes<br/>(AWS IMDS :8169, Docker :2375, K8s :6443)"]
@@ -11,10 +12,9 @@ graph TD
         A5["Industrial Control Systems (OT)<br/>(Modbus/TCP :502)"]
     end
 
-    %% Core Multiplexer
     subgraph Core ["🛡️ Shinkiro Core In-Memory Multiplexer"]
         Mux["Listener Multiplexer Engine<br/>- Strict Read/Write Timeouts<br/>- Slowloris Mitigation<br/>- Memory-Jailed Goroutines"]
-        PCAP["Raw Libpcap 2.4 Forensics<br/>(data/dump.pcap)"]
+        PCAP["internal/pcap Writer<br/>(EXISTS — NOT wired in main)"]
     end
 
     A1 -->|TCP/UDP| Mux
@@ -22,10 +22,9 @@ graph TD
     A3 -->|TCP/UDP| Mux
     A4 -->|TCP/UDP| Mux
     A5 -->|TCP| Mux
-    Mux -.->|Zero-Copy Frame Dump| PCAP
+    Mux -.->|future wiring| PCAP
 
-    %% Decoy Layer
-    subgraph Decoys ["🎭 High-Interaction Protocol Decoys"]
+    subgraph Decoys ["🎭 High-Interaction Protocol Decoys (15)"]
         direction TB
         D_SSH["SSH (VirtualFS Bash & Jitter)"]
         D_Telnet["Telnet (BusyBox Mirai)"]
@@ -60,9 +59,8 @@ graph TD
     Mux --> D_HTTP
     Mux --> D_Modbus
 
-    %% Telemetry & Intel Engine
     subgraph Telemetry ["⚡ Real-Time Intelligence & Attribution Pipeline"]
-        GeoIP["Offline GeoIP & ASN Engine"]
+        GeoIP["Heuristic GeoIP prefixes<br/>(NOT MaxMind)"]
         Hasher["SHA-256 Payload Hasher"]
         Mitre["MITRE ATT&CK Mapper (TTPs)"]
         Corr["Campaign Correlator (Multi-Decoy)"]
@@ -90,14 +88,14 @@ graph TD
     GeoIP --> Corr
     Corr --> Score
 
-    %% Outputs & Automated Defense
     subgraph Outputs ["📊 Integration & Active Mitigation"]
-        SOAR["SOAR-Lite Engine<br/>(playbooks.yaml)"]
-        SIEM["SIEM & Feeds<br/>(ArcSight CEF / Syslog / STIX 2.1 / ECS / ThreatFox)"]
+        SOAR["SOAR-Lite Engine<br/>(playbooks.yaml: rules/if/then)"]
+        SIEM["SIEM & Feeds<br/>(CEF / Syslog / STIX 2.1 / ECS / ThreatFox helpers)"]
         Prom["Prometheus Metrics<br/>(:9100/metrics)"]
         TUI["Bubbletea Terminal UI<br/>(shinkiro tui)"]
-        Webhook["SecOps Webhooks<br/>(Slack Block Kit / Discord)"]
-        Drop["Kernel-Level Defense<br/>- Native eBPF / XDP Filter<br/>- nftables / iptables Sets"]
+        Webhook["SecOps Webhooks<br/>(Slack / Discord helpers)"]
+        Drop["Rule Text Exporters<br/>- sample eBPF script comments<br/>- nftables / iptables sets"]
+        Hub["Cluster HTTP Ingest Hub<br/>(POST /api/v1/cluster/ingest)"]
     end
 
     Score --> SOAR
@@ -105,8 +103,9 @@ graph TD
     Score --> Prom
     Score --> TUI
     Score --> Webhook
-    SOAR -->|Automated Playbook Action| Drop
-    Score -->|Score >= 80| Drop
+    SOAR -->|block_ip hook / export| Drop
+    Score -->|thresholded export| Drop
+    Hub -.->|optional multi-node| Score
 ```
 
 ---
@@ -120,97 +119,122 @@ sequenceDiagram
     participant Mux as 🛡️ Multiplexer
     participant Decoy as 🎭 Protocol Decoy
     participant Intel as ⚡ Threat Engine
-    participant XDP as 🛑 Kernel eBPF/XDP
+    participant Export as 📝 Rule Exporter
 
     Attacker->>Mux: Connect (e.g. TCP :2222 or :6379)
-    Mux->>Mux: Set 30s deadline, enforce memory jail
+    Mux->>Mux: Set deadline, enforce memory jail
     Mux->>Decoy: Dispatch socket connection
     Decoy->>Attacker: Send authentic banner/challenge
     Attacker->>Decoy: Send exploit payload / credentials
     Decoy->>Intel: Dispatch structured telemetry event
     par Parallel Ingestion
         Intel->>Intel: Compute SHA-256 payload hash
-        Intel->>Intel: Offline GeoIP & ASN lookup
-        Intel->>Intel: Update IP threat score (e.g. 95)
+        Intel->>Intel: Heuristic GeoIP prefix lookup
+        Intel->>Intel: Update IP threat score
     end
     Decoy->>Attacker: Return realistic simulated error/shell
-    alt Threat Score >= 80
-        Intel->>XDP: Stage IP in eBPF blacklist_map
-        Note over XDP,Attacker: Subsequent packets dropped at NIC before OS socket allocation
+    alt Score crosses SOAR / export threshold
+        Intel->>Export: Stage IP for block_ip / RenderScript text
+        Note over Export,Attacker: Operator applies nftables/iptables/sample eBPF text; no live BPF_MAP_UPDATE
     end
+```
 
 ---
 
 ## 3. Deep In-Memory Multiplexer Architecture
 
-The listener multiplexer (`internal/core/multiplexer.go`) acts as the primary network shock absorber for Shinkiro:
+The listener multiplexer (`internal/core/multiplexer.go`) is the primary network shock absorber:
 
 ### 3.1. Connection Deadlines & Slowloris Neutralization
-Attackers and port scanners frequently attempt denial-of-service attacks against honeypots by holding sockets open indefinitely without transmitting data (Slowloris attacks). Shinkiro enforces hard deadlines on all incoming network descriptors:
 
 ```go
-// Every accepted connection is wrapped with a strict 30-second read deadline
+// Every accepted connection is wrapped with a strict read deadline (config idle_timeout, default 30s)
 conn.SetDeadline(time.Now().Add(30 * time.Second))
 ```
 
-If an attacker remains idle or attempts trickling data byte-by-byte, the underlying runtime forcibly calls `conn.Close()`, reclaiming OS file descriptors and recycling memory immediately.
+Idle or trickling sockets are closed, reclaiming file descriptors.
 
 ### 3.2. Fail-Closed Network Contract
-Unlike production servers that return verbose stack traces, HTTP 500 error bodies, or debug diagnostics when an invalid payload arrives:
-1. Shinkiro parses inputs via defensive recursive-descent parsers.
-2. In the event of an unexpected byte sequence or EOF, Shinkiro silently terminates the socket (`TCP RST` or `FIN`) without transmitting any internal error string.
-3. This eliminates reconnaissance tools from fingerprinting the underlying Go language runtime or Shinkiro internal structures.
+
+1. Inputs are parsed defensively.
+2. Unexpected byte sequences or EOF terminate the socket without internal error strings.
+3. This reduces fingerprinting of the Go runtime / Shinkiro internals.
+
+### 3.3. PCAP status (honest)
+
+`internal/pcap` implements a standard libpcap 2.4 **file writer** (`NewWriter`, `OpenCapture`, `WritePacket`). **`cmd/shinkiro` and the multiplexer do not open or stream packets into that writer today.** Treat in-pipeline forensics as future work; do not document `data/dump.pcap` as an automatic side effect of `shinkiro up`.
 
 ---
 
-## 4. Kernel-Level eBPF / XDP Drop Architecture
+## 4. eBPF / XDP — Sample C + Rule Exporters (Not a Live Loader)
 
-For high-threat adversaries (threat score $\ge 95$), operating system socket processing consumes unnecessary CPU cycles. Shinkiro offloads mitigation directly to the network interface card (NIC) driver using eBPF/XDP (eXpress Data Path):
+For high-threat IPs, Shinkiro can **emit** mitigation artifacts:
+
+| Artifact | Location / Command | What it is |
+| :--- | :--- | :--- |
+| Sample XDP C program | `internal/ebpf/c/xdp_drop.c` | Reference filter using a `blacklist_map` — must be built/loaded with external tooling |
+| Go script renderer | `internal/ebpf.FilterManager.RenderScript()` / `shinkiro kernel` | Emits commented eBPF-oriented text or nftables/iptables scripts for staged IPs |
+| Defense exporters | `shinkiro export --format nftables\|iptables` | Firewall rule text |
+
+### What is **not** implemented
+
+- No userspace loader attaching XDP to a NIC.
+- No `bpf(BPF_MAP_UPDATE_ELEM)` (or cilium/ebpf map client) updating a live map from the Go process.
+- No guaranteed line-rate hardware drop from `shinkiro up` alone.
 
 ```mermaid
 graph TD
-    NIC["Physical NIC (eth0)"] --> Driver["XDP Driver Hook (xdp_drop.o)"]
-    Driver --> BPFMap{"eBPF Map: blacklist_map<br/>(Lookup Source IPv4)"}
-    BPFMap -->|Match Found (Score >= 95)| Drop["XDP_DROP<br/>(Zero CPU Alloc, Line Rate Discard)"]
-    BPFMap -->|No Match| Kernel["Kernel Network Stack (sk_buff)"]
-    Kernel --> Shinkiro["Shinkiro In-Memory Decoys"]
+    NIC["Physical NIC (eth0)"] --> Driver["XDP hook — operator loaded separately"]
+    Driver --> BPFMap{"blacklist_map<br/>(only if YOU load xdp_drop.o)"]
+    BPFMap -->|Match| Drop["XDP_DROP"]
+    BPFMap -->|No Match| Kernel["Kernel Network Stack"]
+    Kernel --> Shinkiro["Shinkiro Decoys"]
+    Shinkiro --> Text["RenderScript / export text"]
+    Text -.->|human / automation applies| Driver
 ```
-
-### 4.1. eBPF Map Synchronization
-The Go telemetry engine interacts directly with the kernel BPF map via the `bpf(BPF_MAP_UPDATE_ELEM)` system call:
-- Malicious IPs identified in userland are staged in an LRU hash map (`BPF_MAP_TYPE_LRU_HASH`).
-- Subsequent TCP SYN packets from that IP are dropped before the Linux kernel creates an `sk_buff` struct, completely neutralizing volumetric exploit floods.
 
 ---
 
-## 5. Distributed Mesh & Cluster Architecture
+## 5. Distributed Cluster — HTTP Ingest Hub
 
-In enterprise multi-cloud environments, Shinkiro can be deployed as an autonomous distributed mesh:
+Multi-node support is an **HTTP hub**, not encrypted UDP gossip:
 
-1. **Local Autonomous Execution:** Each sensor node runs independently with its own in-memory state machine and local decoy listeners. Sensors never depend on a centralized control plane to remain operational.
-2. **Cluster Gossip & Threat Sharing:** Nodes can optionally exchange observed high-severity IoCs (threat score $\ge 80$) via encrypted UDP gossip, allowing all nodes in a cluster to preemptively blackhole an adversary probing a single edge node.
-3. **Forensic Libpcap Capture:** Raw network packet streams are dumped directly to standard pcap format (`data/dump.pcap`) via zero-copy ringbuffers for post-incident reverse engineering and Wireshark inspection.
+1. **Local autonomous execution:** Each sensor runs its own decoys and state.
+2. **HTTP ingest:** `shinkiro cluster hub` serves:
+   - `POST /api/v1/cluster/ingest` — JSON `intel.Event` bodies
+   - `GET /api/v1/cluster/nodes` — registered node map
+3. **Not implemented:** Encrypted UDP gossip, automatic peer discovery, or cross-node preemptive blackhole propagation.
 
 ---
 
 ## 6. Production Deployment Topologies
 
-Shinkiro supports three standardized deployment topologies depending on enterprise threat models:
-
 ### 6.1. Edge Perimeter Bastion (Public DMZ)
-- Deployed on public cloud VPC boundary subnets with direct Internet ingress.
-- Binds standard decoy ports (`2222`, `2323`, `502`, `6379`, `8080`, `2375`).
-- Feeds real-time ArcSight CEF and RFC5424 Syslog events into central SOC SIEMs (Splunk, Wazuh).
-- Drops aggressive brute-force botnets via local `nftables` blackhole tables.
 
-### 6.2. Internal Lateral Movement Tripwire (Zero-Trust Intranet)
-- Deployed inside corporate LANs or Kubernetes cluster worker nodes.
-- Serves high-fidelity deception traps (synthetic PostgreSQL, MongoDB, Active Directory SMB, Kubernetes Control Plane).
-- Any internal connection triggers an immediate `HIGH` or `CRITICAL` alert to SecOps, as internal production workloads should never access honeynet IP addresses.
-- Integrates with SOAR playbooks to isolate compromised internal workstations automatically.
+- Deploy on a boundary host with decoy ports bound as configured in `services:`.
+- Export CEF / Syslog / STIX to your SIEM.
+- Apply exported `nftables` / `iptables` text (or your own controls).
 
-### 6.3. OT / ICS SCADA Enclave (Industrial Automation)
-- Deployed on industrial control networks alongside programmable logic controllers (PLCs) and RTUs.
-- Binds Modbus/TCP port `502`, emulating power grid telemetry (voltage/frequency holding registers).
-- Unauthorized coil or register write requests trigger instantaneous kernel-level eBPF/XDP hardware packet drops, protecting adjacent physical equipment from industrial sabotage.
+### 6.2. Internal Lateral Movement Tripwire
 
+- Deploy inside LANs or k8s worker nodes as a tripwire.
+- Any connection is suspicious by policy; SOAR `alert` / `block_ip` hooks notify SecOps.
+- Helm chart scaffolding exists; treat GHCR image + config mounts as **limited until a deploy PR**.
+
+### 6.3. OT / ICS SCADA Enclave
+
+- Bind Modbus/TCP `:502` (or remapped non-privileged ports).
+- Unauthorized coil/register writes score high and can trigger SOAR `block_ip`.
+- Kernel XDP still requires **operator-managed** loading of sample C / exported rules — not automatic hardware drop from the Go binary.
+
+---
+
+## 7. GeoIP Enrichment (Heuristic)
+
+`internal/intel/geoip.Resolver` uses:
+
+- RFC1918 / loopback → `LOCAL`
+- A small hard-coded **demo prefix** table (`198.51.100.`, `203.0.113.`, `192.0.2.`, …)
+- Deterministic octet heuristics for other IPv4 addresses
+
+This is **not** an offline MaxMind GeoLite/GeoIP2 engine and must not be documented as such.

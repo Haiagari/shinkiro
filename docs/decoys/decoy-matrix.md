@@ -145,9 +145,9 @@ graph TD
     Process --> Memory
 ```
 
-- **Syscall Filtering:** Strict seccomp profile (`deploy/security/seccomp.json`) denies all dangerous kernel syscalls (`execve`, `fork`, `ptrace`, `chroot`).
-- **Container Hardening:** Kubernetes manifests and Helm charts enforce `readOnlyRootFilesystem: true`, `runAsNonRoot: true`, and `capabilities: drop: [ALL]`.
-- **Memory Quotas:** Buffer allocations use bounded ringbuffers to eliminate memory exhaustion (Cgroup limits: 256MiB).
+- **Syscall Filtering:** A seccomp profile file is shipped at `deploy/security/seccomp.json` for operators to apply (not auto-enforced by the binary).
+- **Container Hardening:** Helm chart templates set `readOnlyRootFilesystem`, `runAsNonRoot`, and `capabilities.drop: [ALL]` when you deploy the chart; image/registry wiring still has limitations (see README Helm section).
+- **Memory Quotas:** Prefer cgroup limits in your orchestrator (`values.yaml` suggests example requests/limits).
 
 ---
 
@@ -190,45 +190,68 @@ To illustrate how Shinkiro deceives automated exploits and interactive threat ac
 1. **Industrial Scanner:** Adversary targets port `502` transmitting an MBAP function `0x05` (`Write Single Coil` at address `0x0001` with value `0xFF00` to trip an electrical safety breaker).
 2. **Parser Analysis:** Shinkiro decodes `TransactionID: 0x0001`, `ProtocolID: 0x0000`, `Length: 6`, `UnitID: 1`, `Function: 0x05`.
 3. **Immediate SOC Alert:** Event is tagged `CRITICAL` with score `95/100`, mapping to MITRE for ICS `T0855` (*Unauthorized Command Message*).
-4. **Kernel Mitigation:** Active SOAR trigger executes XDP hardware drop (`shinkiro-ebpf-drop`) to block the source IP across the entire industrial network interface within 15 microseconds.
+4. **SOAR / Export Mitigation:** Matching playbook rules may run `block_ip` / `alert` hooks. Operators can export nftables/iptables/sample eBPF rule **text** (`shinkiro export`, `shinkiro kernel`) and apply it themselves. Shinkiro does **not** attach a live XDP program or update BPF maps in-process.
 
 ---
 
 ## 7. Decoy Configuration & Operational Tuning
 
-Decoys can be enabled, disabled, and configured dynamically via `config.yaml`:
+Runtime configuration uses the top-level key **`services:`** (see root `config.yaml` and `internal/config`). The earlier `decoys:` example schema was incorrect.
 
 ```yaml
-decoys:
+# Matches config.yaml — runtime key is services:
+node_name: "shinkiro-sensor-primary"
+idle_timeout: 30s
+max_connections: 1000
+audit_log_path: "data/events.jsonl"
+metrics_port: 9100
+
+services:
   ssh:
     enabled: true
     port: 2222
-    banner: "SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u2"
-    latency_jitter_min_ms: 15
-    latency_jitter_max_ms: 45
   redis:
     enabled: true
     port: 6379
-    version: "7.2.4"
-  modbus:
-    enabled: true
-    port: 502
-    unit_id: 1
-    voltage_reg: 220
-    frequency_reg: 50
   docker:
     enabled: true
     port: 2375
-  k8s:
-    enabled: true
-    port: 6443
   http:
     enabled: true
     port: 8080
-    traps:
-      - wordpress
-      - jenkins
-      - grafana
-      - dot_env
+  postgres:
+    enabled: true
+    port: 5432
+  k8s:
+    enabled: true
+    port: 6443
+  aws-imds:
+    enabled: true
+    port: 8169
+  mongo:
+    enabled: true
+    port: 27017
+  elastic:
+    enabled: true
+    port: 9200
+  smtp:
+    enabled: true
+    port: 2525
+  dns:
+    enabled: true
+    port: 1053
+  smb:
+    enabled: true
+    port: 4445
+  telnet:
+    enabled: true
+    port: 2323
+  mqtt:
+    enabled: true
+    port: 1883
+  modbus:
+    enabled: true
+    port: 502
 ```
 
+Per-decoy banner/jitter fields shown in older drafts are not part of the minimal `ServiceConfig` shape loaded today — extend `internal/config` before documenting them as supported knobs.

@@ -11,7 +11,7 @@ A cyber deception platform that only records isolated interactions to proprietar
 
 Every interaction intercepted across Shinkiro's 15 decoy services undergoes immediate enrichment:
 - **Cryptographic Hashing:** SHA-256 fingerprinting of all attacker scripts, commands, and binary streams.
-- **Geographic & Network Attribution:** Offline MaxMind GeoIP resolution for country code, city name, Autonomous System Number (ASN), and organization name.
+- **Geographic & Network Attribution:** Heuristic / demo GeoIP prefix resolution (`internal/intel/geoip`) for country, city, ASN, and org fields — **not** an offline MaxMind GeoIP database.
 - **MITRE ATT&CK Mapping:** Automatic correlation of decoy actions with enterprise and ICS tactics/techniques (`T1110`, `T1059`, `T0855`, `T1021`, `T1190`, `T1595`).
 - **Multi-Protocol Campaign Correlation:** Stateful session clustering aggregating probes from the same adversary IP across different decoy protocols into unified threat campaigns.
 - **Dynamic Threat Scoring:** Quantitative Bayesian-inspired scoring (0 to 100) based on adversary intent, payload severity, and interaction velocity.

@@ -2,20 +2,19 @@
 
 **Product:** Shinkiro (蜃気楼)  
 **Package:** `internal/intel` & `internal/soar`  
-**Latency Budget:** < 20 ns / op (Zero Allocation per Scored Event)
+**Note:** Hot-path latency claims below are design targets — run `make bench` for measured numbers; do not treat historical invented ns/op tables as CI truth.
 
 ---
 
 ## 1. Threat Scoring Architecture & Philosophy
 
-A honeynet that emits a flood of binary alerts without prioritizing risk creates operational fatigue in the SOC. Shinkiro implements a quantitative, multi-dimensional Threat Scoring Engine that evaluates adversary intent, interaction depth, payload signature, and cross-protocol movement in real time.
+A honeynet that emits unprioritized alerts creates SOC fatigue. Shinkiro assigns:
 
-Every incoming event is assigned:
-1. **Discrete Event Severity:** `INFO`, `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`.
-2. **Threat Score (0 to 100):** A normalized integer indicating risk and confidence.
-3. **Cumulative Reputation Score:** An aggregated risk score per IP address stored in an in-memory hash map.
-4. **MITRE ATT&CK TTP Binding:** Association with standard enterprise and ICS tactics and techniques.
-5. **Campaign Session Clustering:** Association with a broader multi-protocol attacker campaign.
+1. **Discrete Event Severity:** `INFO`, `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL` (as emitted by decoys / intel helpers).
+2. **Threat Score (0 to 100):** Normalized integer indicating risk and confidence.
+3. **Cumulative Reputation Score:** Aggregated risk per IP in an in-memory map.
+4. **MITRE ATT&CK TTP Binding:** Association with enterprise and ICS tactics/techniques.
+5. **Campaign Session Clustering:** Multi-protocol attacker campaign association (`internal/intel/correlator.go`).
 
 ```mermaid
 graph LR
@@ -35,17 +34,17 @@ graph LR
         Rep --> Corr
     end
 
-    subgraph Actions ["Automated Response Thresholds"]
-        Pass["0–49: Passive Baiting"]
-        Review["50–79: SOAR Burst Alerting"]
-        Block["80–94: nftables / iptables DROP"]
-        XDP["95–100: eBPF / XDP Hardware NIC Drop"]
+    subgraph Actions ["Response Thresholds (implemented)"]
+        Pass["Lower scores: Passive baiting / log"]
+        Review["Mid scores: SOAR alert hooks"]
+        Block["Higher scores: block_ip hook + export text"]
+        Export["Export nftables/iptables/sample eBPF script text<br/>(operator applies — no live XDP attach)"]
     end
 
     Corr --> Pass
     Corr --> Review
     Corr --> Block
-    Corr --> XDP
+    Corr --> Export
 ```
 
 ---
@@ -55,44 +54,41 @@ graph LR
 | Protocol / Vector | Action Identifier | Base Score | Severity | MITRE Tactic & Technique | Operational Classification & Deception Response |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **TCP / Ping** | `TCP_CONNECT`, `PING` | 10 | `INFO` | `TA0043` / `T1595` (Reconnaissance) | Logged passively in JSONL audit stream. No mitigation. |
-| **HTTP Web Recon** | `GET /`, `HEAD /` | 20 | `LOW` | `TA0043` / `T1595` (Active Scanning) | Tracked in sliding session window; benign or search crawler. |
-| **DNS Query** | `DNS_A_LOOKUP` | 30 | `LOW` | `TA0011` / `T1071.004` (DNS) | Intercepted domain query; checked against C2 domain lists. |
-| **SSH Handshake** | `SSH_PROBE_CONNECT` | 40 | `MEDIUM` | `TA0043` / `T1595` (Reconnaissance) | Client initiated SSH banner exchange. IP staged in tracking LRU. |
-| **Redis Command** | `INFO`, `PING` | 40 | `MEDIUM` | `TA0007` / `T1082` (Discovery) | Client querying Redis cluster topology and host specifications. |
-| **Docker API Ping** | `GET /_ping`, `GET /version` | 50 | `MEDIUM` | `TA0007` / `T1613` (Container Discovery) | Reconnaissance targeting exposed Docker daemon sockets. |
-| **Elasticsearch** | `GET /_cat/indices` | 60 | `MEDIUM` | `TA0007` / `T1083` (File Discovery) | Adversary enumerating indices to identify sensitive stored data. |
-| **PostgreSQL Auth** | `PG_AUTH_PROBE` | 70 | `HIGH` | `TA0006` / `T1110` (Brute Force) | Database authentication attempt. Usernames & passwords logged. |
-| **Kubernetes Recon**| `GET /api/v1/namespaces` | 75 | `HIGH` | `TA0007` / `T1613` (Container Discovery) | Anonymous RBAC enumeration targeting Kubernetes cluster secrets. |
-| **Modbus PLC Read** | `MODBUS_FC03_READ_HOLDING_REGISTERS` | 75 | `HIGH` | `TA0108` / `T0858` (OT Discovery) | ICS/SCADA reconnaissance probing operational power telemetry. |
-| **SSH Login Success**| `SSH_LOGIN_SUCCESS_DECOY` | 75 | `HIGH` | `TA0001` / `T1078` (Valid Accounts) | Attacker successfully logs into deceptive VirtualFS shell. |
-| **HTTP Config Trap**| `GET /.env`, `GET /.git/config` | 80 | `HIGH` | `TA0001` / `T1190` (Exploit Public-Facing) | Scanning for leaked environment secrets. **Auto-Firewall DROP**. |
-| **Redis Config Dump**| `CONFIG GET *` | 85 | `CRITICAL` | `TA0006` / `T1552` (Unsecured Creds) | Attempt to dump configuration or prepare write persistence. |
-| **Jenkins / WP Admin**| `POST /wp-login.php`, `Jenkins` | 85 | `CRITICAL` | `TA0006` / `T1110` (Brute Force) | Credential stuffing against web administration portals. |
+| **HTTP Web Recon** | `GET /`, `HEAD /` | 20 | `LOW` | `TA0043` / `T1595` (Active Scanning) | Tracked in sliding session window; often benign crawler noise. |
+| **DNS Query** | `DNS_A_LOOKUP` | 30 | `LOW` | `TA0011` / `T1071.004` (DNS) | Intercepted domain query; enrichment is heuristic GeoIP only. |
+| **SSH Handshake** | `SSH_PROBE_CONNECT` | 40 | `MEDIUM` | `TA0043` / `T1595` (Reconnaissance) | Client initiated SSH banner exchange. |
+| **Redis Command** | `INFO`, `PING` | 40 | `MEDIUM` | `TA0007` / `T1082` (Discovery) | Client querying Redis-like topology metadata. |
+| **Docker API Ping** | `GET /_ping`, `GET /version` | 50 | `MEDIUM` | `TA0007` / `T1613` (Container Discovery) | Recon targeting exposed Docker daemon sockets. |
+| **Elasticsearch** | `GET /_cat/indices` | 60 | `MEDIUM` | `TA0007` / `T1083` (File Discovery) | Index enumeration. |
+| **PostgreSQL Auth** | `PG_AUTH_PROBE` | 70 | `HIGH` | `TA0006` / `T1110` (Brute Force) | Database authentication attempt; credentials logged. |
+| **Kubernetes Recon**| `GET /api/v1/namespaces` | 75 | `HIGH` | `TA0007` / `T1613` (Container Discovery) | Anonymous RBAC / secrets recon paths. |
+| **Modbus PLC Read** | `MODBUS_FC03_READ_HOLDING_REGISTERS` | 75 | `HIGH` | `TA0108` / `T0858` (OT Discovery) | ICS reconnaissance. |
+| **SSH Login Success**| `SSH_LOGIN_SUCCESS_DECOY` | 75 | `HIGH` | `TA0001` / `T1078` (Valid Accounts) | Login into deceptive VirtualFS shell. |
+| **HTTP Config Trap**| `GET /.env`, `GET /.git/config` | 80 | `HIGH` | `TA0001` / `T1190` (Exploit Public-Facing) | Secret-path scanning; SOAR may `block_ip`. |
+| **Redis Config Dump**| `CONFIG GET *` | 85 | `CRITICAL` | `TA0006` / `T1552` (Unsecured Creds) | Config dump / persistence prep. |
+| **Jenkins / WP Admin**| `POST /wp-login.php`, `Jenkins` | 85 | `CRITICAL` | `TA0006` / `T1110` (Brute Force) | Credential stuffing against web admin traps. |
 | **SSH Shell Command**| `cat /etc/passwd`, `whoami` | 85 | `HIGH` | `TA0002` / `T1059.004` (Unix Shell) | Interactive exploration inside virtual sandbox. |
-| **AWS IMDS Token** | `PUT /latest/api/token` | 90 | `CRITICAL` | `TA0006` / `T1552.005` (Cloud Metadata) | SSRF exploitation attempting IMDSv2 token acquisition. |
-| **Modbus Coil Write**| `MODBUS_FC05_WRITE_SINGLE_COIL` | 95 | `CRITICAL` | `TA0108` / `T0855` (Unauthorized Command) | **Active OT Sabotage Attempt**. Immediate kernel drop. |
-| **Redis Lua RCE** | `EVAL "redis.call(...)"` | 95 | `CRITICAL` | `TA0002` / `T1059` (Command Interpreter) | Sandbox escape attempt. Payload hashed in SHA-256. |
-| **Docker Miner** | `POST /containers/create` | 95 | `CRITICAL` | `TA0002` / `T1609` (Container Exec) | Attempting to deploy crypto-miner or rootkit container. |
-| **AWS IAM Exfil** | `GET /latest/meta-data/iam/...` | 100 | `CRITICAL` | `TA0006` / `T1552.005` (Cloud Metadata) | Harvesting cloud IAM credentials. **Kernel XDP DROP**. |
-| **SSH Dropper** | `curl`, `wget`, `bash -i`, `python` | 100 | `CRITICAL` | `TA0002` / `T1059` (Interpreter) | Remote payload download / reverse shell attempt. **XDP DROP**. |
+| **AWS IMDS Token** | `PUT /latest/api/token` | 90 | `CRITICAL` | `TA0006` / `T1552.005` (Cloud Metadata) | SSRF-style IMDSv2 token acquisition. |
+| **Modbus Coil Write**| `MODBUS_FC05_WRITE_SINGLE_COIL` | 95 | `CRITICAL` | `TA0108` / `T0855` (Unauthorized Command) | OT write attempt; high score + SOAR hooks. |
+| **Redis Lua RCE** | `EVAL "redis.call(...)"` | 95 | `CRITICAL` | `TA0002` / `T1059` (Command Interpreter) | Sandbox escape attempt; payload hashed. |
+| **Docker Miner** | `POST /containers/create` | 95 | `CRITICAL` | `TA0002` / `T1609` (Container Exec) | Crypto-miner / rootkit container create attempt. |
+| **AWS IAM Exfil** | `GET /latest/meta-data/iam/...` | 100 | `CRITICAL` | `TA0006` / `T1552.005` (Cloud Metadata) | IAM credential path harvest. |
+| **SSH Dropper** | `curl`, `wget`, `bash -i`, `python` | 100 | `CRITICAL` | `TA0002` / `T1059` (Interpreter) | Remote payload / reverse-shell style commands. |
 
 ---
 
 ## 3. Multi-Protocol Campaign Correlation
 
-Isolated honeypot events fail to convey the complete attacker lifecycle. Shinkiro's `Correlator` (`internal/intel/correlator.go`) tracks multi-stage adversary campaigns using an in-memory sliding session window (default: 2 hours).
+`Correlator` (`internal/intel/correlator.go`) tracks multi-stage campaigns with an in-memory sliding session window.
 
-### Correlation Algorithm:
-1. When an event arrives from `RemoteIP`, the correlator checks for an existing active `Campaign`.
-2. If absent or expired, a new `Campaign` record is initialized (`camp-<IP>-<timestamp>`).
-3. If active, the incoming interaction updates the campaign:
-   - Extends `LastSeen` timestamp.
-   - Appends newly targeted decoys (`DecoysTargeted`).
-   - Updates `MaxThreatScore` to the highest observed severity.
-   - Deduplicates and appends MITRE tactic identifiers (`MitreTacticIDs`).
-   - Indexes captured usernames (`UsernamesUsed`) and executed commands (`CommandsRun`).
+### Correlation Algorithm
 
-### Example Correlated Campaign Object:
+1. On event from `RemoteIP`, look up an active `Campaign`.
+2. If absent or expired, initialize `camp-<IP>-<timestamp>`.
+3. If active, update `LastSeen`, `DecoysTargeted`, `MaxThreatScore`, MITRE IDs, usernames, and commands.
+
+### Example Correlated Campaign Object
+
 ```json
 {
   "id": "camp-198.51.100.25-1788642000",
@@ -106,35 +102,38 @@ Isolated honeypot events fail to convey the complete attacker lifecycle. Shinkir
   "usernames_used": ["root", "admin", "postgres"],
   "commands_run": ["whoami", "cat /etc/passwd", "cat /root/.env"],
   "metadata": {
-    "geo_country": "Netherlands",
-    "geo_asn": "AS16276",
-    "geo_org": "OVH SAS"
+    "geo_country": "US",
+    "geo_asn": "AS14618",
+    "geo_org": "Amazon.com, Inc.",
+    "geo_note": "Heuristic/demo GeoIP prefix — not MaxMind"
   }
 }
 ```
 
 ---
 
-## 4. Kernel & Firewall Mitigation Actions
+## 4. Firewall & Sample Kernel Rule Export
 
-Shinkiro enforces tiered active defense based on the quantitative threat score:
+Shinkiro stages mitigation via SOAR hooks and **text exporters**. It does **not** program a live XDP map from userland.
 
 ```mermaid
 graph TD
     Score["Event Threat Score"]
     
-    Score -->|Score < 50| P1["Tier 1: Passive Baiting<br/>Continue session in honeypot<br/>Log to events.jsonl"]
-    Score -->|Score 50–79| P2["Tier 2: Threshold Monitoring<br/>5+ events in 30s triggers alert<br/>Slack / Discord SecOps webhook"]
-    Score -->|Score 80–94| P3["Tier 3: Firewall Blacklist<br/>Dynamic iptables / nftables DROP<br/>Export via 'shinkiro export'"]
-    Score -->|Score >= 95| P4["Tier 4: Kernel XDP NIC Discard<br/>eBPF map blacklist update<br/>Zero-allocation hardware drop"]
+    Score -->|Lower| P1["Tier 1: Passive Baiting<br/>Continue session<br/>Log to events.jsonl"]
+    Score -->|Mid + playbook match| P2["Tier 2: SOAR alert<br/>alert / notify hooks"]
+    Score -->|High + block_ip| P3["Tier 3: Stage block list<br/>export nftables / iptables text"]
+    Score -->|Operator optional| P4["Tier 4: Apply sample eBPF C / kernel script text<br/>externally — no BPF_MAP_UPDATE in-process"]
 ```
 
-### 4.1. Tier 3: iptables & nftables Rule Synthesis
+### 4.1. iptables & nftables Rule Synthesis
+
 ```bash
-# Generate dynamic nftables ruleset for all IPs with score >= 80
 ./bin/shinkiro export --format nftables --threshold 80
 ```
-Output:
+
+Example shape:
+
 ```text
 add table inet shinkiro_filter
 add set inet shinkiro_filter blackhole { type ipv4_addr; }
@@ -142,55 +141,54 @@ add element inet shinkiro_filter blackhole { 198.51.100.25 }
 add rule inet shinkiro_filter input ip saddr @blackhole drop
 ```
 
-### 4.2. Tier 4: Kernel-Level eBPF / XDP Filtering
-For high-confidence threats (score >= 95), Shinkiro programs an in-kernel eBPF XDP hook (`xdp_drop.c`) attached to the host physical interface (`eth0`). Incoming packets matching malicious IPs are discarded directly in the network driver before kernel sk_buff allocation, nullifying DDoS and exploit attempts at line rate.
+### 4.2. Sample eBPF / XDP Artifacts
+
+- Sample C: `internal/ebpf/c/xdp_drop.c`
+- Script text: `./bin/shinkiro kernel` / `FilterManager.RenderScript()`
+- Loading/attaching those artifacts is an **operator** responsibility (clang/bpftool/ip link, etc.). Shinkiro does not claim automatic NIC drops.
 
 ---
 
 ## 5. SOAR-Lite Playbook Automation Engine
 
-The threat scoring engine directly feeds the in-process SOAR (Security Orchestration, Automation, and Response) engine (`internal/soar`). When an incoming event or correlated campaign crosses configured score and frequency thresholds, declarative YAML playbooks execute actions synchronously:
+Package `internal/soar` loads YAML into `PlaybookConfig{ Rules []Rule }` where each rule uses **`if` / `then`** (not a fantasy `playbooks[].trigger.actions.firewall_drop` schema).
 
-### 5.1. Playbook Rule Specification (`playbooks.yaml`)
+### 5.1. Real Playbook Schema (`playbooks.yaml`)
 
 ```yaml
-version: "1.0"
-playbooks:
-  - id: "critical-ics-block"
-    name: "Immediate Kernel Drop on ICS Modbus Exploitation"
+rules:
+  - name: ssh-credential-stuffing-autoblock
     enabled: true
-    trigger:
-      min_threat_score: 90
-      protocols: ["modbus"]
-      actions: ["MODBUS_WRITE_COIL", "MODBUS_WRITE_HOLDING_REGISTER"]
-    actions:
-      - type: "xdp_drop"
-        target_interface: "eth0"
-      - type: "webhook"
-        url: "https://soc.company.internal/webhooks/critical-incidents"
-        format: "json"
-        headers:
-          Authorization: "Bearer ${SOC_WEBHOOK_SECRET}"
-      - type: "siem_forward"
-        format: "cef"
-        target: "siem.company.internal:514"
+    if:
+      decoy: ssh
+      min_score: 75
+      action_match: LOGIN
+    then:
+      - type: block_ip
+      - type: alert
 
-  - id: "brute-force-rate-limit"
-    name: "Automated Rate Limiting on SSH / Telnet Spray"
+  - name: redis-exploitation-immediate-ban
     enabled: true
-    trigger:
-      min_threat_score: 75
-      protocols: ["ssh", "telnet"]
-      window_seconds: 60
-      event_count_threshold: 5
-    actions:
-      - type: "firewall_drop"
-        backend: "nftables"
-        table: "shinkiro_filter"
-        timeout_seconds: 3600
-      - type: "threat_intel_share"
-        feed: "threatfox"
+    if:
+      decoy: redis
+      min_score: 80
+      action_match: CONFIG
+    then:
+      - type: block_ip
+      - type: alert
+
+  - name: rapid-recon-scanning-ratelimit
+    enabled: true
+    if:
+      decoy: "*"
+      threshold: 5
+      window_sec: 30
+    then:
+      - type: block_ip
+      - type: alert
 ```
+
+Supported action types in code today: **`block_ip`**, **`alert`** / **`notify`**, **`tag`**.
 
 ### 5.2. Action Execution Lifecycle
 
@@ -200,17 +198,17 @@ sequenceDiagram
     participant Engine as Scoring & Intel Engine
     participant Correlator as Campaign Correlator
     participant SOAR as SOAR Playbook Engine
-    participant Kernel as eBPF / nftables
+    participant Hook as block_ip / alert hooks
 
     Decoy->>Engine: Emit Event(IP, Protocol, Action, Score)
     Engine->>Correlator: Record Event & Update Aggregates
-    Correlator-->>Engine: Updated Campaign (TotalScore, Severity)
-    Engine->>SOAR: Evaluate Playbooks(Event, Campaign)
-    alt Trigger Matched (Score >= Threshold)
-        SOAR->>Kernel: Program Drop Rule (XDP / nftables)
-        SOAR->>SOAR: Dispatch Webhook / SIEM Forwarder
-    else Below Threshold
-        SOAR-->>Engine: No Action (Passive Baiting Continues)
+    Correlator-->>Engine: Updated Campaign
+    Engine->>SOAR: Process(Event)
+    alt Rule matched
+        SOAR->>Hook: Execute then[] actions
+        Note over Hook: Hooks may stage IPs; export commands emit firewall text
+    else Below thresholds
+        SOAR-->>Engine: No Action
     end
 ```
 
@@ -218,26 +216,16 @@ sequenceDiagram
 
 ## 6. Algorithmic Calculation: Decay, Velocity & Trust Factors
 
-Threat scoring in Shinkiro is not a static lookup table; it is an evolving metric that incorporates temporal velocity, asset sensitivity, and score decay:
+Threat scoring incorporates temporal velocity and decay as implemented in the intel packages (see source for exact constants):
 
-### 6.1. Temporal Decay Formula
-Adversary reputation decays gradually over periods of inactivity to prevent permanent false-positive lockouts of dynamic residential IP addresses:
+### 6.1. Temporal Decay (design)
 
-$$S(t) = S_0 \cdot e^{-\lambda \Delta t}$$
-
-Where:
-- $S(t)$ is the current threat score at time $t$.
-- $S_0$ is the peak recorded threat score.
-- $\lambda$ is the decay constant (default: $\lambda = 0.05 \text{ hr}^{-1}$, half-life $\approx 13.8$ hours).
-- $\Delta t$ is the elapsed time in hours since the adversary's last recorded packet.
+Reputation may decay over inactivity to reduce permanent lockouts of dynamic residential IPs. Treat formulas in older drafts as illustrative; verify constants in code before citing them in SLAs.
 
 ### 6.2. Velocity Multiplier
-Repeated probing across short time intervals inflates the threat score multiplicatively:
 
-$$V = \min\left(2.5, 1.0 + 0.15 \times \frac{N_{\text{events}}}{\Delta t_{\text{minutes}}}\right)$$
+Repeated probing within a short window can inflate scores. The SOAR engine also supports explicit `threshold` + `window_sec` rate gates per rule.
 
-Where $N_{\text{events}}$ is the number of events captured within the sliding evaluation window $\Delta t_{\text{minutes}}$.
+### 6.3. Private / Local Handling
 
-### 6.3. Whitelist & False Positive Immunity
-Shinkiro maintains an in-memory CIDR prefix tree (radix tree) containing RFC1918 private subnets, designated internal monitoring systems, and health probes (e.g., Kubernetes liveness probes). Packets originating from whitelisted CIDRs are stamped with `threat_score: 0` and bypass active firewall mitigation rules entirely.
-
+Heuristic GeoIP marks RFC1918 / loopback as `LOCAL`. Operators should still maintain their own allowlists at the firewall layer — Shinkiro does not ship a full CIDR policy engine equivalent to enterprise NAC.
