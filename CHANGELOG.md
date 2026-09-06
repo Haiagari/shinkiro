@@ -5,6 +5,10 @@ All notable changes to **Shinkiro** are documented in this file following [Keep 
 ## [Unreleased]
 
 ### Added
+- **Campaign correlator v2** (`internal/intel/correlator.go`): multi-event grouping by same source IP + sliding session window + decoy hop path; tracks technique IDs, event/action rolls, ordered hop path, and explicit grouping reasons (rule-based - **not ML**). CLI: `shinkiro campaigns [--format table|json]`.
+- **ThreatFox / AbuseIPDB CLI**: real HTTP clients (`internal/intel/feeds.go`) with `THREATFOX_API_KEY` / `ABUSEIPDB_API_KEY`; graceful errors when keys are missing. Commands: `shinkiro threatfox --search|--days`, `shinkiro abuseipdb --ip`.
+- **ATT&CK coverage report**: `shinkiro coverage` / `attack-coverage` maps decoy-matrix.md technique tags (+ optional `--runtime-mapper` for `MapToMitre`) to table/JSON - no invented ATT&CK mappings.
+
 - **TUI operator actions** (`internal/tui`): select high-score events / correlator campaigns; trigger SOAR `block_ip` (dry-run by default, live only with `--apply` / `SHINKIRO_SOAR_APPLY=1`), operator on-demand PCAP (`CaptureNow`), adversary `simulate`, and AWS canary generation; help overlay + clearable status (see `docs/architecture/tui-operator.md`).
 - **`pcap.OnDemandCapture.CaptureNow`**: explicit operator capture that writes libpcap frames regardless of score threshold (filename prefix `operator-`).
 - **Unified event pipeline** (`internal/pipeline`): in-process Event → Score → Correlate → Playbook → Sink bus; `shinkiro up` / `tui` feed decoy emit channels through ordered stages (see `docs/architecture/event-pipeline.md`).
