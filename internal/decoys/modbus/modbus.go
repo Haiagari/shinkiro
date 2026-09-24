@@ -41,7 +41,7 @@ func (d *Decoy) HandleConnection(ctx context.Context, conn net.Conn, events chan
 		pduLen := binary.BigEndian.Uint16(mbap[4:6])
 		unitID := mbap[6]
 
-		if protocolID != 0 || pduLen < 1 || pduLen > 256 {
+		if protocolID != 0 || pduLen < 2 || pduLen > 256 {
 			return nil
 		}
 
