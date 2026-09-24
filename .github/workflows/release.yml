@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   build-and-sign:
-    name: Build, SBOM, Sign & SLSA
+    name: Build, SBOM & Sign Checksums
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code

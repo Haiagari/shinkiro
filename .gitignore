@@ -81,3 +81,8 @@ scratch/
 
 # MaxMind GeoLite2/GeoIP2 databases (never commit license-bound binaries)
 *.mmdb
+
+# Local notes
+tec1.md
+tec2.md
+tec3.md
