@@ -16,9 +16,9 @@
 
 ## What is Shinkiro
 
-**Shinkiro (蜃気楼 — *mirage*)** is a single-binary cyber deception engine written in Go. It multiplexes lightweight, memory-jailed protocol emulators across common internet, cloud, and IoT attack surfaces.
+**Shinkiro (蜃気楼 — *mirage*)** is a Go-based cyber-deception project. Its sensor runs as a single executable and multiplexes protocol emulators for commonly probed internet, cloud, and IoT services; the optional cluster hub is a separate service. The emulators run inside the sensor process, not in OS-level jails.
 
-Adversaries scanning your perimeter encounter responsive decoy services that capture credentials, probes, and exploit attempts without granting host access. Telemetry flows through an in-process **Event → Score → Correlate → Playbook → Sink** pipeline, drives SOAR-lite actions (`block_ip` / `alert`), and can emit firewall rule text — **live firewall apply is opt-in** (`--apply` / `SHINKIRO_SOAR_APPLY=1`); default is dry-run.
+Enabled decoys can record probes, commands, and submitted credentials. The SSH shell uses a limited in-memory command emulator rather than a host shell. This does not make emulation an isolation boundary or guarantee that a host can never be reached through a software flaw; deploy sensors with appropriate OS and network isolation. Telemetry flows through an in-process **Event → Score → Correlate → Playbook → Sink** pipeline. SOAR `block_ip` is dry-run by default; live firewall command execution requires `--apply` or `SHINKIRO_SOAR_APPLY=1`.
 
 ### Honest capabilities (code-backed)
 
@@ -126,7 +126,7 @@ Complete matrix: [Decoy Protocols & Emulation Matrix](docs/decoys/decoy-matrix.m
 
 | Decoy Service | Default Port | Emulated Protocol & Deception Capabilities |
 | :--- | :--- | :--- |
-| **SSH** | `2222` | OpenSSH-style handshake, captures passwords/keys, in-memory virtual terminal (`bash`), human latency jitter |
+| **SSH** | `2222` | OpenSSH-style handshake; records submitted passwords or public-key fingerprints (not public keys); limited in-memory command emulator with 15–44 ms response delay |
 | **Telnet** | `2323` | BusyBox-style router login, IAC negotiation, Mirai-style credential harvesting |
 | **MQTT** | `1883` | MQTT v3.1.1 broker, CONNECT auth traps, unauthorized PUBLISH/SUBSCRIBE |
 | **SMB / CIFS** | `4445` | NetBIOS session & SMBv2 negotiation, EternalBlue-style recon trap |
@@ -139,10 +139,10 @@ Complete matrix: [Decoy Protocols & Emulation Matrix](docs/decoys/decoy-matrix.m
 | **MongoDB** | `27017` | BSON `OP_MSG`; `isMaster` recon |
 | **Elasticsearch** | `9200` | REST `/`, `/_cat/indices`, `/_cluster/health` |
 | **SMTP / ESMTP** | `2525` | Postfix-style HELO/EHLO/MAIL/RCPT/DATA |
-| **DNS Server** | `1053` | RFC 1035 UDP; subdomain / C2-style lookup capture |
+| **DNS Server** | `1053` | RFC 1035 UDP; logs subdomain and C2-style lookup queries |
 | **Modbus / TCP** | `502` | ICS/SCADA PLC-style MBAP; unauthorized command traps (`T0855`) |
 
-Runtime config uses top-level **`services:`** (not `decoys:`) — see [`config.yaml`](config.yaml).
+Runtime config uses top-level **`services:`** (not `decoys:`) — see [`config.yaml`](config.yaml). These entries describe selected emulated interactions, not complete protocol implementations; ATT&CK tags and event scores are heuristic labels, not validated attribution or threat-confidence measurements.
 
 ---
 
