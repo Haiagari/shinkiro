@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"sync"
 )
 
 // Driver abstracts low-level Linux packet-filtering mechanisms
@@ -17,7 +18,8 @@ const (
 
 // FilterManager manages live automated IP blacklisting at the kernel level
 type FilterManager struct {
-	driver    Driver
+	mu            sync.RWMutex
+	driver        Driver
 	interfaceName string
 	blockedIPs    map[string]bool
 }
@@ -41,12 +43,35 @@ func (fm *FilterManager) BlockIP(ip string) error {
 		return fmt.Errorf("invalid IP address: %s", ip)
 	}
 
+	fm.mu.Lock()
+	defer fm.mu.Unlock()
+
 	fm.blockedIPs[ip] = true
 	return nil
 }
 
+// UnblockIP removes an attacker IP from the blacklist
+func (fm *FilterManager) UnblockIP(ip string) error {
+	fm.mu.Lock()
+	defer fm.mu.Unlock()
+
+	delete(fm.blockedIPs, ip)
+	return nil
+}
+
+// IsBlocked reports whether the given IP is currently blocked
+func (fm *FilterManager) IsBlocked(ip string) bool {
+	fm.mu.RLock()
+	defer fm.mu.RUnlock()
+
+	return fm.blockedIPs[ip]
+}
+
 // RenderScript generates the kernel execution script (eBPF map update / nftables rule)
 func (fm *FilterManager) RenderScript() string {
+	fm.mu.RLock()
+	defer fm.mu.RUnlock()
+
 	var sb strings.Builder
 
 	switch fm.driver {

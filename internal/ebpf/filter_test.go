@@ -29,3 +29,25 @@ func TestFilterManager_InvalidIP(t *testing.T) {
 		t.Fatalf("expected error on invalid IP, got nil")
 	}
 }
+
+func TestFilterManager_Concurrency(t *testing.T) {
+	fm := NewFilterManager(DriverNFTables, "eth0")
+	done := make(chan bool)
+
+	for i := 0; i < 10; i++ {
+		go func(workerID int) {
+			for j := 0; j < 50; j++ {
+				ip := "192.168.1.1"
+				_ = fm.BlockIP(ip)
+				_ = fm.IsBlocked(ip)
+				_ = fm.RenderScript()
+				_ = fm.UnblockIP(ip)
+			}
+			done <- true
+		}(i)
+	}
+
+	for i := 0; i < 10; i++ {
+		<-done
+	}
+}
