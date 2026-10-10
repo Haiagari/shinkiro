@@ -1,7 +1,7 @@
 # Shinkiro System Architecture & Technical Specification
 
 **Product:** Shinkiro (蜃気楼)  
-**License:** AGPL-3.0-only  
+**License:** Apache-2.0  
 **Language:** Go 1.24+ (single binary)
 
 Documentation hub: [`../README.md`](../README.md). Honesty: [`../honesty-limitations.md`](../honesty-limitations.md).

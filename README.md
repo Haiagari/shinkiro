@@ -6,7 +6,7 @@
 [![CI](https://github.com/Haiagari/shinkiro/actions/workflows/ci.yml/badge.svg)](https://github.com/Haiagari/shinkiro/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-6366f1?style=flat-square)](CHANGELOG.md)
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square)](https://golang.org/)
-[![License](https://img.shields.io/badge/license-AGPL--3.0-f59e0b?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux%20(prebuilt)%20%7C%20macOS%20(source)-blue?style=flat-square)](#quick-start)
 
 > **Docs hub:** [`docs/README.md`](docs/README.md) — getting started, architecture, operator guide, CLI reference, threat intel, deploy, development, honesty.  
@@ -291,4 +291,4 @@ Start at **[`docs/README.md`](docs/README.md)** (block navigation). Highlights:
 
 ## License
 
-AGPL-3.0-only © 2026 Haiagari Security.
+Apache-2.0 © 2026 Haiagari Security.

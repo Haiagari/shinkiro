@@ -78,7 +78,7 @@ This hub organizes operator and contributor docs by **blocks**. Prefer code unde
 
 - [README.md](../README.md) — product overview + Quick Start  
 - [CHANGELOG.md](../CHANGELOG.md) — Keep a Changelog (Unreleased accurate)  
-- [LICENSE](../LICENSE) — AGPL-3.0-only  
+- [LICENSE](../LICENSE) — Apache-2.0  
 
 ---
 

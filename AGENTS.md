@@ -12,7 +12,7 @@ Use this file as the **source of truth for agents and contributors**. Prefer cod
 |---|---|
 | Product | **Shinkiro (蜃気楼)** |
 | Language | **Go 1.24+** |
-| License | **AGPL-3.0-only** |
+| License | **Apache-2.0** |
 | Core Philosophy | Zero-footprint in-memory decoys, fail-closed sockets, live telemetry |
 | Protocol Decoys (**15**) | SSH, Telnet, MQTT, SMB, Redis, Docker, HTTP, PostgreSQL, Kubernetes, AWS IMDS, MongoDB, Elasticsearch, SMTP, DNS, Modbus |
 | Active Defense | **Text exporters** for `iptables` / `nftables` / sample eBPF scripts; SOAR-lite `block_ip` / `alert` — dry-run default, live apply only with `--apply` / `SHINKIRO_SOAR_APPLY=1` — **not** a live kernel BPF loader |
