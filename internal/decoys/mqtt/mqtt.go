@@ -170,6 +170,10 @@ func decodeRemainingLength(r *bufio.Reader) (int, error) {
 			return 0, fmt.Errorf("malformed remaining length")
 		}
 	}
+	// Cap maximum payload size for honeypot decoys to prevent memory exhaustion
+	if value > 65536 {
+		return 0, fmt.Errorf("remaining length too large: %d", value)
+	}
 	return value, nil
 }
 
