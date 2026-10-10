@@ -14,13 +14,20 @@ import (
 	"github.com/Haiagari/shinkiro/internal/intel/stix"
 )
 
+func auditLogPath() string {
+	if p := os.Getenv("SHINKIRO_AUDIT_LOG_PATH"); p != "" {
+		return p
+	}
+	return "data/events.jsonl"
+}
+
 func runExport(args []string) {
 	fs := flag.NewFlagSet("export", flag.ExitOnError)
 	formatStr := fs.String("format", "iptables", "Firewall format: iptables, nftables, cidr")
 	threshold := fs.Int("threshold", 80, "Minimum threat score to block")
 	_ = fs.Parse(args)
 
-	intelEngine, err := intel.NewEngine("data/events.jsonl")
+	intelEngine, err := intel.NewEngine(auditLogPath())
 	if err != nil {
 		fmt.Printf("❌ Failed to read intel engine: %v\n", err)
 		os.Exit(1)

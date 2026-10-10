@@ -52,7 +52,20 @@ func runUp(interactiveUI bool, args []string) {
 		applyLive = true
 	}
 
-	cfg, err := config.LoadConfig("config.yaml")
+	configPath := os.Getenv("SHINKIRO_CONFIG")
+	if configPath == "" {
+		configPath = "config.yaml"
+	}
+	for i := 0; i < len(args); i++ {
+		if (args[i] == "--config" || args[i] == "-c") && i+1 < len(args) {
+			configPath = args[i+1]
+			i++
+		} else if strings.HasPrefix(args[i], "--config=") {
+			configPath = strings.TrimPrefix(args[i], "--config=")
+		}
+	}
+
+	cfg, err := config.LoadConfig(configPath)
 	if err != nil {
 		fmt.Printf("❌ Configuration error: %v\n", err)
 		os.Exit(1)

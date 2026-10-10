@@ -67,8 +67,13 @@ func (m *Multiplexer) Start(ctx context.Context) error {
 		addr := fmt.Sprintf(":%d", port)
 		ln, err := net.Listen("tcp", addr)
 		if err != nil {
-			m.Stop()
-			return fmt.Errorf("failed to listen on %s (%s): %w", addr, name, err)
+			// If already in use on 0.0.0.0, attempt loopback binding as fallback
+			loopAddr := fmt.Sprintf("127.0.0.1:%d", port)
+			ln, err = net.Listen("tcp", loopAddr)
+			if err != nil {
+				fmt.Printf("⚠️  [Multiplexer] Skipping port %d (%s): %v\n", port, name, err)
+				continue
+			}
 		}
 
 		m.mu.Lock()

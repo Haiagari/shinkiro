@@ -45,7 +45,12 @@ fuzz:
 	@go test -fuzz=FuzzDockerDecoy -fuzztime=5s ./internal/decoys/docker
 	@go test -fuzz=FuzzVirtualFSExecute -fuzztime=5s ./internal/decoys/ssh
 	@go test -fuzz=FuzzModbusDecoy -fuzztime=5s ./internal/decoys/modbus
+	@go test -fuzz=FuzzMQTTDecoy -fuzztime=5s ./internal/decoys/mqtt
+	@go test -fuzz=FuzzSMBDecoy -fuzztime=5s ./internal/decoys/smb
 	@echo "✅ All fuzz targets passed without panics or crashes."
+
+demo: build
+	@./scripts/demo.sh
 
 docker-build:
 	@echo "🐳 Building $(DOCKER_IMAGE)..."
