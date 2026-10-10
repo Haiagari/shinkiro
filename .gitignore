@@ -86,3 +86,7 @@ scratch/
 tec1.md
 tec2.md
 tec3.md
+
+# Dependencies & misc
+node_modules/
+hub/
